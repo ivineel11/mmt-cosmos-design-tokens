@@ -44,7 +44,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 | Token set | Contents |
 |-----------|----------|
 | **primitives** | Raw values — color palettes, font stacks, pixel scales |
-| **semantic** | Role-based aliases that reference primitives via `{category.path}` syntax |
+| **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
 
 When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value.
 
@@ -87,7 +87,7 @@ Both `primitives` and `semantic` tokens land in a **flat output namespace** — 
 | iOS | Copy / link `CosmosTokens.swift` | camelCase static lets | `CosmosTokens.colorTextPrimary` (`Color`) |
 | Android | Copy / link `CosmosTokens.kt` | camelCase vals in `com.makemytrip.cosmos.tokens` | `CosmosTokens.colorTextPrimary` (`Color`) |
 
-**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `body.medium.regular`) rather than primitives (`neutral-950`, `borderRadius-8`).
+**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `space-md`, `body.medium.regular`) rather than primitives (`neutral-950`, `borderRadius-8`, `spacing-16`).
 
 ### 5. Commit and ship
 
@@ -223,15 +223,15 @@ Lato is a [Google Font](https://fonts.google.com/specimen/Lato). **This reposito
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap");
 ```
 
-Typography tokens are **composite** — each bundles `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` in a flat `{group}.{size}.{weight}` shape (e.g. `body.medium.regular`). The build pipeline expands them into individual output properties. Radius and icon T-shirt sizes (`radius.md`, `icon.lg`, etc.) are unrelated and keep their existing names.
+Typography tokens are **composite** — each bundles `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` in a flat `{group}.{size}.{weight}` shape (e.g. `body.medium.regular`). The build pipeline expands them into individual output properties. Radius, icon, and space T-shirt sizes (`radius.md`, `icon.lg`, `space.md`, etc.) are unrelated and keep their existing names.
 
-### 6. T-shirt sizing for radius and icon tokens
+### 6. T-shirt sizing for radius, icon, and space tokens
 
-Semantic radius and icon tokens use abstract size names (`xs`, `sm`, `md`, …) that map to primitive pixel values. This decouples component code from raw numbers.
+Semantic radius, icon, and space tokens use abstract size names (`xs`, `sm`, `md`, …) that map to primitive pixel values. This decouples component code from raw numbers.
 
-### 7. Spacing: primitive-only (for now)
+### 7. Semantic spacing via `space.*`
 
-A full spacing scale exists in primitives (`spacing.0` through `spacing.64`, plus negative values), but **no semantic spacing aliases** have been defined yet. Layout code currently consumes primitive spacing tokens directly.
+Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. Leftover mid-steps (`44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits.
 
 ### 8. Gradient tokens (currently unused)
 
@@ -276,7 +276,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 ## Best Practices
 
-1. **Always consume semantic tokens in product code.** Use `--color-text-primary`, not `--color-neutral-950`. Semantic names describe intent and survive palette updates.
+1. **Always consume semantic tokens in product code.** Use `--color-text-primary` / `--space-md`, not `--color-neutral-950` / `--spacing-16`. Semantic names describe intent and survive palette updates.
 
 2. **Edit `tokens/tokens.json` (or Figma via Tokens Studio), never generated files.** Everything in `dist/` is auto-generated and will be overwritten on the next build.
 
@@ -305,7 +305,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 - Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.brand.600}`).
 - Do use the semantic color role system (`bg-surface`, `bg-fill`, `text`, `border`, `icon`) consistently.
 - Do add new palette steps at the primitive layer before creating semantic aliases.
-- Do use t-shirt sizes (`radius.md`, `icon.lg`) in components instead of raw pixel values.
+- Do use t-shirt sizes (`radius.md`, `icon.lg`, `space.md`) in components instead of raw pixel values.
 - Do expand typography composites via the build — do not manually duplicate font properties.
 - Do commit both `tokens/tokens.json` and regenerated `dist/` outputs together.
 - Do use `strong` / `subtle` pairs for status fills to maintain visual hierarchy.
@@ -317,7 +317,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 - Don't edit files in `dist/` directly — changes will be lost.
 - Don't put raw values in the semantic layer — always alias a primitive.
 - Don't skip the build step after modifying tokens.
-- Don't use primitive color tokens (e.g. `color.red.500`) directly in UI components — use semantic equivalents.
+- Don't use primitive color or spacing tokens (e.g. `color.red.500`, `spacing.16`) directly in UI components when a semantic equivalent exists (`text-*`, `space.md`).
 - Don't create one-off semantic tokens for a single screen — extend the shared taxonomy instead.
 - Don't add font sizes without corresponding line heights in the typography scale.
 - Don't use negative spacing keys in references — the build renames them (`spacing.-8` → `spacing.minus8` in output).
@@ -328,7 +328,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 ## Token Inventory
 
-**Totals:** 221 primitive tokens · 225 semantic tokens (171 colors + 36 typography + 10 radius + 8 icon) · **554 values per platform** · **0 gradients**
+**Totals:** 221 primitive tokens · 239 semantic tokens (171 colors + 36 typography + 10 radius + 8 icon + 14 space) · **568 values per platform** · **0 gradients**
 
 ### Primitive tokens (221)
 
@@ -469,7 +469,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 
 ---
 
-### Semantic tokens (225)
+### Semantic tokens (239)
 
 #### Color — 171 tokens
 
@@ -608,6 +608,27 @@ Flat shape `{group}.{size}.{weight}` · font family Lato · no letter spacing.
 | `icon.2xl` | 48px |
 | `icon.3xl` | 64px |
 
+#### Space — 14 tokens
+
+T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in product code.
+
+| Token | Meaning |
+|-------|---------|
+| `space.none` | No space |
+| `space.3xs` | 2px |
+| `space.2xs` | 4px |
+| `space.xs` | 8px |
+| `space.sm` | 12px |
+| `space.md` | 16px |
+| `space.lg` | 20px |
+| `space.xl` | 24px |
+| `space.2xl` | 28px |
+| `space.3xl` | 32px |
+| `space.4xl` | 36px |
+| `space.5xl` | 40px |
+| `space.6xl` | 48px |
+| `space.7xl` | 64px |
+
 ---
 
 ## Primitive → Semantic Mappings
@@ -706,6 +727,25 @@ Flat shape `{group}.{size}.{weight}` · font family Lato · no letter spacing.
 | `icon.2xl` | `iconSize.48` |
 | `icon.3xl` | `iconSize.64` |
 
+### Space mappings
+
+| Semantic | Primitive |
+|----------|-----------|
+| `space.none` | `spacing.0` |
+| `space.3xs` | `spacing.2` |
+| `space.2xs` | `spacing.4` |
+| `space.xs` | `spacing.8` |
+| `space.sm` | `spacing.12` |
+| `space.md` | `spacing.16` |
+| `space.lg` | `spacing.20` |
+| `space.xl` | `spacing.24` |
+| `space.2xl` | `spacing.28` |
+| `space.3xl` | `spacing.32` |
+| `space.4xl` | `spacing.36` |
+| `space.5xl` | `spacing.40` |
+| `space.6xl` | `spacing.48` |
+| `space.7xl` | `spacing.64` |
+
 ### Typography mappings
 
 Each typography token is a composite reference. Pattern:
@@ -757,34 +797,28 @@ Full token list with resolved primitive references (generated from `tokens/token
 - `label.small.bold` → fontFamily.lato · fontWeight.bold · 12px · 16px
 - `label.small.black` → fontFamily.lato · fontWeight.black · 12px · 16px
 
-### Spacing (no semantic layer)
+### Space (semantic layer)
 
-Spacing tokens are **primitive-only**. Use them directly:
+Prefer semantic `space.*` aliases in layout code. They resolve to the primitive spacing scale:
 
-| CSS variable | Value |
-|--------------|-------|
-| `--spacing-0` | 0px |
-| `--spacing-2` | 2px |
-| `--spacing-4` | 4px |
-| `--spacing-8` | 8px |
-| `--spacing-12` | 12px |
-| `--spacing-16` | 16px |
-| `--spacing-20` | 20px |
-| `--spacing-24` | 24px |
-| `--spacing-28` | 28px |
-| `--spacing-32` | 32px |
-| `--spacing-36` | 36px |
-| `--spacing-40` | 40px |
-| `--spacing-44` | 44px |
-| `--spacing-48` | 48px |
-| `--spacing-52` | 52px |
-| `--spacing-56` | 56px |
-| `--spacing-60` | 60px |
-| `--spacing-64` | 64px |
-| `--spacing-minus2` | -2px |
-| `--spacing-minus4` | -4px |
-| `--spacing-minus8` | -8px |
-| `--spacing-minus12` | -12px |
+| CSS variable | Value | Primitive |
+|--------------|-------|-----------|
+| `--space-none` | 0px | `spacing.0` |
+| `--space-3xs` | 2px | `spacing.2` |
+| `--space-2xs` | 4px | `spacing.4` |
+| `--space-xs` | 8px | `spacing.8` |
+| `--space-sm` | 12px | `spacing.12` |
+| `--space-md` | 16px | `spacing.16` |
+| `--space-lg` | 20px | `spacing.20` |
+| `--space-xl` | 24px | `spacing.24` |
+| `--space-2xl` | 28px | `spacing.28` |
+| `--space-3xl` | 32px | `spacing.32` |
+| `--space-4xl` | 36px | `spacing.36` |
+| `--space-5xl` | 40px | `spacing.40` |
+| `--space-6xl` | 48px | `spacing.48` |
+| `--space-7xl` | 64px | `spacing.64` |
+
+Primitive `spacing.*` remains available for leftover steps (`44`, `52`, `56`, `60`) and negatives (`--spacing-minus2`, etc.). Use those only for optical exceptions.
 
 ---
 
@@ -800,7 +834,7 @@ Spacing tokens are **primitive-only**. Use them directly:
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: var(--spacing-16);
+  padding: var(--space-md);
   color: var(--color-text-primary);
   font-size: var(--body-medium-regular-font-size);
   line-height: var(--body-medium-regular-line-height);
