@@ -19,7 +19,7 @@ public extension View {
     /// box it does on web and Android.
     ///
     /// - Parameters:
-    ///   - lineHeight: Total line-box height, e.g. `CosmosTokens.bodyMdRomanLineHeight`.
+    ///   - lineHeight: Total line-box height, e.g. `CosmosTokens.bodyMediumRegularLineHeight`.
     ///   - uiFont: The `UIFont` actually used to render the text. Its `lineHeight`
     ///     provides the intrinsic metrics SwiftUI does not expose.
     func lineHeight(_ lineHeight: CGFloat, for uiFont: UIFont) -> some View {
@@ -33,9 +33,9 @@ public extension View {
     /// falling back to the system font of that size if the custom font is unavailable.
     ///
     /// - Parameters:
-    ///   - lineHeight: Total line-box height, e.g. `CosmosTokens.bodyMdRomanLineHeight`.
-    ///   - fontName: Token font family, e.g. `CosmosTokens.bodyMdRomanFontFamily`.
-    ///   - fontSize: Token font size, e.g. `CosmosTokens.bodyMdRomanFontSize`.
+    ///   - lineHeight: Total line-box height, e.g. `CosmosTokens.bodyMediumRegularLineHeight`.
+    ///   - fontName: Token font family, e.g. `CosmosTokens.bodyMediumRegularFontFamily`.
+    ///   - fontSize: Token font size, e.g. `CosmosTokens.bodyMediumRegularFontSize`.
     func lineHeight(_ lineHeight: CGFloat, fontName: String, fontSize: CGFloat) -> some View {
         let uiFont = UIFont(name: fontName, size: fontSize)
             ?? .systemFont(ofSize: fontSize)

@@ -68,12 +68,12 @@ npm run build:tokens
 `build-tokens.mjs` runs [Style Dictionary](https://styledictionary.com/) with Tokens Studio transforms and custom MMT transforms. The build:
 
 1. **Preprocesses** the dictionary (`tokens-studio` hoists token sets; `mmt/rename-negative` renames `-12` spacing keys to `minus12`)
-2. **Expands** composite typography tokens into individual `fontFamily`, `fontWeight`, `fontSize`, `lineHeight`, and `letterSpacing` properties
-3. **Resolves** all `{references}` to final values (including `{color.*}` refs embedded inside gradient strings via `mmt/resolve-gradient-colors`)
+2. **Expands** composite typography tokens into individual `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` properties
+3. **Resolves** all `{references}` to final values (including `{color.*}` refs embedded inside gradient strings via `mmt/resolve-gradient-colors`, kept for future gradient tokens)
 4. **Transforms** values per platform:
-   - Font weight names → numbers; italic styles split into weight + `fontStyle`
+   - Font weights → numbers
    - Dimensions: `px` → unitless (iOS), `sp`/`dp` (Android)
-   - **Colors (iOS/Android only):** hex → native `Color(...)` / `Brush.linearGradient(...)` — web keeps hex strings and CSS gradients
+   - **Colors (iOS/Android only):** hex → native `Color(...)` (gradient → `Brush.linearGradient(...)` / `LinearGradient` when present) — web keeps hex strings and CSS gradients
 5. **Emits** CSS, ESM, Swift, and Kotlin files into `dist/`
 
 Both `primitives` and `semantic` tokens land in a **flat output namespace** — there is no `primitives.` prefix in generated code.
@@ -87,7 +87,7 @@ Both `primitives` and `semantic` tokens land in a **flat output namespace** — 
 | iOS | Copy / link `CosmosTokens.swift` | camelCase static lets | `CosmosTokens.colorTextPrimary` (`Color`) |
 | Android | Copy / link `CosmosTokens.kt` | camelCase vals in `com.makemytrip.cosmos.tokens` | `CosmosTokens.colorTextPrimary` (`Color`) |
 
-**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `body.sm.medium`) rather than primitives (`neutral-950`, `borderRadius-8`).
+**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `body.medium.regular`) rather than primitives (`neutral-950`, `borderRadius-8`).
 
 ### 5. Commit and ship
 
@@ -124,7 +124,7 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 | Preprocessor | `mmt/rename-negative` | Renames keys like `spacing.-12` → `spacing.minus12` to avoid collisions after camelCase/kebab-case conversion |
 | Preprocessor | `mmt/resolve-gradient-colors` | Inlines `{color.family.step}` references inside `linear-gradient(...)` strings before platform transforms run |
 | Expand | `typesMap: true` | Splits composite `typography` tokens into individual output properties |
-| Transform | `mmt/fontWeight/number` | Converts string weights (`"Italic"`, `"Semibold Italic"`) to numeric weights; italic styles become weight + `fontStyle: italic` |
+| Transform | `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
 | Transform | `mmt/dimension/unitless` (iOS) | Strips `px` suffix for CGFloat-compatible numbers |
 | Transform | `mmt/dimension/compose` (Android) | Converts `px` → `sp` for text metrics, `dp` for layout |
 | Transform | `mmt/string/quote` (iOS/Android) | Wraps font family strings as native string literals |
@@ -144,15 +144,15 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 
 #### Native color transforms (iOS & Android)
 
-Web outputs keep token colors as hex strings (or CSS `linear-gradient(...)` for AI tokens). iOS and Android get **compile-ready native types** so engineers do not wrap hex values manually.
+Web outputs keep token colors as hex strings (or CSS `linear-gradient(...)` if a gradient token is present). iOS and Android get **compile-ready native types** so engineers do not wrap hex values manually.
 
 | Input (resolved token value) | iOS output | Android output |
 |------------------------------|------------|----------------|
-| `#294DFF` | `Color(red: 0.160784, green: 0.301961, blue: 1)` | `Color(0xFF294DFF)` |
+| `#008CFF` | `Color(red: 0, green: 0.54902, blue: 1)` | `Color(0xFF008CFF)` |
 | `#RRGGBBAA` (8-digit hex) | `Color(.sRGB, red: …, green: …, blue: …, opacity: …)` | `Color(0xAARRGGBB)` |
 | `linear-gradient(90deg, #FFD230 0%, …)` | `LinearGradient(gradient: Gradient(stops: […]), startPoint: …, endPoint: …)` | `Brush.linearGradient(0f to Color(…), …, start = Offset(…), end = Offset(…))` |
 
-How gradient conversion works:
+How gradient conversion works (machinery retained; **currently unused** — Cosmos has 0 gradient tokens):
 
 1. **`mmt/resolve-gradient-colors`** walks the dictionary and replaces `{color.violet.50}`-style references inside gradient strings with resolved hex values.
 2. The CSS angle (e.g. `105deg`, `225deg`) is converted to normalized start/end points (CSS 0° = upward; converted for SwiftUI/Compose coordinate systems).
@@ -160,7 +160,7 @@ How gradient conversion works:
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 214 color tokens — primitive palette steps plus semantic roles. Solid semantic colors (e.g. `color.text-primary`) and gradient semantic colors (e.g. `color.bg-fill-ai`, `color.text-ai`, `color.border-ai-variant*`) all emit native types on mobile.
+**Affected tokens:** all 315 color tokens (144 primitive palette steps + 171 semantic roles). All current colors are solid; gradient transforms stay wired for future use.
 
 ---
 
@@ -199,7 +199,6 @@ Within each role, **intent** is expressed with suffixes:
 | Suffix | Meaning |
 |--------|---------|
 | `brand`, `info`, `success`, `caution`, `warning` | Semantic intent |
-| `ai`, `userchat` | Product-specific contexts |
 | `strong` / `subtle` | Fill intensity pairs |
 | `on-bg-fill` / `on-bg-fill-strong` / `on-bg-fill-subtle` | Contrast-safe text on filled backgrounds |
 
@@ -208,19 +207,23 @@ Within each role, **intent** is expressed with suffixes:
 - **12 palettes:** neutral, brand, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
 - **12 steps per palette:** `0`, `50`, `100`–`900`, `950`
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
-- **Brand primary:** `color.brand.600` = `#294DFF`
+- **Brand primary (interactive):** semantic brand roles use `color.brand.700` = `#008CFF` (WCAG AA on white). Scale step `color.brand.600` = `#069BFF` remains in the palette but is not used for those roles.
 
-### 5. Dual-font typography system
+### 5. Single-font typography system (Lato)
 
-| Category | Font | Weights available |
-|----------|------|-------------------|
-| **Display / Headline** | IvyPresto Headline | regular, semibold, italic, semiboldItalic |
-| **Title (lg, md only)** | IvyPresto Headline *or* Avenir | Both families at large sizes |
-| **Title (sm–2xs), Body, Label** | Avenir | roman, medium, heavy, black |
+Cosmos uses **Lato** for all typography roles — headline, title, body, and label. There is no display scale and no letter-spacing tokens.
 
-Display and headline styles include `letterSpacing.2` (2px). Body and label styles do not.
+| Category | Font | Weights |
+|----------|------|---------|
+| **Headline / Title / Body / Label** | Lato | regular (400), bold (700), black (900) |
 
-Typography tokens are **composite** — each bundles `fontFamily`, `fontWeight`, `fontSize`, `lineHeight`, and optionally `letterSpacing`. The build pipeline expands them into individual output properties.
+Lato is a [Google Font](https://fonts.google.com/specimen/Lato). **This repository does not ship font files.** Web consumers must load Lato themselves, for example:
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap");
+```
+
+Typography tokens are **composite** — each bundles `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` in a flat `{group}.{size}.{weight}` shape (e.g. `body.medium.regular`). The build pipeline expands them into individual output properties. Radius and icon T-shirt sizes (`radius.md`, `icon.lg`, etc.) are unrelated and keep their existing names.
 
 ### 6. T-shirt sizing for radius and icon tokens
 
@@ -230,9 +233,11 @@ Semantic radius and icon tokens use abstract size names (`xs`, `sm`, `md`, …) 
 
 A full spacing scale exists in primitives (`spacing.0` through `spacing.64`, plus negative values), but **no semantic spacing aliases** have been defined yet. Layout code currently consumes primitive spacing tokens directly.
 
-### 8. Gradient tokens
+### 8. Gradient tokens (currently unused)
 
-AI-related semantic colors use CSS `linear-gradient(...)` strings with embedded primitive references (e.g. `{color.violet.50}`). The build handles them differently per platform:
+Cosmos currently ships **0 gradient tokens**. The build still includes `mmt/resolve-gradient-colors` plus the iOS/Android gradient transforms so future gradient colors can be authored without pipeline work.
+
+When a gradient token is added, author it as a CSS `linear-gradient(...)` string (optionally with `{color.*}` references) in `tokens/tokens.json`. Platform handling:
 
 | Platform | Output |
 |----------|--------|
@@ -240,7 +245,7 @@ AI-related semantic colors use CSS `linear-gradient(...)` strings with embedded 
 | **iOS** | SwiftUI `LinearGradient` with `Gradient.Stop` entries and computed `UnitPoint` start/end |
 | **Android** | Compose `Brush.linearGradient` with `Color` stops and `Offset` start/end |
 
-The `mmt/resolve-gradient-colors` preprocessor resolves token references inside gradient strings before the native color transforms run. When adding a new gradient token, author it as a CSS gradient in `tokens/tokens.json` — do not hand-write Swift or Kotlin gradient code in product apps.
+Do not hand-write Swift or Kotlin gradient code in product apps.
 
 ### 9. Build pipeline customizations
 
@@ -250,7 +255,7 @@ The `mmt/resolve-gradient-colors` preprocessor resolves token references inside 
 | `mmt/rename-negative` | Renames `-12` spacing keys to `minus12` to avoid name collisions |
 | `mmt/resolve-gradient-colors` | Resolves `{color.*}` references embedded in gradient strings |
 | `expand` (typography) | Splits composite typography tokens into individual properties |
-| `mmt/fontWeight/number` | Converts string weights like `"Italic"` → numeric 400 + italic style |
+| `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
 | `mmt/dimension/unitless` (iOS) | Strips `px` and wraps as `CGFloat(...)` so values drop into SwiftUI APIs |
 | `mmt/dimension/compose` (Android) | Converts `px` → `sp` (text) or `dp` (layout) |
 | `mmt/string/quote` (iOS/Android) | Wraps font family strings as native literals |
@@ -279,7 +284,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 4. **Use paired contrast tokens.** When placing text on a filled background, use the matching `*-on-bg-fill*` token (e.g. `text-info-on-bg-fill-strong` on `bg-fill-info-strong`).
 
-5. **Use composite typography tokens.** Reference the full typography token (e.g. `body.sm.medium`) rather than assembling individual font properties in components.
+5. **Use composite typography tokens.** Reference the full typography token (e.g. `body.medium.regular`) rather than assembling individual font properties in components.
 
 6. **Run the build after every token change.** `npm run build:tokens` validates references and regenerates all platform outputs.
 
@@ -323,9 +328,9 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 ## Token Inventory
 
-**Totals:** 228 primitive tokens · 172 semantic tokens
+**Totals:** 221 primitive tokens · 225 semantic tokens (171 colors + 36 typography + 10 radius + 8 icon) · **554 values per platform** · **0 gradients**
 
-### Primitive tokens (228)
+### Primitive tokens (221)
 
 #### Color — 144 tokens (12 palettes × 12 steps)
 
@@ -334,37 +339,33 @@ Token path pattern: `color.{palette}.{step}`
 | Step | Neutral | Brand | Red | Orange | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
 |------|---------|-------|-----|--------|-------|--------|------|-------|------|--------|--------|--------|---------|
 | `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — |
-| `50` | #FAFAFA | #F0F7FF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
-| `100` | #F5F5F5 | #E0EEFF | #FFE2E2 | #FFEDD4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
-| `200` | #E6E6E6 | #C2DCFF | #FFC9C9 | #FFD6A8 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
-| `300` | #D6D6D6 | #9EC5FF | #FFA2A2 | #FFB86A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
-| `400` | #A5A5A5 | #75A1FF | #FF6467 | #FF8904 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
-| `500` | #767676 | #527DFF | #FB2C36 | #FF6900 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
-| `600` | #575757 | #294DFF | #E7000B | #F54900 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
-| `700` | #434343 | #223FE2 | #C10007 | #CA3500 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
-| `800` | #292929 | #1C36B5 | #9F0712 | #9F2D00 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
-| `900` | #1A1A1A | #20348D | #82181A | #7E2A0C | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
-| `950` | #000000 | #131D53 | #460809 | #441306 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
+| `50` | #FAFAFA | #EDFAFF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
+| `100` | #F5F5F5 | #D6F3FF | #FFE2E2 | #FFEDD4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
+| `200` | #E6E6E6 | #B5EBFF | #FFC9C9 | #FFD6A8 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
+| `300` | #D6D6D6 | #83E1FF | #FFA2A2 | #FFB86A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
+| `400` | #A5A5A5 | #48CFFF | #FF6467 | #FF8904 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
+| `500` | #767676 | #1EB4FF | #FB2C36 | #FF6900 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
+| `600` | #575757 | #069BFF | #E7000B | #F54900 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
+| `700` | #434343 | #008CFF | #C10007 | #CA3500 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
+| `800` | #292929 | #086BC5 | #9F0712 | #9F2D00 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
+| `900` | #1A1A1A | #0D5B9B | #82181A | #7E2A0C | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
+| `950` | #000000 | #0E375D | #460809 | #441306 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
 
-#### Font family — 2 tokens
+#### Font family — 1 token
 
 | Token | Value |
 |-------|-------|
-| `fontFamily.ivyPrestoHeadline` | IvyPresto Headline |
-| `fontFamily.avenir` | Avenir |
+| `fontFamily.lato` | Lato |
 
-#### Font weight — 8 tokens
+Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checked into this repo.
+
+#### Font weight — 3 tokens
 
 | Token | Value | Notes |
 |-------|-------|-------|
-| `fontWeight.regular` | 400 | IvyPresto |
-| `fontWeight.semibold` | 600 | IvyPresto |
-| `fontWeight.italic` | `"Italic"` | Build resolves to weight 400 + italic style |
-| `fontWeight.semiboldItalic` | `"Semibold Italic"` | Build resolves to weight 600 + italic style |
-| `fontWeight.roman` | 400 | Avenir |
-| `fontWeight.medium` | 500 | Avenir |
-| `fontWeight.heavy` | 800 | Avenir |
-| `fontWeight.black` | 900 | Avenir |
+| `fontWeight.regular` | 400 | Real Lato face |
+| `fontWeight.bold` | 700 | Real Lato face |
+| `fontWeight.black` | 900 | Real Lato face |
 
 #### Font size — 18 tokens
 
@@ -379,15 +380,15 @@ Token path pattern: `color.{palette}.{step}`
 | `fontSize.18` | 18px |
 | `fontSize.20` | 20px |
 | `fontSize.22` | 22px |
-| `fontSize.25` | 25px |
+| `fontSize.24` | 24px |
 | `fontSize.28` | 28px |
 | `fontSize.32` | 32px |
 | `fontSize.36` | 36px |
 | `fontSize.40` | 40px |
-| `fontSize.45` | 45px |
-| `fontSize.51` | 51px |
+| `fontSize.44` | 44px |
+| `fontSize.52` | 52px |
 | `fontSize.58` | 58px |
-| `fontSize.65` | 65px |
+| `fontSize.64` | 64px |
 
 > `fontSize.9` and `fontSize.10` are defined but not referenced by any semantic typography token.
 
@@ -410,12 +411,6 @@ Token path pattern: `color.{palette}.{step}`
 | `lineHeight.72` | 72px |
 | `lineHeight.80` | 80px |
 | `lineHeight.92` | 92px |
-
-#### Letter spacing — 1 token
-
-| Token | Value |
-|-------|-------|
-| `letterSpacing.2` | 2px |
 
 #### Spacing — 22 tokens
 
@@ -474,11 +469,13 @@ Token path pattern: `color.{palette}.{step}`
 
 ---
 
-### Semantic tokens (172)
+### Semantic tokens (225)
 
-#### Color — 70 tokens
+#### Color — 171 tokens
 
-##### Background — surface (11)
+Role colors below plus experience (`exp-*`) palette aliases.
+
+##### Background — surface (9)
 
 | Token | Role |
 |-------|------|
@@ -491,10 +488,8 @@ Token path pattern: `color.{palette}.{step}`
 | `color.bg-surface-success` | Success surface |
 | `color.bg-surface-caution` | Caution surface |
 | `color.bg-surface-warning` | Warning surface |
-| `color.bg-surface-userchat` | User chat bubble surface |
-| `color.bg-surface-ai` | AI surface (gradient) |
 
-##### Background — fill (14)
+##### Background — fill (12)
 
 | Token | Role |
 |-------|------|
@@ -510,9 +505,8 @@ Token path pattern: `color.{palette}.{step}`
 | `color.bg-fill-caution-subtle` | Subtle caution fill |
 | `color.bg-fill-warning-strong` | Strong warning fill |
 | `color.bg-fill-warning-subtle` | Subtle warning fill |
-| `color.bg-fill-ai` | AI emphasis fill (gradient) |
 
-##### Text (24)
+##### Text (21)
 
 | Token | Role |
 |-------|------|
@@ -537,11 +531,8 @@ Token path pattern: `color.{palette}.{step}`
 | `color.text-warning` | Warning status text |
 | `color.text-warning-on-bg-fill-strong` | Text on strong warning fill |
 | `color.text-warning-on-bg-fill-subtle` | Text on subtle warning fill |
-| `color.text-ai-on-bg-fill` | Text on AI fill |
-| `color.text-userchat` | User chat text |
-| `color.text-ai` | AI accent text (gradient) |
 
-##### Border (13)
+##### Border (9)
 
 | Token | Role |
 |-------|------|
@@ -554,9 +545,6 @@ Token path pattern: `color.{palette}.{step}`
 | `color.border-success` | Success border |
 | `color.border-caution` | Caution border |
 | `color.border-warning` | Warning border |
-| `color.border-ai-variant1` | AI border gradient (violet → purple) |
-| `color.border-ai-variant2` | AI border gradient (amber → lime → blue) |
-| `color.border-ai-variant3` | AI border gradient (fuchsia → blue → fuchsia) |
 
 ##### Icon (10)
 
@@ -573,31 +561,24 @@ Token path pattern: `color.{palette}.{step}`
 | `color.icon-warning` | Warning icon |
 | `color.icon-info` | Info icon |
 
-#### Typography — 84 composite tokens
+#### Typography — 36 composite tokens
 
-| Category | Size | Font size | Line height | Letter spacing | Weight variants |
-|----------|------|-----------|-------------|----------------|-----------------|
-| display | lg | 65px | 92px | 2px | regular, semibold, italic, semiboldItalic |
-| display | md | 58px | 80px | 2px | regular, semibold, italic, semiboldItalic |
-| display | sm | 51px | 72px | 2px | regular, semibold, italic, semiboldItalic |
-| headline | lg | 45px | 64px | 2px | italic, semiboldItalic |
-| headline | md | 40px | 56px | 2px | italic, semiboldItalic |
-| headline | sm | 36px | 52px | 2px | italic, semiboldItalic |
-| headline | xs | 32px | 44px | 2px | italic, semiboldItalic |
-| title | lg | 28px | 40px | — | avenir.roman, avenir.medium, avenir.heavy, avenir.black, ivyPresto.regular, ivyPresto.semibold, ivyPresto.italic, ivyPresto.semiboldItalic |
-| title | md | 25px | 36px | — | avenir.roman, avenir.medium, avenir.heavy, avenir.black, ivyPresto.regular, ivyPresto.semibold, ivyPresto.italic, ivyPresto.semiboldItalic |
-| title | sm | 22px | 32px | — | avenir.roman, avenir.medium, avenir.heavy, avenir.black |
-| title | xs | 20px | 28px | — | avenir.roman, avenir.medium, avenir.heavy, avenir.black |
-| title | 2xs | 18px | 24px | — | avenir.roman, avenir.medium, avenir.heavy, avenir.black |
-| body | lg | 20px | 32px | — | roman, medium, heavy, black |
-| body | md | 18px | 28px | — | roman, medium, heavy, black |
-| body | sm | 16px | 24px | — | roman, medium, heavy, black |
-| body | xs | 14px | 20px | — | roman, medium, heavy, black |
-| body | 2xs | 12px | 16px | — | roman, medium, heavy, black |
-| label | xl | 16px | 24px | — | roman, medium, heavy, black |
-| label | lg | 14px | 20px | — | roman, medium, heavy, black |
-| label | md | 12px | 16px | — | roman, medium, heavy, black |
-| label | sm | 11px | 16px | — | roman, medium, heavy, black |
+Flat shape `{group}.{size}.{weight}` · font family Lato · no letter spacing.
+
+| Category | Size | Font size | Line height | Weight variants |
+|----------|------|-----------|-------------|-----------------|
+| headline | large | 32px | 40px | regular, bold, black |
+| headline | medium | 28px | 36px | regular, bold, black |
+| headline | small | 24px | 32px | regular, bold, black |
+| title | large | 22px | 28px | regular, bold, black |
+| title | medium | 18px | 24px | regular, bold, black |
+| title | small | 14px | 20px | regular, bold, black |
+| body | large | 16px | 24px | regular, bold, black |
+| body | medium | 14px | 20px | regular, bold, black |
+| body | small | 12px | 16px | regular, bold, black |
+| label | large | 16px | 24px | regular, bold, black |
+| label | medium | 14px | 20px | regular, bold, black |
+| label | small | 12px | 16px | regular, bold, black |
 
 #### Radius — 10 tokens
 
@@ -644,12 +625,10 @@ Token path pattern: `color.{palette}.{step}`
 | `bg-surface-success` | `color.green.50` |
 | `bg-surface-caution` | `color.yellow.50` |
 | `bg-surface-warning` | `color.red.50` |
-| `bg-surface-userchat` | `color.indigo.50` |
-| `bg-surface-ai` | `linear-gradient(105deg, color.violet.50 0%, color.purple.50 100%)` |
 | `bg-fill` | `color.neutral.0` |
 | `bg-fill-disabled` | `color.neutral.300` |
 | `bg-fill-secondary` | `color.neutral.100` |
-| `bg-fill-brand` | `color.brand.600` |
+| `bg-fill-brand` | `color.brand.700` |
 | `bg-fill-info-strong` | `color.blue.600` |
 | `bg-fill-info-subtle` | `color.blue.50` |
 | `bg-fill-success-strong` | `color.green.700` |
@@ -658,15 +637,14 @@ Token path pattern: `color.{palette}.{step}`
 | `bg-fill-caution-subtle` | `color.yellow.100` |
 | `bg-fill-warning-strong` | `color.red.700` |
 | `bg-fill-warning-subtle` | `color.red.100` |
-| `bg-fill-ai` | `linear-gradient(90deg, color.amber.300 0%, color.lime.300 50%, color.blue.100 100%)` |
 | `text-primary` | `color.neutral.950` |
 | `text-secondary` | `color.neutral.600` |
 | `text-tertiary` | `color.neutral.500` |
 | `text-disabled` | `color.neutral.400` |
 | `text-inverse` | `color.neutral.0` |
 | `text-inverse-disabled` | `color.neutral.200` |
-| `text-link` | `color.brand.600` |
-| `text-brand` | `color.brand.600` |
+| `text-link` | `color.brand.700` |
+| `text-brand` | `color.brand.700` |
 | `text-brand-on-bg-fill` | `color.neutral.0` |
 | `text-info` | `color.blue.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
@@ -680,27 +658,21 @@ Token path pattern: `color.{palette}.{step}`
 | `text-warning` | `color.red.700` |
 | `text-warning-on-bg-fill-strong` | `color.neutral.0` |
 | `text-warning-on-bg-fill-subtle` | `color.red.700` |
-| `text-ai-on-bg-fill` | `color.neutral.950` |
-| `text-userchat` | `color.indigo.800` |
-| `text-ai` | `linear-gradient(90deg, color.brand.600 0%, color.fuchsia.700 100%)` |
 | `border` | `color.neutral.300` |
 | `border-secondary` | `color.neutral.200` |
 | `border-disabled` | `color.neutral.100` |
 | `border-focus` | `color.brand.400` |
-| `border-brand` | `color.brand.600` |
+| `border-brand` | `color.brand.700` |
 | `border-info` | `color.blue.100` |
 | `border-success` | `color.green.300` |
 | `border-caution` | `color.yellow.300` |
 | `border-warning` | `color.red.300` |
-| `border-ai-variant1` | `linear-gradient(225deg, color.violet.200 0%, color.purple.300 100%)` |
-| `border-ai-variant2` | `linear-gradient(90deg, color.amber.300 0%, color.lime.200 44.71%, color.blue.400 100%)` |
-| `border-ai-variant3` | `linear-gradient(225deg, color.fuchsia.400 0%, color.blue.500 19.9%, color.fuchsia.400 70.41%, color.fuchsia.400 100%)` |
 | `icon` | `color.neutral.950` |
 | `icon-disabled` | `color.neutral.200` |
 | `icon-inverse` | `color.neutral.50` |
 | `icon-secondary` | `color.neutral.600` |
 | `icon-tertiary` | `color.neutral.400` |
-| `icon-brand` | `color.brand.600` |
+| `icon-brand` | `color.brand.700` |
 | `icon-success` | `color.green.700` |
 | `icon-caution` | `color.yellow.600` |
 | `icon-warning` | `color.red.700` |
@@ -739,100 +711,51 @@ Token path pattern: `color.{palette}.{step}`
 Each typography token is a composite reference. Pattern:
 
 ```
-{category}.{size}.{weight}
-  → fontFamily.{family}
+{group}.{size}.{weight}
+  → fontFamily.lato
   → fontWeight.{weight}
   → fontSize.{N}
   → lineHeight.{N}
-  → letterSpacing.2   (display & headline only)
 ```
 
-Full token list with resolved primitive references:
+Full token list with resolved primitive references (generated from `tokens/tokens.json`):
 
-- `display.lg.regular` → fontFamily.ivyPrestoHeadline · fontWeight.regular · 65px · 92px · 2px
-- `display.lg.semibold` → fontFamily.ivyPrestoHeadline · fontWeight.semibold · 65px · 92px · 2px
-- `display.lg.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 65px · 92px · 2px
-- `display.lg.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 65px · 92px · 2px
-- `display.md.regular` → fontFamily.ivyPrestoHeadline · fontWeight.regular · 58px · 80px · 2px
-- `display.md.semibold` → fontFamily.ivyPrestoHeadline · fontWeight.semibold · 58px · 80px · 2px
-- `display.md.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 58px · 80px · 2px
-- `display.md.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 58px · 80px · 2px
-- `display.sm.regular` → fontFamily.ivyPrestoHeadline · fontWeight.regular · 51px · 72px · 2px
-- `display.sm.semibold` → fontFamily.ivyPrestoHeadline · fontWeight.semibold · 51px · 72px · 2px
-- `display.sm.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 51px · 72px · 2px
-- `display.sm.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 51px · 72px · 2px
-- `headline.lg.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 45px · 64px · 2px
-- `headline.lg.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 45px · 64px · 2px
-- `headline.md.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 40px · 56px · 2px
-- `headline.md.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 40px · 56px · 2px
-- `headline.sm.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 36px · 52px · 2px
-- `headline.sm.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 36px · 52px · 2px
-- `headline.xs.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 32px · 44px · 2px
-- `headline.xs.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 32px · 44px · 2px
-- `title.lg.avenir.roman` → fontFamily.avenir · fontWeight.roman · 28px · 40px
-- `title.lg.avenir.medium` → fontFamily.avenir · fontWeight.medium · 28px · 40px
-- `title.lg.avenir.heavy` → fontFamily.avenir · fontWeight.heavy · 28px · 40px
-- `title.lg.avenir.black` → fontFamily.avenir · fontWeight.black · 28px · 40px
-- `title.lg.ivyPresto.regular` → fontFamily.ivyPrestoHeadline · fontWeight.regular · 28px · 40px
-- `title.lg.ivyPresto.semibold` → fontFamily.ivyPrestoHeadline · fontWeight.semibold · 28px · 40px
-- `title.lg.ivyPresto.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 28px · 40px
-- `title.lg.ivyPresto.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 28px · 40px
-- `title.md.avenir.roman` → fontFamily.avenir · fontWeight.roman · 25px · 36px
-- `title.md.avenir.medium` → fontFamily.avenir · fontWeight.medium · 25px · 36px
-- `title.md.avenir.heavy` → fontFamily.avenir · fontWeight.heavy · 25px · 36px
-- `title.md.avenir.black` → fontFamily.avenir · fontWeight.black · 25px · 36px
-- `title.md.ivyPresto.regular` → fontFamily.ivyPrestoHeadline · fontWeight.regular · 25px · 36px
-- `title.md.ivyPresto.semibold` → fontFamily.ivyPrestoHeadline · fontWeight.semibold · 25px · 36px
-- `title.md.ivyPresto.italic` → fontFamily.ivyPrestoHeadline · fontWeight.italic · 25px · 36px
-- `title.md.ivyPresto.semiboldItalic` → fontFamily.ivyPrestoHeadline · fontWeight.semiboldItalic · 25px · 36px
-- `title.sm.avenir.roman` → fontFamily.avenir · fontWeight.roman · 22px · 32px
-- `title.sm.avenir.medium` → fontFamily.avenir · fontWeight.medium · 22px · 32px
-- `title.sm.avenir.heavy` → fontFamily.avenir · fontWeight.heavy · 22px · 32px
-- `title.sm.avenir.black` → fontFamily.avenir · fontWeight.black · 22px · 32px
-- `title.xs.avenir.roman` → fontFamily.avenir · fontWeight.roman · 20px · 28px
-- `title.xs.avenir.medium` → fontFamily.avenir · fontWeight.medium · 20px · 28px
-- `title.xs.avenir.heavy` → fontFamily.avenir · fontWeight.heavy · 20px · 28px
-- `title.xs.avenir.black` → fontFamily.avenir · fontWeight.black · 20px · 28px
-- `title.2xs.avenir.roman` → fontFamily.avenir · fontWeight.roman · 18px · 24px
-- `title.2xs.avenir.medium` → fontFamily.avenir · fontWeight.medium · 18px · 24px
-- `title.2xs.avenir.heavy` → fontFamily.avenir · fontWeight.heavy · 18px · 24px
-- `title.2xs.avenir.black` → fontFamily.avenir · fontWeight.black · 18px · 24px
-- `body.lg.roman` → fontFamily.avenir · fontWeight.roman · 20px · 32px
-- `body.lg.medium` → fontFamily.avenir · fontWeight.medium · 20px · 32px
-- `body.lg.heavy` → fontFamily.avenir · fontWeight.heavy · 20px · 32px
-- `body.lg.black` → fontFamily.avenir · fontWeight.black · 20px · 32px
-- `body.md.roman` → fontFamily.avenir · fontWeight.roman · 18px · 28px
-- `body.md.medium` → fontFamily.avenir · fontWeight.medium · 18px · 28px
-- `body.md.heavy` → fontFamily.avenir · fontWeight.heavy · 18px · 28px
-- `body.md.black` → fontFamily.avenir · fontWeight.black · 18px · 28px
-- `body.sm.roman` → fontFamily.avenir · fontWeight.roman · 16px · 24px
-- `body.sm.medium` → fontFamily.avenir · fontWeight.medium · 16px · 24px
-- `body.sm.heavy` → fontFamily.avenir · fontWeight.heavy · 16px · 24px
-- `body.sm.black` → fontFamily.avenir · fontWeight.black · 16px · 24px
-- `body.xs.roman` → fontFamily.avenir · fontWeight.roman · 14px · 20px
-- `body.xs.medium` → fontFamily.avenir · fontWeight.medium · 14px · 20px
-- `body.xs.heavy` → fontFamily.avenir · fontWeight.heavy · 14px · 20px
-- `body.xs.black` → fontFamily.avenir · fontWeight.black · 14px · 20px
-- `body.2xs.roman` → fontFamily.avenir · fontWeight.roman · 12px · 16px
-- `body.2xs.medium` → fontFamily.avenir · fontWeight.medium · 12px · 16px
-- `body.2xs.heavy` → fontFamily.avenir · fontWeight.heavy · 12px · 16px
-- `body.2xs.black` → fontFamily.avenir · fontWeight.black · 12px · 16px
-- `label.xl.roman` → fontFamily.avenir · fontWeight.roman · 16px · 24px
-- `label.xl.medium` → fontFamily.avenir · fontWeight.medium · 16px · 24px
-- `label.xl.heavy` → fontFamily.avenir · fontWeight.heavy · 16px · 24px
-- `label.xl.black` → fontFamily.avenir · fontWeight.black · 16px · 24px
-- `label.lg.roman` → fontFamily.avenir · fontWeight.roman · 14px · 20px
-- `label.lg.medium` → fontFamily.avenir · fontWeight.medium · 14px · 20px
-- `label.lg.heavy` → fontFamily.avenir · fontWeight.heavy · 14px · 20px
-- `label.lg.black` → fontFamily.avenir · fontWeight.black · 14px · 20px
-- `label.md.roman` → fontFamily.avenir · fontWeight.roman · 12px · 16px
-- `label.md.medium` → fontFamily.avenir · fontWeight.medium · 12px · 16px
-- `label.md.heavy` → fontFamily.avenir · fontWeight.heavy · 12px · 16px
-- `label.md.black` → fontFamily.avenir · fontWeight.black · 12px · 16px
-- `label.sm.roman` → fontFamily.avenir · fontWeight.roman · 11px · 16px
-- `label.sm.medium` → fontFamily.avenir · fontWeight.medium · 11px · 16px
-- `label.sm.heavy` → fontFamily.avenir · fontWeight.heavy · 11px · 16px
-- `label.sm.black` → fontFamily.avenir · fontWeight.black · 11px · 16px
+- `headline.large.regular` → fontFamily.lato · fontWeight.regular · 32px · 40px
+- `headline.large.bold` → fontFamily.lato · fontWeight.bold · 32px · 40px
+- `headline.large.black` → fontFamily.lato · fontWeight.black · 32px · 40px
+- `headline.medium.regular` → fontFamily.lato · fontWeight.regular · 28px · 36px
+- `headline.medium.bold` → fontFamily.lato · fontWeight.bold · 28px · 36px
+- `headline.medium.black` → fontFamily.lato · fontWeight.black · 28px · 36px
+- `headline.small.regular` → fontFamily.lato · fontWeight.regular · 24px · 32px
+- `headline.small.bold` → fontFamily.lato · fontWeight.bold · 24px · 32px
+- `headline.small.black` → fontFamily.lato · fontWeight.black · 24px · 32px
+- `title.large.regular` → fontFamily.lato · fontWeight.regular · 22px · 28px
+- `title.large.bold` → fontFamily.lato · fontWeight.bold · 22px · 28px
+- `title.large.black` → fontFamily.lato · fontWeight.black · 22px · 28px
+- `title.medium.regular` → fontFamily.lato · fontWeight.regular · 18px · 24px
+- `title.medium.bold` → fontFamily.lato · fontWeight.bold · 18px · 24px
+- `title.medium.black` → fontFamily.lato · fontWeight.black · 18px · 24px
+- `title.small.regular` → fontFamily.lato · fontWeight.regular · 14px · 20px
+- `title.small.bold` → fontFamily.lato · fontWeight.bold · 14px · 20px
+- `title.small.black` → fontFamily.lato · fontWeight.black · 14px · 20px
+- `body.large.regular` → fontFamily.lato · fontWeight.regular · 16px · 24px
+- `body.large.bold` → fontFamily.lato · fontWeight.bold · 16px · 24px
+- `body.large.black` → fontFamily.lato · fontWeight.black · 16px · 24px
+- `body.medium.regular` → fontFamily.lato · fontWeight.regular · 14px · 20px
+- `body.medium.bold` → fontFamily.lato · fontWeight.bold · 14px · 20px
+- `body.medium.black` → fontFamily.lato · fontWeight.black · 14px · 20px
+- `body.small.regular` → fontFamily.lato · fontWeight.regular · 12px · 16px
+- `body.small.bold` → fontFamily.lato · fontWeight.bold · 12px · 16px
+- `body.small.black` → fontFamily.lato · fontWeight.black · 12px · 16px
+- `label.large.regular` → fontFamily.lato · fontWeight.regular · 16px · 24px
+- `label.large.bold` → fontFamily.lato · fontWeight.bold · 16px · 24px
+- `label.large.black` → fontFamily.lato · fontWeight.black · 16px · 24px
+- `label.medium.regular` → fontFamily.lato · fontWeight.regular · 14px · 20px
+- `label.medium.bold` → fontFamily.lato · fontWeight.bold · 14px · 20px
+- `label.medium.black` → fontFamily.lato · fontWeight.black · 14px · 20px
+- `label.small.regular` → fontFamily.lato · fontWeight.regular · 12px · 16px
+- `label.small.bold` → fontFamily.lato · fontWeight.bold · 12px · 16px
+- `label.small.black` → fontFamily.lato · fontWeight.black · 12px · 16px
 
 ### Spacing (no semantic layer)
 
@@ -870,6 +793,7 @@ Spacing tokens are **primitive-only**. Use them directly:
 ### Web (CSS)
 
 ```css
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap");
 @import "./dist/web/tokens.css";
 
 .card {
@@ -878,10 +802,10 @@ Spacing tokens are **primitive-only**. Use them directly:
   border-radius: var(--radius-md);
   padding: var(--spacing-16);
   color: var(--color-text-primary);
-  font-size: var(--body-sm-medium-font-size);
-  line-height: var(--body-sm-medium-line-height);
-  font-family: var(--body-sm-medium-font-family);
-  font-weight: var(--body-sm-medium-font-weight);
+  font-size: var(--body-medium-regular-font-size);
+  line-height: var(--body-medium-regular-line-height);
+  font-family: var(--body-medium-regular-font-family);
+  font-weight: var(--body-medium-regular-font-weight);
 }
 
 .button-brand {
@@ -896,25 +820,21 @@ Spacing tokens are **primitive-only**. Use them directly:
 ```ts
 import tokens from "./dist/web/tokens.ts";
 
-console.log(tokens.colorBgFillBrand); // "#294DFF"
+console.log(tokens.colorBgFillBrand); // "#008CFF"
 ```
 
 ### iOS (SwiftUI)
 
-Color tokens are emitted as SwiftUI `Color` or `LinearGradient` values — use them directly (no `Color(...)` wrapper). Numeric dimension tokens (font size, line height, letter spacing, radius, spacing) are emitted as `CGFloat`, so they drop straight into SwiftUI APIs without manual casting:
+Color tokens are emitted as SwiftUI `Color` values — use them directly (no `Color(...)` wrapper). Numeric dimension tokens (font size, line height, radius, spacing) are emitted as `CGFloat`, so they drop straight into SwiftUI APIs without manual casting:
 
 ```swift
 Text("Hello")
-  .font(.system(size: CosmosTokens.bodySmMediumFontSize))
+  .font(.custom(CosmosTokens.bodyMediumRegularFontFamily,
+                size: CosmosTokens.bodyMediumRegularFontSize))
   .foregroundColor(CosmosTokens.colorTextPrimary)
 
-// Solid fill
 RoundedRectangle(cornerRadius: CosmosTokens.radiusMd)
   .fill(CosmosTokens.colorBgFillBrand)
-
-// Gradient fill (e.g. AI tokens)
-RoundedRectangle(cornerRadius: CosmosTokens.radiusMd)
-  .fill(CosmosTokens.colorBgFillAi)
 ```
 
 #### Line height
@@ -926,39 +846,36 @@ Use the generated `.lineHeight` modifier (`dist/ios/LineHeight.swift`) instead. 
 ```swift
 // Preferred: pass the exact UIFont you render with (most accurate metrics)
 Text("Multi-line copy that wraps")
-  .font(.system(size: CosmosTokens.bodyMdRomanFontSize))
-  .lineHeight(CosmosTokens.bodyMdRomanLineHeight,
-              for: .systemFont(ofSize: CosmosTokens.bodyMdRomanFontSize))
+  .font(.custom(CosmosTokens.bodyMediumRegularFontFamily,
+                size: CosmosTokens.bodyMediumRegularFontSize))
+  .lineHeight(CosmosTokens.bodyMediumRegularLineHeight,
+              for: UIFont(name: CosmosTokens.bodyMediumRegularFontFamily,
+                          size: CosmosTokens.bodyMediumRegularFontSize)
+                   ?? .systemFont(ofSize: CosmosTokens.bodyMediumRegularFontSize))
 
 // Convenience: resolve a UIFont from token font family + size
 // (falls back to the system font if the custom font isn't registered)
 Text("Multi-line copy that wraps")
-  .lineHeight(CosmosTokens.bodyMdRomanLineHeight,
-              fontName: CosmosTokens.bodyMdRomanFontFamily,
-              fontSize: CosmosTokens.bodyMdRomanFontSize)
+  .lineHeight(CosmosTokens.bodyMediumRegularLineHeight,
+              fontName: CosmosTokens.bodyMediumRegularFontFamily,
+              fontSize: CosmosTokens.bodyMediumRegularFontSize)
 ```
 
 Why this exists: SwiftUI's `Font` doesn't expose line metrics, and `.lineSpacing` models *leading between lines* rather than a total line box. Web (`line-height`) and Android (Compose `lineHeight`) both interpret the token as a total box, so only iOS needs this conversion step to render identically.
 
 ### Android (Compose)
 
-Solid color tokens are `Color`; gradient tokens are `Brush`. Use the matching Compose modifier:
+Color tokens are Compose `Color` values (gradient tokens would be `Brush` if any were defined — currently none):
 
 ```kotlin
 Text(
   text = "Hello",
-  fontSize = CosmosTokens.bodySmMediumFontSize,
+  fontSize = CosmosTokens.bodyMediumRegularFontSize,
   color = CosmosTokens.colorTextPrimary,
 )
 
-// Solid background
 Box(
   modifier = Modifier.background(CosmosTokens.colorBgFillBrand),
-)
-
-// Gradient background (Brush tokens — colorBgFillAi, colorTextAi, border-ai variants, etc.)
-Box(
-  modifier = Modifier.background(CosmosTokens.colorBgFillAi),
 )
 ```
 
