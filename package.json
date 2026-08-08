@@ -1,0 +1,14 @@
+{
+  "name": "mmt-cosmos-design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MakeMyTrip Cosmos Design System tokens compiled to platform-specific code with Style Dictionary.",
+  "type": "module",
+  "scripts": {
+    "build:tokens": "node build-tokens.mjs"
+  },
+  "devDependencies": {
+    "@tokens-studio/sd-transforms": "^1.2.13",
+    "style-dictionary": "^4.3.3"
+  }
+}
