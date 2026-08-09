@@ -156,6 +156,7 @@
   --color-bg-surface-success: #F0FDF4;
   --color-bg-surface-caution: #FEFCE8;
   --color-bg-surface-warning: #FEF2F2;
+  --color-bg-surface-inverse: #000000;
   --color-bg-fill: #FFFFFF;
   --color-bg-fill-disabled: #D6D6D6;
   --color-bg-fill-secondary: #F5F5F5;
@@ -168,6 +169,7 @@
   --color-bg-fill-caution-subtle: #FEF9C2;
   --color-bg-fill-warning-strong: #C10007;
   --color-bg-fill-warning-subtle: #FFE2E2;
+  --color-bg-fill-inverse: #000000;
   --color-text-primary: #000000;
   --color-text-secondary: #575757;
   --color-text-tertiary: #767676;
