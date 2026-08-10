@@ -233,6 +233,67 @@ for (const path of allowedOrphans) {
   }
 }
 
+// ------------------------------------- 8. docs cite tokens that exist -------
+
+// A recipe naming a token that does not exist is worse than no recipe: it is
+// exactly the confident-but-wrong input this system exists to prevent.
+{
+  const semanticPaths = new Set();
+  for (const { parts } of allTokens({
+    $metadata: { tokenSetOrder: ["semantic"] },
+    semantic: source.semantic,
+  })) {
+    semanticPaths.add(parts.join("."));
+  }
+
+  const primitivePaths = new Set();
+  for (const { parts } of allTokens({
+    $metadata: { tokenSetOrder: ["primitives"] },
+    primitives: source.primitives,
+  })) {
+    primitivePaths.add(parts.join("."));
+  }
+  // The manifest's kebab keys, so `icon-md` and `border-width-thin` resolve too.
+  const kebabKeys = new Set(
+    [...semanticPaths].map((p) =>
+      p
+        .split(".")
+        .map((s) => s.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase())
+        .join("-"),
+    ),
+  );
+
+  const known = (name) =>
+    semanticPaths.has(name) ||
+    semanticPaths.has(`color.${name}`) ||
+    colorNames.has(name) ||
+    primitivePaths.has(name) ||
+    kebabKeys.has(name);
+
+  // Only check strings that look like a token reference: dotted paths, or
+  // role-prefixed colour names. Prose in backticks is ignored.
+  const COLOR_PREFIXES = ["bg", "text-", "border", "icon-"];
+  const DOTTED =
+    /^(color|space|radius|icon|borderWidth|focusRing|motion|headline|title|body|label|spacing|fontSize|lineHeight|strokeWidth|duration|easing)\.[a-zA-Z0-9.-]+$/;
+
+  // Only files whose every citation is an instruction to use that token. The
+  // grammar spec and the README both quote names deliberately as
+  // counter-examples, so checking them would fight the documentation.
+  for (const file of ["AGENTS.md", "docs/recipes.md"]) {
+    const text = readFileSync(join(repoRoot, file), "utf8");
+    const cited = new Set([...text.matchAll(/`([A-Za-z][A-Za-z0-9.\-]*)`/g)].map((m) => m[1]));
+    for (const name of cited) {
+      const looksLikeToken =
+        DOTTED.test(name) ||
+        (name.includes("-") && COLOR_PREFIXES.some((p) => name === "bg" || name.startsWith(p)));
+      if (!looksLikeToken) continue;
+      if (!known(name)) {
+        fail("docs", `${file} cites \`${name}\`, which is not a token`);
+      }
+    }
+  }
+}
+
 // ------------------------------------------------------------------ report --
 
 if (errors.length > 0) {
