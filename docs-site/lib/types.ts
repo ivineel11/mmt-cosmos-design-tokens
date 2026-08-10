@@ -16,12 +16,19 @@ export type Contrast = {
   aaa: boolean;
 };
 
+export type TokenStatus = "internal" | "stable" | "experimental" | "deprecated";
+
 export type Token = {
   path: string;
   key: string;
   value: string;
   type: string;
   reference: string | null;
+  /** What the token is for, and what it is not for. */
+  description: string | null;
+  status: TokenStatus;
+  /** Set when status is "deprecated": the token to use instead. */
+  replacedBy: string | null;
   names: PlatformStrings;
   copy: PlatformStrings;
   contrast?: Contrast;
@@ -91,6 +98,9 @@ export type TokenData = {
     spacing: Token[];
     borderRadius: Token[];
     iconSize: Token[];
+    strokeWidth: Token[];
+    duration: Token[];
+    easing: Token[];
   };
   semantic: {
     colorGroups: ColorGroup[];
@@ -99,6 +109,10 @@ export type TokenData = {
     space: Token[];
     radius: Token[];
     icon: Token[];
+    borderWidth: Token[];
+    focusRing: Token[];
+    motionDuration: Token[];
+    motionEasing: Token[];
   };
   contrastPairs: ContrastPair[];
 };

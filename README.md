@@ -9,6 +9,7 @@ npm run build:tokens
 
 | Output | Path |
 |--------|------|
+| **Machine-readable manifest** | **`dist/tokens.json`** |
 | CSS custom properties | `dist/web/tokens.css` |
 | JavaScript / TypeScript (ESM) | `dist/web/tokens.ts` |
 | SwiftUI enum | `dist/ios/CosmosTokens.swift` |
@@ -16,21 +17,48 @@ npm run build:tokens
 
 The iOS and Android outputs are namespaced as `CosmosTokens` (Kotlin package `com.makemytrip.cosmos.tokens`) so an app can consume Cosmos tokens alongside another token set without symbol collisions.
 
+`dist/tokens.json` is the authoritative inventory — one entry per token with its value, tier, status, description, contrast verdict, paired foreground, state variants and per-platform names. Prefer it over the tables further down this file, which are a snapshot.
+
+---
+
+## Consuming Cosmos from an automated tool
+
+If you are an AI coding agent or writing a codemod, start with **[AGENTS.md](AGENTS.md)**, not this file.
+
+| Artifact | What it is for |
+|---|---|
+| [`dist/tokens.json`](dist/tokens.json) | Every token, machine-readable, with per-platform names. Load this instead of parsing four dialects. |
+| [`AGENTS.md`](AGENTS.md) | The rules for writing product code — which tier to use, how to find a contrast-safe foreground, what is deliberately missing. |
+| [`docs/recipes.md`](docs/recipes.md) | The exact token for every part of a button, input, card, badge, banner, modal, list row, tab, tooltip, toggle and empty state. |
+| [`docs/naming.md`](docs/naming.md) | The naming grammar, so a name can be derived from intent rather than recalled. |
+| [`llms.txt`](llms.txt) | Short index of the above. |
+
+Three properties make the token set safe to consume without reading prose:
+
+1. **Every token is self-describing.** All 542 carry a `description` saying what they are for and what they are not for, plus `$extensions.mmt` with `tier`, `status`, and — where relevant — `pairsWith`, `states` and a computed `contrast` verdict.
+2. **The tier is explicit.** Primitives and semantic tokens share one flat output namespace, so `--color-neutral-500` and `--color-text-primary` look alike. `tier` in the manifest distinguishes them, which is what makes "use semantic, never primitives" checkable rather than merely stated.
+3. **The rules are enforced, not documented.** `scripts/lint-tokens.mjs` gates every build on the naming grammar, foreground pairing completeness, contrast minimums, semantic-must-alias, metadata presence, and orphan primitives. Known exceptions live in `scripts/token-lint-baseline.json`, each with a written reason, and the baseline is checked in both directions so it can shrink but never grow silently.
+
+> **Read this before picking a status colour:** the `warning` intent resolves to **red**, not amber, which inverts the usual convention. It is deprecated in favour of `danger`. Amber advisory is `caution`.
+
 ---
 
 ## End-to-end workflow
 
-Design tokens move from Figma authoring through a single JSON source file into platform-specific code. The pipeline is intentionally linear: one source of truth, one build command, four outputs.
+Design tokens move from Figma authoring through a single JSON source file into platform-specific code. The pipeline is intentionally linear: one source of truth, one build command, five outputs.
 
 ```mermaid
 flowchart TD
   A[Figma design file] -->|Tokens Studio plugin| B[Edit primitives & semantic tokens]
   B -->|Export / sync| C["tokens/tokens.json"]
-  C -->|npm run build:tokens| D[build-tokens.mjs]
+  C -->|npm run build:tokens| L[scripts/lint-tokens.mjs]
+  L -->|invariants pass| D[build-tokens.mjs]
+  D --> E0[dist/tokens.json]
   D --> E1[dist/web/tokens.css]
   D --> E2[dist/web/tokens.ts]
   D --> E3[dist/ios/CosmosTokens.swift]
   D --> E4[dist/android/CosmosTokens.kt]
+  E0 --> F0[Automated tools — one manifest]
   E1 --> F1[Web apps — CSS variables]
   E2 --> F2[Web apps — JS/TS imports]
   E3 --> F3[iOS — SwiftUI]
@@ -44,7 +72,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 | Token set | Contents |
 |-----------|----------|
 | **primitives** | Raw values — color palettes, font stacks, pixel scales |
-| **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
+| **semantic** | Role-based aliases (color, typography, radius, icon, space, border width, focus ring, motion) that reference primitives via `{category.path}` syntax |
 
 When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value.
 
@@ -55,7 +83,7 @@ Export or sync from Tokens Studio into `tokens/tokens.json`. This file is the **
 The export must preserve:
 
 - `$metadata.tokenSetOrder`: `["primitives", "semantic"]` — primitives resolve first
-- W3C DTCG format: each token has `value` and `type`
+- W3C DTCG format: each token has `value` and `type`, plus a Cosmos `description` and `$extensions.mmt`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
 
 ### 3. Build platform outputs
@@ -74,7 +102,7 @@ npm run build:tokens
    - Font weights → numbers
    - Dimensions: `px` → unitless (iOS), `sp`/`dp` (Android)
    - **Colors (iOS/Android only):** hex → native `Color(...)` (gradient → `Brush.linearGradient(...)` / `LinearGradient` when present) — web keeps hex strings and CSS gradients
-5. **Emits** CSS, ESM, Swift, and Kotlin files into `dist/`
+5. **Emits** CSS, ESM, Swift, and Kotlin files into `dist/`, then `dist/tokens.json` — the manifest carrying every platform's name for each token in one entry
 
 Both `primitives` and `semantic` tokens land in a **flat output namespace** — there is no `primitives.` prefix in generated code.
 
@@ -87,7 +115,7 @@ Both `primitives` and `semantic` tokens land in a **flat output namespace** — 
 | iOS | Copy / link `CosmosTokens.swift` | camelCase static lets | `CosmosTokens.colorTextPrimary` (`Color`) |
 | Android | Copy / link `CosmosTokens.kt` | camelCase vals in `com.makemytrip.cosmos.tokens` | `CosmosTokens.colorTextPrimary` (`Color`) |
 
-**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `space-md`, `body.medium.regular`) rather than primitives (`neutral-950`, `borderRadius-8`, `spacing-16`).
+**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `space-md`, `body.medium.regular`) rather than primitives (`neutral-950`, `borderRadius-8`, `spacing-16`). The two share one flat namespace, so check `tier` in `dist/tokens.json` when the name alone is ambiguous.
 
 ### 5. Commit and ship
 
@@ -127,6 +155,10 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 | Transform | `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
 | Transform | `mmt/dimension/unitless` (iOS) | Strips `px` suffix for CGFloat-compatible numbers |
 | Transform | `mmt/dimension/compose` (Android) | Converts `px` → `sp` for text metrics, `dp` for layout |
+| Transform | `mmt/duration/seconds` (iOS) | `150ms` → `0.15` — SwiftUI takes TimeInterval in seconds |
+| Transform | `mmt/duration/millis` (Android) | `150ms` → `150` — Compose animation specs take Int milliseconds |
+| Transform | `mmt/easing/ios` (iOS) | `cubic-bezier(a, b, c, d)` → a 4-tuple that splats into `Animation.timingCurve` |
+| Transform | `mmt/easing/compose` (Android) | `cubic-bezier(a, b, c, d)` → Compose `CubicBezierEasing` |
 | Transform | `mmt/string/quote` (iOS/Android) | Wraps font family strings as native string literals |
 | Transform | `mmt/color/ios` (iOS) | Hex colors → `Color(red:green:blue:)` (or sRGB + opacity for `#RRGGBBAA`) |
 | Transform | `mmt/color/ios-gradient` (iOS) | CSS `linear-gradient(...)` → SwiftUI `LinearGradient(gradient:startPoint:endPoint:)` |
@@ -139,8 +171,25 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 |--------------|------------|--------|--------|
 | `web-css` | kebab-case names; hex / CSS gradients unchanged | `css/variables` | `dist/web/tokens.css` |
 | `web-js` | camelCase names; hex / CSS gradients unchanged | `javascript/esm` | `dist/web/tokens.ts` |
-| `ios` | unitless dimensions, quoted strings, native `Color` / `LinearGradient` | `ios-swift/enum.swift` | `dist/ios/CosmosTokens.swift` |
-| `android` | compose units, quoted strings, native `Color` / `Brush` | `compose/object` | `dist/android/CosmosTokens.kt` |
+| `ios` | unitless dimensions, seconds, quoted strings, native `Color` / `LinearGradient` | `ios-swift/enum.swift` | `dist/ios/CosmosTokens.swift` |
+| `android` | compose units, millis, quoted strings, native `Color` / `Brush` | `compose/object` | `dist/android/CosmosTokens.kt` |
+
+The manifest is emitted separately, after Style Dictionary runs, because it has to carry *every* platform's name for a token in a single entry — which a Style Dictionary platform (one name per platform) cannot express. `scripts/build-manifest.mjs` derives names using the shared rules in `scripts/token-model.mjs` and validates them against the CSS just written, so a naming change the manifest does not follow fails the build rather than publishing wrong names.
+
+### Lint gate
+
+`npm run build:tokens` runs `scripts/lint-tokens.mjs` first and refuses to build on:
+
+| Rule | Catches |
+|------|---------|
+| `schema` | Structural drift from `tokens/tokens.schema.json` |
+| `metadata` | A token with no usable description, or no `tier` / `status`; a deprecation with no replacement |
+| `raw-value` | A semantic token holding a literal instead of a `{reference}` |
+| `grammar` | A semantic colour name that does not parse against `docs/naming.md` |
+| `pairing` | A fill or surface that declares no contrast-checked text and icon foreground |
+| `contrast` | A stale recorded ratio, or a new pairing below 4.5:1 for text / 3:1 for icons |
+| `orphan` | A new primitive with no semantic role |
+| `docs` | A token cited in `AGENTS.md` or `docs/recipes.md` that does not exist |
 
 #### Native color transforms (iOS & Android)
 
@@ -160,7 +209,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 315 color tokens (144 primitive palette steps + 171 semantic roles). All current colors are solid; gradient transforms stay wired for future use.
+**Affected tokens:** all 367 color tokens (144 primitive palette steps + 113 semantic roles + 110 `exp-*` aliases). All current colors are solid; gradient transforms stay wired for future use.
 
 ---
 
@@ -211,7 +260,7 @@ Within each role, **intent** is expressed with suffixes:
 
 ### 5. Single-font typography system (Lato)
 
-Cosmos uses **Lato** for all typography roles — headline, title, body, and label. There is no display scale and no letter-spacing tokens.
+Cosmos uses **Lato** for all typography roles — headline, title, body, and label. There is no display scale and no letter-spacing tokens. Font sizes from 36px to 64px exist as primitives but have no semantic role, so `headline.large` (32px) is the largest type style available.
 
 | Category | Font | Weights |
 |----------|------|---------|
@@ -282,11 +331,11 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 3. **Add new colors to primitives first, then wire semantic aliases.** Never put raw hex values in the semantic layer.
 
-4. **Use paired contrast tokens.** When placing text on a filled background, use the matching `*-on-bg-fill*` token (e.g. `text-info-on-bg-fill-strong` on `bg-fill-info-strong`).
+4. **Use paired contrast tokens.** When placing text on a filled background, take the foreground from `pairsWith` in `dist/tokens.json` rather than choosing one (e.g. `text-info-on-bg-fill-strong` on `bg-fill-info-strong`). Check `contrast.wcag` first — the caution pairings are recorded as `FAIL` and need `text-primary` instead.
 
 5. **Use composite typography tokens.** Reference the full typography token (e.g. `body.medium.regular`) rather than assembling individual font properties in components.
 
-6. **Run the build after every token change.** `npm run build:tokens` validates references and regenerates all platform outputs.
+6. **Run the build after every token change.** `npm run build:tokens` lints the invariants, validates references, and regenerates every output. A failing lint names the fix.
 
 7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic"]`.
 
@@ -294,7 +343,11 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 9. **Use negative spacing primitives sparingly.** They exist for optical adjustments (overlapping elements, negative margins) — not for general layout gaps.
 
-10. **Document intentional exceptions.** Some mappings are deliberate product choices (e.g. `bg-surface-info` uses `brand.50`, not `blue.50`). Note these when adding new tokens.
+10. **Document intentional exceptions.** Some mappings are deliberate product choices (e.g. `bg-surface-info` uses `brand.50`, not `blue.50`). Record them in the token's `description`, and — if they trip a lint rule — in `scripts/token-lint-baseline.json` with a reason.
+
+11. **Never invent a state colour.** Hover, active and selected variants are tokenised; take them from `states` in the manifest rather than darkening a value yourself.
+
+12. **Prefer `danger-*` over `warning-*`.** The red `warning-*` tokens are deprecated; `warning` is reserved to become amber in a future major version.
 
 ---
 
@@ -313,7 +366,9 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 ### Don't
 
-- Don't hardcode hex colors, pixel sizes, or font stacks in application code.
+- Don't hardcode hex colors, pixel sizes, font stacks, durations, or `cubic-bezier` curves in application code.
+- Don't use an `exp-*` token in product code — they are hue-named passthroughs, not role tokens.
+- Don't compute a hover or pressed colour by darkening a value — use the `-hover` / `-active` token.
 - Don't edit files in `dist/` directly — changes will be lost.
 - Don't put raw values in the semantic layer — always alias a primitive.
 - Don't skip the build step after modifying tokens.
@@ -328,9 +383,26 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 ## Token Inventory
 
-**Totals:** 221 primitive tokens · 239 semantic tokens (171 colors + 36 typography + 10 radius + 8 icon + 14 space) · **568 values per platform** · **0 gradients**
+**Totals:** 542 tokens — 237 primitive · 305 semantic (223 colors, of which 113 are role tokens and 110 are `exp-*` aliases; 36 typography; 14 space; 10 radius; 8 icon; 8 motion; 4 border width; 2 focus ring) · **0 gradients**
 
-### Primitive tokens (221)
+`dist/tokens.json` is generated from the source and is always current; the tables below are a hand-maintained snapshot and may lag.
+
+#### Added since the original inventory
+
+| Family | Count | Notes |
+|---|---|---|
+| Interaction states | 26 | `-hover`, `-active`, `-selected` on fills, surfaces, borders and links. `-hover` is one palette step darker than the resting token, `-active` two. |
+| `danger-*` intent | 10 | Red error/destructive intent, superseding the deprecated red `warning-*`. |
+| Arity completion | 14 | `bg-fill-brand-subtle` and its states, `text-brand-on-bg-fill-subtle`, `icon-link`, and twelve `icon-*-on-bg-fill-*` tokens mirroring the text set. |
+| Motion | 20 | 7 duration + 5 easing primitives; `motion.duration.{instant,fast,normal,slow}` and `motion.easing.{enter,exit,move,emphasis}`. |
+| Border width | 8 | 4 `strokeWidth` primitives; `borderWidth.{none,thin,thick,thicker}`. |
+| Focus ring | 2 | `focusRing.width`, `focusRing.offset`. |
+
+#### Deprecated
+
+The twelve red `warning-*` colour tokens are deprecated in favour of their `danger-*` equivalents. They still resolve to the same values and nothing breaks; they are reserved so `warning` can be reintroduced as amber in a future major version without silently changing a live token. Each names its replacement in `$extensions.mmt.replacedBy`.
+
+### Primitive tokens (237)
 
 #### Color — 144 tokens (12 palettes × 12 steps)
 
@@ -469,11 +541,11 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 
 ---
 
-### Semantic tokens (239)
+### Semantic tokens (305)
 
-#### Color — 171 tokens
+#### Color — 223 tokens
 
-Role colors below plus experience (`exp-*`) palette aliases.
+113 role colors (listed below) plus 110 experience (`exp-*`) palette aliases. The role tables that follow predate the interaction states and the `danger-*` intent; see `dist/tokens.json` for the current set.
 
 ##### Background — surface (9)
 

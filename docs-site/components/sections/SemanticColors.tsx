@@ -1,6 +1,7 @@
 "use client";
 
 import { Copyable } from "@/components/Copyable";
+import { StatusBadge } from "@/components/StatusBadge";
 import type { ColorGroup, Platform, Token } from "@/lib/types";
 
 /** True when a fill would disappear against the white card surface. */
@@ -129,14 +130,25 @@ export function SemanticColors({
                       {token.value}
                       {token.reference && ` · ${token.reference.replace("color.", "")}`}
                     </div>
-                    {token.contrast && (
-                      <div className="mt-2">
-                        <ContrastBadge
-                          ratio={token.contrast.ratio}
-                          aa={token.contrast.aa}
-                          aaa={token.contrast.aaa}
-                        />
+                    {(token.contrast || token.status !== "stable") && (
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                        {token.contrast && (
+                          <ContrastBadge
+                            ratio={token.contrast.ratio}
+                            aa={token.contrast.aa}
+                            aaa={token.contrast.aaa}
+                          />
+                        )}
+                        <StatusBadge status={token.status} replacedBy={token.replacedBy} />
                       </div>
+                    )}
+                    {token.description && (
+                      <p
+                        className="mt-2 text-[11px] leading-4"
+                        style={{ color: "var(--color-text-tertiary)" }}
+                      >
+                        {token.description}
+                      </p>
                     )}
                   </div>
                 </div>

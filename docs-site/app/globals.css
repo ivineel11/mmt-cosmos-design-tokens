@@ -46,6 +46,17 @@ body {
   border-color: var(--color-border);
 }
 
+/* Preview for duration and easing tokens — motion is the value being shown, so
+   a static swatch cannot document it. Neutralised by the reduced-motion rule. */
+@keyframes cosmos-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(200%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

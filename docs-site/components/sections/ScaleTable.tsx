@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { Copyable } from "@/components/Copyable";
 import { Card } from "@/components/Section";
+import { StatusBadge } from "@/components/StatusBadge";
 import type { Platform, Token } from "@/lib/types";
 
 type ScaleTableProps = {
@@ -39,14 +40,32 @@ export function ScaleTable({ tokens, platform, preview }: ScaleTableProps) {
           className={`${COLUMNS} w-full border-b py-3 last:border-b-0`}
           style={{ borderColor: "var(--color-border)" }}
         >
-          <div className="mono truncate text-xs">{token.names[platform]}</div>
-          <div className="mono text-xs" style={{ color: "var(--color-text-secondary)" }}>
+          <div className="min-w-0">
+            <div className="mono truncate text-xs">{token.names[platform]}</div>
+            {token.description && (
+              <p
+                className="mt-1 text-[11px] leading-4"
+                style={{ color: "var(--color-text-tertiary)" }}
+              >
+                {token.description}
+              </p>
+            )}
+            {token.status !== "stable" && token.status !== "internal" && (
+              <div className="mt-1.5">
+                <StatusBadge status={token.status} replacedBy={token.replacedBy} />
+              </div>
+            )}
+          </div>
+          <div className="mono self-start text-xs" style={{ color: "var(--color-text-secondary)" }}>
             {token.value}
           </div>
-          <div className="mono truncate text-[11px]" style={{ color: "var(--color-text-tertiary)" }}>
+          <div
+            className="mono truncate self-start text-[11px]"
+            style={{ color: "var(--color-text-tertiary)" }}
+          >
             {token.reference ?? "—"}
           </div>
-          <div className="flex min-h-9 items-center">{preview(token)}</div>
+          <div className="flex min-h-9 items-center self-start">{preview(token)}</div>
         </Copyable>
       ))}
     </Card>
@@ -123,6 +142,42 @@ export const previews = {
   fontFamily: (token: Token) => (
     <span className="text-lg" style={{ fontFamily: `var(--font-lato), ${token.value}, sans-serif` }}>
       The quick brown fox jumps
+    </span>
+  ),
+
+  borderWidth: (token: Token) => (
+    <span
+      className="block h-8 w-20 rounded-md"
+      style={{
+        border: `${token.value} solid var(--color-border-brand)`,
+        background: "var(--color-bg-surface)",
+      }}
+    />
+  ),
+
+  // Duration and easing are motion, which a static swatch cannot show. The bar
+  // loops so the curve and the length are both legible at a glance.
+  duration: (token: Token) => (
+    <span className="block h-2 w-28 overflow-hidden rounded-full" style={{ background: "var(--color-bg-fill-secondary)" }}>
+      <span
+        className="block h-full w-1/3 rounded-full"
+        style={{
+          background: "var(--color-bg-fill-brand)",
+          animation: `cosmos-slide ${token.value} linear infinite alternate`,
+        }}
+      />
+    </span>
+  ),
+
+  easing: (token: Token) => (
+    <span className="block h-2 w-28 overflow-hidden rounded-full" style={{ background: "var(--color-bg-fill-secondary)" }}>
+      <span
+        className="block h-full w-1/3 rounded-full"
+        style={{
+          background: "var(--color-bg-fill-brand)",
+          animation: `cosmos-slide 1.2s ${token.value} infinite alternate`,
+        }}
+      />
     </span>
   ),
 } satisfies Record<string, (token: Token) => ReactNode>;

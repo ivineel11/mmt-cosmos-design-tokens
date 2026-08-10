@@ -38,6 +38,7 @@ function copyValues(parts) {
 
 function makeToken(parts, raw) {
   const value = resolve(raw.value);
+  const mmt = raw.$extensions?.mmt ?? {};
   return {
     path: parts.join("."),
     key: parts[parts.length - 1],
@@ -45,6 +46,9 @@ function makeToken(parts, raw) {
     value: typeof value === "number" ? String(value) : value,
     type: raw.type,
     reference: referenceOf(raw.value),
+    description: raw.description ?? null,
+    status: mmt.status ?? "stable",
+    replacedBy: mmt.replacedBy ?? null,
     names: names(parts),
     copy: copyValues(parts),
   };
@@ -187,6 +191,12 @@ const typography = TYPE_GROUPS.map((group) => ({
 const semanticScale = (group) =>
   Object.entries(source.semantic[group]).map(([key, raw]) => makeToken([group, key], raw));
 
+/** `semantic.motion.duration.fast` — one level deeper than the flat scales. */
+const semanticNested = (group, sub) =>
+  Object.entries(source.semantic[group][sub]).map(([key, raw]) =>
+    makeToken([group, sub, key], raw),
+  );
+
 const data = {
   meta: {
     generatedAt: new Date().toISOString(),
@@ -201,6 +211,9 @@ const data = {
     spacing: collect("spacing"),
     borderRadius: collect("borderRadius"),
     iconSize: collect("iconSize"),
+    strokeWidth: collect("strokeWidth"),
+    duration: collect("duration"),
+    easing: collect("easing"),
   },
   semantic: {
     colorGroups: semanticColorGroups,
@@ -209,6 +222,10 @@ const data = {
     space: semanticScale("space"),
     radius: semanticScale("radius"),
     icon: semanticScale("icon"),
+    borderWidth: semanticScale("borderWidth"),
+    focusRing: semanticScale("focusRing"),
+    motionDuration: semanticNested("motion", "duration"),
+    motionEasing: semanticNested("motion", "easing"),
   },
 };
 
@@ -306,9 +323,23 @@ const total =
   countTokens(expressive) +
   semanticColorGroups.reduce((n, g) => n + g.tokens.length, 0) +
   typography.reduce((n, g) => n + g.sizes.length * 3, 0) +
-  [data.primitives.fontFamily, data.primitives.fontWeight, data.primitives.fontSize,
-   data.primitives.lineHeight, data.primitives.spacing, data.primitives.borderRadius,
-   data.primitives.iconSize, data.semantic.space, data.semantic.radius, data.semantic.icon]
+  [...Object.values(data.primitives), ...Object.values(data.semantic)]
+    .filter((value) => Array.isArray(value) && value !== palettes && value !== expressive)
+    .filter((list) => !list.some((entry) => entry.steps || entry.sizes || entry.tokens))
     .reduce((n, list) => n + list.length, 0);
+
+// The manifest is the source of truth for how many tokens exist. If the docs
+// site documents fewer, a group has been added to tokens.json without being
+// surfaced here — which is how motion and borderWidth went missing before.
+const manifestPath = join(repoRoot, "dist", "tokens.json");
+if (existsSync(manifestPath)) {
+  const manifestCount = Object.keys(JSON.parse(readFileSync(manifestPath, "utf8")).tokens).length;
+  if (total !== manifestCount) {
+    console.warn(
+      `⚠ documenting ${total} tokens but dist/tokens.json has ${manifestCount} — ` +
+        `a token group is missing from this script's data shape.`,
+    );
+  }
+}
 
 console.log(`✓ Generated data/tokens.json — ${total} tokens documented.`);

@@ -10,7 +10,10 @@ function matchToken(token: Token, query: string) {
     includes(token.reference, query) ||
     includes(token.names.css, query) ||
     includes(token.names.js, query) ||
-    includes(token.names.swift, query)
+    includes(token.names.swift, query) ||
+    // Descriptions say what a token is for, so searching "button" or "tooltip"
+    // finds the right token without knowing its name.
+    includes(token.description, query)
   );
 }
 
@@ -65,6 +68,9 @@ export function filterData(data: TokenData, rawQuery: string): TokenData {
       spacing: tokens(data.primitives.spacing),
       borderRadius: tokens(data.primitives.borderRadius),
       iconSize: tokens(data.primitives.iconSize),
+      strokeWidth: tokens(data.primitives.strokeWidth),
+      duration: tokens(data.primitives.duration),
+      easing: tokens(data.primitives.easing),
     },
     semantic: {
       colorGroups: data.semantic.colorGroups
@@ -75,6 +81,10 @@ export function filterData(data: TokenData, rawQuery: string): TokenData {
       space: tokens(data.semantic.space),
       radius: tokens(data.semantic.radius),
       icon: tokens(data.semantic.icon),
+      borderWidth: tokens(data.semantic.borderWidth),
+      focusRing: tokens(data.semantic.focusRing),
+      motionDuration: tokens(data.semantic.motionDuration),
+      motionEasing: tokens(data.semantic.motionEasing),
     },
     contrastPairs: data.contrastPairs.filter(
       (pair) => includes(pair.text.path, query) || includes(pair.background.path, query),
@@ -97,6 +107,21 @@ export function populatedSections(data: TokenData): Set<string> {
   mark("spacing", data.semantic.space.length + data.primitives.spacing.length > 0);
   mark("radius", data.semantic.radius.length + data.primitives.borderRadius.length > 0);
   mark("icon-size", data.semantic.icon.length + data.primitives.iconSize.length > 0);
+  mark(
+    "border-width",
+    data.semantic.borderWidth.length +
+      data.semantic.focusRing.length +
+      data.primitives.strokeWidth.length >
+      0,
+  );
+  mark(
+    "motion",
+    data.semantic.motionDuration.length +
+      data.semantic.motionEasing.length +
+      data.primitives.duration.length +
+      data.primitives.easing.length >
+      0,
+  );
   mark("font-family", data.primitives.fontFamily.length > 0);
   mark("font-weight", data.primitives.fontWeight.length > 0);
   mark("font-size", data.primitives.fontSize.length > 0);

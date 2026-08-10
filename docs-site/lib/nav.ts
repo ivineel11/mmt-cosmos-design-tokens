@@ -24,6 +24,8 @@ export const NAV: NavGroup[] = [
   { label: "Spacing", id: "spacing" },
   { label: "Radius", id: "radius" },
   { label: "Icon size", id: "icon-size" },
+  { label: "Border width", id: "border-width" },
+  { label: "Motion", id: "motion" },
   { label: "Font family", id: "font-family" },
   { label: "Font weight", id: "font-weight" },
   { label: "Font size", id: "font-size" },

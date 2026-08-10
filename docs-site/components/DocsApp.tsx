@@ -203,6 +203,94 @@ export function DocsApp({ data }: { data: TokenData }) {
             </Section>
           )}
 
+          {populated.has("border-width") && (
+            <Section
+              id="border-width"
+              title="Border width"
+              description="Stroke weights for borders, dividers, and the focus ring. Focus indication is tokenised so it looks identical on every component rather than being re-decided per control."
+            >
+              {semantic.borderWidth.length > 0 && (
+                <>
+                  <SubHeading title="Semantic" />
+                  <ScaleTable
+                    tokens={semantic.borderWidth}
+                    platform={platform}
+                    preview={previews.borderWidth}
+                  />
+                </>
+              )}
+              {semantic.focusRing.length > 0 && (
+                <>
+                  <SubHeading title="Focus ring" />
+                  <ScaleTable
+                    tokens={semantic.focusRing}
+                    platform={platform}
+                    preview={previews.borderWidth}
+                  />
+                </>
+              )}
+              {primitives.strokeWidth.length > 0 && (
+                <>
+                  <SubHeading title="Primitive" />
+                  <ScaleTable
+                    tokens={primitives.strokeWidth}
+                    platform={platform}
+                    preview={previews.borderWidth}
+                  />
+                </>
+              )}
+            </Section>
+          )}
+
+          {populated.has("motion") && (
+            <Section
+              id="motion"
+              title="Motion"
+              description="Durations and easing curves, named for what they are for rather than how long they last. Entrances are slower than exits; anything the user triggers directly should feel immediate."
+            >
+              {semantic.motionDuration.length > 0 && (
+                <>
+                  <SubHeading title="Duration" />
+                  <ScaleTable
+                    tokens={semantic.motionDuration}
+                    platform={platform}
+                    preview={previews.duration}
+                  />
+                </>
+              )}
+              {semantic.motionEasing.length > 0 && (
+                <>
+                  <SubHeading title="Easing" />
+                  <ScaleTable
+                    tokens={semantic.motionEasing}
+                    platform={platform}
+                    preview={previews.easing}
+                  />
+                </>
+              )}
+              {primitives.duration.length > 0 && (
+                <>
+                  <SubHeading title="Primitive duration" />
+                  <ScaleTable
+                    tokens={primitives.duration}
+                    platform={platform}
+                    preview={previews.duration}
+                  />
+                </>
+              )}
+              {primitives.easing.length > 0 && (
+                <>
+                  <SubHeading title="Primitive easing" />
+                  <ScaleTable
+                    tokens={primitives.easing}
+                    platform={platform}
+                    preview={previews.easing}
+                  />
+                </>
+              )}
+            </Section>
+          )}
+
           {populated.has("font-family") && (
             <Section
               id="font-family"
