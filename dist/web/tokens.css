@@ -451,6 +451,18 @@
   --stroke-width-1: 1px;
   --stroke-width-2: 2px;
   --stroke-width-4: 4px;
+  --duration-50: 50ms;
+  --duration-100: 100ms;
+  --duration-150: 150ms;
+  --duration-200: 200ms;
+  --duration-300: 300ms;
+  --duration-500: 500ms;
+  --duration-700: 700ms;
+  --easing-linear: cubic-bezier(0, 0, 1, 1);
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --easing-decelerate: cubic-bezier(0, 0, 0, 1);
+  --easing-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --easing-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
   --headline-large-regular-font-family: Lato;
   --headline-large-regular-font-weight: 400;
   --headline-large-regular-font-size: 32px;
@@ -633,4 +645,12 @@
   --border-width-thicker: 4px;
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
+  --motion-duration-instant: 50ms;
+  --motion-duration-fast: 150ms;
+  --motion-duration-normal: 200ms;
+  --motion-duration-slow: 300ms;
+  --motion-easing-enter: cubic-bezier(0, 0, 0, 1);
+  --motion-easing-exit: cubic-bezier(0.3, 0, 1, 1);
+  --motion-easing-move: cubic-bezier(0.2, 0, 0, 1);
+  --motion-easing-emphasis: cubic-bezier(0.05, 0.7, 0.1, 1);
 }

@@ -495,6 +495,22 @@ export default {
     2: "2px",
     4: "4px",
   },
+  duration: {
+    50: "50ms",
+    100: "100ms",
+    150: "150ms",
+    200: "200ms",
+    300: "300ms",
+    500: "500ms",
+    700: "700ms",
+  },
+  easing: {
+    linear: "cubic-bezier(0, 0, 1, 1)",
+    standard: "cubic-bezier(0.2, 0, 0, 1)",
+    decelerate: "cubic-bezier(0, 0, 0, 1)",
+    accelerate: "cubic-bezier(0.3, 0, 1, 1)",
+    emphasized: "cubic-bezier(0.05, 0.7, 0.1, 1)",
+  },
   headline: {
     large: {
       regular: {
@@ -790,6 +806,20 @@ export default {
   focusRing: {
     width: "2px",
     offset: "2px",
+  },
+  motion: {
+    duration: {
+      instant: "50ms",
+      fast: "150ms",
+      normal: "200ms",
+      slow: "300ms",
+    },
+    easing: {
+      enter: "cubic-bezier(0, 0, 0, 1)",
+      exit: "cubic-bezier(0.3, 0, 1, 1)",
+      move: "cubic-bezier(0.2, 0, 0, 1)",
+      emphasis: "cubic-bezier(0.05, 0.7, 0.1, 1)",
+    },
   },
   tokenSetOrder: ["primitives", "semantic"],
 };

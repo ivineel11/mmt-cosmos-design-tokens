@@ -46,6 +46,25 @@ const valueOf = (t) => t.$value ?? t.value;
 const HEX_COLOR = /^#([0-9A-Fa-f]{3,8})$/;
 const CSS_LINEAR_GRADIENT =
   /^linear-gradient\((\d+(?:\.\d+)?)deg,\s*(.+)\)$/;
+const MS = /^-?\d*\.?\d+ms$/;
+const CUBIC_BEZIER = /^cubic-bezier\(\s*([^)]+)\)$/;
+
+/**
+ * Format a number as a Swift `Double` literal. A bare `1` would be inferred as
+ * `Int`, and Swift does not implicitly convert, so `(0.3, 0, 1, 1)` would fail
+ * to type-check against `timingCurve(_: Double, ...)`. Always keep a decimal.
+ */
+const swiftDouble = (n) => (Number.isInteger(n) ? `${n}.0` : `${n}`);
+
+/** `cubic-bezier(0.2, 0, 0, 1)` -> [0.2, 0, 0, 1]. */
+function cubicBezierPoints(value) {
+  const [, inner] = `${value}`.match(CUBIC_BEZIER);
+  const points = inner.split(",").map((n) => parseFloat(n.trim()));
+  if (points.length !== 4 || points.some((n) => !Number.isFinite(n))) {
+    throw new Error(`Malformed cubic-bezier value: ${value}`);
+  }
+  return points;
+}
 
 /** Expand #RGB / #RRGGBB / #RRGGBBAA into 0–255 channels. */
 function parseHex(hex) {
@@ -303,6 +322,50 @@ StyleDictionary.registerTransform({
   },
 });
 
+// iOS: durations are authored as CSS `150ms` but SwiftUI animation APIs take
+// TimeInterval in *seconds*, so emit a Double. `Animation.easeInOut(duration:)`
+// would silently animate for 150 seconds if handed the raw number.
+StyleDictionary.registerTransform({
+  name: "mmt/duration/seconds",
+  type: "value",
+  transitive: true,
+  filter: (token) => typeOf(token) === "duration" && MS.test(`${valueOf(token)}`),
+  transform: (token) => swiftDouble(parseFloat(valueOf(token)) / 1000),
+});
+
+// Android: Compose animation specs take milliseconds as Int.
+StyleDictionary.registerTransform({
+  name: "mmt/duration/millis",
+  type: "value",
+  transitive: true,
+  filter: (token) => typeOf(token) === "duration" && MS.test(`${valueOf(token)}`),
+  transform: (token) => `${parseInt(valueOf(token), 10)}`,
+});
+
+// iOS: `cubic-bezier(a, b, c, d)` -> a 4-tuple of control points, so a call site
+// can splat it into `Animation.timingCurve(_:_:_:_:duration:)`. SwiftUI has no
+// standalone easing-curve value type that survives as a stored constant, so the
+// tuple is the honest representation.
+StyleDictionary.registerTransform({
+  name: "mmt/easing/ios",
+  type: "value",
+  transitive: true,
+  filter: (token) => typeOf(token) === "cubicBezier" && CUBIC_BEZIER.test(`${valueOf(token)}`),
+  transform: (token) => `(${cubicBezierPoints(valueOf(token)).map(swiftDouble).join(", ")})`,
+});
+
+// Android: `cubic-bezier(a, b, c, d)` -> Compose `CubicBezierEasing`.
+StyleDictionary.registerTransform({
+  name: "mmt/easing/compose",
+  type: "value",
+  transitive: true,
+  filter: (token) => typeOf(token) === "cubicBezier" && CUBIC_BEZIER.test(`${valueOf(token)}`),
+  transform: (token) =>
+    `CubicBezierEasing(${cubicBezierPoints(valueOf(token))
+      .map((n) => `${n}f`)
+      .join(", ")})`,
+});
+
 // iOS/Android: wrap font family / font style strings as native string literals.
 // Idempotent + non-transitive so values are not double-quoted on repeated passes.
 StyleDictionary.registerTransform({
@@ -428,6 +491,8 @@ const sd = new StyleDictionary({
         "name/camel",
         "mmt/fontWeight/number",
         "mmt/dimension/unitless",
+        "mmt/duration/seconds",
+        "mmt/easing/ios",
         "mmt/string/quote",
         "mmt/color/ios-gradient",
         "mmt/color/ios",
@@ -451,6 +516,8 @@ const sd = new StyleDictionary({
         "name/camel",
         "mmt/fontWeight/number",
         "mmt/dimension/compose",
+        "mmt/duration/millis",
+        "mmt/easing/compose",
         "mmt/string/quote",
         "mmt/color/android-gradient",
         "mmt/color/android",
@@ -464,6 +531,7 @@ const sd = new StyleDictionary({
             className: "CosmosTokens",
             packageName: "com.makemytrip.cosmos.tokens",
             import: [
+              "androidx.compose.animation.core.CubicBezierEasing",
               "androidx.compose.ui.geometry.Offset",
               "androidx.compose.ui.graphics.Brush",
               "androidx.compose.ui.graphics.Color",

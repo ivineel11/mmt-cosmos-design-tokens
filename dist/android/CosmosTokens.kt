@@ -6,6 +6,7 @@
 
 package com.makemytrip.cosmos.tokens
 
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -429,6 +430,18 @@ object CosmosTokens {
   val colorYellow800 = Color(0xFF894B00)
   val colorYellow900 = Color(0xFF733E0A)
   val colorYellow950 = Color(0xFF432004)
+  val duration100 = 100
+  val duration150 = 150
+  val duration200 = 200
+  val duration300 = 300
+  val duration50 = 50
+  val duration500 = 500
+  val duration700 = 700
+  val easingAccelerate = CubicBezierEasing(0.3f, 0f, 1f, 1f)
+  val easingDecelerate = CubicBezierEasing(0f, 0f, 0f, 1f)
+  val easingEmphasized = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
+  val easingLinear = CubicBezierEasing(0f, 0f, 1f, 1f)
+  val easingStandard = CubicBezierEasing(0.2f, 0f, 0f, 1f)
   val focusRingOffset = 2.dp
   val focusRingWidth = 2.dp
   val fontFamilyLato = "Lato"
@@ -556,6 +569,14 @@ object CosmosTokens {
   val lineHeight72 = 72.sp
   val lineHeight80 = 80.sp
   val lineHeight92 = 92.sp
+  val motionDurationFast = 150
+  val motionDurationInstant = 50
+  val motionDurationNormal = 200
+  val motionDurationSlow = 300
+  val motionEasingEmphasis = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
+  val motionEasingEnter = CubicBezierEasing(0f, 0f, 0f, 1f)
+  val motionEasingExit = CubicBezierEasing(0.3f, 0f, 1f, 1f)
+  val motionEasingMove = CubicBezierEasing(0.2f, 0f, 0f, 1f)
   val radius2xl = 24.dp
   val radius3xl = 32.dp
   val radius4xl = 40.dp
