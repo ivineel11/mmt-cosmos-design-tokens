@@ -1,5 +1,8 @@
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import StyleDictionary from "style-dictionary";
 import { register } from "@tokens-studio/sd-transforms";
+import { buildManifest } from "./scripts/build-manifest.mjs";
 
 /**
  * Build platform-specific code from tokens/tokens.json (Tokens Studio export).
@@ -546,3 +549,14 @@ const sd = new StyleDictionary({
 
 await sd.cleanAllPlatforms();
 await sd.buildAllPlatforms();
+
+// The manifest is derived from tokens/tokens.json rather than from a Style
+// Dictionary platform, because it has to carry every platform's name for a
+// token in a single entry. It validates its derived CSS names against the CSS
+// just written, so a naming change here that it does not follow fails the build.
+const counts = buildManifest(dirname(fileURLToPath(import.meta.url)));
+console.log(
+  `\nmanifest\n✔︎ dist/tokens.json — ${counts.total} tokens ` +
+    `(${counts.byTier.semantic} semantic, ${counts.byTier.primitive} primitive, ` +
+    `${counts.byTier["primitive-alias"]} primitive-alias)`,
+);

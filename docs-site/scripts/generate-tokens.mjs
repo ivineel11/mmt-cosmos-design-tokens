@@ -3,118 +3,35 @@
  * docs site renders. Also copies dist/web/tokens.css so the site is styled with
  * the tokens it documents.
  *
- * Platform names mirror the Style Dictionary transforms in build-tokens.mjs and
- * are validated against dist/ output — a mismatch means the naming rules here
- * have drifted from the build.
+ * Reference resolution, per-platform naming, and contrast math come from
+ * scripts/token-model.mjs, shared with the root build — a mismatch between the
+ * docs site and the generated output is not possible by construction. Names are
+ * still validated against dist/ below as a second check on the shared rules.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  loadTokens,
+  makeResolver,
+  referenceOf,
+  cssVar,
+  camel,
+  jsAccessor,
+  names,
+  contrastRatio,
+} from "../../scripts/token-model.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, "..", "..");
 const outDir = join(here, "..", "data");
 
-const source = JSON.parse(readFileSync(join(repoRoot, "tokens", "tokens.json"), "utf8"));
-
-/** Both token sets are hoisted to the root so cross-set references resolve. */
-const root = {};
-for (const setName of source.$metadata?.tokenSetOrder ?? ["primitives", "semantic"]) {
-  for (const [group, value] of Object.entries(source[setName])) {
-    root[group] = { ...(root[group] ?? {}), ...value };
-  }
-}
-
-const isToken = (node) => node && typeof node === "object" && "value" in node;
-const REFERENCE = /^\{([^}]+)\}$/;
-
-function lookup(path) {
-  return path.split(".").reduce((node, key) => (node == null ? node : node[key]), root);
-}
-
-function resolve(value, trail = []) {
-  if (typeof value === "string") {
-    const match = value.match(REFERENCE);
-    if (!match) return value;
-    const path = match[1];
-    if (trail.includes(path)) throw new Error(`Circular reference: ${[...trail, path].join(" → ")}`);
-    const target = lookup(path);
-    if (!isToken(target)) throw new Error(`Unresolved reference {${path}}`);
-    return resolve(target.value, [...trail, path]);
-  }
-  if (value && typeof value === "object") {
-    return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, resolve(v, trail)]));
-  }
-  return value;
-}
-
-const referenceOf = (value) =>
-  typeof value === "string" && REFERENCE.test(value) ? value.slice(1, -1) : null;
-
-// ---------------------------------------------------------------- naming ----
-
-/** `-12` collides with the kebab separator, so the build renames it. */
-const normalizeSegment = (segment) =>
-  segment.startsWith("-") ? `minus${segment.slice(1)}` : segment;
-
-const kebab = (segment) =>
-  normalizeSegment(segment)
-    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
-    .toLowerCase();
-
-function camel(parts) {
-  const words = parts.flatMap((part) => normalizeSegment(part).split("-"));
-  return words
-    .map((word, index) => {
-      if (index === 0) return word;
-      // Leading digits can't be capitalized, so `2xs` stays lowercase.
-      return /^[a-z]/.test(word) ? word[0].toUpperCase() + word.slice(1) : word;
-    })
-    .join("");
-}
-
-const IDENTIFIER = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
-const jsAccessor = (parts) =>
-  parts.reduce(
-    (acc, part) => (IDENTIFIER.test(part) ? `${acc}.${part}` : `${acc}[${JSON.stringify(part)}]`),
-    "tokens",
-  );
-
-const cssVar = (parts) => `--${parts.map(kebab).join("-")}`;
-
-function names(parts) {
-  const flat = camel(parts);
-  return {
-    css: cssVar(parts),
-    js: jsAccessor(parts),
-    swift: `CosmosTokens.${flat}`,
-    kotlin: `CosmosTokens.${flat}`,
-  };
-}
+const { source, root } = loadTokens(repoRoot);
+const resolve = makeResolver(root);
 
 function copyValues(parts) {
   const n = names(parts);
   return { css: `var(${n.css})`, js: n.js, swift: n.swift, kotlin: n.kotlin };
-}
-
-// -------------------------------------------------------------- contrast ----
-
-function channel(component) {
-  const c = component / 255;
-  return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-}
-
-function luminance(hex) {
-  const value = hex.replace("#", "");
-  const full = value.length === 3 ? [...value].map((c) => c + c).join("") : value;
-  const [r, g, b] = [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
-  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-}
-
-function contrastRatio(foreground, background) {
-  const [a, b] = [luminance(foreground), luminance(background)];
-  const [light, dark] = a > b ? [a, b] : [b, a];
-  return Math.round(((light + 0.05) / (dark + 0.05)) * 100) / 100;
 }
 
 // ----------------------------------------------------------------- build ----
