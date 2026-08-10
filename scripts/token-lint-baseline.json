@@ -1,0 +1,98 @@
+{
+  "$comment": "Known, accepted debt. scripts/lint-tokens.mjs fails on anything not listed here, and also fails when an entry here stops being true — so this file can shrink but never grow silently. Every entry needs a reason.",
+
+  "knownContrastFailures": [
+    {
+      "token": "text-link",
+      "ratio": 3.39,
+      "reason": "brand.700 on white is 3.39:1. Passes AA for large and bold text and for UI components, but not for small body text. Accepted because the brand blue is fixed; links must therefore carry an underline so colour is not the only signal. Retuning the brand ramp is tracked for v2."
+    },
+    {
+      "token": "text-brand",
+      "ratio": 3.39,
+      "reason": "Same brand.700 limitation as text-link. Use at 18px+, or bold at 14px+."
+    },
+    {
+      "token": "text-brand-on-bg-fill",
+      "ratio": 3.39,
+      "reason": "White on brand.700. Primary button labels are bold 14px+, which meets the AA large-text threshold. Do not use this pairing for small regular-weight text."
+    },
+    {
+      "token": "text-caution",
+      "ratio": 2.94,
+      "reason": "yellow.600 on white fails AA outright. The caution ramp is too light at every step to carry text on white. Pair icon-caution with text-primary instead. Scheduled to be fixed when caution is retuned and renamed to warning in v2."
+    },
+    {
+      "token": "text-caution-on-bg-fill-strong",
+      "ratio": 2.94,
+      "reason": "White on yellow.600. The token name promises a contrast-safe pairing it cannot deliver; use text-primary on caution fills. Fixed by the v2 caution retune."
+    },
+    {
+      "token": "text-caution-on-bg-fill-subtle",
+      "ratio": 2.73,
+      "reason": "yellow.600 on yellow.100. Same defect as above; use text-primary. Fixed by the v2 caution retune."
+    },
+    {
+      "token": "icon-caution",
+      "ratio": 2.94,
+      "reason": "Below the WCAG 1.4.11 non-text minimum of 3:1. A caution icon must never be the only signal — always pair it with text."
+    },
+    {
+      "token": "icon-caution-on-bg-fill-strong",
+      "ratio": 2.94,
+      "reason": "Inherits the caution ramp defect. Pair with text."
+    },
+    {
+      "token": "icon-caution-on-bg-fill-subtle",
+      "ratio": 2.73,
+      "reason": "Inherits the caution ramp defect. Pair with text."
+    }
+  ],
+
+  "$orphanComment": "Primitives with no semantic role. Deliberately unexposed: they exist in the scale for completeness or for future roles, and product code must not reach for them. A NEW orphan is a lint failure — add the role, or add it here with a reason.",
+
+  "orphanPrimitives": [
+    "color.neutral.700",
+    "color.neutral.800",
+    "color.neutral.900",
+    "color.brand.300",
+    "color.brand.500",
+    "color.brand.600",
+    "color.brand.950",
+    "color.green.200",
+    "color.green.400",
+    "color.green.500",
+    "color.green.600",
+    "color.green.950",
+    "fontSize.9",
+    "fontSize.10",
+    "fontSize.11",
+    "fontSize.20",
+    "fontSize.36",
+    "fontSize.40",
+    "fontSize.44",
+    "fontSize.52",
+    "fontSize.58",
+    "fontSize.64",
+    "lineHeight.12",
+    "lineHeight.44",
+    "lineHeight.52",
+    "lineHeight.56",
+    "lineHeight.64",
+    "lineHeight.72",
+    "lineHeight.80",
+    "lineHeight.92",
+    "spacing.44",
+    "spacing.52",
+    "spacing.56",
+    "spacing.60",
+    "spacing.-12",
+    "spacing.-8",
+    "spacing.-4",
+    "spacing.-2",
+    "duration.100",
+    "duration.500",
+    "duration.700",
+    "easing.linear"
+  ]
+}

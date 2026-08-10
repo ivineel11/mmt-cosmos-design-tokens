@@ -5,10 +5,12 @@
   "description": "MakeMyTrip Cosmos Design System tokens compiled to platform-specific code with Style Dictionary.",
   "type": "module",
   "scripts": {
-    "build:tokens": "node build-tokens.mjs"
+    "lint:tokens": "node scripts/lint-tokens.mjs",
+    "build:tokens": "npm run lint:tokens && node build-tokens.mjs"
   },
   "devDependencies": {
     "@tokens-studio/sd-transforms": "^1.2.13",
+    "ajv": "^8.17.1",
     "style-dictionary": "^4.3.3"
   }
 }

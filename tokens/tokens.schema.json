@@ -34,7 +34,10 @@
     "group": {
       "type": "object",
       "additionalProperties": {
-        "anyOf": [{ "$ref": "#/$defs/token" }, { "$ref": "#/$defs/group" }]
+        "$comment": "Discriminate on `value` rather than using anyOf, so a token missing a required field reports that field instead of failing to match `token` and being misreported as a malformed group.",
+        "if": { "type": "object", "required": ["value"] },
+        "then": { "$ref": "#/$defs/token" },
+        "else": { "$ref": "#/$defs/group" }
       }
     },
     "token": {
