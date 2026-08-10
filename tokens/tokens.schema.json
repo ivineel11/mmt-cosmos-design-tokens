@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://makemytrip.com/cosmos/tokens.schema.json",
+  "title": "Cosmos design tokens",
+  "description": "Structural contract for tokens/tokens.json. Naming rules and cross-token invariants that JSON Schema cannot express are enforced by scripts/lint-tokens.mjs.",
+  "type": "object",
+  "required": ["primitives", "semantic", "$metadata"],
+  "properties": {
+    "primitives": {
+      "description": "Raw values. Never referenced directly by product code.",
+      "$ref": "#/$defs/group"
+    },
+    "semantic": {
+      "description": "Role-based aliases. Every value must be a {reference} to a primitive.",
+      "$ref": "#/$defs/group"
+    },
+    "$themes": {
+      "type": "array",
+      "description": "Tokens Studio themes. Empty — Cosmos ships a single light theme."
+    },
+    "$metadata": {
+      "type": "object",
+      "required": ["tokenSetOrder"],
+      "properties": {
+        "tokenSetOrder": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Build order. Must remain [\"primitives\", \"semantic\"] so references resolve."
+        }
+      }
+    }
+  },
+  "$defs": {
+    "group": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [{ "$ref": "#/$defs/token" }, { "$ref": "#/$defs/group" }]
+      }
+    },
+    "token": {
+      "type": "object",
+      "required": ["value", "type", "description", "$extensions"],
+      "properties": {
+        "value": {
+          "description": "A literal value, a {reference}, or a composite map of either.",
+          "anyOf": [
+            { "type": "string" },
+            { "type": "number" },
+            {
+              "type": "object",
+              "additionalProperties": { "type": ["string", "number"] }
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "color",
+            "fontFamilies",
+            "fontWeights",
+            "fontSizes",
+            "lineHeights",
+            "typography",
+            "spacing",
+            "borderRadius",
+            "borderWidth",
+            "sizing",
+            "duration",
+            "cubicBezier"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 20,
+          "description": "What the token is for, and what it is not for. Must not merely restate the value."
+        },
+        "$extensions": {
+          "type": "object",
+          "required": ["mmt"],
+          "properties": { "mmt": { "$ref": "#/$defs/mmt" } }
+        }
+      },
+      "additionalProperties": false
+    },
+    "mmt": {
+      "type": "object",
+      "required": ["tier", "status"],
+      "properties": {
+        "tier": {
+          "enum": ["primitive", "primitive-alias", "semantic"],
+          "description": "primitive and primitive-alias must never be used in product code."
+        },
+        "status": {
+          "enum": ["internal", "stable", "experimental", "deprecated"]
+        },
+        "replacedBy": {
+          "type": "string",
+          "description": "Required when status is deprecated: the token to use instead."
+        },
+        "note": { "type": "string" },
+        "palette": { "type": "string" },
+        "step": { "type": "string" },
+        "role": { "type": "string" },
+        "size": { "type": "string" },
+        "weight": { "type": "string" },
+        "pairsWith": {
+          "type": "object",
+          "description": "For a fill or surface: the contrast-checked foreground tokens.",
+          "additionalProperties": { "type": "string" }
+        },
+        "states": {
+          "type": "object",
+          "description": "For an interactive token: its state variants.",
+          "propertyNames": { "enum": ["hover", "active", "selected"] },
+          "additionalProperties": { "type": "string" }
+        },
+        "contrast": {
+          "type": "object",
+          "required": ["against", "ratio", "wcag"],
+          "properties": {
+            "against": { "type": "string" },
+            "ratio": { "type": "number" },
+            "wcag": {
+              "enum": ["AA", "AA-large", "AA-nontext", "EXEMPT", "FAIL"],
+              "description": "EXEMPT records an intentional choice (disabled or decorative); FAIL records a known defect."
+            },
+            "note": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "usage": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Component slots this token is the right answer for."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "deprecated" } }, "required": ["status"] },
+          "then": { "required": ["replacedBy"] }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}
