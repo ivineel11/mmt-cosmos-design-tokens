@@ -1,0 +1,10 @@
+{
+  "codeConnect": {
+    "parser": "react",
+    "include": ["react/src/**/*.tsx", "react/src/**/*.ts"],
+    "exclude": ["**/node_modules/**", "dist/**"],
+    "importPaths": {
+      "react/src/*": "@mmt/cosmos-react"
+    }
+  }
+}

@@ -107,12 +107,13 @@ Figma (Tokens Studio plugin)
         ↓ export
 tokens/tokens.json
   ├── primitives   — raw values (colors, sizes, fonts)
-  └── semantic     — role-based aliases that reference primitives
+  ├── semantic     — role-based aliases that reference primitives
+  └── component    — per-component aliases that reference semantic roles
         ↓ Style Dictionary + custom transforms
 dist/web · dist/ios · dist/android
 ```
 
-The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second**. Primitives must resolve before semantic aliases can reference them.
+The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**. Each tier must resolve before the tier above it can reference it.
 
 ### Build pipeline internals
 
@@ -166,14 +167,17 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 ## Major Design Decisions
 
-### 1. Two-tier token model (primitives → semantic)
+### 1. Three-tier token model (primitives → semantic → component)
 
 | Layer | Purpose | Who uses it |
 |-------|---------|-------------|
 | **Primitives** | Raw design values — hex colors, pixel sizes, font stacks | Token authors, design system maintainers |
 | **Semantic** | Role-based names that describe *intent* (`text-primary`, `bg-fill-brand`) | Product engineers, designers in Figma |
+| **Component** | Per-component aliases over semantic roles (`button.bg-primary-hover`) | Component authors, and any model generating code from a Figma node |
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes.
+
+The component tier exists for a narrower reason: it makes the Figma variable name and the CSS custom property **the same string**. `button/bg-primary-hover` in the Figma `component` collection is `--button-bg-primary-hover` in `dist/web/tokens.css`. That identity is what lets an LLM read a Figma node and emit the right token without a translation table. Add a component tier only when a component is paired with a Figma component set that way — it is not a general-purpose dumping ground, and a component with no Figma counterpart should bind semantic roles directly.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -263,7 +267,28 @@ Do not hand-write Swift or Kotlin gradient code in product apps.
 | `mmt/color/android` / `mmt/color/android-gradient` | Hex → Compose `Color`; CSS gradients → `Brush.linearGradient` |
 | `mmt/ios-line-height-modifier` (iOS format) | Emits `LineHeight.swift` — a `.lineHeight` SwiftUI modifier that converts total line-box height → line spacing |
 
-### 10. Flat output namespace
+### 10. Button component tokens (`component.button.*`)
+
+100 tokens under `component.button`, every one of them an alias — no raw values. Naming follows the semantic layer's shape (two levels, kebab-case leaf with the role baked in) rather than deep nesting, so `button.bg-primary-hover` reads like `color.bg-fill-brand`.
+
+| Group | Pattern | Count |
+|-------|---------|-------|
+| Background | `bg-{hierarchy}-{state}` / `bg-{hierarchy}-destructive-{state}` | 32 |
+| Label | `label-{hierarchy}-{default\|disabled}` / `…-destructive-…` | 16 |
+| Border | `border-{hierarchy}-{state}` / `…-destructive-…` | 32 |
+| Geometry | `radius`, `min-height-*`, `padding-x-*`, `padding-y-*`, `gap-*`, `icon-size-*`, `border-width` | 17 |
+| Focus | `focus-ring`, `focus-ring-width`, `focus-ring-offset` | 3 |
+
+`hierarchy` ∈ `primary | secondary | tertiary | text`; `state` ∈ `default | hover | pressed | disabled`. Intent folds into the name (`-destructive-`) rather than forming its own axis, which keeps every key flat and greppable.
+
+Two things the button needed and Cosmos did not have, both added at the tier below rather than faked at the component tier:
+
+- **Interaction states.** The semantic layer had no `*-hover` / `*-pressed` roles at all, so a component token had nothing legitimate to alias. Added under the existing taxonomy: `bg-fill-brand-hover`, `bg-surface-warning-pressed`, `border-brand-hover`, `text-warning-pressed`, and so on. Hover darkens one palette step, pressed two; subtle surfaces move up the light end (50 → 100 → 200) instead of inverting.
+- **`color.transparent`.** Tertiary and Text hierarchies need a transparent fill and every hierarchy needs a transparent border for API symmetry. The primitive lives at `color.alpha.transparent` rather than flat `color.transparent`, because outputs merge primitives and semantics into one namespace (see §11) and a flat primitive would collide with the semantic role.
+
+`min-height-*` is a token in its own right rather than a by-product of padding, so the 48px touch target on Large survives font scaling. `border-width` and `focus-ring-width` alias `borderWidth.*` primitives directly — Cosmos has no semantic border-width ramp, and inventing a role for a single consumer would be worse than the documented exception.
+
+### 11. Flat output namespace
 
 Both primitives and semantics merge into a single flat namespace in generated outputs. There is no `primitives.` prefix in CSS, JS, Swift, or Kotlin — all tokens are peers.
 
@@ -288,7 +313,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 6. **Run the build after every token change.** `npm run build:tokens` validates references and regenerates all platform outputs.
 
-7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic"]`.
+7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic", "component"]` — each tier resolves against the ones before it.
 
 8. **Name semantic tokens by role, not value.** Prefer `text-caution` over `text-yellow-700` in the semantic layer (the mapping to yellow happens internally).
 
@@ -922,6 +947,12 @@ Box(
 | `tokens/tokens.json` | Source of truth — edit here or sync from Figma |
 | `build-tokens.mjs` | Style Dictionary config and custom transforms |
 | `package.json` | Package metadata and build script |
+| `scripts/add-button-tokens.mjs` | Re-runnable: writes the `component.button.*` tier (and its semantic/primitive dependencies) into `tokens.json` |
+| `scripts/generate-button-css.mjs` | Re-runnable: generates `react/src/Button.css` from those tokens |
+| `figma/generate-scripts.mjs` | Generates the Figma Plugin API scripts in `figma/generated/` from `tokens.json` |
+| `figma/generated/*.js` | Idempotent scripts that create the Figma variables — see `figma/README.md` |
+| `react/` | React components paired with the Figma library (see below) |
+| `figma.config.json` | Code Connect configuration |
 | `dist/web/tokens.css` | Generated CSS custom properties |
 | `dist/web/tokens.ts` | Generated ESM token object |
 | `dist/ios/CosmosTokens.swift` | Generated SwiftUI enum |

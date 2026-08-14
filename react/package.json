@@ -1,0 +1,26 @@
+{
+  "name": "@mmt/cosmos-react",
+  "version": "0.1.0",
+  "private": true,
+  "description": "React components for the MakeMyTrip Cosmos design system, paired with the Figma component library via Code Connect.",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "figma:connect": "figma connect publish",
+    "figma:connect:dry": "figma connect publish --dry-run"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@figma/code-connect": "^1.3.4",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^5.9.3"
+  }
+}
