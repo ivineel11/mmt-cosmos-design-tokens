@@ -150,7 +150,7 @@
   --color-alpha-transparent: #FFFFFF00;
   --color-bg: #FFFFFF;
   --color-bg-surface: #F5F5F5;
-  --color-bg-surface-disabled: #FAFAFA;
+  --color-bg-surface-disabled: #E6E6E6;
   --color-bg-surface-secondary: #FFFFFF;
   --color-bg-surface-brand: #F0F7FF;
   --color-bg-surface-brand-hover: #E1EEFD;
@@ -163,7 +163,7 @@
   --color-bg-surface-warning-pressed: #FFC9C9;
   --color-bg-surface-inverse: #000000;
   --color-bg-fill: #FFFFFF;
-  --color-bg-fill-disabled: #D6D6D6;
+  --color-bg-fill-disabled: #A5A5A5;
   --color-bg-fill-secondary: #F5F5F5;
   --color-bg-fill-brand: #086BC5;
   --color-bg-fill-brand-hover: #08539C;
@@ -206,7 +206,7 @@
   --color-text-warning-on-bg-fill-subtle: #C10007;
   --color-border: #D6D6D6;
   --color-border-secondary: #E6E6E6;
-  --color-border-disabled: #F5F5F5;
+  --color-border-disabled: #A5A5A5;
   --color-border-focus: #086BC5;
   --color-border-brand: #086BC5;
   --color-border-brand-hover: #1487E3;
@@ -219,7 +219,7 @@
   --color-border-warning-strong-hover: #9F0712;
   --color-border-warning-strong-pressed: #82181A;
   --color-icon: #000000;
-  --color-icon-disabled: #E6E6E6;
+  --color-icon-disabled: #A5A5A5;
   --color-icon-inverse: #FAFAFA;
   --color-icon-secondary: #575757;
   --color-icon-tertiary: #A5A5A5;
@@ -597,10 +597,10 @@
   --space-7xl: 64px;
   --button-bg-primary-default: #086BC5;
   --button-bg-primary-destructive-default: #C10007;
-  --button-bg-primary-destructive-disabled: #D6D6D6;
+  --button-bg-primary-destructive-disabled: #E6E6E6;
   --button-bg-primary-destructive-hover: #9F0712;
   --button-bg-primary-destructive-pressed: #82181A;
-  --button-bg-primary-disabled: #D6D6D6;
+  --button-bg-primary-disabled: #E6E6E6;
   --button-bg-primary-hover: #08539C;
   --button-bg-primary-pressed: #08539C;
   --button-bg-secondary-default: #FFFFFF00;
@@ -613,10 +613,10 @@
   --button-bg-secondary-pressed: #BCDDFB;
   --button-bg-tertiary-default: #F0F7FF;
   --button-bg-tertiary-destructive-default: #FEF2F2;
-  --button-bg-tertiary-destructive-disabled: #FAFAFA;
+  --button-bg-tertiary-destructive-disabled: #E6E6E6;
   --button-bg-tertiary-destructive-hover: #FFE2E2;
   --button-bg-tertiary-destructive-pressed: #FFC9C9;
-  --button-bg-tertiary-disabled: #FAFAFA;
+  --button-bg-tertiary-disabled: #E6E6E6;
   --button-bg-tertiary-hover: #E1EEFD;
   --button-bg-tertiary-pressed: #BCDDFB;
   --button-bg-text-default: #FFFFFF00;
@@ -637,10 +637,10 @@
   --button-border-primary-pressed: #FFFFFF00;
   --button-border-secondary-default: #086BC5;
   --button-border-secondary-destructive-default: #C10007;
-  --button-border-secondary-destructive-disabled: #F5F5F5;
+  --button-border-secondary-destructive-disabled: #A5A5A5;
   --button-border-secondary-destructive-hover: #9F0712;
   --button-border-secondary-destructive-pressed: #82181A;
-  --button-border-secondary-disabled: #F5F5F5;
+  --button-border-secondary-disabled: #A5A5A5;
   --button-border-secondary-hover: #1487E3;
   --button-border-secondary-pressed: #086BC5;
   --button-border-tertiary-default: #FFFFFF00;
