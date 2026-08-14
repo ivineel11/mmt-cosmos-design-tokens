@@ -1,0 +1,59 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* The docs site is styled with the tokens it documents. */
+:root {
+  --page-max: 1080px;
+  --sidebar-width: 268px;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  /* Corporate motion: decisive, no overshoot (Material 3 / Snappy UI). */
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-exit: cubic-bezier(0.3, 0, 1, 1);
+  --motion-duration-panel: 260ms;
+  --motion-duration-panel-exit: 200ms;
+  --motion-duration-fade: 160ms;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  /* --font-lato is the self-hosted face; --font-family-lato is the token value. */
+  font-family: var(--font-lato), var(--font-family-lato), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Anchored sections must clear the sticky mobile bar when jumped to. */
+[data-section] {
+  scroll-margin-top: var(--space-xl);
+}
+
+@media (max-width: 1023px) {
+  [data-section] {
+    scroll-margin-top: 76px;
+  }
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+
+.hairline {
+  border-color: var(--color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

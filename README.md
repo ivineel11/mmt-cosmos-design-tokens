@@ -927,3 +927,22 @@ Box(
 | `dist/ios/CosmosTokens.swift` | Generated SwiftUI enum |
 | `dist/ios/LineHeight.swift` | Generated SwiftUI `.lineHeight` modifier (total line-box height → line spacing) |
 | `dist/android/CosmosTokens.kt` | Generated Compose object (`com.makemytrip.cosmos.tokens`) |
+| `docs-site/` | Browsable documentation site for every token (see below) |
+
+---
+
+## Documentation site
+
+`docs-site/` is a Next.js app that renders every token in `tokens/tokens.json` as a browsable reference: primitive palettes, semantic roles, expressive ramps, WCAG contrast pairs, type specimens, and the spacing, radius, and sizing scales. Each token can be copied as a CSS variable, JS accessor, Swift, or Kotlin symbol.
+
+```bash
+cd docs-site
+npm install
+npm run dev      # http://localhost:3000
+```
+
+The site does not maintain its own copy of the tokens. A pre-step (`npm run tokens`, run automatically before `dev` and `build`) reads `tokens/tokens.json`, resolves every `{reference}`, derives the platform names, computes contrast ratios, and writes `docs-site/data/tokens.json`. It also copies `dist/web/tokens.css` into the site so the documentation is styled with the tokens it documents. Run `npm run build:tokens` in the repo root first so that CSS exists.
+
+The generated platform names are checked against `dist/web/tokens.css` on every run; if the naming rules in `build-tokens.mjs` change, the generator prints a warning listing the names that no longer match.
+
+`npm run build` produces a static export in `docs-site/out/` that can be hosted anywhere.
