@@ -1,2 +1,9 @@
 node_modules
 .DS_Store
+
+# Next.js build output (docs sites)
+.next
+out
+
+# uSpec staging and per-specialist caches
+.uspec-cache
