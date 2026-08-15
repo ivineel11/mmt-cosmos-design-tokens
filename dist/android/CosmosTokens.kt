@@ -129,10 +129,10 @@ object CosmosTokens {
   val buttonFocusRing = Color(0xFF086BC5)
   val buttonFocusRingOffset = 2.dp
   val buttonFocusRingWidth = 2.dp
-  val buttonGapLg = 8.dp
+  val buttonGapLg = 12.dp
   val buttonGapMd = 8.dp
   val buttonGapSm = 4.dp
-  val buttonIconSizeLg = 20.dp
+  val buttonIconSizeLg = 24.dp
   val buttonIconSizeMd = 20.dp
   val buttonIconSizeSm = 16.dp
   val buttonLabelPrimaryDefault = Color(0xFFFFFFFF)

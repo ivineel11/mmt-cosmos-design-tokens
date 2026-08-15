@@ -663,10 +663,10 @@
   --button-focus-ring: #086BC5;
   --button-focus-ring-offset: 2px;
   --button-focus-ring-width: 2px;
-  --button-gap-lg: 8px;
+  --button-gap-lg: 12px;
   --button-gap-md: 8px;
   --button-gap-sm: 4px;
-  --button-icon-size-lg: 20px;
+  --button-icon-size-lg: 24px;
   --button-icon-size-md: 20px;
   --button-icon-size-sm: 16px;
   --button-label-primary-default: #FFFFFF;
