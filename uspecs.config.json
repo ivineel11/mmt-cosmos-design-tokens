@@ -1,5 +1,5 @@
 {
   "mcpProvider": "figma-mcp",
-  "environment": "cursor",
+  "environment": "claude-code",
   "cliVersion": "0.3.2"
 }
