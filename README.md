@@ -965,7 +965,7 @@ Schema drift between the CLI and the Figma plugin is a known failure mode, so ke
 | Component | Version |
 |------|---------|
 | `uspec-skills` CLI | `0.3.2` (recorded in `uspecs.config.json` as `cliVersion`) |
-| uSpec Extract Figma plugin | `2.5.0` (recorded in each export's `_meta.pluginVersion`) |
+| uSpec Extract Figma plugin | `2.7.0` (recorded in each export's `_meta.pluginVersion`) |
 | `_base.json` schema | `1` |
 
 ### Agent platform
