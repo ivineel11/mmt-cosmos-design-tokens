@@ -242,9 +242,10 @@ object CosmosTokens {
   val checkboxLabelDefault = Color(0xFF0A0A0A)
   val checkboxLabelDisabled = Color(0xFFA1A1A1)
   val checkboxMinTouchTarget = 48.dp
-  val checkboxRadiusLg = 4.dp
+  val checkboxRadiusLg = 8.dp
   val checkboxRadiusMd = 4.dp
   val checkboxRadiusSm = 2.dp
+  val checkboxRadiusXl = 12.dp
   val colorAlphaTransparent = Color(0x00FFFFFF)
   val colorAmber100 = Color(0xFFFEF3C6)
   val colorAmber200 = Color(0xFFFEE685)
@@ -752,7 +753,7 @@ object CosmosTokens {
   val radioDotSelectedErrorPressed = Color(0xFF9F0712)
   val radioDotSelectedHover = Color(0xFF0681FF)
   val radioDotSelectedPressed = Color(0xFF0857C5)
-  val radioDotSizeLg = 12.dp
+  val radioDotSizeLg = 16.dp
   val radioDotSizeMd = 10.dp
   val radioDotSizeSm = 8.dp
   val radioGapLg = 12.dp

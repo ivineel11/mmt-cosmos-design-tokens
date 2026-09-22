@@ -1401,8 +1401,10 @@
   --checkbox-radius-sm: 2px;
   /** Corner radius of the checkbox box at medium size. */
   --checkbox-radius-md: 4px;
-  /** Corner radius of the checkbox box at large size; currently the same value as radius-md. */
-  --checkbox-radius-lg: 4px;
+  /** Corner radius of the checkbox box at large size. */
+  --checkbox-radius-lg: 8px;
+  /** Corner radius step above radius-lg. The checkbox control ramp has three sizes (sm, md, lg), so this fourth step has no size to pair with — confirm its intended consumer before binding it. */
+  --checkbox-radius-xl: 12px;
   /** Thickness of the box outline, in every state. */
   --checkbox-border-width: 1px;
   /** Thickness of the keyboard focus ring. */
@@ -1510,7 +1512,7 @@
   /** Diameter of the selected dot inside the circle at medium size. The only component token that aliases a primitive (spacing.10) rather than a semantic step, because the semantic space scale jumps from 8px to 12px. */
   --radio-dot-size-md: 10px;
   /** Diameter of the selected dot inside the circle at large size. */
-  --radio-dot-size-lg: 12px;
+  --radio-dot-size-lg: 16px;
   /** Corner radius of the radio circle — always fully round. A single token, since the circle keeps its shape across every size. */
   --radio-radius: 999px;
   /** Thickness of the circle outline, in every state. */

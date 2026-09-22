@@ -1,6 +1,6 @@
 # Per-state Button label tokens
 
-**Status:** implemented in the token layer. **Figma bindings still outstanding** — see below.
+**Status:** implemented in the token layer and bound in Figma.
 
 ## Problem
 
@@ -74,15 +74,12 @@ The four `primary` entries do not change colour — white stays white on a solid
 
 All 24 non-disabled Button states now pass AA, from 4.76 to 8.35.
 
-## Outstanding: Figma bindings
+## Figma: done
 
-The token layer is ahead of the Figma file until this is done:
+1. 20 variables created — 16 under `button/` in the `component` collection, 4 under `color/` in `semantic` — each aliasing a semantic role rather than a raw hex, with `TEXT_FILL` scope and per-platform `codeSyntax` matching the existing tokens.
+2. The Label fill was rebound per State across **48 of the 120 variants** (Hover and Pressed × 4 hierarchies × 2 intents × 3 sizes). Verified: all 120 variants resolve to their expected binding, with `-default` now covering 6 each (Default + Focus) instead of 12.
 
-1. Add 16 variables to the `component` collection under `button/`, and 4 to `semantic` under `color/`.
-2. **Rebind the Label node's fill per State.** Today it is one binding — `button/label-{hierarchy}-default` covers Default, Hover, Pressed and Focus. It has to become a per-state binding, which changes the component's variant wiring, not just the variable list.
-3. Focus keeps using the `-default` label. Focus does not change the background, so its contrast is unaffected.
-
-Until step 2 lands, the Figma component will not show hover and pressed label colours even though the tokens exist — the same class of drift as the unbound `button/radius-*`.
+Focus keeps the `-default` label, as planned — Focus does not change the background, so its contrast is unaffected.
 
 ## Out of scope
 
