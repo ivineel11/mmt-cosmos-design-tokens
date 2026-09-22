@@ -379,6 +379,10 @@
   --color-text-brand-pressed: #0857C5;
   /** Label and icon colour on bg-fill-brand — primary button content. Do not use on tinted brand surfaces, where it will not have contrast. */
   --color-text-brand-on-bg-fill: #FFFFFF;
+  /** Brand label colour on a tinted brand surface while hovered — the secondary, tertiary and text button labels. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For a label on a solid brand fill use text-brand-on-bg-fill; for brand foreground marks such as the Radio dot use text-brand-hover, which tracks border-brand-hover instead. */
+  --color-text-brand-on-bg-surface-hover: #0857C5;
+  /** Brand label colour on a tinted brand surface while pressed. One step darker than text-brand-on-bg-surface-hover, matching the deeper surface underneath. */
+  --color-text-brand-on-bg-surface-pressed: #0D4C9B;
   /** Informational text on a neutral or info-tinted surface (bg-surface-info). On a solid info fill use the text-info-on-bg-fill-* variants. */
   --color-text-info: #0067E8;
   /** Label colour on bg-fill-info-strong. */
@@ -407,6 +411,10 @@
   --color-text-warning-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-warning-subtle. */
   --color-text-warning-on-bg-fill-subtle: #C10007;
+  /** Destructive label colour on a tinted red surface while hovered — the secondary, tertiary and text destructive button labels. Darker than text-warning so the label keeps AA as the surface deepens beneath it. */
+  --color-text-warning-on-bg-surface-hover: #9F0712;
+  /** Destructive label colour on a tinted red surface while pressed. One step darker than text-warning-on-bg-surface-hover, matching the deeper surface underneath. */
+  --color-text-warning-on-bg-surface-pressed: #82181A;
   /** Default border and divider — input outlines, card edges, table rules. Use border-secondary where a lighter separation is wanted. */
   --color-border: #D4D4D4;
   /** Lighter divider for dense or nested content — list separators, inner table rules. */
@@ -1195,38 +1203,70 @@
   --button-icon-size-md: 20px;
   /** Size of the leading, trailing and spinner glyphs at small size. Ramps in lockstep with the label type so glyph and text share one optical centre line. */
   --button-icon-size-sm: 16px;
-  /** Colour of the text label in the primary (solid fill) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the primary (solid fill) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-primary-default: #FFFFFF;
-  /** Colour of the text label in the primary (solid fill) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the primary (solid fill) button — destructive intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-primary-destructive-default: #FFFFFF;
   /** Colour of the text label in the primary (solid fill) button when disabled — destructive intent. */
   --button-label-primary-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the primary (solid fill) button — destructive intent, on hover. A solid fill keeps a white label, so this resolves to the same colour as the resting state; it exists so every hierarchy exposes the same per-state slots. */
+  --button-label-primary-destructive-hover: #FFFFFF;
+  /** Colour of the text label in the primary (solid fill) button — destructive intent, while pressed. A solid fill keeps a white label, so this resolves to the same colour as the resting state; it exists so every hierarchy exposes the same per-state slots. */
+  --button-label-primary-destructive-pressed: #FFFFFF;
   /** Colour of the text label in the primary (solid fill) button when disabled — default intent. */
   --button-label-primary-disabled: #A1A1A1;
-  /** Colour of the text label in the secondary (outlined) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the primary (solid fill) button — default intent, on hover. A solid fill keeps a white label, so this resolves to the same colour as the resting state; it exists so every hierarchy exposes the same per-state slots. */
+  --button-label-primary-hover: #FFFFFF;
+  /** Colour of the text label in the primary (solid fill) button — default intent, while pressed. A solid fill keeps a white label, so this resolves to the same colour as the resting state; it exists so every hierarchy exposes the same per-state slots. */
+  --button-label-primary-pressed: #FFFFFF;
+  /** Colour of the text label in the secondary (outlined) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-secondary-default: #0067E8;
-  /** Colour of the text label in the secondary (outlined) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the secondary (outlined) button — destructive intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-secondary-destructive-default: #C10007;
   /** Colour of the text label in the secondary (outlined) button when disabled — destructive intent. */
   --button-label-secondary-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the secondary (outlined) button — destructive intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-secondary-destructive-hover: #9F0712;
+  /** Colour of the text label in the secondary (outlined) button — destructive intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-secondary-destructive-pressed: #82181A;
   /** Colour of the text label in the secondary (outlined) button when disabled — default intent. */
   --button-label-secondary-disabled: #A1A1A1;
-  /** Colour of the text label in the tertiary (tinted) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the secondary (outlined) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-secondary-hover: #0857C5;
+  /** Colour of the text label in the secondary (outlined) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-secondary-pressed: #0D4C9B;
+  /** Colour of the text label in the tertiary (tinted) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-tertiary-default: #0067E8;
-  /** Colour of the text label in the tertiary (tinted) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the tertiary (tinted) button — destructive intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-tertiary-destructive-default: #C10007;
   /** Colour of the text label in the tertiary (tinted) button when disabled — destructive intent. */
   --button-label-tertiary-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the tertiary (tinted) button — destructive intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-tertiary-destructive-hover: #9F0712;
+  /** Colour of the text label in the tertiary (tinted) button — destructive intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-tertiary-destructive-pressed: #82181A;
   /** Colour of the text label in the tertiary (tinted) button when disabled — default intent. */
   --button-label-tertiary-disabled: #A1A1A1;
-  /** Colour of the text label in the text (no fill or outline) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the tertiary (tinted) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-tertiary-hover: #0857C5;
+  /** Colour of the text label in the tertiary (tinted) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-tertiary-pressed: #0D4C9B;
+  /** Colour of the text label in the text (no fill or outline) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-text-default: #0067E8;
-  /** Colour of the text label in the text (no fill or outline) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
+  /** Colour of the text label in the text (no fill or outline) button — destructive intent. The label keeps this colour on focus; hover and pressed have their own tokens. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-text-destructive-default: #C10007;
   /** Colour of the text label in the text (no fill or outline) button when disabled — destructive intent. */
   --button-label-text-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the text (no fill or outline) button — destructive intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-text-destructive-hover: #9F0712;
+  /** Colour of the text label in the text (no fill or outline) button — destructive intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-text-destructive-pressed: #82181A;
   /** Colour of the text label in the text (no fill or outline) button when disabled — default intent. */
   --button-label-text-disabled: #A1A1A1;
+  /** Colour of the text label in the text (no fill or outline) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-text-hover: #0857C5;
+  /** Colour of the text label in the text (no fill or outline) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
+  --button-label-text-pressed: #0D4C9B;
   /** Minimum height of the large button, and the only size that clears the 44px WCAG 2.5.8 target unaided. */
   --button-min-height-lg: 48px;
   /** Minimum height of the medium button. Below the 44px WCAG 2.5.8 target — the host must supply the remaining hit area. */

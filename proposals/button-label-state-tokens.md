@@ -1,13 +1,12 @@
-# Proposal: per-state Button label tokens
+# Per-state Button label tokens
 
-**Status:** draft, not implemented. Needs a design decision and matching Figma bindings.
-**Depends on:** the contrast fixes already applied to `text-link`, `text-caution-on-bg-fill-subtle`, `bg-fill-brand-hover` and `bg-fill-brand-pressed`.
+**Status:** implemented in the token layer. **Figma bindings still outstanding** — see below.
 
 ## Problem
 
-Six Button state combinations fail WCAG 1.4.3 (4.5:1 for normal text). They are not six separate mistakes — they are one structural gap.
+Six Button state combinations failed WCAG 1.4.3 (4.5:1 for normal text). They were not six separate mistakes but one structural gap.
 
-The Button exposes exactly two label slots per hierarchy: `label-*-default` and `label-*-disabled`. Per `components/button.md`, the `-default` token is used for Default, Hover, Pressed **and** Focus. So the label colour is frozen while the background deepens through `bg-surface-brand` 50 → 100 → 200. Contrast falls, with nothing compensating.
+The Button exposed exactly two label slots per hierarchy: `label-*-default` and `label-*-disabled`. Per `components/button.md`, the `-default` token served Default, Hover, Pressed **and** Focus. The label colour was frozen while the background deepened through `bg-surface-brand` 50 → 100 → 200, so contrast fell with nothing compensating.
 
 | State | Background | Label (`text-brand`, brand.700) |
 |---|---|---|
@@ -17,37 +16,40 @@ The Button exposes exactly two label slots per hierarchy: `label-*-default` and 
 
 Affected: `secondary hover/pressed`, `tertiary hover/pressed`, `text pressed`, `secondary-destructive pressed`, `tertiary-destructive pressed`.
 
-Lightening the tints instead does not work. Hover could move to `brand.50` (4.74 ✓), but pressed would then need `brand.100`, which is still 4.29 ✗. Hover and pressed cannot stay visually distinct unless the label moves.
+Lightening the tints instead does not work. Hover could move to `brand.50` (4.74 ✓), but pressed would then need `brand.100`, still 4.29 ✗. Hover and pressed cannot stay visually distinct unless the label moves.
 
-## Prerequisite: make the interaction text roles darken
+## Rejected: redefining the existing interaction roles
 
-`text-brand-hover` is **brand.600** — *lighter* than the brand.700 base. Bound on a deepening tint it yields 3.15:1, worse than doing nothing. These roles were built for text on a white page, and their direction is wrong for a tinted fill. They are also internally inconsistent today: hover lightens while pressed darkens.
+The first draft proposed redefining `text-brand-hover` (brand.600 → 800) and `text-brand-pressed` (800 → 900), plus the red equivalents, on the grounds that a hover colour *lighter* than its own base is incoherent now that `bg-fill-brand` darkens on interaction.
 
-Four semantic edits make every brand and red interaction ramp darken monotonically, matching the `bg-fill-brand` fix already applied:
+**That would have broken the Radio.** `components/radio.md` states that the dot uses the foreground ramp precisely because it steps 700 → 600 → 800 identically to `border-brand`, so ring and dot always resolve to the same hex — "what makes the control read as one mark rather than a ring with a separately-coloured filling":
 
-| Token | From | To |
+| Radio state | Ring | Dot |
 |---|---|---|
-| `text-brand-hover` | `{color.brand.600}` | `{color.brand.800}` |
-| `text-brand-pressed` | `{color.brand.800}` | `{color.brand.900}` |
-| `text-warning-hover` | `{color.red.600}` | `{color.red.800}` |
-| `text-warning-pressed` | `{color.red.800}` | `{color.red.900}` |
+| default | `border-brand` #0067E8 | `text-brand` #0067E8 |
+| hover | `border-brand-hover` #0681FF | `text-brand-hover` #0681FF |
+| pressed | `border-brand-pressed` #0857C5 | `text-brand-pressed` #0857C5 |
 
-### Knock-on: the Radio dot
+Redefining only the text side would have left a brand.600 ring around a brand.800 dot. Redefining the border side too would have fixed that, but at the cost of darkening every secondary Button outline, Checkbox border and Radio ring — a broad visual change to components that were not failing.
 
-These four roles have one other consumer each — the Radio dot on hover and pressed. The dot is a non-text graphic, so the 3:1 rule of WCAG 1.4.11 applies. All four improve:
+`text-brand-hover` remains brand.600. It is correct for what it does — tracking `border-brand-hover` for foreground marks — and is simply not the right role for label text on a tinted surface.
 
-| | Before | After |
-|---|---|---|
-| `radio/dot-selected-hover` | 3.48 | **6.12** |
-| `radio/dot-selected-pressed` | 5.55 | **6.99** |
-| `radio/dot-selected-error-hover` | 4.36 | **7.63** |
-| `radio/dot-selected-error-pressed` | 6.85 | **8.22** |
+## Implemented: four on-bg-surface roles
 
-None were failing, so this is a visual change rather than a fix: the Radio dot becomes darker on hover and pressed. **This needs a designer's sign-off** — it is the one place the proposal changes something that was not broken.
+New semantic roles, named after `text-brand-on-bg-fill`: where `on-bg-fill` means "on the filled background", `on-bg-surface` means "on the tinted surface background".
 
-## The 16 new Button tokens
+| Token | Value |
+|---|---|
+| `text-brand-on-bg-surface-hover` | `{color.brand.800}` |
+| `text-brand-on-bg-surface-pressed` | `{color.brand.900}` |
+| `text-warning-on-bg-surface-hover` | `{color.red.800}` |
+| `text-warning-on-bg-surface-pressed` | `{color.red.900}` |
 
-Every value is verified against the background that state actually paints. All 16 pass AA for normal text.
+Nothing outside Button consumes them, so Radio, Checkbox and the Button outlines are untouched. The ring-and-dot invariant still holds at every state.
+
+## The 16 Button tokens
+
+Every value verified against the background that state actually paints.
 
 | Token | Aliases | On | Ratio |
 |---|---|---|---|
@@ -55,63 +57,38 @@ Every value is verified against the background that state actually paints. All 1
 | `label-primary-pressed` | `text-brand-on-bg-fill` | brand.900 | 8.31 |
 | `label-primary-destructive-hover` | `text-warning-on-bg-fill-strong` | red.600 | 4.76 |
 | `label-primary-destructive-pressed` | `text-warning-on-bg-fill-strong` | red.800 | 8.35 |
-| `label-secondary-hover` | `text-brand-hover` | brand.100 | 5.55 |
-| `label-secondary-pressed` | `text-brand-pressed` | brand.200 | 6.09 |
-| `label-secondary-destructive-hover` | `text-warning-hover` | red.100 | 6.85 |
-| `label-secondary-destructive-pressed` | `text-warning-pressed` | red.200 | 6.89 |
-| `label-tertiary-hover` | `text-brand-hover` | brand.100 | 5.55 |
-| `label-tertiary-pressed` | `text-brand-pressed` | brand.200 | 6.09 |
-| `label-tertiary-destructive-hover` | `text-warning-hover` | red.100 | 6.85 |
-| `label-tertiary-destructive-pressed` | `text-warning-pressed` | red.200 | 6.89 |
-| `label-text-hover` | `text-brand-hover` | brand.50 | 6.12 |
-| `label-text-pressed` | `text-brand-pressed` | brand.100 | 6.99 |
-| `label-text-destructive-hover` | `text-warning-hover` | red.50 | 7.63 |
-| `label-text-destructive-pressed` | `text-warning-pressed` | red.100 | 8.22 |
+| `label-secondary-hover` | `text-brand-on-bg-surface-hover` | brand.100 | 5.55 |
+| `label-secondary-pressed` | `text-brand-on-bg-surface-pressed` | brand.200 | 6.09 |
+| `label-secondary-destructive-hover` | `text-warning-on-bg-surface-hover` | red.100 | 6.85 |
+| `label-secondary-destructive-pressed` | `text-warning-on-bg-surface-pressed` | red.200 | 6.89 |
+| `label-tertiary-hover` | `text-brand-on-bg-surface-hover` | brand.100 | 5.55 |
+| `label-tertiary-pressed` | `text-brand-on-bg-surface-pressed` | brand.200 | 6.09 |
+| `label-tertiary-destructive-hover` | `text-warning-on-bg-surface-hover` | red.100 | 6.85 |
+| `label-tertiary-destructive-pressed` | `text-warning-on-bg-surface-pressed` | red.200 | 6.89 |
+| `label-text-hover` | `text-brand-on-bg-surface-hover` | brand.50 | 6.12 |
+| `label-text-pressed` | `text-brand-on-bg-surface-pressed` | brand.100 | 6.99 |
+| `label-text-destructive-hover` | `text-warning-on-bg-surface-hover` | red.50 | 7.63 |
+| `label-text-destructive-pressed` | `text-warning-on-bg-surface-pressed` | red.100 | 8.22 |
 
-The four `primary` entries do not change colour — white stays white on a solid fill. They exist so every hierarchy exposes the same slots, matching how the transparent `border-*` tokens already work.
+The four `primary` entries do not change colour — white stays white on a solid fill. They exist so every hierarchy exposes the same per-state slots, matching how the transparent `border-*` tokens already work.
 
-### JSON to insert into `component.button`
+All 24 non-disabled Button states now pass AA, from 4.76 to 8.35.
 
-```json
-{
-  "label-primary-hover": { "value": "{color.text-brand-on-bg-fill}", "type": "color" },
-  "label-primary-pressed": { "value": "{color.text-brand-on-bg-fill}", "type": "color" },
-  "label-primary-destructive-hover": { "value": "{color.text-warning-on-bg-fill-strong}", "type": "color" },
-  "label-primary-destructive-pressed": { "value": "{color.text-warning-on-bg-fill-strong}", "type": "color" },
-  "label-secondary-hover": { "value": "{color.text-brand-hover}", "type": "color" },
-  "label-secondary-pressed": { "value": "{color.text-brand-pressed}", "type": "color" },
-  "label-secondary-destructive-hover": { "value": "{color.text-warning-hover}", "type": "color" },
-  "label-secondary-destructive-pressed": { "value": "{color.text-warning-pressed}", "type": "color" },
-  "label-tertiary-hover": { "value": "{color.text-brand-hover}", "type": "color" },
-  "label-tertiary-pressed": { "value": "{color.text-brand-pressed}", "type": "color" },
-  "label-tertiary-destructive-hover": { "value": "{color.text-warning-hover}", "type": "color" },
-  "label-tertiary-destructive-pressed": { "value": "{color.text-warning-pressed}", "type": "color" },
-  "label-text-hover": { "value": "{color.text-brand-hover}", "type": "color" },
-  "label-text-pressed": { "value": "{color.text-brand-pressed}", "type": "color" },
-  "label-text-destructive-hover": { "value": "{color.text-warning-hover}", "type": "color" },
-  "label-text-destructive-pressed": { "value": "{color.text-warning-pressed}", "type": "color" }
-}
-```
+## Outstanding: Figma bindings
 
-Descriptions follow the existing Button convention and can be generated alongside the rest.
+The token layer is ahead of the Figma file until this is done:
 
-## Figma work this requires
-
-This is why the proposal is not merged with the token edits:
-
-1. Add 16 variables to the `component` collection under `button/`.
-2. **Rebind the Label node's fill per State.** Today it is one binding — `button/label-{hierarchy}-default` covers Default, Hover, Pressed and Focus. It has to become a per-state binding, which is a change to the component's variant wiring, not just a new variable.
+1. Add 16 variables to the `component` collection under `button/`, and 4 to `semantic` under `color/`.
+2. **Rebind the Label node's fill per State.** Today it is one binding — `button/label-{hierarchy}-default` covers Default, Hover, Pressed and Focus. It has to become a per-state binding, which changes the component's variant wiring, not just the variable list.
 3. Focus keeps using the `-default` label. Focus does not change the background, so its contrast is unaffected.
+
+Until step 2 lands, the Figma component will not show hover and pressed label colours even though the tokens exist — the same class of drift as the unbound `button/radius-*`.
 
 ## Out of scope
 
-- **`text-tertiary` on `bg-surface` (4.34:1).** Deliberately unfixed. The fix is a primitive nudge (`neutral.500` `#737373` → `#6D6D6D`, giving 4.74) which steps off the standard Tailwind neutral ramp. Its token description records the shortfall.
-- **The 12 disabled-state failures.** WCAG 1.4.3 exempts inactive controls. No change needed and none proposed.
+- **`text-tertiary` on `bg-surface` (4.34:1).** The fix is a primitive nudge (`neutral.500` `#737373` → `#6D6D6D`, giving 4.74) which steps off the standard Tailwind neutral ramp. Its token description records the shortfall.
+- **The 12 disabled-state failures.** WCAG 1.4.3 exempts inactive controls.
 
 ## Verification
 
-Ratios here are WCAG 2.1, computed and floored to two decimals so a failing value never displays as its threshold. Regenerate the primitive contrast descriptions with:
-
-```
-node scripts/describe-primitives.mjs
-```
+Ratios are WCAG 2.1, floored to two decimals so a failing value never displays as its threshold. Regenerate the primitive contrast descriptions with `node scripts/describe-primitives.mjs`.
