@@ -66,7 +66,7 @@ export const previews = {
         width: `${Math.max(size, 1)}px`,
         background: negative
           ? "var(--color-bg-fill-warning-strong)"
-          : "var(--color-bg-fill-disabled)",
+          : "var(--color-bg-fill-disabled-strong)",
         opacity: negative ? 0.6 : 1,
         }}
       />

@@ -163,7 +163,6 @@
   --color-bg-surface-warning-pressed: #FFC9C9;
   --color-bg-surface-inverse: #0A0A0A;
   --color-bg-fill: #FFFFFF;
-  --color-bg-fill-disabled: #A1A1A1;
   --color-bg-fill-disabled-strong: #A1A1A1;
   --color-bg-fill-disabled-subtle: #E5E5E5;
   --color-bg-fill-secondary: #F5F5F5;
@@ -208,7 +207,6 @@
   --color-text-warning-on-bg-fill-subtle: #C10007;
   --color-border: #D4D4D4;
   --color-border-secondary: #E5E5E5;
-  --color-border-disabled: #F5F5F5;
   --color-border-disabled-strong: #A1A1A1;
   --color-border-disabled-subtle: #D4D4D4;
   --color-border-focus: #0681FF;
@@ -700,7 +698,6 @@
   --button-padding-y-lg: 12px;
   --button-padding-y-md: 8px;
   --button-padding-y-sm: 4px;
-  --button-radius: 8px;
   --button-radius-lg: 12px;
   --button-radius-md: 8px;
   --button-radius-xl: 16px;

@@ -471,7 +471,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 
 ### Semantic tokens (239)
 
-#### Color — 175 tokens
+#### Color — 173 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -489,12 +489,11 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-caution` | Caution surface |
 | `color.bg-surface-warning` | Warning surface |
 
-##### Background — fill (14)
+##### Background — fill (13)
 
 | Token | Role |
 |-------|------|
 | `color.bg-fill` | Default fill |
-| `color.bg-fill-disabled` | Disabled fill |
 | `color.bg-fill-disabled-strong` | Strong disabled fill |
 | `color.bg-fill-disabled-subtle` | Subtle disabled fill |
 | `color.bg-fill-secondary` | Secondary fill |
@@ -534,13 +533,12 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-warning-on-bg-fill-strong` | Text on strong warning fill |
 | `color.text-warning-on-bg-fill-subtle` | Text on subtle warning fill |
 
-##### Border (11)
+##### Border (10)
 
 | Token | Role |
 |-------|------|
 | `color.border` | Default border |
 | `color.border-secondary` | Secondary border |
-| `color.border-disabled` | Disabled border |
 | `color.border-disabled-strong` | Strong disabled border |
 | `color.border-disabled-subtle` | Subtle disabled border |
 | `color.border-focus` | Focus ring |
@@ -651,7 +649,6 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `bg-surface-caution` | `color.yellow.50` |
 | `bg-surface-warning` | `color.red.50` |
 | `bg-fill` | `color.neutral.0` |
-| `bg-fill-disabled` | `color.neutral.300` |
 | `bg-fill-disabled-strong` | `color.neutral.400` |
 | `bg-fill-disabled-subtle` | `color.neutral.200` |
 | `bg-fill-secondary` | `color.neutral.100` |
@@ -687,7 +684,6 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `text-warning-on-bg-fill-subtle` | `color.red.700` |
 | `border` | `color.neutral.300` |
 | `border-secondary` | `color.neutral.200` |
-| `border-disabled` | `color.neutral.100` |
 | `border-disabled-strong` | `color.neutral.400` |
 | `border-disabled-subtle` | `color.neutral.300` |
 | `border-focus` | `color.brand.400` |
