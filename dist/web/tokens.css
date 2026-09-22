@@ -148,199 +148,393 @@
   --color-fuchsia-900: #721378;
   --color-fuchsia-950: #4B004F;
   --color-alpha-transparent: #FFFFFF00;
+  /** Page background — the base layer everything else sits on. For a container within the page (card, sheet, panel) use bg-surface or bg-surface-secondary instead. */
   --color-bg: #FFFFFF;
+  /** Default container surface, one step off the page background — page wells, grouped sections, list backgrounds. Surface tokens colour the container behind content; bg-fill-* tokens colour an element's own body. */
   --color-bg-surface: #F5F5F5;
+  /** Container surface of a disabled control or section. Pair with text-disabled and border-disabled-subtle. For a disabled element that reads as solid, use bg-fill-disabled-strong or bg-fill-disabled-subtle. */
   --color-bg-surface-disabled: #E5E5E5;
+  /** Raised container surface for elements layered on bg-surface — cards, sheets, popovers, menus. Resolves to the same white as bg; pick this one when the element is a container rather than the page itself. */
   --color-bg-surface-secondary: #FFFFFF;
+  /** Brand-tinted container — tertiary button default, selected list rows, brand callouts. This is a background behind content; for a solid brand element such as a primary button use bg-fill-brand. */
   --color-bg-surface-brand: #EDF8FF;
+  /** Hover state for bg-surface-brand, and the hover background for brand controls that are transparent at rest (secondary and text buttons). */
   --color-bg-surface-brand-hover: #D6EFFF;
+  /** Pressed/active state for bg-surface-brand and for brand controls that are transparent at rest. */
   --color-bg-surface-brand-pressed: #B5E3FF;
+  /** Informational container — info banners, inline info messages. Pair with text-info, border-info and icon-info. For a solid info element such as a badge use bg-fill-info-strong. */
   --color-bg-surface-info: #EDF8FF;
+  /** Success container — confirmation banners, completed-state panels. Pair with text-success, border-success and icon-success. */
   --color-bg-surface-success: #F0FDF4;
+  /** Caution container — amber advisory banners and inline notices. 'Caution' is the amber advisory role; for errors and destructive flows use the warning tokens. */
   --color-bg-surface-caution: #FEFCE8;
+  /** Error/destructive container — error banners, inline validation messages, destructive tertiary button default. 'Warning' is the red error role in Cosmos; for amber advisories use bg-surface-caution. */
   --color-bg-surface-warning: #FEF2F2;
+  /** Hover state for bg-surface-warning, and the hover background for destructive controls that are transparent at rest. */
   --color-bg-surface-warning-hover: #FFE2E2;
+  /** Pressed/active state for bg-surface-warning and for destructive controls that are transparent at rest. */
   --color-bg-surface-warning-pressed: #FFC9C9;
+  /** Inverted container for elements that must contrast with the page — tooltips, dark overlays, spotlight callouts. Pair with text-inverse and icon-inverse. */
   --color-bg-surface-inverse: #0A0A0A;
+  /** Default fill for an interactive element's own body — input fields, switch tracks, unselected controls. Fill tokens colour the element; bg-surface-* tokens colour the container behind it. */
   --color-bg-fill: #FFFFFF;
+  /** Disabled fill for a control that stays visually solid when disabled — switch tracks, sliders, filled indicators. Use bg-fill-disabled-subtle for the lighter variant. */
   --color-bg-fill-disabled-strong: #A1A1A1;
+  /** Lighter disabled fill — disabled input fields and low-emphasis controls. Use bg-fill-disabled-strong when the disabled element still needs to read as solid. */
   --color-bg-fill-disabled-subtle: #E5E5E5;
+  /** Low-emphasis neutral fill — segmented control tracks, unselected chips, skeleton blocks. */
   --color-bg-fill-secondary: #F5F5F5;
+  /** Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand. */
   --color-bg-fill-brand: #0067E8;
+  /** Hover state for bg-fill-brand — primary button hover. */
   --color-bg-fill-brand-hover: #0681FF;
+  /** Pressed/active state for bg-fill-brand — primary button pressed. */
   --color-bg-fill-brand-pressed: #0857C5;
+  /** Solid informational fill — info badges, counters, status dots. Pair the label with text-info-on-bg-fill-strong. */
   --color-bg-fill-info-strong: #0067E8;
+  /** Tinted informational fill — low-emphasis info badges and tags. Pair the label with text-info-on-bg-fill-subtle. */
   --color-bg-fill-info-subtle: #EDF8FF;
+  /** Solid success fill — success badges and status dots. Pair the label with text-success-on-bg-fill-strong. */
   --color-bg-fill-success-strong: #008236;
+  /** Tinted success fill — low-emphasis success badges and tags. Pair the label with text-success-on-bg-fill-subtle. */
   --color-bg-fill-success-subtle: #DCFCE7;
+  /** Solid caution fill — amber advisory badges and status dots. Pair the label with text-caution-on-bg-fill-strong. */
   --color-bg-fill-caution-strong: #A65F00;
+  /** Tinted caution fill — low-emphasis advisory badges and tags. Pair the label with text-caution-on-bg-fill-subtle. */
   --color-bg-fill-caution-subtle: #FEF9C2;
+  /** Solid error/destructive fill — destructive primary button default, error badges. Pair the label with text-warning-on-bg-fill-strong. */
   --color-bg-fill-warning-strong: #C10007;
+  /** Hover state for bg-fill-warning-strong — destructive primary button hover. */
   --color-bg-fill-warning-strong-hover: #E7000B;
+  /** Pressed/active state for bg-fill-warning-strong — destructive primary button pressed. */
   --color-bg-fill-warning-strong-pressed: #9F0712;
+  /** Tinted error fill — low-emphasis error badges and tags. Pair the label with text-warning-on-bg-fill-subtle. */
   --color-bg-fill-warning-subtle: #FFE2E2;
+  /** Solid inverted fill — dark badges, toasts and controls on a light page. Pair with text-inverse and icon-inverse. */
   --color-bg-fill-inverse: #0A0A0A;
+  /** Default text colour — body copy, headings, and any content carrying the main message. */
   --color-text-primary: #0A0A0A;
+  /** Supporting text at lower emphasis — descriptions, captions, secondary list lines. */
   --color-text-secondary: #525252;
+  /** Lowest-emphasis text — placeholders, helper text, timestamps, metadata. Avoid for content the user must read in order to act. */
   --color-text-tertiary: #737373;
+  /** Text inside a disabled control, menu item or list row. Pair with bg-surface-disabled. */
   --color-text-disabled: #A1A1A1;
+  /** Text on an inverted background (bg-surface-inverse, bg-fill-inverse) — tooltips, dark toasts. */
   --color-text-inverse: #FFFFFF;
+  /** Disabled text on an inverted background. */
   --color-text-inverse-disabled: #E5E5E5;
+  /** Inline hyperlink inside body copy. For a brand-coloured control label (secondary, tertiary or text button) use text-brand. */
   --color-text-link: #0681FF;
+  /** Brand-coloured label on a neutral or brand-tinted background — secondary, tertiary and text button labels, selected tab labels. On a solid brand fill use text-brand-on-bg-fill. */
   --color-text-brand: #0067E8;
+  /** Hover state for text-brand. */
   --color-text-brand-hover: #0681FF;
+  /** Pressed/active state for text-brand. */
   --color-text-brand-pressed: #0857C5;
+  /** Label and icon colour on bg-fill-brand — primary button content. Do not use on tinted brand surfaces, where it will not have contrast. */
   --color-text-brand-on-bg-fill: #FFFFFF;
+  /** Informational text on a neutral or info-tinted surface (bg-surface-info). On a solid info fill use the text-info-on-bg-fill-* variants. */
   --color-text-info: #0067E8;
+  /** Label colour on bg-fill-info-strong. */
   --color-text-info-on-bg-fill-strong: #FFFFFF;
+  /** Label colour on bg-fill-info-subtle. */
   --color-text-info-on-bg-fill-subtle: #0067E8;
+  /** Success text on a neutral or success-tinted surface (bg-surface-success). On a solid success fill use the text-success-on-bg-fill-* variants. */
   --color-text-success: #008236;
+  /** Label colour on bg-fill-success-strong. */
   --color-text-success-on-bg-fill-strong: #FFFFFF;
+  /** Label colour on bg-fill-success-subtle. */
   --color-text-success-on-bg-fill-subtle: #008236;
+  /** Amber advisory text on a neutral or caution-tinted surface. 'Caution' is the advisory role; for errors and destructive copy use text-warning. */
   --color-text-caution: #A65F00;
+  /** Label colour on bg-fill-caution-strong. */
   --color-text-caution-on-bg-fill-strong: #FFFFFF;
+  /** Label colour on bg-fill-caution-subtle. */
   --color-text-caution-on-bg-fill-subtle: #D08700;
+  /** Error and destructive text — validation messages, destructive button labels. 'Warning' is the red error role in Cosmos; for amber advisories use text-caution. */
   --color-text-warning: #C10007;
+  /** Hover state for text-warning — destructive secondary and text buttons. */
   --color-text-warning-hover: #E7000B;
+  /** Pressed/active state for text-warning — destructive secondary and text buttons. */
   --color-text-warning-pressed: #9F0712;
+  /** Label colour on bg-fill-warning-strong — destructive primary button content. */
   --color-text-warning-on-bg-fill-strong: #FFFFFF;
+  /** Label colour on bg-fill-warning-subtle. */
   --color-text-warning-on-bg-fill-subtle: #C10007;
+  /** Default border and divider — input outlines, card edges, table rules. Use border-secondary where a lighter separation is wanted. */
   --color-border: #D4D4D4;
+  /** Lighter divider for dense or nested content — list separators, inner table rules. */
   --color-border-secondary: #E5E5E5;
+  /** Higher-contrast neutral border — outlines that must stay legible on a tinted surface, and dividers separating major regions. Use border for the default outline. */
   --color-border-strong: #737373;
+  /** Border of a disabled control that keeps a visible outline — disabled secondary button. */
   --color-border-disabled-strong: #A1A1A1;
+  /** Border of a disabled low-emphasis control — disabled input field. */
   --color-border-disabled-subtle: #D4D4D4;
+  /** Keyboard focus ring. Apply on :focus-visible rather than :focus so the ring does not appear on pointer interaction. */
   --color-border-focus: #0681FF;
+  /** Brand border on an unfilled control — secondary button default, selected card outline. */
   --color-border-brand: #0067E8;
+  /** Hover state for border-brand. */
   --color-border-brand-hover: #0681FF;
+  /** Pressed/active state for border-brand. */
   --color-border-brand-pressed: #0857C5;
+  /** Border of an informational container (bg-surface-info). */
   --color-border-info: #83D4FF;
+  /** Border of a success container (bg-surface-success). */
   --color-border-success: #7BF1A8;
+  /** Border of a caution container (bg-surface-caution). */
   --color-border-caution: #FFDF20;
+  /** Border of an error container (bg-surface-warning). For the outline of a destructive control use border-warning-strong. */
   --color-border-warning: #FFA2A2;
+  /** Strong red border for a destructive control — destructive secondary button outline. */
   --color-border-warning-strong: #C10007;
+  /** Hover state for border-warning-strong. */
   --color-border-warning-strong-hover: #E7000B;
+  /** Pressed/active state for border-warning-strong. */
   --color-border-warning-strong-pressed: #9F0712;
+  /** Default icon colour, matching text-primary — standalone icons and icons beside primary text. */
   --color-icon: #0A0A0A;
+  /** Icon inside a disabled control. */
   --color-icon-disabled: #A1A1A1;
+  /** Icon on an inverted background (bg-surface-inverse, bg-fill-inverse). */
   --color-icon-inverse: #FAFAFA;
+  /** Supporting icon beside secondary text. */
   --color-icon-secondary: #525252;
+  /** Lowest-emphasis icon — decorative affordances, input adornments, chevrons. */
   --color-icon-tertiary: #A1A1A1;
+  /** Brand-coloured icon on a neutral or brand-tinted background. On a solid brand fill use text-brand-on-bg-fill. */
   --color-icon-brand: #0067E8;
+  /** Status icon in a success message or container. */
   --color-icon-success: #008236;
+  /** Status icon in an amber advisory message or container. */
   --color-icon-caution: #A65F00;
+  /** Status icon in an error message or destructive confirmation. */
   --color-icon-warning: #C10007;
+  /** Status icon in an informational message or container. */
   --color-icon-info: #0067E8;
+  /** Explicit no-fill. Use where a colour token is required but the element must be see-through — the resting background of secondary and text buttons — so the value stays swappable instead of hard-coded to `transparent`. */
   --color-transparent: #FFFFFF00;
+  /** Experimental pass-through to the raw amber 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-50: #FFFBEB;
+  /** Experimental pass-through to the raw amber 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-100: #FEF3C6;
+  /** Experimental pass-through to the raw amber 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-200: #FEE685;
+  /** Experimental pass-through to the raw amber 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-300: #FFD230;
+  /** Experimental pass-through to the raw amber 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-400: #FFB900;
+  /** Experimental pass-through to the raw amber 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-500: #FE9A00;
+  /** Experimental pass-through to the raw amber 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-600: #E17100;
+  /** Experimental pass-through to the raw amber 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-700: #BB4D00;
+  /** Experimental pass-through to the raw amber 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-800: #973C00;
+  /** Experimental pass-through to the raw amber 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-900: #7B3306;
+  /** Experimental pass-through to the raw amber 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-amber-950: #461901;
+  /** Experimental pass-through to the raw blue 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-50: #EFF6FF;
+  /** Experimental pass-through to the raw blue 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-100: #DBEAFE;
+  /** Experimental pass-through to the raw blue 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-200: #BEDBFF;
+  /** Experimental pass-through to the raw blue 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-300: #8EC5FF;
+  /** Experimental pass-through to the raw blue 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-400: #51A2FF;
+  /** Experimental pass-through to the raw blue 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-500: #2B7FFF;
+  /** Experimental pass-through to the raw blue 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-600: #155DFC;
+  /** Experimental pass-through to the raw blue 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-700: #1447E6;
+  /** Experimental pass-through to the raw blue 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-800: #193CB8;
+  /** Experimental pass-through to the raw blue 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-900: #1C398E;
+  /** Experimental pass-through to the raw blue 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-blue-950: #162456;
+  /** Experimental pass-through to the raw fuchsia 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-50: #FDF4FF;
+  /** Experimental pass-through to the raw fuchsia 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-100: #FAE8FF;
+  /** Experimental pass-through to the raw fuchsia 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-200: #F6CFFF;
+  /** Experimental pass-through to the raw fuchsia 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-300: #F4A8FF;
+  /** Experimental pass-through to the raw fuchsia 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-400: #ED6AFF;
+  /** Experimental pass-through to the raw fuchsia 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-500: #E12AFB;
+  /** Experimental pass-through to the raw fuchsia 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-600: #C800DE;
+  /** Experimental pass-through to the raw fuchsia 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-700: #A800B7;
+  /** Experimental pass-through to the raw fuchsia 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-800: #8A0194;
+  /** Experimental pass-through to the raw fuchsia 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-900: #721378;
+  /** Experimental pass-through to the raw fuchsia 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-fuchsia-950: #4B004F;
+  /** Experimental pass-through to the raw indigo 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-50: #EEF2FF;
+  /** Experimental pass-through to the raw indigo 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-100: #E0E7FF;
+  /** Experimental pass-through to the raw indigo 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-200: #C6D2FF;
+  /** Experimental pass-through to the raw indigo 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-300: #A3B3FF;
+  /** Experimental pass-through to the raw indigo 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-400: #7C86FF;
+  /** Experimental pass-through to the raw indigo 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-500: #615FFF;
+  /** Experimental pass-through to the raw indigo 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-600: #4F39F6;
+  /** Experimental pass-through to the raw indigo 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-700: #432DD7;
+  /** Experimental pass-through to the raw indigo 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-800: #372AAC;
+  /** Experimental pass-through to the raw indigo 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-900: #312C85;
+  /** Experimental pass-through to the raw indigo 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-indigo-950: #1E1A4D;
+  /** Experimental pass-through to the raw lime 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-50: #F7FEE7;
+  /** Experimental pass-through to the raw lime 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-100: #ECFCCA;
+  /** Experimental pass-through to the raw lime 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-200: #D8F999;
+  /** Experimental pass-through to the raw lime 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-300: #BBF451;
+  /** Experimental pass-through to the raw lime 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-400: #9AE600;
+  /** Experimental pass-through to the raw lime 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-500: #7CCF00;
+  /** Experimental pass-through to the raw lime 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-600: #5EA500;
+  /** Experimental pass-through to the raw lime 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-700: #497D00;
+  /** Experimental pass-through to the raw lime 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-800: #3C6300;
+  /** Experimental pass-through to the raw lime 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-900: #35530E;
+  /** Experimental pass-through to the raw lime 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-lime-950: #192E03;
+  /** Experimental pass-through to the raw orange 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-50: #FFF7ED;
+  /** Experimental pass-through to the raw orange 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-100: #FFEDD4;
+  /** Experimental pass-through to the raw orange 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-200: #FFD6A8;
+  /** Experimental pass-through to the raw orange 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-300: #FFB86A;
+  /** Experimental pass-through to the raw orange 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-400: #FF8904;
+  /** Experimental pass-through to the raw orange 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-500: #FF6900;
+  /** Experimental pass-through to the raw orange 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-600: #F54900;
+  /** Experimental pass-through to the raw orange 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-700: #CA3500;
+  /** Experimental pass-through to the raw orange 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-800: #9F2D00;
+  /** Experimental pass-through to the raw orange 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-900: #7E2A0C;
+  /** Experimental pass-through to the raw orange 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-orange-950: #441306;
+  /** Experimental pass-through to the raw purple 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-50: #FAF5FF;
+  /** Experimental pass-through to the raw purple 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-100: #F3E8FF;
+  /** Experimental pass-through to the raw purple 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-200: #E9D4FF;
+  /** Experimental pass-through to the raw purple 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-300: #DAB2FF;
+  /** Experimental pass-through to the raw purple 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-400: #C27AFF;
+  /** Experimental pass-through to the raw purple 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-500: #AD46FF;
+  /** Experimental pass-through to the raw purple 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-600: #9810FA;
+  /** Experimental pass-through to the raw purple 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-700: #8200DB;
+  /** Experimental pass-through to the raw purple 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-800: #6E11B0;
+  /** Experimental pass-through to the raw purple 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-900: #59168B;
+  /** Experimental pass-through to the raw purple 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-purple-950: #3C0366;
+  /** Experimental pass-through to the raw red 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-50: #FEF2F2;
+  /** Experimental pass-through to the raw red 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-100: #FFE2E2;
+  /** Experimental pass-through to the raw red 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-200: #FFC9C9;
+  /** Experimental pass-through to the raw red 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-300: #FFA2A2;
+  /** Experimental pass-through to the raw red 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-400: #FF6467;
+  /** Experimental pass-through to the raw red 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-500: #FB2C36;
+  /** Experimental pass-through to the raw red 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-600: #E7000B;
+  /** Experimental pass-through to the raw red 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-700: #C10007;
+  /** Experimental pass-through to the raw red 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-800: #9F0712;
+  /** Experimental pass-through to the raw red 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-900: #82181A;
+  /** Experimental pass-through to the raw red 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-red-950: #460809;
+  /** Experimental pass-through to the raw violet 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-50: #F5F3FF;
+  /** Experimental pass-through to the raw violet 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-100: #EDE9FE;
+  /** Experimental pass-through to the raw violet 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-200: #DDD6FF;
+  /** Experimental pass-through to the raw violet 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-300: #C4B4FF;
+  /** Experimental pass-through to the raw violet 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-400: #A684FF;
+  /** Experimental pass-through to the raw violet 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-500: #8E51FF;
+  /** Experimental pass-through to the raw violet 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-600: #7F22FE;
+  /** Experimental pass-through to the raw violet 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-700: #7008E7;
+  /** Experimental pass-through to the raw violet 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-800: #5D0EC0;
+  /** Experimental pass-through to the raw violet 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-900: #4D179A;
+  /** Experimental pass-through to the raw violet 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-violet-950: #2F0D68;
+  /** Experimental pass-through to the raw yellow 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-50: #FEFCE8;
+  /** Experimental pass-through to the raw yellow 100 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-100: #FEF9C2;
+  /** Experimental pass-through to the raw yellow 200 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-200: #FFF085;
+  /** Experimental pass-through to the raw yellow 300 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-300: #FFDF20;
+  /** Experimental pass-through to the raw yellow 400 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-400: #FDC700;
+  /** Experimental pass-through to the raw yellow 500 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-500: #F0B100;
+  /** Experimental pass-through to the raw yellow 600 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-600: #D08700;
+  /** Experimental pass-through to the raw yellow 700 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-700: #A65F00;
+  /** Experimental pass-through to the raw yellow 800 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-800: #894B00;
+  /** Experimental pass-through to the raw yellow 900 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-900: #733E0A;
+  /** Experimental pass-through to the raw yellow 950 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
   --color-exp-yellow-950: #432004;
   --font-family-lato: Lato;
   --font-weight-regular: 400;
@@ -423,405 +617,698 @@
   --border-width-0: 0px;
   --border-width-1: 1px;
   --border-width-2: 2px;
+  /** Largest headline — page titles and hero headings; typically one per view. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-large-regular-font-family: Lato;
   --headline-large-regular-font-weight: 400;
   --headline-large-regular-font-size: 32px;
   --headline-large-regular-line-height: 40px;
+  /** Largest headline — page titles and hero headings; typically one per view. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-large-bold-font-family: Lato;
   --headline-large-bold-font-weight: 700;
   --headline-large-bold-font-size: 32px;
   --headline-large-bold-line-height: 40px;
+  /** Largest headline — page titles and hero headings; typically one per view. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-large-black-font-family: Lato;
   --headline-large-black-font-weight: 900;
   --headline-large-black-font-size: 32px;
   --headline-large-black-line-height: 40px;
+  /** Headline for major section headings. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-medium-regular-font-family: Lato;
   --headline-medium-regular-font-weight: 400;
   --headline-medium-regular-font-size: 28px;
   --headline-medium-regular-line-height: 36px;
+  /** Headline for major section headings. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-medium-bold-font-family: Lato;
   --headline-medium-bold-font-weight: 700;
   --headline-medium-bold-font-size: 28px;
   --headline-medium-bold-line-height: 36px;
+  /** Headline for major section headings. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-medium-black-font-family: Lato;
   --headline-medium-black-font-weight: 900;
   --headline-medium-black-font-size: 28px;
   --headline-medium-black-line-height: 36px;
+  /** Smallest headline — sub-section headings and modal titles. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-small-regular-font-family: Lato;
   --headline-small-regular-font-weight: 400;
   --headline-small-regular-font-size: 24px;
   --headline-small-regular-line-height: 32px;
+  /** Smallest headline — sub-section headings and modal titles. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-small-bold-font-family: Lato;
   --headline-small-bold-font-weight: 700;
   --headline-small-bold-font-size: 24px;
   --headline-small-bold-line-height: 32px;
+  /** Smallest headline — sub-section headings and modal titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-small-black-font-family: Lato;
   --headline-small-black-font-weight: 900;
   --headline-small-black-font-size: 24px;
   --headline-small-black-line-height: 32px;
+  /** Largest title — card, sheet and dialog titles. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-large-regular-font-family: Lato;
   --title-large-regular-font-weight: 400;
   --title-large-regular-font-size: 22px;
   --title-large-regular-line-height: 28px;
+  /** Largest title — card, sheet and dialog titles. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-large-bold-font-family: Lato;
   --title-large-bold-font-weight: 700;
   --title-large-bold-font-size: 22px;
   --title-large-bold-line-height: 28px;
+  /** Largest title — card, sheet and dialog titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-large-black-font-family: Lato;
   --title-large-black-font-weight: 900;
   --title-large-black-font-size: 22px;
   --title-large-black-line-height: 28px;
+  /** Title for sub-sections and list-group headers. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-medium-regular-font-family: Lato;
   --title-medium-regular-font-weight: 400;
   --title-medium-regular-font-size: 18px;
   --title-medium-regular-line-height: 24px;
+  /** Title for sub-sections and list-group headers. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-medium-bold-font-family: Lato;
   --title-medium-bold-font-weight: 700;
   --title-medium-bold-font-size: 18px;
   --title-medium-bold-line-height: 24px;
+  /** Title for sub-sections and list-group headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-medium-black-font-family: Lato;
   --title-medium-black-font-weight: 900;
   --title-medium-black-font-size: 18px;
   --title-medium-black-line-height: 24px;
+  /** Smallest title — compact card headers and table column groups. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-regular-font-family: Lato;
   --title-small-regular-font-weight: 400;
   --title-small-regular-font-size: 14px;
   --title-small-regular-line-height: 20px;
+  /** Smallest title — compact card headers and table column groups. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-bold-font-family: Lato;
   --title-small-bold-font-weight: 700;
   --title-small-bold-font-size: 14px;
   --title-small-bold-line-height: 20px;
+  /** Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-black-font-family: Lato;
   --title-small-black-font-weight: 900;
   --title-small-black-font-size: 14px;
   --title-small-black-line-height: 20px;
+  /** Body text for spacious reading layouts — article and detail copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-large-regular-font-family: Lato;
   --body-large-regular-font-weight: 400;
   --body-large-regular-font-size: 16px;
   --body-large-regular-line-height: 24px;
+  /** Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-large-bold-font-family: Lato;
   --body-large-bold-font-weight: 700;
   --body-large-bold-font-size: 16px;
   --body-large-bold-line-height: 24px;
+  /** Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-large-black-font-family: Lato;
   --body-large-black-font-weight: 900;
   --body-large-black-font-size: 16px;
   --body-large-black-line-height: 24px;
+  /** Default body text — the running copy most content uses. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-medium-regular-font-family: Lato;
   --body-medium-regular-font-weight: 400;
   --body-medium-regular-font-size: 14px;
   --body-medium-regular-line-height: 20px;
+  /** Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-medium-bold-font-family: Lato;
   --body-medium-bold-font-weight: 700;
   --body-medium-bold-font-size: 14px;
   --body-medium-bold-line-height: 20px;
+  /** Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-medium-black-font-family: Lato;
   --body-medium-black-font-weight: 900;
   --body-medium-black-font-size: 14px;
   --body-medium-black-line-height: 20px;
+  /** Smallest body text — captions, helper text and legal copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-small-regular-font-family: Lato;
   --body-small-regular-font-weight: 400;
   --body-small-regular-font-size: 12px;
   --body-small-regular-line-height: 16px;
+  /** Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-small-bold-font-family: Lato;
   --body-small-bold-font-weight: 700;
   --body-small-bold-font-size: 12px;
   --body-small-bold-line-height: 16px;
+  /** Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
   --body-small-black-font-family: Lato;
   --body-small-black-font-weight: 900;
   --body-small-black-font-size: 12px;
   --body-small-black-line-height: 16px;
+  /** Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-large-regular-font-family: Lato;
   --label-large-regular-font-weight: 400;
   --label-large-regular-font-size: 16px;
   --label-large-regular-line-height: 24px;
+  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-large-bold-font-family: Lato;
   --label-large-bold-font-weight: 700;
   --label-large-bold-font-size: 16px;
   --label-large-bold-line-height: 24px;
+  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-large-black-font-family: Lato;
   --label-large-black-font-weight: 900;
   --label-large-black-font-size: 16px;
   --label-large-black-line-height: 24px;
+  /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-medium-regular-font-family: Lato;
   --label-medium-regular-font-weight: 400;
   --label-medium-regular-font-size: 14px;
   --label-medium-regular-line-height: 20px;
+  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-medium-bold-font-family: Lato;
   --label-medium-bold-font-weight: 700;
   --label-medium-bold-font-size: 14px;
   --label-medium-bold-line-height: 20px;
+  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-medium-black-font-family: Lato;
   --label-medium-black-font-weight: 900;
   --label-medium-black-font-size: 14px;
   --label-medium-black-line-height: 20px;
+  /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-small-regular-font-family: Lato;
   --label-small-regular-font-weight: 400;
   --label-small-regular-font-size: 12px;
   --label-small-regular-line-height: 16px;
+  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-small-bold-font-family: Lato;
   --label-small-bold-font-weight: 700;
   --label-small-bold-font-size: 12px;
   --label-small-bold-line-height: 16px;
+  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
   --label-small-black-font-family: Lato;
   --label-small-black-font-weight: 900;
   --label-small-black-font-size: 12px;
   --label-small-black-line-height: 16px;
+  /** No rounding — flush edges, full-bleed media, table cells. */
   --radius-none: 0px;
+  /** Smallest rounding — badges, tags and checkbox corners. */
   --radius-xs: 2px;
+  /** Small rounding — small buttons, menu items and inline inputs. */
   --radius-sm: 4px;
+  /** Default control rounding — medium buttons and inputs. */
   --radius-md: 8px;
+  /** Rounding for large controls and compact containers — large buttons, small cards. */
   --radius-lg: 12px;
+  /** Container rounding — cards, panels and modals. */
   --radius-xl: 16px;
+  /** Large container rounding — bottom sheets and hero cards. */
   --radius-2xl: 24px;
+  /** Extra-large container rounding for prominent marketing surfaces. */
   --radius-3xl: 32px;
+  /** Largest fixed rounding — oversized promotional cards and illustration frames. */
   --radius-4xl: 40px;
+  /** Fully rounded — pills, chips, avatars and icon-only round buttons. A large fixed value that reads as a semicircle at any element height, so it never needs to track the size. */
   --radius-full: 999px;
+  /** Smallest icon — inline with small labels and in dense table rows. */
   --icon-2xs: 12px;
+  /** Icon inside small controls — small buttons, chips and input adornments. */
   --icon-xs: 16px;
+  /** Icon inside medium controls — the default button and input icon size. */
   --icon-sm: 20px;
+  /** Default standalone icon — large buttons, list-row leading icons, toolbar actions. */
   --icon-md: 24px;
+  /** Prominent icon — feature rows and compact empty states. */
   --icon-lg: 32px;
+  /** Large feature icon — onboarding steps and marketing rows. */
   --icon-xl: 40px;
+  /** Extra-large feature icon — empty states and illustration stand-ins. */
   --icon-2xl: 48px;
+  /** Largest icon — hero illustrations and full-screen empty states. */
   --icon-3xl: 64px;
+  /** No space — collapse a gap the layout would otherwise apply. */
   --space-none: 0px;
+  /** Hairline gap — between an icon and its label in dense controls. */
   --space-3xs: 2px;
+  /** Tightest usable gap — icon-to-label in small controls, vertical padding of small buttons. */
   --space-2xs: 4px;
+  /** Small gap — between a label and its input, between chips in a row, vertical padding of medium buttons. */
   --space-xs: 8px;
+  /** Tight padding — vertical padding of large buttons, horizontal padding of small ones, gap between closely related elements. */
   --space-sm: 12px;
+  /** Default spacing step — horizontal padding of medium controls and the gap between fields in a form. */
   --space-md: 16px;
+  /** Comfortable gap — horizontal padding of large controls and spacing between grouped blocks. */
   --space-lg: 20px;
+  /** Section gap — separation between distinct content blocks inside a card. */
   --space-xl: 24px;
+  /** Large section gap — separation between content groups on a page. */
   --space-2xl: 28px;
+  /** Large section gap; also the minimum height of a small button. */
   --space-3xl: 32px;
+  /** Generous section gap — separation between major page regions. */
   --space-4xl: 36px;
+  /** Generous section gap; also the minimum height of a medium button. */
   --space-5xl: 40px;
+  /** Layout-scale spacing — page gutters and top-level region separation; also the minimum height of a large button. */
   --space-6xl: 48px;
+  /** Largest spacing step — hero and full-page section separation. */
   --space-7xl: 64px;
+  /** Background of the primary (solid fill) button — default intent, at rest. */
   --button-bg-primary-default: #0067E8;
+  /** Background of the primary (solid fill) button — destructive intent, at rest. */
   --button-bg-primary-destructive-default: #C10007;
+  /** Background of the primary (solid fill) button — destructive intent, when disabled. */
   --button-bg-primary-destructive-disabled: #E5E5E5;
+  /** Background of the primary (solid fill) button — destructive intent, on hover. */
   --button-bg-primary-destructive-hover: #E7000B;
+  /** Background of the primary (solid fill) button — destructive intent, while pressed. */
   --button-bg-primary-destructive-pressed: #9F0712;
+  /** Background of the primary (solid fill) button — default intent, when disabled. */
   --button-bg-primary-disabled: #E5E5E5;
+  /** Background of the primary (solid fill) button — default intent, on hover. */
   --button-bg-primary-hover: #0681FF;
+  /** Background of the primary (solid fill) button — default intent, while pressed. */
   --button-bg-primary-pressed: #0857C5;
+  /** Background of the secondary (outlined) button — default intent, at rest. */
   --button-bg-secondary-default: #FFFFFF00;
+  /** Background of the secondary (outlined) button — destructive intent, at rest. */
   --button-bg-secondary-destructive-default: #FFFFFF00;
+  /** Background of the secondary (outlined) button — destructive intent, when disabled. */
   --button-bg-secondary-destructive-disabled: #FFFFFF00;
+  /** Background of the secondary (outlined) button — destructive intent, on hover. */
   --button-bg-secondary-destructive-hover: #FFE2E2;
+  /** Background of the secondary (outlined) button — destructive intent, while pressed. */
   --button-bg-secondary-destructive-pressed: #FFC9C9;
+  /** Background of the secondary (outlined) button — default intent, when disabled. */
   --button-bg-secondary-disabled: #FFFFFF00;
+  /** Background of the secondary (outlined) button — default intent, on hover. */
   --button-bg-secondary-hover: #D6EFFF;
+  /** Background of the secondary (outlined) button — default intent, while pressed. */
   --button-bg-secondary-pressed: #B5E3FF;
+  /** Background of the tertiary (tinted) button — default intent, at rest. */
   --button-bg-tertiary-default: #EDF8FF;
+  /** Background of the tertiary (tinted) button — destructive intent, at rest. */
   --button-bg-tertiary-destructive-default: #FEF2F2;
+  /** Background of the tertiary (tinted) button — destructive intent, when disabled. */
   --button-bg-tertiary-destructive-disabled: #E5E5E5;
+  /** Background of the tertiary (tinted) button — destructive intent, on hover. */
   --button-bg-tertiary-destructive-hover: #FFE2E2;
+  /** Background of the tertiary (tinted) button — destructive intent, while pressed. */
   --button-bg-tertiary-destructive-pressed: #FFC9C9;
+  /** Background of the tertiary (tinted) button — default intent, when disabled. */
   --button-bg-tertiary-disabled: #E5E5E5;
+  /** Background of the tertiary (tinted) button — default intent, on hover. */
   --button-bg-tertiary-hover: #D6EFFF;
+  /** Background of the tertiary (tinted) button — default intent, while pressed. */
   --button-bg-tertiary-pressed: #B5E3FF;
+  /** Background of the text (no fill or outline) button — default intent, at rest. */
   --button-bg-text-default: #FFFFFF00;
+  /** Background of the text (no fill or outline) button — destructive intent, at rest. */
   --button-bg-text-destructive-default: #FFFFFF00;
+  /** Background of the text (no fill or outline) button — destructive intent, when disabled. */
   --button-bg-text-destructive-disabled: #FFFFFF00;
+  /** Background of the text (no fill or outline) button — destructive intent, on hover. */
   --button-bg-text-destructive-hover: #FEF2F2;
+  /** Background of the text (no fill or outline) button — destructive intent, while pressed. */
   --button-bg-text-destructive-pressed: #FFE2E2;
+  /** Background of the text (no fill or outline) button — default intent, when disabled. */
   --button-bg-text-disabled: #FFFFFF00;
+  /** Background of the text (no fill or outline) button — default intent, on hover. */
   --button-bg-text-hover: #EDF8FF;
+  /** Background of the text (no fill or outline) button — default intent, while pressed. */
   --button-bg-text-pressed: #D6EFFF;
+  /** Outline of the primary (solid fill) button — default intent, at rest. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-default: #FFFFFF00;
+  /** Outline of the primary (solid fill) button — destructive intent, at rest. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-destructive-default: #FFFFFF00;
+  /** Outline of the primary (solid fill) button — destructive intent, when disabled. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-destructive-disabled: #FFFFFF00;
+  /** Outline of the primary (solid fill) button — destructive intent, on hover. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-destructive-hover: #FFFFFF00;
+  /** Outline of the primary (solid fill) button — destructive intent, while pressed. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-destructive-pressed: #FFFFFF00;
+  /** Outline of the primary (solid fill) button — default intent, when disabled. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-disabled: #FFFFFF00;
+  /** Outline of the primary (solid fill) button — default intent, on hover. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-hover: #FFFFFF00;
+  /** Outline of the primary (solid fill) button — default intent, while pressed. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-pressed: #FFFFFF00;
+  /** Outline of the secondary (outlined) button — default intent, at rest. */
   --button-border-secondary-default: #0067E8;
+  /** Outline of the secondary (outlined) button — destructive intent, at rest. */
   --button-border-secondary-destructive-default: #C10007;
+  /** Outline of the secondary (outlined) button — destructive intent, when disabled. */
   --button-border-secondary-destructive-disabled: #A1A1A1;
+  /** Outline of the secondary (outlined) button — destructive intent, on hover. */
   --button-border-secondary-destructive-hover: #E7000B;
+  /** Outline of the secondary (outlined) button — destructive intent, while pressed. */
   --button-border-secondary-destructive-pressed: #9F0712;
+  /** Outline of the secondary (outlined) button — default intent, when disabled. */
   --button-border-secondary-disabled: #A1A1A1;
+  /** Outline of the secondary (outlined) button — default intent, on hover. */
   --button-border-secondary-hover: #0681FF;
+  /** Outline of the secondary (outlined) button — default intent, while pressed. */
   --button-border-secondary-pressed: #0857C5;
+  /** Outline of the tertiary (tinted) button — default intent, at rest. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-default: #FFFFFF00;
+  /** Outline of the tertiary (tinted) button — destructive intent, at rest. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-destructive-default: #FFFFFF00;
+  /** Outline of the tertiary (tinted) button — destructive intent, when disabled. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-destructive-disabled: #FFFFFF00;
+  /** Outline of the tertiary (tinted) button — destructive intent, on hover. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-destructive-hover: #FFFFFF00;
+  /** Outline of the tertiary (tinted) button — destructive intent, while pressed. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-destructive-pressed: #FFFFFF00;
+  /** Outline of the tertiary (tinted) button — default intent, when disabled. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-disabled: #FFFFFF00;
+  /** Outline of the tertiary (tinted) button — default intent, on hover. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-hover: #FFFFFF00;
+  /** Outline of the tertiary (tinted) button — default intent, while pressed. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-tertiary-pressed: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — default intent, at rest. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-default: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — destructive intent, at rest. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-destructive-default: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — destructive intent, when disabled. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-destructive-disabled: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — destructive intent, on hover. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-destructive-hover: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — destructive intent, while pressed. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-destructive-pressed: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — default intent, when disabled. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-disabled: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — default intent, on hover. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-hover: #FFFFFF00;
+  /** Outline of the text (no fill or outline) button — default intent, while pressed. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-text-pressed: #FFFFFF00;
+  /** Thickness of the button outline. Only the secondary hierarchy paints a border, but the weight is configured on all four. */
   --button-border-width: 1px;
+  /** Colour of the keyboard focus ring. The ring is a separate rectangle outside the button's auto-layout, not a border — the border-* tokens are a different slot. */
   --button-focus-ring: #0067E8;
+  /** Colour of the keyboard focus ring on a destructive button. */
   --button-focus-ring-destructive: #C10007;
+  /** Gap between the button box and its focus ring. Offset plus width place the ring 4px outside the box on every side, so the focus rectangle is 8px wider and taller than the button at every size. */
   --button-focus-ring-offset: 2px;
+  /** Thickness of the keyboard focus ring. */
   --button-focus-ring-width: 2px;
+  /** Defined but unused: the Figma component applies gap-sm at every size. Check components/button.md before introducing it. */
   --button-gap-lg: 12px;
+  /** Defined but unused: the Figma component applies gap-sm at every size. Check components/button.md before introducing it. */
   --button-gap-md: 8px;
+  /** Gap between the spinner, leading icon, label and trailing icon. The Figma component applies this token at all three sizes, so despite the -sm suffix it does not ramp with size. */
   --button-gap-sm: 4px;
+  /** Defined but unused: the Figma component applies gap-sm at every size. Check components/button.md before introducing it. */
   --button-gap-xs: 2px;
+  /** Size of the leading, trailing and spinner glyphs at large size. Ramps in lockstep with the label type so glyph and text share one optical centre line. */
   --button-icon-size-lg: 24px;
+  /** Size of the leading, trailing and spinner glyphs at medium size. Ramps in lockstep with the label type so glyph and text share one optical centre line. */
   --button-icon-size-md: 20px;
+  /** Size of the leading, trailing and spinner glyphs at small size. Ramps in lockstep with the label type so glyph and text share one optical centre line. */
   --button-icon-size-sm: 16px;
+  /** Colour of the text label in the primary (solid fill) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-primary-default: #FFFFFF;
+  /** Colour of the text label in the primary (solid fill) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-primary-destructive-default: #FFFFFF;
+  /** Colour of the text label in the primary (solid fill) button when disabled — destructive intent. */
   --button-label-primary-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the primary (solid fill) button when disabled — default intent. */
   --button-label-primary-disabled: #A1A1A1;
+  /** Colour of the text label in the secondary (outlined) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-secondary-default: #0067E8;
+  /** Colour of the text label in the secondary (outlined) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-secondary-destructive-default: #C10007;
+  /** Colour of the text label in the secondary (outlined) button when disabled — destructive intent. */
   --button-label-secondary-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the secondary (outlined) button when disabled — default intent. */
   --button-label-secondary-disabled: #A1A1A1;
+  /** Colour of the text label in the tertiary (tinted) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-tertiary-default: #0067E8;
+  /** Colour of the text label in the tertiary (tinted) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-tertiary-destructive-default: #C10007;
+  /** Colour of the text label in the tertiary (tinted) button when disabled — destructive intent. */
   --button-label-tertiary-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the tertiary (tinted) button when disabled — default intent. */
   --button-label-tertiary-disabled: #A1A1A1;
+  /** Colour of the text label in the text (no fill or outline) button — default intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-text-default: #0067E8;
+  /** Colour of the text label in the text (no fill or outline) button — destructive intent. The label keeps this colour on hover, pressed and focus; only the disabled state changes it. Icon slots do not use this token — they bind to the semantic color.icon-inverse / color.icon-disabled roles. */
   --button-label-text-destructive-default: #C10007;
+  /** Colour of the text label in the text (no fill or outline) button when disabled — destructive intent. */
   --button-label-text-destructive-disabled: #A1A1A1;
+  /** Colour of the text label in the text (no fill or outline) button when disabled — default intent. */
   --button-label-text-disabled: #A1A1A1;
+  /** Minimum height of the large button, and the only size that clears the 44px WCAG 2.5.8 target unaided. */
   --button-min-height-lg: 48px;
+  /** Minimum height of the medium button. Below the 44px WCAG 2.5.8 target — the host must supply the remaining hit area. */
   --button-min-height-md: 40px;
+  /** Minimum height of the small button. Well below the 44px WCAG 2.5.8 target — the host must supply the remaining hit area. */
   --button-min-height-sm: 32px;
+  /** Horizontal padding of the large button. */
   --button-padding-x-lg: 20px;
+  /** Horizontal padding of the medium button. */
   --button-padding-x-md: 16px;
+  /** Horizontal padding of the small button. */
   --button-padding-x-sm: 12px;
+  /** Vertical padding of the large button. At this size the padded content box lands exactly on min-height-lg. */
   --button-padding-y-lg: 12px;
+  /** Vertical padding of the medium button. The rendered height comes from min-height-md rather than from this padding. */
   --button-padding-y-md: 8px;
+  /** Vertical padding of the small button. The rendered height comes from min-height-sm rather than from this padding. */
   --button-padding-y-sm: 4px;
+  /** Button corner radius; matches the large and medium sizes by value, which share one radius. Unbound in Figma — see the cornerRadius anomaly in components/button.md. */
   --button-radius-lg: 12px;
+  /** Button corner radius; matches the small size by value. Unbound in Figma — the component hardcodes its corner radius per size, so confirm the intended binding before relying on this (see the cornerRadius anomaly in components/button.md). */
   --button-radius-md: 8px;
+  /** Not a button-box radius: it matches the focused ring at large and medium, which the spec defines as the button radius plus 4. Unbound in Figma like the other radius tokens — see components/button.md. */
   --button-radius-xl: 16px;
+  /** Fill of the checkbox box — unchecked, at rest. */
   --checkbox-bg-unselected-default: #FFFFFF;
+  /** Fill of the checkbox box — unchecked, on hover. */
   --checkbox-bg-unselected-hover: #EDF8FF;
+  /** Fill of the checkbox box — unchecked, while pressed. */
   --checkbox-bg-unselected-pressed: #D6EFFF;
+  /** Fill of the checkbox box — unchecked, when disabled. */
   --checkbox-bg-unselected-disabled: #E5E5E5;
+  /** Fill of the checkbox box — unchecked and in the error state, at rest. */
   --checkbox-bg-unselected-error-default: #FFFFFF;
+  /** Fill of the checkbox box — unchecked and in the error state, on hover. */
   --checkbox-bg-unselected-error-hover: #FEF2F2;
+  /** Fill of the checkbox box — unchecked and in the error state, while pressed. */
   --checkbox-bg-unselected-error-pressed: #FFE2E2;
+  /** Fill of the checkbox box — unchecked and in the error state, when disabled. */
   --checkbox-bg-unselected-error-disabled: #E5E5E5;
+  /** Fill of the checkbox box — checked, at rest. */
   --checkbox-bg-selected-default: #0067E8;
+  /** Fill of the checkbox box — checked, on hover. */
   --checkbox-bg-selected-hover: #0681FF;
+  /** Fill of the checkbox box — checked, while pressed. */
   --checkbox-bg-selected-pressed: #0857C5;
+  /** Fill of the checkbox box — checked, when disabled. */
   --checkbox-bg-selected-disabled: #A1A1A1;
+  /** Fill of the checkbox box — checked and in the error state, at rest. */
   --checkbox-bg-selected-error-default: #C10007;
+  /** Fill of the checkbox box — checked and in the error state, on hover. */
   --checkbox-bg-selected-error-hover: #E7000B;
+  /** Fill of the checkbox box — checked and in the error state, while pressed. */
   --checkbox-bg-selected-error-pressed: #9F0712;
+  /** Fill of the checkbox box — checked and in the error state, when disabled. */
   --checkbox-bg-selected-error-disabled: #A1A1A1;
+  /** Outline of the checkbox box — unchecked, at rest. */
   --checkbox-border-unselected-default: #737373;
+  /** Outline of the checkbox box — unchecked, on hover. */
   --checkbox-border-unselected-hover: #0067E8;
+  /** Outline of the checkbox box — unchecked, while pressed. */
   --checkbox-border-unselected-pressed: #0857C5;
+  /** Outline of the checkbox box — unchecked, when disabled. */
   --checkbox-border-unselected-disabled: #A1A1A1;
+  /** Outline of the checkbox box — unchecked and in the error state, at rest. */
   --checkbox-border-unselected-error-default: #C10007;
+  /** Outline of the checkbox box — unchecked and in the error state, on hover. */
   --checkbox-border-unselected-error-hover: #E7000B;
+  /** Outline of the checkbox box — unchecked and in the error state, while pressed. */
   --checkbox-border-unselected-error-pressed: #9F0712;
+  /** Outline of the checkbox box — unchecked and in the error state, when disabled. */
   --checkbox-border-unselected-error-disabled: #A1A1A1;
+  /** Outline of the checkbox box — checked, at rest. */
   --checkbox-border-selected-default: #0067E8;
+  /** Outline of the checkbox box — checked, on hover. */
   --checkbox-border-selected-hover: #0681FF;
+  /** Outline of the checkbox box — checked, while pressed. */
   --checkbox-border-selected-pressed: #0857C5;
+  /** Outline of the checkbox box — checked, when disabled. */
   --checkbox-border-selected-disabled: #A1A1A1;
+  /** Outline of the checkbox box — checked and in the error state, at rest. */
   --checkbox-border-selected-error-default: #C10007;
+  /** Outline of the checkbox box — checked and in the error state, on hover. */
   --checkbox-border-selected-error-hover: #E7000B;
+  /** Outline of the checkbox box — checked and in the error state, while pressed. */
   --checkbox-border-selected-error-pressed: #9F0712;
+  /** Outline of the checkbox box — checked and in the error state, when disabled. */
   --checkbox-border-selected-error-disabled: #A1A1A1;
+  /** Colour of the checkmark glyph inside the box — checked, at rest. */
   --checkbox-icon-selected-default: #FFFFFF;
+  /** Colour of the checkmark glyph inside the box — checked, on hover. */
   --checkbox-icon-selected-hover: #FFFFFF;
+  /** Colour of the checkmark glyph inside the box — checked, while pressed. */
   --checkbox-icon-selected-pressed: #FFFFFF;
+  /** Colour of the checkmark glyph inside the box — checked, when disabled. */
   --checkbox-icon-selected-disabled: #FAFAFA;
+  /** Colour of the checkmark glyph inside the box — checked and in the error state, at rest. */
   --checkbox-icon-selected-error-default: #FFFFFF;
+  /** Colour of the checkmark glyph inside the box — checked and in the error state, on hover. */
   --checkbox-icon-selected-error-hover: #FFFFFF;
+  /** Colour of the checkmark glyph inside the box — checked and in the error state, while pressed. */
   --checkbox-icon-selected-error-pressed: #FFFFFF;
+  /** Colour of the checkmark glyph inside the box — checked and in the error state, when disabled. */
   --checkbox-icon-selected-error-disabled: #FAFAFA;
+  /** Colour of the label text beside the checkbox. */
   --checkbox-label-default: #0A0A0A;
+  /** Colour of the label text when the checkbox is disabled. */
   --checkbox-label-disabled: #A1A1A1;
+  /** Colour of the helper text below the label. */
   --checkbox-description-default: #525252;
+  /** Colour of the helper text when the checkbox is in the error state — validation messages render here. The label itself does not change colour in the error state. */
   --checkbox-description-error: #C10007;
+  /** Colour of the helper text when the checkbox is disabled. */
   --checkbox-description-disabled: #A1A1A1;
+  /** Colour of the keyboard focus ring. Apply on :focus-visible so the ring does not appear on pointer interaction. */
   --checkbox-focus-ring: #0681FF;
+  /** Colour of the keyboard focus ring when the checkbox is in the error state. */
   --checkbox-focus-ring-error: #C10007;
+  /** Width and height of the checkbox box at small size. The box is square, so this is both dimensions; the tappable area is set separately by min-touch-target. */
   --checkbox-control-size-sm: 16px;
+  /** Width and height of the checkbox box at medium size. */
   --checkbox-control-size-md: 20px;
+  /** Width and height of the checkbox box at large size. */
   --checkbox-control-size-lg: 24px;
+  /** Size of the checkmark glyph inside the box at small size. */
   --checkbox-icon-size-sm: 12px;
+  /** Size of the checkmark glyph inside the box at medium size. */
   --checkbox-icon-size-md: 16px;
+  /** Size of the checkmark glyph inside the box at large size. */
   --checkbox-icon-size-lg: 20px;
+  /** Corner radius of the checkbox box at small size. */
   --checkbox-radius-sm: 2px;
+  /** Corner radius of the checkbox box at medium size. */
   --checkbox-radius-md: 4px;
+  /** Corner radius of the checkbox box at large size; currently the same value as radius-md. */
   --checkbox-radius-lg: 4px;
+  /** Thickness of the box outline, in every state. */
   --checkbox-border-width: 1px;
+  /** Thickness of the keyboard focus ring. */
   --checkbox-focus-ring-width: 2px;
+  /** Gap between the box and its focus ring. */
   --checkbox-focus-ring-offset: 2px;
+  /** Horizontal gap between the box and its label at small size. */
   --checkbox-gap-sm: 8px;
+  /** Horizontal gap between the box and its label at medium size; currently the same value as gap-sm. */
   --checkbox-gap-md: 8px;
+  /** Horizontal gap between the box and its label at large size. */
   --checkbox-gap-lg: 12px;
+  /** Vertical gap between the label and the helper text beneath it. */
   --checkbox-gap-text: 4px;
+  /** Minimum tappable area around the checkbox, independent of the visible box size. The hit area must reach this even at small size — do not scale it with control-size-*. */
   --checkbox-min-touch-target: 48px;
+  /** Fill of the radio circle in both selected and unselected states — at rest. */
   --radio-bg-default: #FFFFFF;
+  /** Fill of the radio circle in both selected and unselected states — on hover. */
   --radio-bg-hover: #EDF8FF;
+  /** Fill of the radio circle in both selected and unselected states — while pressed. */
   --radio-bg-pressed: #D6EFFF;
+  /** Fill of the radio circle in both selected and unselected states — when disabled. */
   --radio-bg-disabled: #E5E5E5;
+  /** Fill of the radio circle in both selected and unselected states, in the error state — at rest. */
   --radio-bg-error-default: #FFFFFF;
+  /** Fill of the radio circle in both selected and unselected states, in the error state — on hover. */
   --radio-bg-error-hover: #FEF2F2;
+  /** Fill of the radio circle in both selected and unselected states, in the error state — while pressed. */
   --radio-bg-error-pressed: #FFE2E2;
+  /** Fill of the radio circle in both selected and unselected states, in the error state — when disabled. */
   --radio-bg-error-disabled: #E5E5E5;
+  /** Outline of the radio circle — unselected, at rest. */
   --radio-border-unselected-default: #737373;
+  /** Outline of the radio circle — unselected, on hover. */
   --radio-border-unselected-hover: #0067E8;
+  /** Outline of the radio circle — unselected, while pressed. */
   --radio-border-unselected-pressed: #0857C5;
+  /** Outline of the radio circle — unselected, when disabled. */
   --radio-border-unselected-disabled: #A1A1A1;
+  /** Outline of the radio circle — unselected and in the error state, at rest. */
   --radio-border-unselected-error-default: #C10007;
+  /** Outline of the radio circle — unselected and in the error state, on hover. */
   --radio-border-unselected-error-hover: #E7000B;
+  /** Outline of the radio circle — unselected and in the error state, while pressed. */
   --radio-border-unselected-error-pressed: #9F0712;
+  /** Outline of the radio circle — unselected and in the error state, when disabled. */
   --radio-border-unselected-error-disabled: #A1A1A1;
+  /** Outline of the radio circle — selected, at rest. */
   --radio-border-selected-default: #0067E8;
+  /** Outline of the radio circle — selected, on hover. */
   --radio-border-selected-hover: #0681FF;
+  /** Outline of the radio circle — selected, while pressed. */
   --radio-border-selected-pressed: #0857C5;
+  /** Outline of the radio circle — selected, when disabled. */
   --radio-border-selected-disabled: #A1A1A1;
+  /** Outline of the radio circle — selected and in the error state, at rest. */
   --radio-border-selected-error-default: #C10007;
+  /** Outline of the radio circle — selected and in the error state, on hover. */
   --radio-border-selected-error-hover: #E7000B;
+  /** Outline of the radio circle — selected and in the error state, while pressed. */
   --radio-border-selected-error-pressed: #9F0712;
+  /** Outline of the radio circle — selected and in the error state, when disabled. */
   --radio-border-selected-error-disabled: #A1A1A1;
+  /** Colour of the selected dot inside the circle — selected, at rest. */
   --radio-dot-selected-default: #0067E8;
+  /** Colour of the selected dot inside the circle — selected, on hover. */
   --radio-dot-selected-hover: #0681FF;
+  /** Colour of the selected dot inside the circle — selected, while pressed. */
   --radio-dot-selected-pressed: #0857C5;
+  /** Colour of the selected dot inside the circle — selected, when disabled. */
   --radio-dot-selected-disabled: #A1A1A1;
+  /** Colour of the selected dot inside the circle — selected and in the error state, at rest. */
   --radio-dot-selected-error-default: #C10007;
+  /** Colour of the selected dot inside the circle — selected and in the error state, on hover. */
   --radio-dot-selected-error-hover: #E7000B;
+  /** Colour of the selected dot inside the circle — selected and in the error state, while pressed. */
   --radio-dot-selected-error-pressed: #9F0712;
+  /** Colour of the selected dot inside the circle — selected and in the error state, when disabled. */
   --radio-dot-selected-error-disabled: #A1A1A1;
+  /** Colour of the label text beside the radio. */
   --radio-label-default: #0A0A0A;
+  /** Colour of the label text when the radio is disabled. */
   --radio-label-disabled: #A1A1A1;
+  /** Colour of the helper text below the label. */
   --radio-description-default: #525252;
+  /** Colour of the helper text when the radio is in the error state — validation messages render here. The label itself does not change colour in the error state. */
   --radio-description-error: #C10007;
+  /** Colour of the helper text when the radio is disabled. */
   --radio-description-disabled: #A1A1A1;
+  /** Colour of the focus state layer while the radio is unselected. The state layer takes the colour of the content it belongs to, so it follows the ring rather than the interior. */
   --radio-state-layer-unselected: #737373;
+  /** Colour of the focus state layer while the radio is selected. */
   --radio-state-layer-selected: #0067E8;
+  /** Colour of the focus state layer in the error state, selected or not. */
   --radio-state-layer-error: #C10007;
+  /** Diameter of the radio circle at small size. The tappable area is set separately by min-touch-target. */
   --radio-control-size-sm: 16px;
+  /** Diameter of the radio circle at medium size. */
   --radio-control-size-md: 20px;
+  /** Diameter of the radio circle at large size. */
   --radio-control-size-lg: 24px;
+  /** Diameter of the selected dot inside the circle at small size. */
   --radio-dot-size-sm: 8px;
+  /** Diameter of the selected dot inside the circle at medium size. The only component token that aliases a primitive (spacing.10) rather than a semantic step, because the semantic space scale jumps from 8px to 12px. */
   --radio-dot-size-md: 10px;
+  /** Diameter of the selected dot inside the circle at large size. */
   --radio-dot-size-lg: 12px;
+  /** Corner radius of the radio circle — always fully round. A single token, since the circle keeps its shape across every size. */
   --radio-radius: 999px;
+  /** Thickness of the circle outline, in every state. */
   --radio-border-width: 2px;
+  /** Diameter of the focus state layer at small size — twice the control diameter, so it overhangs the circle evenly. */
   --radio-state-layer-size-sm: 32px;
+  /** Diameter of the focus state layer at medium size — twice the control diameter, so it overhangs the circle evenly. */
   --radio-state-layer-size-md: 40px;
+  /** Diameter of the focus state layer at large size — twice the control diameter, so it overhangs the circle evenly. */
   --radio-state-layer-size-lg: 48px;
+  /** Opacity of the focus state layer, matching Material's focus value. Kept separate from the colour tokens so hover and pressed opacities can be added alongside it. Radio has no focus ring, so this layer is the whole focus affordance — at 1.13–1.20:1 against white it does not meet WCAG 1.4.11, an accepted deviation documented in components/radio.md. */
   --radio-state-layer-opacity-focus: 0.1;
+  /** Horizontal gap between the circle and its label at small size. */
   --radio-gap-sm: 8px;
+  /** Horizontal gap between the circle and its label at medium size; currently the same value as gap-sm. */
   --radio-gap-md: 8px;
+  /** Horizontal gap between the circle and its label at large size. */
   --radio-gap-lg: 12px;
+  /** Vertical gap between the label and the helper text beneath it. */
   --radio-gap-text: 4px;
+  /** Minimum tappable area around the radio, independent of the visible circle size. The hit area must reach this even at small size — do not scale it with control-size-*. */
   --radio-min-touch-target: 48px;
 }
