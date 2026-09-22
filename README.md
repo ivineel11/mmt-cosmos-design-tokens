@@ -214,7 +214,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens) and Radio (61 tokens) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens) and Radio (57 tokens) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -371,11 +371,11 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 
 ## Token Inventory
 
-**Totals:** 227 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 229 component tokens (104 `button/*` + 64 `checkbox/*` + 61 `radio/*`) · **826 values per platform** · **0 gradients**
+**Totals:** 226 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 225 component tokens (104 `button/*` + 64 `checkbox/*` + 57 `radio/*`) · **821 values per platform** · **0 gradients**
 
-The emitted count exceeds the 718 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 713 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
-### Primitive tokens (227)
+### Primitive tokens (226)
 
 #### Color — 145 tokens (12 palettes × 12 steps, plus `alpha.transparent`)
 
@@ -677,7 +677,7 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `space.6xl` | 48px |
 | `space.7xl` | 64px |
 
-### Component tokens (229)
+### Component tokens (225)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -685,7 +685,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 |-------|--------|---------------------|------|
 | `button/*` | 104 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 64 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
-| `radio/*` | 61 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
+| `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 

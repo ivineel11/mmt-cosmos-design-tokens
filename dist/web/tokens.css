@@ -423,7 +423,6 @@
   --border-width-0: 0px;
   --border-width-1: 1px;
   --border-width-2: 2px;
-  --border-width-3: 3px;
   --headline-large-regular-font-family: Lato;
   --headline-large-regular-font-weight: 400;
   --headline-large-regular-font-size: 32px;
@@ -805,8 +804,6 @@
   --radio-description-default: #525252;
   --radio-description-error: #C10007;
   --radio-description-disabled: #A1A1A1;
-  --radio-focus-ring: #0681FF;
-  --radio-focus-ring-error: #C10007;
   --radio-state-layer-unselected: #737373;
   --radio-state-layer-selected: #0067E8;
   --radio-state-layer-error: #C10007;
@@ -818,8 +815,6 @@
   --radio-dot-size-lg: 12px;
   --radio-radius: 999px;
   --radio-border-width: 2px;
-  --radio-focus-ring-width: 3px;
-  --radio-focus-ring-offset: 2px;
   --radio-state-layer-size-sm: 32px;
   --radio-state-layer-size-md: 40px;
   --radio-state-layer-size-lg: 48px;

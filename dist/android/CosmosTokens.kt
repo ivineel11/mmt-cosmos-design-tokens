@@ -61,7 +61,6 @@ object CosmosTokens {
   val borderWidth0 = 0.dp
   val borderWidth1 = 1.dp
   val borderWidth2 = 2.dp
-  val borderWidth3 = 3.dp
   val buttonBgPrimaryDefault = Color(0xFF0067E8)
   val buttonBgPrimaryDestructiveDefault = Color(0xFFC10007)
   val buttonBgPrimaryDestructiveDisabled = Color(0xFFE5E5E5)
@@ -736,10 +735,6 @@ object CosmosTokens {
   val radioDotSizeLg = 12.dp
   val radioDotSizeMd = 10.dp
   val radioDotSizeSm = 8.dp
-  val radioFocusRing = Color(0xFF0681FF)
-  val radioFocusRingError = Color(0xFFC10007)
-  val radioFocusRingOffset = 2.dp
-  val radioFocusRingWidth = 3.dp
   val radioGapLg = 12.dp
   val radioGapMd = 8.dp
   val radioGapSm = 8.dp

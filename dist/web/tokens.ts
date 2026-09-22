@@ -468,7 +468,6 @@ export default {
     0: "0px",
     1: "1px",
     2: "2px",
-    3: "3px",
   },
   headline: {
     large: {
@@ -966,8 +965,6 @@ export default {
     "description-default": "#525252",
     "description-error": "#C10007",
     "description-disabled": "#A1A1A1",
-    "focus-ring": "#0681FF",
-    "focus-ring-error": "#C10007",
     "state-layer-unselected": "#737373",
     "state-layer-selected": "#0067E8",
     "state-layer-error": "#C10007",
@@ -979,8 +976,6 @@ export default {
     "dot-size-lg": "12px",
     radius: "999px",
     "border-width": "2px",
-    "focus-ring-width": "3px",
-    "focus-ring-offset": "2px",
     "state-layer-size-sm": "32px",
     "state-layer-size-md": "40px",
     "state-layer-size-lg": "48px",
