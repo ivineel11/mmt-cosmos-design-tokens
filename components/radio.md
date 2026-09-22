@@ -10,13 +10,14 @@
 
 Radio is the single-choice form control: a circular indicator paired with an optional label and an optional description. Four variant axes drive it — `Selection` carries the value (`Unselected`, `Selected`), `State` covers the five interaction states, `Size` scales the control, dot, gap and type ramp in lockstep, and `Intent` switches the whole ramp to the invalid-form palette.
 
-It is deliberately a near-clone of [Checkbox](checkbox.md): same row structure, same state ramps, same geometry, same tokens one tier down. **The box height equals the label line-height at every size** (16 / 20 / 24), the root row top-aligns its children, and focus is drawn by a dedicated ring rectangle positioned outside the auto-layout flow so showing focus never reflows the row.
+It shares [Checkbox](checkbox.md)'s row structure and state ramps: **the control height equals the label line-height at every size** (16 / 20 / 24), the root row top-aligns its children, and focus is drawn by a dedicated ring rectangle positioned outside the auto-layout flow so showing focus never reflows the row. Variant footprints match Checkbox exactly — 109×36 Small, 113×40 Medium, 135×48 Large — so the two controls can sit in one form without the rows drifting.
 
-Three things genuinely differ from Checkbox:
+Four things genuinely differ from Checkbox:
 
-1. **No indeterminate.** A radio has two values, not three. There is no mixed presentation and no `aria-checked="mixed"`.
-2. **A radio is never used alone.** It belongs to a named group; selecting one member clears the others, and activating an already-selected radio does nothing. Checkbox toggles; Radio does not. The group — not this component — owns the focus and keyboard model (see Accessibility).
-3. **The indicator is geometry, not an icon.** The dot is a plain ellipse bound to `radio/dot-size-*`, so there is no referenced icon component and nothing to instance-swap.
+1. **Selection is drawn as an open ring, not a filled control.** Following [Material Design](https://m3.material.io/components/radio-button/specs), a selected radio is a 2 px brand ring with a brand dot at 50% of the control diameter, over the same interior the unselected control has. Checkbox floods its box with the intent colour and puts a white glyph on top; Radio never fills. This is why `bg-*` is not keyed by `Selection` — see Color.
+2. **No indeterminate.** A radio has two values, not three. There is no mixed presentation and no `aria-checked="mixed"`.
+3. **A radio is never used alone.** It belongs to a named group; selecting one member clears the others, and activating an already-selected radio does nothing. Checkbox toggles; Radio does not. The group — not this component — owns the focus and keyboard model (see Accessibility).
+4. **The indicator is geometry, not an icon.** The dot is a plain ellipse bound to `radio/dot-size-*`, so there is no referenced icon component and nothing to instance-swap.
 
 **Variant axes.** 4 axes across 60 variants — **Selection** (Unselected, Selected; default `Unselected`); **State** (Default, Hover, Pressed, Focus, Disabled; default `Default`); **Size** (Medium, Large, Small; default `Medium`); **Intent** (Default, Error; default `Default`).
 
@@ -88,23 +89,25 @@ Both the Box and the Focus Ring take their corner radius from the single `radio/
 
 ### Dimensions
 
-`Size` is the only dimension-affecting axis. `Selection`, `State` and `Intent` leave every measurement identical.
+`Size` is the only dimension-affecting axis. `Selection`, `State` and `Intent` leave every measurement identical — selection changes colour and reveals the dot, never geometry, so the control never shifts weight or nudges the row when the user picks an option.
 
 | Property | Small | Medium | Large | Token |
 |---|---|---|---|---|
 | Control width / height | 16 | 20 | 24 | `radio/control-size-{sm,md,lg}` |
-| Dot diameter | 8 | 8 | 12 | `radio/dot-size-{sm,md,lg}` |
+| Ring width | 2 | 2 | 2 | `radio/border-width` |
+| Dot diameter | 8 | 10 | 12 | `radio/dot-size-{sm,md,lg}` |
 | Corner radius | 999 | 999 | 999 | `radio/radius` |
-| Border width | 1 | 1 | 1 | `radio/border-width` |
 | Control → text gap | 8 | 8 | 12 | `radio/gap-{sm,md,lg}` |
 | Label → description gap | 4 | 4 | 4 | `radio/gap-text` |
 | Label type | 12 / 16 | 14 / 20 | 16 / 24 | `fontSize/*` + `lineHeight/*`, Lato Regular |
 | Description type | 12 / 16 | 12 / 16 | 14 / 20 | `fontSize/*` + `lineHeight/*`, Lato Regular |
 | Focus ring outset | 4 | 4 | 4 | `radio/focus-ring-offset` (2) + `radio/focus-ring-width` (2) |
 
-Control height equals label line-height at every size, which is what makes the top-aligned row land correctly. Variant footprints match Checkbox exactly — 109×36 Small, 113×40 Medium, 135×48 Large — so the two controls can sit in one form without the rows drifting.
+Control height equals label line-height at every size, which is what makes the top-aligned row land correctly.
 
-**On the dot ramp.** Small and Medium share an 8 px dot, so the dot occupies 50% of the Small control and 40% of the Medium one. The semantic space scale steps 4 → 8 → 12 with no 6 or 10, and a uniform ratio would have required adding `spacing.6` / `spacing.10` primitives for one component. Duplicating a value across adjacent sizes is the established behaviour here — Checkbox already does it for `gap-sm`/`gap-md` and `radius-md`/`radius-lg`. See Known gaps.
+**The dot is exactly 50% of the control at every size**, matching Material. That ratio is the reason `radio/dot-size-md` is 10 px, and the reason the primitive scale gained a `spacing.10` step (see Known gaps).
+
+**The ring is 2 px, where Checkbox's border is 1 px.** Material draws both the unselected and the selected radio with the same 2 px stroke, so selection reads as a colour change plus a dot rather than a thickening ring. A 1 px circle also renders thinner than a 1 px square of the same nominal weight, because far less of its stroke lands on the pixel grid. This is a deliberate divergence from Checkbox, not an oversight.
 
 ---
 
@@ -114,16 +117,16 @@ Token names follow `radio/{property}-{selection}-{intent}-{state}`, where `inten
 
 `State=Focus` reuses the `default` colour suffix and adds the ring — focus changes nothing but the ring.
 
-### Control fill — `radio/bg-*`
+### Control interior — `radio/bg-*`
 
-| Selection | Intent | Default | Hover | Pressed | Disabled |
-|---|---|---|---|---|---|
-| Unselected | Default | `color.bg` | `color.bg-surface-brand` | `color.bg-surface-brand-hover` | `color.bg-surface-disabled` |
-| Unselected | Error | `color.bg` | `color.bg-surface-warning` | `color.bg-surface-warning-hover` | `color.bg-surface-disabled` |
-| Selected | Default | `color.bg-fill-brand` | `color.bg-fill-brand-hover` | `color.bg-fill-brand-pressed` | `color.bg-fill-disabled-strong` |
-| Selected | Error | `color.bg-fill-warning-strong` | `color.bg-fill-warning-strong-hover` | `color.bg-fill-warning-strong-pressed` | `color.bg-fill-disabled-strong` |
+**Not keyed by `Selection`.** The interior is the hover/press surface, not the selection indicator: a selected radio shows its state through the ring and the dot, and its interior stays exactly what an unselected radio's would be. Keying these eight values by selection would have produced sixteen keys of which eight could never differ from their partner, so the axis is dropped rather than documented as "identical to the row above".
 
-### Control border — `radio/border-*`
+| Intent | Default | Hover | Pressed | Disabled |
+|---|---|---|---|---|
+| Default | `color.bg` | `color.bg-surface-brand` | `color.bg-surface-brand-hover` | `color.bg-surface-disabled` |
+| Error | `color.bg` | `color.bg-surface-warning` | `color.bg-surface-warning-hover` | `color.bg-surface-disabled` |
+
+### Ring — `radio/border-*`
 
 | Selection | Intent | Default | Hover | Pressed | Disabled |
 |---|---|---|---|---|---|
@@ -132,15 +135,22 @@ Token names follow `radio/{property}-{selection}-{intent}-{state}`, where `inten
 | Selected | Default | `color.border-brand` | `color.border-brand-hover` | `color.border-brand-pressed` | `color.border-disabled-strong` |
 | Selected | Error | `color.border-warning-strong` | `color.border-warning-strong-hover` | `color.border-warning-strong-pressed` | `color.border-disabled-strong` |
 
-Border and fill resolve to the same hex in every selected state, so the control reads as a solid disc with a white dot rather than a ring. Both are still bound separately so the ramps can diverge later.
+The ring is the one property that carries selection: neutral when unselected, brand when selected. Hovering an unselected radio previews that by moving the ring to brand, which is why the unselected hover and selected default rows resolve to the same hex.
 
 Disabled collapses to the neutral ramp in both intents — an inert control should not also shout "error".
 
-**On the selected treatment.** Cosmos draws a selected radio as a *filled* disc with a white dot, not the more common white disc with a brand-coloured dot. This mirrors Checkbox one-for-one: selected means "filled with the intent colour, indicator in the on-fill colour". The two controls therefore carry identical visual weight when stacked in the same form, and Radio inherits Checkbox's already-measured contrast pairs rather than introducing a dot-on-white pair that would need its own ramp.
-
 ### Dot — `radio/dot-*`
 
-Only rendered when selected. Default / Hover / Pressed all use `color.text-brand-on-bg-fill` (Default intent) or `color.text-warning-on-bg-fill-strong` (Error); Disabled uses `color.icon-inverse`.
+Only rendered when selected.
+
+| Intent | Default | Hover | Pressed | Disabled |
+|---|---|---|---|---|
+| Default | `color.text-brand` | `color.text-brand-hover` | `color.text-brand-pressed` | `color.text-disabled` |
+| Error | `color.text-warning` | `color.text-warning-hover` | `color.text-warning-pressed` | `color.text-disabled` |
+
+The dot uses the brand/warning **foreground** ramp, which steps 700 → 600 → 800 exactly as `border-brand` does, so ring and dot move together through hover and press and always resolve to the same hex. That is what makes the control read as one mark rather than a ring with a separately-coloured filling.
+
+`icon-*` would be the more literal family for a small filled indicator, but the semantic tier only carries a single `color.icon-brand` step with no hover or pressed siblings. Using the complete `text-*` ramp keeps all four states in one family; if `icon-brand-hover` / `-pressed` are ever added, repoint these eight tokens.
 
 ### Text and focus
 
@@ -162,21 +172,26 @@ The label stays neutral in the Error intent. The control and the description car
 
 ### Contrast
 
-Measured against `#ffffff`. Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed.
+Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed. The dot is measured against the control interior it sits on, not the page, because that is its adjacent colour.
 
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
-| Unselected border `#737373` | 4.74:1 | 3:1 (1.4.11) | Pass |
-| Selected control `#0067E8` | 5.12:1 | 3:1 (1.4.11) | Pass |
-| Dot on brand fill | 5.12:1 | 3:1 (1.4.11) | Pass |
-| Dot on error fill `#C10007` | 6.42:1 | 3:1 (1.4.11) | Pass |
-| Error border `#C10007` | 6.42:1 | 3:1 (1.4.11) | Pass |
-| Focus ring `#0681FF` | 3.76:1 | 3:1 (1.4.11) | Pass |
+| Unselected ring `#737373` on `#FFFFFF` | 4.74:1 | 3:1 (1.4.11) | Pass |
+| Selected ring `#0067E8` on `#FFFFFF` | 5.12:1 | 3:1 (1.4.11) | Pass |
+| Dot `#0067E8` on interior `#FFFFFF` | 5.12:1 | 3:1 (1.4.11) | Pass |
+| Dot hover `#0681FF` on interior `#EDF8FF` | 3.48:1 | 3:1 (1.4.11) | Pass |
+| Dot pressed `#0857C5` on interior `#D6EFFF` | 5.55:1 | 3:1 (1.4.11) | Pass |
+| Error ring / dot `#C10007` on `#FFFFFF` | 6.42:1 | 3:1 (1.4.11) | Pass |
+| Error dot hover `#E7000B` on interior `#FEF2F2` | 4.36:1 | 3:1 (1.4.11) | Pass |
+| Error dot pressed `#9F0712` on interior `#FFE2E2` | 6.85:1 | 3:1 (1.4.11) | Pass |
+| Focus ring `#0681FF` on `#FFFFFF` | 3.76:1 | 3:1 (1.4.11) | Pass |
 | Label `#0A0A0A` | 19.80:1 | 4.5:1 (1.4.3) | Pass |
 | Description `#525252` | 7.81:1 | 4.5:1 (1.4.3) | Pass |
 | Error description `#C10007` | 6.42:1 | 4.5:1 (1.4.3) | Pass |
 
-Every pair is inherited from Checkbox — same tokens, same measurements. Radio adds no new semantic colours; `color.border-strong` (added by Checkbox as the interactive-control boundary colour) carries the unselected ring here too.
+Hover is the tightest pair at 3.48:1 — the dot darkens one step less than the interior lightens. It clears 1.4.11, but it is the pair to re-measure first if the brand ramp is ever re-tinted.
+
+Radio adds no new semantic colours; `color.border-strong` (added by Checkbox as the interactive-control boundary colour) carries the unselected ring here too.
 
 ### Semantics
 
@@ -190,6 +205,8 @@ Every pair is inherited from Checkbox — same tokens, same measurements. Radio 
 
 The control, the dot and the ring are presentational; the label supplies the accessible name. Clicking the label must select the option — associate it with `<label for>` or by wrapping.
 
+**Do not rely on the dot alone.** The selected state is carried by colour (ring and dot both move to brand) *and* by the presence of the dot, which satisfies 1.4.1 Use of Colour. Keep the dot — a selected-state treatment that only recolours the ring would fail.
+
 **Precedence.** `disabled` wins over `invalid`: an inert control does not announce an error.
 
 **Error wiring.** The error belongs to the group, not the option. Put the message once, associated with the `radiogroup`, and set `Intent=Error` on every member so the group reads as one invalid field rather than four independent ones.
@@ -200,10 +217,11 @@ The control, the dot and the ring are presentational; the label supplies the acc
 
 ## Known gaps
 
+- **`radio/dot-size-md` aliases a primitive, not a semantic token.** Material's 50% dot needs 10 px at the Medium control, and the semantic space scale steps `xs` (8) → `sm` (12) with no room for a step between them that would not need an invented t-shirt name every future consumer inherits. So `spacing.10` was added to primitives and the component token points straight at it. This follows the existing precedent for stroke weights — `checkbox/border-width` → `{borderWidth.1}` — where the semantic tier has no equivalent step. It is the only radio token that skips the semantic tier.
 - **`radio/focus-ring-offset` is not bound in Figma.** The ring's absolute position and size are not variable-bindable properties, so the 4 px outset (offset 2 + width 2) is baked as geometry on each variant. The token is authoritative for code; if you change it, the Figma ring geometry must be updated by hand.
 - **`radio/min-touch-target` is not represented in the component.** It is an implementation concern only — expanding the Figma component would have broken the control/line-height alignment that the layout depends on.
-- **Small and Medium share an 8 px dot.** The semantic space scale has no 6 or 10 step. A uniform ~40% ramp (6 / 8 / 10) would read slightly better at Small, and would cost two new primitives plus two semantic aliases used by nothing else. If the scale gains those steps for another reason, repoint `radio/dot-size-sm` and add `dot-size-md` → 10.
 - **The group is not modelled.** Radio ships as a single option. The `radiogroup` wrapper — legend, group-level error message, roving focus — is a code concern and has no Figma counterpart yet. A `Radio Group` component would be the natural follow-up.
+- **No state layer.** Material draws hover and press as a translucent circle *behind* the control, overhanging it. Cosmos tints the control interior instead, matching Checkbox. This keeps the two controls consistent with each other at the cost of a visible difference from Material.
 - **`Show Label` toggles the whole text block**, not just the label line. Named for consistency with Checkbox; documented here because the name under-describes it.
 - **No dark mode.** All three variable collections are single-mode, matching Button and Checkbox. Adding modes is a token-tier change, not a component one.
 - **Not uSpec-generated.** This file was hand-authored next to the Figma build. Re-run the `create-component-md` flow (README → "Generating a spec for a new component") to replace it with an extracted spec.
@@ -212,17 +230,17 @@ The control, the dot and the ring are presentational; the label supplies the acc
 
 ## Token reference
 
-62 tokens under `component.radio` in `tokens/tokens.json`, mirrored 1:1 as `radio/*` in the Figma `component` collection:
+54 tokens under `component.radio` in `tokens/tokens.json`, mirrored 1:1 as `radio/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
-| `bg-*` | 16 |
+| `bg-*` (State × Intent only) | 8 |
 | `border-*` | 16 |
 | `dot-*` (colour) | 8 |
 | `label-*` / `description-*` | 5 |
 | `focus-ring*` (colour) | 2 |
 | dimensions (`control-size`, `dot-size`, `radius`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `gap-*`, `min-touch-target`) | 15 |
 
-Platform names follow the standard pipeline: `radio/bg-selected-hover` → `--radio-bg-selected-hover` (CSS) → `CosmosTokens.radioBgSelectedHover` (Swift / Kotlin) → `tokens.radioBgSelectedHover` (TS).
+Platform names follow the standard pipeline: `radio/dot-selected-hover` → `--radio-dot-selected-hover` (CSS) → `CosmosTokens.radioDotSelectedHover` (Swift / Kotlin) → `tokens.radioDotSelectedHover` (TS).
 
-Radio added **no new semantic tokens** — it reuses the ramps Button and Checkbox already established, including `color.border-strong`.
+Radio added **no new semantic tokens** — it reuses the ramps Button and Checkbox already established, including `color.border-strong`. It added one primitive, `spacing.10`, for the Medium dot.
