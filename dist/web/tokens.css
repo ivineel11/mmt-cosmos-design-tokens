@@ -214,7 +214,7 @@
   --color-border-brand: #0067E8;
   --color-border-brand-hover: #0681FF;
   --color-border-brand-pressed: #0857C5;
-  --color-border-info: #DBEAFE;
+  --color-border-info: #83D4FF;
   --color-border-success: #7BF1A8;
   --color-border-caution: #FFDF20;
   --color-border-warning: #FFA2A2;
@@ -423,6 +423,7 @@
   --border-width-0: 0px;
   --border-width-1: 1px;
   --border-width-2: 2px;
+  --border-width-3: 3px;
   --headline-large-regular-font-family: Lato;
   --headline-large-regular-font-weight: 400;
   --headline-large-regular-font-size: 32px;
@@ -806,6 +807,9 @@
   --radio-description-disabled: #A1A1A1;
   --radio-focus-ring: #0681FF;
   --radio-focus-ring-error: #C10007;
+  --radio-state-layer-unselected: #737373;
+  --radio-state-layer-selected: #0067E8;
+  --radio-state-layer-error: #C10007;
   --radio-control-size-sm: 16px;
   --radio-control-size-md: 20px;
   --radio-control-size-lg: 24px;
@@ -814,8 +818,12 @@
   --radio-dot-size-lg: 12px;
   --radio-radius: 999px;
   --radio-border-width: 2px;
-  --radio-focus-ring-width: 2px;
+  --radio-focus-ring-width: 3px;
   --radio-focus-ring-offset: 2px;
+  --radio-state-layer-size-sm: 32px;
+  --radio-state-layer-size-md: 40px;
+  --radio-state-layer-size-lg: 48px;
+  --radio-state-layer-opacity-focus: 0.1;
   --radio-gap-sm: 8px;
   --radio-gap-md: 8px;
   --radio-gap-lg: 12px;

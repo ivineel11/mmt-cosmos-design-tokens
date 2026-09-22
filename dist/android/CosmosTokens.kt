@@ -61,6 +61,7 @@ object CosmosTokens {
   val borderWidth0 = 0.dp
   val borderWidth1 = 1.dp
   val borderWidth2 = 2.dp
+  val borderWidth3 = 3.dp
   val buttonBgPrimaryDefault = Color(0xFF0067E8)
   val buttonBgPrimaryDestructiveDefault = Color(0xFFC10007)
   val buttonBgPrimaryDestructiveDisabled = Color(0xFFE5E5E5)
@@ -292,7 +293,7 @@ object CosmosTokens {
   val colorBorderDisabledStrong = Color(0xFFA1A1A1)
   val colorBorderDisabledSubtle = Color(0xFFD4D4D4)
   val colorBorderFocus = Color(0xFF0681FF)
-  val colorBorderInfo = Color(0xFFDBEAFE)
+  val colorBorderInfo = Color(0xFF83D4FF)
   val colorBorderSecondary = Color(0xFFE5E5E5)
   val colorBorderStrong = Color(0xFF737373)
   val colorBorderSuccess = Color(0xFF7BF1A8)
@@ -738,7 +739,7 @@ object CosmosTokens {
   val radioFocusRing = Color(0xFF0681FF)
   val radioFocusRingError = Color(0xFFC10007)
   val radioFocusRingOffset = 2.dp
-  val radioFocusRingWidth = 2.dp
+  val radioFocusRingWidth = 3.dp
   val radioGapLg = 12.dp
   val radioGapMd = 8.dp
   val radioGapSm = 8.dp
@@ -747,6 +748,13 @@ object CosmosTokens {
   val radioLabelDisabled = Color(0xFFA1A1A1)
   val radioMinTouchTarget = 48.dp
   val radioRadius = 999.dp
+  val radioStateLayerError = Color(0xFFC10007)
+  val radioStateLayerOpacityFocus = 0.1
+  val radioStateLayerSelected = Color(0xFF0067E8)
+  val radioStateLayerSizeLg = 48.dp
+  val radioStateLayerSizeMd = 40.dp
+  val radioStateLayerSizeSm = 32.dp
+  val radioStateLayerUnselected = Color(0xFF737373)
   val radius2xl = 24.dp
   val radius3xl = 32.dp
   val radius4xl = 40.dp

@@ -58,11 +58,11 @@ The export must preserve:
 - `$metadata.tokenSetOrder`: `["primitives", "semantic", "component"]` — each tier resolves before the one that references it
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
-- `description` on every semantic token — see below
+- `description` on every semantic token and on the `checkbox` / `radio` component tokens — see below
 
 #### Token descriptions
 
-Every token in the **semantic** set carries a `description` alongside its `value` and `type`:
+Every token in the **semantic** set, and every `checkbox` and `radio` token in the **component** set, carries a `description` alongside its `value` and `type`:
 
 ```json
 "bg-fill-brand": {
@@ -74,7 +74,9 @@ Every token in the **semantic** set carries a `description` alongside its `value
 
 These exist so that anyone choosing a token — a human reading the JSON, or an LLM implementing from it — can tell near-identical roles apart (`bg-surface-*` vs `bg-fill-*`, `*-strong` vs `*-subtle`, `warning` vs `caution`). A description states **intent and boundary**, not the value: what the token is for, and which neighbouring token to use instead. Restating the name (`"Brand fill colour"`) adds nothing.
 
-Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync. Primitives are deliberately undescribed (the name is the value), and `component` tokens inherit their meaning from the component spec in `components/`.
+Component-token descriptions name the part of the anatomy and the state combination (`"Outline of the checkbox box — checked and in the error state, while pressed."`), and carry the rules the names cannot: that `min-touch-target` must not scale with `control-size-*`, that the label does not turn red in the error state, that `radio-radius` is one token because the circle keeps its shape at every size.
+
+Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync. Primitives are deliberately undescribed (the name is the value). The `button` component set is not described yet; it is the one remaining gap.
 
 They reach `dist/web/tokens.css` as comments above each custom property; the other platforms currently drop them (see [Adding descriptions to other platforms](#adding-descriptions-to-other-platforms)).
 
@@ -212,7 +214,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens) and Radio (54 tokens) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens) and Radio (61 tokens) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -369,11 +371,11 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 
 ## Token Inventory
 
-**Totals:** 226 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 222 component tokens (104 `button/*` + 64 `checkbox/*` + 54 `radio/*`) · **818 values per platform** · **0 gradients**
+**Totals:** 227 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 229 component tokens (104 `button/*` + 64 `checkbox/*` + 61 `radio/*`) · **826 values per platform** · **0 gradients**
 
-The emitted count exceeds the 710 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 718 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
-### Primitive tokens (226)
+### Primitive tokens (227)
 
 #### Color — 145 tokens (12 palettes × 12 steps, plus `alpha.transparent`)
 
@@ -675,7 +677,7 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `space.6xl` | 48px |
 | `space.7xl` | 64px |
 
-### Component tokens (222)
+### Component tokens (229)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -683,7 +685,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 |-------|--------|---------------------|------|
 | `button/*` | 104 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 64 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
-| `radio/*` | 54 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
+| `radio/*` | 61 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 

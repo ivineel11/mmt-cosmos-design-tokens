@@ -10,7 +10,7 @@
 
 Radio is the single-choice form control: a circular indicator paired with an optional label and an optional description. Four variant axes drive it — `Selection` carries the value (`Unselected`, `Selected`), `State` covers the five interaction states, `Size` scales the control, dot, gap and type ramp in lockstep, and `Intent` switches the whole ramp to the invalid-form palette.
 
-It shares [Checkbox](checkbox.md)'s row structure and state ramps: **the control height equals the label line-height at every size** (16 / 20 / 24), the root row top-aligns its children, and focus is drawn by a dedicated ring rectangle positioned outside the auto-layout flow so showing focus never reflows the row. Variant footprints match Checkbox exactly — 109×36 Small, 113×40 Medium, 135×48 Large — so the two controls can sit in one form without the rows drifting.
+It shares [Checkbox](checkbox.md)'s row structure and state ramps: **the control height equals the label line-height at every size** (16 / 20 / 24), the root row top-aligns its children, and focus is drawn outside the auto-layout flow so showing focus never reflows the row. Variant footprints match Checkbox exactly — 109×36 Small, 113×40 Medium, 135×48 Large — so the two controls can sit in one form without the rows drifting.
 
 Four things genuinely differ from Checkbox:
 
@@ -18,6 +18,7 @@ Four things genuinely differ from Checkbox:
 2. **No indeterminate.** A radio has two values, not three. There is no mixed presentation and no `aria-checked="mixed"`.
 3. **A radio is never used alone.** It belongs to a named group; selecting one member clears the others, and activating an already-selected radio does nothing. Checkbox toggles; Radio does not. The group — not this component — owns the focus and keyboard model (see Accessibility).
 4. **The indicator is geometry, not an icon.** The dot is a plain ellipse bound to `radio/dot-size-*`, so there is no referenced icon component and nothing to instance-swap.
+5. **Focus follows Material, not Checkbox.** Checkbox draws a 2 px ring at a 2 px offset. Radio uses Material's pairing: a 40 dp **state layer** — the content colour at 10% — behind the control, plus a 3 px focus ring at a 2 px outward offset. See Focus.
 
 **Variant axes.** 4 axes across 60 variants — **Selection** (Unselected, Selected; default `Unselected`); **State** (Default, Hover, Pressed, Focus, Disabled; default `Default`); **Size** (Medium, Large, Small; default `Medium`); **Intent** (Default, Error; default `Default`).
 
@@ -25,7 +26,7 @@ Four things genuinely differ from Checkbox:
 
 No referenced components. The control is built from primitives only.
 
-- _Decorative children: 2 (Focus Ring, Dot) — documented inline under Structure._
+- _Decorative children: 3 (State Layer, Focus Ring, Dot) — documented inline under Structure._
 
 ---
 
@@ -75,6 +76,7 @@ These exist on the component set for mock-building and have no code counterpart:
 
 ```text
 Radio (component set · 442:415)
+├─ State Layer (ellipse) · decorative · a11y-hidden · absolute, behind everything · Focus only
 ├─ Focus Ring (rectangle) · decorative · a11y-hidden · absolute, outside layout flow
 ├─ Box (frame) · the control surface
 │  └─ Dot (ellipse) · decorative · a11y-hidden · hidden when Unselected
@@ -83,7 +85,7 @@ Radio (component set · 442:415)
    └─ Description (text)
 ```
 
-The root is a horizontal auto-layout row, `counterAxisAlignItems = MIN` (top), zero padding, transparent fill, `clipsContent = false` so the focus ring can overhang. The Box centres the Dot on both axes, so the dot stays concentric at every size without a hard-coded offset.
+The root is a horizontal auto-layout row, `counterAxisAlignItems = MIN` (top), zero padding, transparent fill, `clipsContent = false` so the state layer and focus ring can overhang. The State Layer is the first child, so it sits under the control rather than over it. The Box centres the Dot on both axes, so the dot stays concentric at every size without a hard-coded offset.
 
 Both the Box and the Focus Ring take their corner radius from the single `radio/radius` token (`999`). Checkbox needs three radius tokens because its corner softens with size; a circle does not, so the ramp collapses to one key.
 
@@ -101,7 +103,8 @@ Both the Box and the Focus Ring take their corner radius from the single `radio/
 | Label → description gap | 4 | 4 | 4 | `radio/gap-text` |
 | Label type | 12 / 16 | 14 / 20 | 16 / 24 | `fontSize/*` + `lineHeight/*`, Lato Regular |
 | Description type | 12 / 16 | 12 / 16 | 14 / 20 | `fontSize/*` + `lineHeight/*`, Lato Regular |
-| Focus ring outset | 4 | 4 | 4 | `radio/focus-ring-offset` (2) + `radio/focus-ring-width` (2) |
+| Focus ring outer ⌀ | 26 | 30 | 34 | control + 2 × (`radio/focus-ring-offset` 2 + `radio/focus-ring-width` 3) |
+| State layer ⌀ | 32 | 40 | 48 | `radio/state-layer-size-{sm,md,lg}` |
 
 Control height equals label line-height at every size, which is what makes the top-aligned row land correctly.
 
@@ -115,7 +118,7 @@ Control height equals label line-height at every size, which is what makes the t
 
 Token names follow `radio/{property}-{selection}-{intent}-{state}`, where `intent` is omitted for `Default`.
 
-`State=Focus` reuses the `default` colour suffix and adds the ring — focus changes nothing but the ring.
+`State=Focus` reuses the `default` colour suffix for fill, ring and dot — focus adds the state layer and the focus ring without recolouring anything else. See Focus.
 
 ### Control interior — `radio/bg-*`
 
@@ -166,6 +169,38 @@ The dot uses the brand/warning **foreground** ramp, which steps 700 → 600 → 
 
 The label stays neutral in the Error intent. The control and the description carry the error so it reads as one message, not two. Disabled wins over Error for both label and description.
 
+### State layer — `radio/state-layer-*`
+
+Material's state layer takes **the colour of the content it belongs to**, so it follows the ring rather than the interior:
+
+| Condition | Token | Value |
+|---|---|---|
+| Unselected, Default intent | `radio/state-layer-unselected` | `color.border-strong` |
+| Selected, Default intent | `radio/state-layer-selected` | `color.border-brand` |
+| Either selection, Error intent | `radio/state-layer-error` | `color.border-warning-strong` |
+
+Opacity is a separate token so it can vary per state while the colours stay shared: `radio/state-layer-opacity-focus` = `0.1`, matching Material's focus value. Hover (8%) and pressed (10%) are not implemented — see Known gaps — and adding them is purely additive, `state-layer-opacity-hover` / `-pressed` alongside this one.
+
+---
+
+## Focus
+
+Focus follows [Material](https://m3.material.io/components/radio-button/specs), which draws it as two things at once:
+
+| Element | Spec | Token |
+|---|---|---|
+| State layer | 40 dp circle for a 20 dp control (2×), content colour at 10% | `radio/state-layer-size-*`, `radio/state-layer-*`, `radio/state-layer-opacity-focus` |
+| Focus ring | 3 px outline at a 2 px outward offset, full shape | `radio/focus-ring-width` (3), `radio/focus-ring-offset` (2), `radio/focus-ring` |
+
+Both are absolutely positioned and outside the auto-layout flow, so focus never reflows the row. The state layer is the first child and sits under the control; the focus ring sits between them, hugging the control at a 30 px outer diameter while the state layer extends past it to 40 px. That nesting is Material's, taken from `_md-comp-focus-ring.scss`: `width: 3px`, `outward-offset: 2px`, `shape: corner-full`.
+
+**Two deviations from Material, both deliberate:**
+
+- **Ring colour.** Material's default is `md-sys-color-secondary`. Cosmos has no secondary brand role, so the ring keeps `color.border-focus` — the system's own focus colour, already used by Button and Checkbox. Using one focus colour across the system matters more than matching Material's role name.
+- **No active-width animation.** Material's ring briefly grows to 8 px on focus (`active-width`) and settles back to 3 px. That is a motion concern with no Figma counterpart; implement it in code if the platform supports it, and honour `prefers-reduced-motion` as Material's own stylesheet does.
+
+**The state layer is not the focus indicator.** At 10% on white it measures about 1.1:1, nowhere near the 3:1 that WCAG 1.4.11 asks of a focus indicator. The 3 px ring is what carries the requirement, at 3.76:1. If the ring is ever dropped in favour of a state-layer-only focus — which is what the Material *design* site shows, before its own web implementation adds `md-focus-ring` back — the component stops being keyboard accessible. Keep the ring.
+
 ---
 
 ## Accessibility
@@ -185,6 +220,7 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed. The dot i
 | Error dot hover `#E7000B` on interior `#FEF2F2` | 4.36:1 | 3:1 (1.4.11) | Pass |
 | Error dot pressed `#9F0712` on interior `#FFE2E2` | 6.85:1 | 3:1 (1.4.11) | Pass |
 | Focus ring `#0681FF` on `#FFFFFF` | 3.76:1 | 3:1 (1.4.11) | Pass |
+| _State layer at 10% on `#FFFFFF`_ | _~1.1:1_ | _n/a_ | _Not an indicator — see Focus_ |
 | Label `#0A0A0A` | 19.80:1 | 4.5:1 (1.4.3) | Pass |
 | Description `#525252` | 7.81:1 | 4.5:1 (1.4.3) | Pass |
 | Error description `#C10007` | 6.42:1 | 4.5:1 (1.4.3) | Pass |
@@ -221,7 +257,9 @@ The control, the dot and the ring are presentational; the label supplies the acc
 - **`radio/focus-ring-offset` is not bound in Figma.** The ring's absolute position and size are not variable-bindable properties, so the 4 px outset (offset 2 + width 2) is baked as geometry on each variant. The token is authoritative for code; if you change it, the Figma ring geometry must be updated by hand.
 - **`radio/min-touch-target` is not represented in the component.** It is an implementation concern only — expanding the Figma component would have broken the control/line-height alignment that the layout depends on.
 - **The group is not modelled.** Radio ships as a single option. The `radiogroup` wrapper — legend, group-level error message, roving focus — is a code concern and has no Figma counterpart yet. A `Radio Group` component would be the natural follow-up.
-- **No state layer.** Material draws hover and press as a translucent circle *behind* the control, overhanging it. Cosmos tints the control interior instead, matching Checkbox. This keeps the two controls consistent with each other at the cost of a visible difference from Material.
+- **State layers exist for focus only.** Material uses the same mechanism for hover (8%) and pressed (10%); Radio still tints the control interior for those, matching Checkbox. The tokens are shaped so extending is additive — add `state-layer-opacity-hover` / `-pressed` and show the existing layer on those variants — but doing so would diverge from Checkbox, so it is a system-wide decision rather than a Radio one.
+- **`radio/state-layer-opacity-focus` carries different units in Figma and JSON.** The token is `0.1`, which is what CSS, Swift and Compose all want. Figma's opacity binding is percentage-based, so the variable holds `10`. Same value, two idioms; it is the one radio token that is not literally identical across the two sources.
+- **At Medium, the state layer overlaps the text block by 2 px.** The layer is 40 px wide on a 20 px control, so it reaches 10 px past the control, while the text starts 8 px past it. Small and Large clear their text exactly. The layer is 10% opacity and sits behind the text, so the effect is invisible in practice; widening `gap-md` to fix it would break the footprint match with Checkbox, which is worth more.
 - **`Show Label` toggles the whole text block**, not just the label line. Named for consistency with Checkbox; documented here because the name under-describes it.
 - **No dark mode.** All three variable collections are single-mode, matching Button and Checkbox. Adding modes is a token-tier change, not a component one.
 - **Not uSpec-generated.** This file was hand-authored next to the Figma build. Re-run the `create-component-md` flow (README → "Generating a spec for a new component") to replace it with an extracted spec.
@@ -230,7 +268,7 @@ The control, the dot and the ring are presentational; the label supplies the acc
 
 ## Token reference
 
-54 tokens under `component.radio` in `tokens/tokens.json`, mirrored 1:1 as `radio/*` in the Figma `component` collection:
+61 tokens under `component.radio` in `tokens/tokens.json`, mirrored 1:1 as `radio/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
@@ -239,8 +277,10 @@ The control, the dot and the ring are presentational; the label supplies the acc
 | `dot-*` (colour) | 8 |
 | `label-*` / `description-*` | 5 |
 | `focus-ring*` (colour) | 2 |
-| dimensions (`control-size`, `dot-size`, `radius`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `gap-*`, `min-touch-target`) | 15 |
+| `state-layer-*` (colour) | 3 |
+| dimensions (`control-size`, `dot-size`, `radius`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `state-layer-size-*`, `gap-*`, `min-touch-target`) | 18 |
+| `state-layer-opacity-focus` | 1 |
 
 Platform names follow the standard pipeline: `radio/dot-selected-hover` → `--radio-dot-selected-hover` (CSS) → `CosmosTokens.radioDotSelectedHover` (Swift / Kotlin) → `tokens.radioDotSelectedHover` (TS).
 
-Radio added **no new semantic tokens** — it reuses the ramps Button and Checkbox already established, including `color.border-strong`. It added one primitive, `spacing.10`, for the Medium dot.
+Radio added **no new semantic tokens** — it reuses the ramps Button and Checkbox already established, including `color.border-strong`. It added two primitives: `spacing.10` for the Medium dot, and `borderWidth.3` for Material's focus ring width.
