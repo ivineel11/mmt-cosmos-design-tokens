@@ -249,6 +249,106 @@ function resolveGradientColors(node, dictionary = node) {
   return node;
 }
 
+/**
+ * Opacity is the one family where a wrong value is silently valid on every platform: no
+ * transform rejects it, so `10` or "110%" would reach CSS, Swift and Kotlin intact. Figma
+ * stores opacity as a percentage while tokens.json stores the 0-1 decimal, so a careless
+ * re-export is the likely way that happens.
+ *
+ * Runs BEFORE the tokens-studio preprocessor, which is the only point where the three
+ * tiers are still distinguishable — that is what lets it enforce the tier rules as well
+ * as the range. Read-only: it throws or it returns the dictionary untouched.
+ */
+function validateOpacity(dictionary) {
+  const isAlias = (v) => typeof v === "string" && /^\{[^}]+\}$/.test(v);
+  const primitives = dictionary.primitives?.opacityScale ?? {};
+  const semantics = dictionary.semantic?.opacity ?? {};
+
+  const walk = (node, path, tier) => {
+    if (node === null || typeof node !== "object" || Array.isArray(node)) return;
+    if (isTokenLeaf(node)) {
+      if (typeOf(node) !== "opacity") return;
+      const value = tokenValue(node);
+      const where = `${tier}.${path.join(".")}`;
+      if (isAlias(value)) return;
+      if (tier !== "primitives") {
+        throw new Error(
+          `Opacity token ${where} holds the literal ${JSON.stringify(value)}. Only primitives ` +
+            `may hold a literal opacity; semantic and component opacity tokens must alias one, ` +
+            `e.g. "{opacityScale.10}". See README -> "Opacity tokens".`,
+        );
+      }
+      const n = Number(value);
+      if (!Number.isFinite(n) || n < 0 || n > 1) {
+        throw new Error(
+          `Opacity token ${where} must be a decimal between 0 and 1, got ${JSON.stringify(value)}. ` +
+            `Figma stores opacity as a percentage (32); tokens/tokens.json stores the decimal (0.32). ` +
+            `See README -> "Opacity tokens".`,
+        );
+      }
+      return;
+    }
+    for (const [key, child] of Object.entries(node)) {
+      if (key.startsWith("$")) continue;
+      walk(child, [...path, key], tier);
+    }
+  };
+  for (const tier of ["primitives", "semantic", "component"]) {
+    walk(dictionary[tier] ?? {}, [], tier);
+  }
+
+  // The percent-key convention: the key is the number Figma holds, the value is the
+  // number code wants. Checking it here is what makes the two sources cross-verifiable.
+  for (const [key, token] of Object.entries(primitives)) {
+    if (!/^\d+$/.test(key)) {
+      throw new Error(
+        `primitives.opacityScale.${key} is not a percent integer. Primitive opacity steps are ` +
+          `keyed by percentage (0-100); role names belong in semantic.opacity.`,
+      );
+    }
+    const expected = String(Number(key) / 100);
+    if (tokenValue(token) !== expected) {
+      throw new Error(
+        `primitives.opacityScale.${key} should hold "${expected}" (the key as a decimal), got ` +
+          `${JSON.stringify(tokenValue(token))}.`,
+      );
+    }
+  }
+
+  // Every step is mirrored into the semantic tier, because product code may only consume
+  // semantic tokens. Drift between the two lists is the failure mode these two loops catch.
+  for (const key of Object.keys(primitives)) {
+    const mirror = semantics[key];
+    if (!mirror) {
+      throw new Error(
+        `primitives.opacityScale.${key} has no semantic mirror. Every ramp step needs a ` +
+          `semantic.opacity.${key} aliasing it, or product code cannot use it.`,
+      );
+    }
+    if (tokenValue(mirror) !== `{opacityScale.${key}}`) {
+      throw new Error(
+        `semantic.opacity.${key} must alias {opacityScale.${key}}, got ` +
+          `${JSON.stringify(tokenValue(mirror))}. A numeric semantic key names its own step.`,
+      );
+    }
+  }
+  for (const key of Object.keys(semantics)) {
+    if (/^\d+$/.test(key) && !primitives[key]) {
+      throw new Error(
+        `semantic.opacity.${key} mirrors a ramp step that does not exist in ` +
+          `primitives.opacityScale.`,
+      );
+    }
+  }
+
+  return dictionary;
+}
+
+StyleDictionary.registerPreprocessor({
+  name: "mmt/validate-opacity",
+  preprocessor: (dictionary) => validateOpacity(dictionary),
+});
+
 StyleDictionary.registerPreprocessor({
   name: "mmt/rename-negative",
   preprocessor: (dictionary) => renameNegativeKeys(dictionary),
@@ -318,6 +418,20 @@ StyleDictionary.registerTransform({
   transform: (token) => `CGFloat(${parseFloat(valueOf(token))})`,
 });
 
+// iOS: opacity stays a plain literal — SwiftUI's `.opacity(_:)` takes a Double, so no
+// CGFloat wrapper is wanted here. But the Swift formatter interpolates values raw, so a
+// value of `0` or `1` would emit a bare integer, which Swift infers as Int and refuses
+// to pass to `.opacity(_:)`. Give integral values one decimal place so they land as
+// Double; non-integers are left alone, which keeps existing output byte-identical.
+// Idempotent: "0.0" is still integral and re-normalises to "0.0".
+StyleDictionary.registerTransform({
+  name: "mmt/opacity/ios",
+  type: "value",
+  transitive: true,
+  filter: (token) => typeOf(token) === "opacity" && Number.isInteger(Number(valueOf(token))),
+  transform: (token) => Number(valueOf(token)).toFixed(1),
+});
+
 // Android: px -> Compose units. Text metrics use sp, everything else uses dp.
 StyleDictionary.registerTransform({
   name: "mmt/dimension/compose",
@@ -331,6 +445,19 @@ StyleDictionary.registerTransform({
     );
     return `${n}.${isText ? "sp" : "dp"}`;
   },
+});
+
+// Android: opacity -> a Compose Float literal. `Modifier.alpha(alpha: Float)` and
+// `Color.copy(alpha: Float)` both take Float, and Kotlin neither widens nor narrows a
+// Double literal implicitly, so a bare `0.08` fails to compile at the call site — the
+// same reason iOS dimensions are wrapped in CGFloat(...). parseFloat tolerates the
+// trailing `f`, so the transitive pass is idempotent.
+StyleDictionary.registerTransform({
+  name: "mmt/opacity/compose",
+  type: "value",
+  transitive: true,
+  filter: (token) => typeOf(token) === "opacity",
+  transform: (token) => `${parseFloat(valueOf(token))}f`,
 });
 
 // iOS/Android: wrap font family / font style strings as native string literals.
@@ -457,6 +584,7 @@ StyleDictionary.registerTransform({
 const sd = new StyleDictionary({
   source: ["tokens/tokens.json"],
   preprocessors: [
+    "mmt/validate-opacity",
     "tokens-studio",
     "mmt/rename-negative",
     "mmt/resolve-gradient-colors",
@@ -496,6 +624,7 @@ const sd = new StyleDictionary({
         "name/camel",
         "mmt/fontWeight/number",
         "mmt/dimension/unitless",
+        "mmt/opacity/ios",
         "mmt/string/quote",
         "mmt/color/ios-gradient",
         "mmt/color/ios",
@@ -519,6 +648,7 @@ const sd = new StyleDictionary({
         "name/camel",
         "mmt/fontWeight/number",
         "mmt/dimension/compose",
+        "mmt/opacity/compose",
         "mmt/string/quote",
         "mmt/color/android-gradient",
         "mmt/color/android",

@@ -59,6 +59,7 @@ The export must preserve:
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
 - `description` on every semantic and component token, and on every primitive colour — see below
+- Opacity as a **decimal 0–1**, not a percentage. Figma's opacity binding is percentage-based, so the variable holds `32` where the JSON holds `0.32`; the primitive's key is the Figma number, which is what makes the two sides checkable against each other. The build throws on anything outside 0–1 — see [Opacity tokens](#11-opacity-tokens)
 
 #### Token descriptions
 
@@ -105,6 +106,7 @@ npm run build:tokens
 4. **Transforms** values per platform:
    - Font weights → numbers
    - Dimensions: `px` → unitless (iOS), `sp`/`dp` (Android)
+   - Opacity: `Float` literal (Android, `0.32f`); integral values gain a decimal place (iOS, so `1` is not inferred `Int`); web passes through
    - **Colors (iOS/Android only):** hex → native `Color(...)` (gradient → `Brush.linearGradient(...)` / `LinearGradient` when present) — web keeps hex strings and CSS gradients
 5. **Emits** CSS, ESM, Swift, and Kotlin files into `dist/`
 
@@ -168,6 +170,7 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 
 | Stage | Name | What it does |
 |-------|------|--------------|
+| Preprocessor | `mmt/validate-opacity` | Rejects an opacity value outside 0–1, a literal opacity outside the primitive tier, and any drift between the `opacityScale` ramp and its semantic mirrors. Runs **before** `tokens-studio`, the only point at which the three tiers are still distinguishable |
 | Preprocessor | `tokens-studio` | Hoists the `primitives`, `semantic`, and `component` sets to the dictionary root so cross-set references like `{fontSize.16}` and `{color.bg-fill-brand}` resolve |
 | Preprocessor | `mmt/rename-negative` | Renames keys like `spacing.-12` → `spacing.minus12` to avoid collisions after camelCase/kebab-case conversion |
 | Preprocessor | `mmt/resolve-gradient-colors` | Inlines `{color.family.step}` references inside `linear-gradient(...)` strings before platform transforms run |
@@ -175,6 +178,8 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 | Transform | `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
 | Transform | `mmt/dimension/unitless` (iOS) | Strips `px` suffix for CGFloat-compatible numbers |
 | Transform | `mmt/dimension/compose` (Android) | Converts `px` → `sp` for text metrics, `dp` for layout |
+| Transform | `mmt/opacity/ios` (iOS) | Gives integral opacities one decimal place, so `0` and `1` land as `Double` rather than `Int` and typecheck at `.opacity(_:)` |
+| Transform | `mmt/opacity/compose` (Android) | Opacity → Compose `Float` literal (`0.32f`), which is what `Modifier.alpha()` and `Color.copy(alpha =)` take |
 | Transform | `mmt/string/quote` (iOS/Android) | Wraps font family strings as native string literals |
 | Transform | `mmt/color/ios` (iOS) | Hex colors → `Color(red:green:blue:)` (or sRGB + opacity for `#RRGGBBAA`) |
 | Transform | `mmt/color/ios-gradient` (iOS) | CSS `linear-gradient(...)` → SwiftUI `LinearGradient(gradient:startPoint:endPoint:)` |
@@ -187,8 +192,8 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 |--------------|------------|--------|--------|
 | `web-css` | kebab-case names; hex / CSS gradients unchanged | `css/variables` | `dist/web/tokens.css` |
 | `web-js` | camelCase names; hex / CSS gradients unchanged | `javascript/esm` | `dist/web/tokens.ts` |
-| `ios` | unitless dimensions, quoted strings, native `Color` / `LinearGradient` | `ios-swift/enum.swift` | `dist/ios/CosmosTokens.swift` |
-| `android` | compose units, quoted strings, native `Color` / `Brush` | `compose/object` | `dist/android/CosmosTokens.kt` |
+| `ios` | unitless dimensions, `Double` opacities, quoted strings, native `Color` / `LinearGradient` | `ios-swift/enum.swift` | `dist/ios/CosmosTokens.swift` |
+| `android` | compose units, `Float` opacities, quoted strings, native `Color` / `Brush` | `compose/object` | `dist/android/CosmosTokens.kt` |
 
 #### Native color transforms (iOS & Android)
 
@@ -280,9 +285,11 @@ Typography tokens are **composite** — each bundles `fontFamily`, `fontWeight`,
 
 Semantic radius, icon, and space tokens use abstract size names (`xs`, `sm`, `md`, …) that map to primitive pixel values. This decouples component code from raw numbers.
 
+Opacity is deliberately **not** t-shirt sized. There is no perceptual scale to size, so its semantic tier names the thing being dimmed (`opacity.scrim`, `opacity.state-layer-focus`) and mirrors the numeric ramp for everything else — see [Opacity tokens](#11-opacity-tokens).
+
 ### 7. Semantic spacing via `space.*`
 
-Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. Leftover mid-steps (`10`, `44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits — `10` exists for `radio/dot-size-md`, which needs a 50% dot on a 20px control and has no `space.*` step to alias.
+Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. The same clipped-root logic separates `opacityScale.*` from `opacity.*`, where it is forced rather than chosen — see [Opacity tokens](#11-opacity-tokens). Leftover mid-steps (`10`, `44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits — `10` exists for `radio/dot-size-md`, which needs a 50% dot on a 20px control and has no `space.*` step to alias.
 
 ### 8. Gradient tokens (currently unused)
 
@@ -323,6 +330,31 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 | CSS | kebab-case with CTI prefix | `--color-bg-fill-brand` | `--checkbox-bg-selected-hover` |
 | JS / Swift / Kotlin | camelCase | `colorBgFillBrand` | `checkboxBgSelectedHover` |
 
+Where a family spans both tiers, the primitive root carries the longer technical name and the semantic root the short one, so the two never collide in the flat namespace:
+
+| Primitive | Semantic |
+|-----------|----------|
+| `--spacing-16` | `--space-md` |
+| `--border-radius-8` | `--radius-md` |
+| `--icon-size-24` | `--icon-md` |
+| `--opacity-scale-45` | `--opacity-45`, `--opacity-scrim` |
+
+### 11. Opacity tokens
+
+Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. There is one 8-digit hex in the whole system (`color.alpha.transparent`) and no `rgba()` anywhere. A scrim is `color.bg-surface-inverse` rendered at `opacity.scrim`; a focus state layer is `radio/state-layer-*` rendered at `radio/state-layer-opacity-focus`. Keeping the two separable is what lets a state layer take its control's own content colour.
+
+**Primitives are keyed by percent and valued as decimals.** `opacityScale.32` = `0.32`. The key is the number Figma's opacity binding holds; the value is the number CSS, SwiftUI and Compose want. This is a deliberate exception to the "name is the value" rule that governs the other primitive scales, and it is what makes the Figma file and `tokens.json` verifiable against each other at a glance.
+
+**The two tiers need different roots, and that is forced rather than chosen.** `excludeParentKeys` deep-merges same-named group roots, so a semantic `opacity.30` sharing a root with primitive `opacity.30` would silently collapse into one token instead of two. Hence `opacityScale.*` (primitive) and `opacity.*` (semantic), following `spacing`→`space` and `iconSize`→`icon`.
+
+**Every ramp step is mirrored into the semantic tier**, because product code may only consume semantic tokens. `--opacity-*` is the consumer surface; `--opacity-scale-*` is authoring-only. `mmt/validate-opacity` fails the build if the two lists drift apart.
+
+**`ts/opacity` is deliberately not registered.** That sd-transforms transform would coerce a Figma-exported `"10%"` into `0.1` and leave the build green while `tokens.json` — the file humans and LLMs read as the source of truth — quietly held two notations. Failing loudly is the point; do not "fix" this by adding it.
+
+**Disabled is not an opacity.** Every disabled state in Cosmos is a solid opaque neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`). A dimming path would give the system two conflicting ways to say "disabled" with different and unpredictable contrast outcomes over a tinted surface. The same holds for hover and pressed, which are solid palette steps (`bg-fill-brand-hover`). Focus is the only state expressed as a layer, and only on Radio, whose ring was removed by design decision.
+
+**Growth path.** `opacity.state-layer-hover` and `-pressed` exist but no component consumes them yet: switching Radio to layer-based hover and pressed would diverge it from Checkbox, so it is a system-wide decision that must land on both together — see `components/radio.md` → Known gaps. `state-layer-dragged` waits on a draggable component.
+
 ---
 
 ## Best Practices
@@ -347,6 +379,8 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 
 10. **Document intentional exceptions.** Some mappings are deliberate product choices (e.g. `bg-surface-info` uses `brand.50`, not `blue.50`). Note these when adding new tokens.
 
+11. **Apply opacity to a colour token, not to a control.** A state layer or scrim is a separate element filled with a `color.*` token and rendered at an `opacity.*` token. Setting `opacity` on the control itself fades its label and border along with the tint.
+
 ---
 
 ## Do's and Don'ts
@@ -361,6 +395,8 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 - Do expand typography composites via the build — do not manually duplicate font properties.
 - Do commit both `tokens/tokens.json` and regenerated `dist/` outputs together.
 - Do use `strong` / `subtle` pairs for status fills to maintain visual hierarchy.
+- Do pair an opacity token with a colour token — `color.bg-surface-inverse` at `opacity.scrim` for a backdrop, never a pre-blended hex.
+- Do reach for a role token (`opacity.scrim`, `opacity.state-layer-*`) before a numeric ramp step; the ramp is for one-off dimming the roles do not cover.
 - Do test token changes across all three platforms after building.
 
 ### Don't
@@ -375,17 +411,21 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 - Don't add font sizes without corresponding line heights in the typography scale.
 - Don't use negative spacing keys in references — the build renames them (`spacing.-8` → `spacing.minus8` in output).
 - Don't hand-convert hex colors or CSS gradients in iOS/Android app code — use the generated `Tokens` values directly.
+- Don't use opacity to express a disabled state — disabled is a solid neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`, `icon-disabled`).
+- Don't use `opacityScale.*` in product code; it is the authoring ramp, and `opacity.*` mirrors every step of it.
+- Don't author an opacity as a percentage — Figma holds `32`, `tokens.json` holds `0.32`, and the build throws on the difference.
+- Don't add an opacity step to one tier only; every `opacityScale` step needs its `opacity` mirror, and the build checks both directions.
 - Don't remove or rename tokens without checking downstream consumers and Figma sync.
 
 ---
 
 ## Token Inventory
 
-**Totals:** 226 primitive tokens · 266 semantic tokens (198 colors + 36 typography + 10 radius + 8 icon + 14 space) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **842 values per platform** · **0 gradients**
+**Totals:** 250 primitive tokens · 295 semantic tokens (198 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **895 values per platform** · **0 gradients**
 
-The emitted count exceeds the 734 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 787 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
-### Primitive tokens (226)
+### Primitive tokens (250)
 
 #### Color — 145 tokens (13 palettes, 144 steps, plus `alpha.transparent`)
 
@@ -523,9 +563,40 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 | `iconSize.48` | 48px |
 | `iconSize.64` | 64px |
 
+#### Opacity scale — 24 tokens
+
+Every 5% from 0 to 100, plus three off-grid steps carrying Material's state-layer and scrim values (`8`, `16`, `32`). Keys are percentages — the number the Figma variable holds — and values are the matching decimal, which is what CSS, SwiftUI and Compose take. Product code should use the `opacity.*` mirrors, not these.
+
+| Token | Value | Figma |
+|-------|-------|-------|
+| `opacityScale.0` | 0 | 0% |
+| `opacityScale.5` | 0.05 | 5% |
+| `opacityScale.8` | 0.08 | 8% |
+| `opacityScale.10` | 0.1 | 10% |
+| `opacityScale.15` | 0.15 | 15% |
+| `opacityScale.16` | 0.16 | 16% |
+| `opacityScale.20` | 0.2 | 20% |
+| `opacityScale.25` | 0.25 | 25% |
+| `opacityScale.30` | 0.3 | 30% |
+| `opacityScale.32` | 0.32 | 32% |
+| `opacityScale.35` | 0.35 | 35% |
+| `opacityScale.40` | 0.4 | 40% |
+| `opacityScale.45` | 0.45 | 45% |
+| `opacityScale.50` | 0.5 | 50% |
+| `opacityScale.55` | 0.55 | 55% |
+| `opacityScale.60` | 0.6 | 60% |
+| `opacityScale.65` | 0.65 | 65% |
+| `opacityScale.70` | 0.7 | 70% |
+| `opacityScale.75` | 0.75 | 75% |
+| `opacityScale.80` | 0.8 | 80% |
+| `opacityScale.85` | 0.85 | 85% |
+| `opacityScale.90` | 0.9 | 90% |
+| `opacityScale.95` | 0.95 | 95% |
+| `opacityScale.100` | 1 | 100% |
+
 ---
 
-### Semantic tokens (266)
+### Semantic tokens (295)
 
 #### Color — 198 tokens
 
@@ -687,6 +758,19 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `space.6xl` | 48px |
 | `space.7xl` | 64px |
 
+#### Opacity — 29 tokens
+
+Five role tokens naming what is being dimmed, plus a mirror of every ramp step so product code never has to reach into `opacityScale.*`.
+
+| Token | Primitive | Meaning |
+|-------|-----------|---------|
+| `opacity.state-layer-hover` | `opacityScale.8` | Tint over a control under the pointer |
+| `opacity.state-layer-focus` | `opacityScale.10` | Tint over a control holding keyboard focus |
+| `opacity.state-layer-pressed` | `opacityScale.10` | Tint over a control being pressed |
+| `opacity.state-layer-dragged` | `opacityScale.16` | Tint over a control being dragged |
+| `opacity.scrim` | `opacityScale.32` | Wash behind a modal, drawer or bottom sheet |
+| `opacity.0` … `opacity.100` | `opacityScale.0` … `opacityScale.100` | The 24 ramp steps, one-to-one |
+
 ### Component tokens (242)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
@@ -829,6 +913,47 @@ Add a component group only when a component has enough variant × state combinat
 | `space.5xl` | `spacing.40` |
 | `space.6xl` | `spacing.48` |
 | `space.7xl` | `spacing.64` |
+
+### Opacity mappings
+
+Role tokens:
+
+| Semantic | Primitive |
+|----------|-----------|
+| `opacity.state-layer-hover` | `opacityScale.8` |
+| `opacity.state-layer-focus` | `opacityScale.10` |
+| `opacity.state-layer-pressed` | `opacityScale.10` |
+| `opacity.state-layer-dragged` | `opacityScale.16` |
+| `opacity.scrim` | `opacityScale.32` |
+
+Ramp mirrors — each step aliases the primitive of the same name, and the build enforces it:
+
+| Semantic | Primitive |
+|----------|-----------|
+| `opacity.0` | `opacityScale.0` |
+| `opacity.5` | `opacityScale.5` |
+| `opacity.8` | `opacityScale.8` |
+| `opacity.10` | `opacityScale.10` |
+| `opacity.15` | `opacityScale.15` |
+| `opacity.16` | `opacityScale.16` |
+| `opacity.20` | `opacityScale.20` |
+| `opacity.25` | `opacityScale.25` |
+| `opacity.30` | `opacityScale.30` |
+| `opacity.32` | `opacityScale.32` |
+| `opacity.35` | `opacityScale.35` |
+| `opacity.40` | `opacityScale.40` |
+| `opacity.45` | `opacityScale.45` |
+| `opacity.50` | `opacityScale.50` |
+| `opacity.55` | `opacityScale.55` |
+| `opacity.60` | `opacityScale.60` |
+| `opacity.65` | `opacityScale.65` |
+| `opacity.70` | `opacityScale.70` |
+| `opacity.75` | `opacityScale.75` |
+| `opacity.80` | `opacityScale.80` |
+| `opacity.85` | `opacityScale.85` |
+| `opacity.90` | `opacityScale.90` |
+| `opacity.95` | `opacityScale.95` |
+| `opacity.100` | `opacityScale.100` |
 
 ### Typography mappings
 
@@ -994,6 +1119,82 @@ Text(
 
 Box(
   modifier = Modifier.background(CosmosTokens.colorBgFillBrand),
+)
+```
+
+---
+
+### Opacity
+
+Opacity tokens are always applied **to a colour token** — the system ships no pre-blended alpha colours. A state layer and a scrim are both a separate element filled with a colour and rendered at an opacity, never `opacity` set on the thing itself.
+
+```css
+/* Scrim: a full-page wash behind a modal or bottom sheet. */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  background: var(--color-bg-surface-inverse);
+  opacity: var(--opacity-scrim);
+}
+
+/* State layer: a pseudo-element behind the control, so focus never reflows the row. */
+.radio__control { position: relative; }
+.radio__control::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--radio-state-layer-size-md);
+  height: var(--radio-state-layer-size-md);
+  translate: -50% -50%;
+  border-radius: var(--radius-full);
+  background: var(--radio-state-layer-unselected);
+  opacity: var(--opacity-0);
+  transition: opacity 150ms;
+}
+.radio__control:focus-visible::before { opacity: var(--radio-state-layer-opacity-focus); }
+
+/* Where a separate layer isn't possible, blend rather than dimming the element. */
+.inline-scrim {
+  background: color-mix(
+    in srgb,
+    var(--color-bg-surface-inverse) calc(var(--opacity-scrim) * 100%),
+    transparent
+  );
+}
+
+/* A ramp step, for one-off dimming no role token describes. */
+.hero-image { opacity: var(--opacity-45); }
+```
+
+```swift
+// Emitted as bare Double literals — exactly what .opacity(_:) takes, no cast needed.
+Color.clear
+  .background(CosmosTokens.colorBgSurfaceInverse)
+  .opacity(CosmosTokens.opacityScrim)
+  .ignoresSafeArea()
+
+Circle()
+  .fill(CosmosTokens.radioStateLayerUnselected)
+  .frame(width: CosmosTokens.radioStateLayerSizeMd,
+         height: CosmosTokens.radioStateLayerSizeMd)
+  .opacity(CosmosTokens.radioStateLayerOpacityFocus)
+```
+
+```kotlin
+// Emitted as Float literals (0.32f) — both Compose alpha APIs take Float, so there is
+// no .toFloat() at the call site.
+Box(
+  Modifier
+    .fillMaxSize()
+    .background(CosmosTokens.colorBgSurfaceInverse.copy(alpha = CosmosTokens.opacityScrim)),
+)
+
+Box(
+  Modifier
+    .size(CosmosTokens.radioStateLayerSizeMd)
+    .alpha(CosmosTokens.radioStateLayerOpacityFocus)
+    .background(CosmosTokens.radioStateLayerUnselected, CircleShape),
 )
 ```
 

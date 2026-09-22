@@ -807,6 +807,30 @@
   --border-width-1: 1px;
   /** Heavier border, used for focus rings and for the Radio circle. */
   --border-width-2: 2px;
+  --opacity-scale-0: 0;
+  --opacity-scale-5: 0.05;
+  --opacity-scale-8: 0.08;
+  --opacity-scale-10: 0.1;
+  --opacity-scale-15: 0.15;
+  --opacity-scale-16: 0.16;
+  --opacity-scale-20: 0.2;
+  --opacity-scale-25: 0.25;
+  --opacity-scale-30: 0.3;
+  --opacity-scale-32: 0.32;
+  --opacity-scale-35: 0.35;
+  --opacity-scale-40: 0.4;
+  --opacity-scale-45: 0.45;
+  --opacity-scale-50: 0.5;
+  --opacity-scale-55: 0.55;
+  --opacity-scale-60: 0.6;
+  --opacity-scale-65: 0.65;
+  --opacity-scale-70: 0.7;
+  --opacity-scale-75: 0.75;
+  --opacity-scale-80: 0.8;
+  --opacity-scale-85: 0.85;
+  --opacity-scale-90: 0.9;
+  --opacity-scale-95: 0.95;
+  --opacity-scale-100: 1;
   /** Largest headline — page titles and hero headings; typically one per view. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-large-regular-font-family: Lato;
   --headline-large-regular-font-weight: 400;
@@ -1051,6 +1075,64 @@
   --space-6xl: 48px;
   /** Largest spacing step — hero and full-page section separation. */
   --space-7xl: 64px;
+  /** Fully hidden — the start of a fade-in and the resting value of a state layer. For an element that must stay in the layout while showing the surface behind it, use color.transparent instead, which keeps the property a colour rather than switching it to opacity. */
+  --opacity-0: 0;
+  /** Faintest perceptible tint — a hairline wash over a surface, or the first frame of a state layer fading in. Below the threshold where most people notice a change on a light background. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-5: 0.05;
+  /** Barely-there tint, Material's hover weight. On a control, use state-layer-hover, which aliases this step and says when the state-layer pattern applies; this raw step is for non-control surfaces that need the same weight. */
+  --opacity-8: 0.08;
+  /** Barely-there tint, Material's focus and pressed weight. On a control, use state-layer-focus or state-layer-pressed, which alias this step; this raw step is for non-control surfaces that need the same weight. */
+  --opacity-10: 0.1;
+  /** Light tint — a subtle wash over a surface, or a separator that should read softer than border-subtle. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-15: 0.15;
+  /** Light tint, Material's dragged weight. On a control, use state-layer-dragged, which aliases this step; this raw step is for non-control surfaces that need the same weight. */
+  --opacity-16: 0.16;
+  /** Light veil — dimming a surface without obscuring it, such as an inactive panel beside an active one. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-20: 0.2;
+  /** Light veil — a soft wash over content that is still meant to be read through. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-25: 0.25;
+  /** Light veil at the edge of the scrim band — a backdrop over an already-dark surface, where the full scrim would read as solid. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-30: 0.3;
+  /** The scrim weight, following Material's backdrop value. For a modal, drawer or bottom-sheet backdrop use scrim, which aliases this step and names the colour to pair it with; this raw step is for backdrops the role does not describe. */
+  --opacity-32: 0.32;
+  /** Heavier veil than the scrim — a backdrop over light, busy imagery where the scrim does not separate the layers enough. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-35: 0.35;
+  /** Mid veil — dimming a photo behind overlaid text where the image is light or low in contrast. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-40: 0.4;
+  /** Mid veil — dimming a photo behind overlaid text, or content behind a loading state. Heavy enough to hold legibility over unknown imagery. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-45: 0.45;
+  /** Half strength — the midpoint of the ramp, where the layer beneath reads as clearly present but subordinate. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-50: 0.5;
+  /** Mid veil leaning heavy — content that is visibly inactive but still legible. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-55: 0.55;
+  /** Mid veil leaning heavy — a busy backdrop that must recede far enough for foreground text to carry the page. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-60: 0.6;
+  /** Heavy veil — the layer beneath reads as texture rather than as content. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-65: 0.65;
+  /** Heavy veil — near solid, with just enough of the layer beneath showing to signal that something is there. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-70: 0.7;
+  /** Heavy veil at three-quarter strength, for a foreground that must dominate completely. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-75: 0.75;
+  /** Near-solid wash — the layer beneath is a hint, not content. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-80: 0.8;
+  /** Near-solid wash — for a surface that should read as opaque while still tinting slightly toward what sits behind it. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-85: 0.85;
+  /** Near-solid wash — the last step at which the layer beneath is perceptible at all. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-90: 0.9;
+  /** All but opaque — the final frame before a fade-in completes, or a surface needing the faintest trace of what sits behind it. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
+  --opacity-95: 0.95;
+  /** Fully visible — the resting value, and the end of a fade-in. Exists so a transition can name both ends with tokens instead of mixing a token with a bare 1. */
+  --opacity-100: 1;
+  /** Opacity of the tint laid over a control while the pointer rests on it, following Material's hover value. Only for the state-layer pattern, where a separate layer takes the content colour; controls that swap to a solid hover step use bg-fill-*-hover or bg-surface-*-hover instead. */
+  --opacity-state-layer-hover: 0.08;
+  /** Opacity of the tint laid over a control while it holds keyboard focus. A state layer at this value does not meet WCAG 1.4.11 on its own — pair it with a focus ring in color.border-focus, as Button and Checkbox do, rather than raising the opacity until it passes. */
+  --opacity-state-layer-focus: 0.1;
+  /** Opacity of the tint laid over a control while it is being pressed. Shares a value with state-layer-focus today, and is a separate token so the pressed feel can be tuned without dragging focus along with it. */
+  --opacity-state-layer-pressed: 0.1;
+  /** Opacity of the tint laid over a control while the user drags it — the heaviest state layer, so a lifted item reads as detached from the list it came from. */
+  --opacity-state-layer-dragged: 0.16;
+  /** Opacity of the dim laid over the page behind a modal, drawer or bottom sheet. Apply it to a full-bleed layer filled with color.bg-surface-inverse — that pairing is what makes the scrim track the palette instead of hard-coding a black wash. */
+  --opacity-scrim: 0.32;
   /** Background of the primary (solid fill) button — default intent, at rest. */
   --button-bg-primary-default: #0067E8;
   /** Background of the primary (solid fill) button — destructive intent, at rest. */
@@ -1523,7 +1605,7 @@
   --radio-state-layer-size-md: 40px;
   /** Diameter of the focus state layer at large size — twice the control diameter, so it overhangs the circle evenly. */
   --radio-state-layer-size-lg: 48px;
-  /** Opacity of the focus state layer, matching the Material focus value. Kept separate from the colour tokens so hover and pressed opacities can be added alongside it. Radio has no focus ring, so this layer is the whole focus affordance — at 1.13–1.20:1 against white it does not meet WCAG 1.4.11, an accepted deviation documented in components/radio.md. */
+  /** Opacity of the focus state layer. Aliases opacity.state-layer-focus, the system-wide state-layer value — retune it there, not here. Radio has no focus ring, so this layer is the whole focus affordance; at 1.13–1.20:1 against white it does not meet WCAG 1.4.11, an accepted deviation documented in components/radio.md. */
   --radio-state-layer-opacity-focus: 0.1;
   /** Horizontal gap between the circle and its label at small size. */
   --radio-gap-sm: 8px;
