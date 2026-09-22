@@ -58,11 +58,11 @@ The export must preserve:
 - `$metadata.tokenSetOrder`: `["primitives", "semantic", "component"]` — each tier resolves before the one that references it
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
-- `description` on every semantic token and on the `checkbox` / `radio` component tokens — see below
+- `description` on every semantic and component token — see below
 
 #### Token descriptions
 
-Every token in the **semantic** set, and every `checkbox` and `radio` token in the **component** set, carries a `description` alongside its `value` and `type`:
+Every token in the **semantic** and **component** sets carries a `description` alongside its `value` and `type`:
 
 ```json
 "bg-fill-brand": {
@@ -74,9 +74,11 @@ Every token in the **semantic** set, and every `checkbox` and `radio` token in t
 
 These exist so that anyone choosing a token — a human reading the JSON, or an LLM implementing from it — can tell near-identical roles apart (`bg-surface-*` vs `bg-fill-*`, `*-strong` vs `*-subtle`, `warning` vs `caution`). A description states **intent and boundary**, not the value: what the token is for, and which neighbouring token to use instead. Restating the name (`"Brand fill colour"`) adds nothing.
 
-Component-token descriptions name the part of the anatomy and the state combination (`"Outline of the checkbox box — checked and in the error state, while pressed."`), and carry the rules the names cannot: that `min-touch-target` must not scale with `control-size-*`, that the label does not turn red in the error state, that `radio-radius` is one token because the circle keeps its shape at every size.
+Component-token descriptions name the part of the anatomy and the state combination (`"Outline of the checkbox box — checked and in the error state, while pressed."`), and carry the rules the names cannot: that `checkbox/min-touch-target` must not scale with `control-size-*`, that the label does not turn red in the error state, that a button's label keeps its rest colour on hover, pressed and focus, and that the button icon slots bind to semantic `color.icon-*` roles rather than to `button/label-*`.
 
-Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync. Primitives are deliberately undescribed (the name is the value). The `button` component set is not described yet; it is the one remaining gap.
+Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync. Primitives are deliberately undescribed: the name is the value.
+
+Where a token and the Figma component disagree, the description says so rather than papering over it — `button/radius-*` is unbound in Figma, `button/gap-sm` is applied at every size despite its suffix, `button/min-height-md` and `-sm` sit below the WCAG 2.5.8 target, and `radio/state-layer-opacity-focus` is an accepted 1.4.11 deviation. Each points at the component spec in `components/` that records the anomaly.
 
 They reach `dist/web/tokens.css` as comments above each custom property; the other platforms currently drop them (see [Adding descriptions to other platforms](#adding-descriptions-to-other-platforms)).
 

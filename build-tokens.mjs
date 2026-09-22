@@ -259,6 +259,36 @@ StyleDictionary.registerPreprocessor({
   preprocessor: (dictionary) => resolveGradientColors(structuredClone(dictionary)),
 });
 
+/**
+ * Mark the first sub-key of every composite token that carries a description.
+ *
+ * `expand` turns one composite `typography` token into four sub-tokens (fontFamily,
+ * fontWeight, fontSize, lineHeight), and each inherits the parent's description — so
+ * emitting it verbatim would repeat the same paragraph four times in the output. The
+ * anchor records which sub-token should carry the comment; the rest stay silent.
+ */
+function markCommentAnchors(node) {
+  if (isTokenLeaf(node)) {
+    const value = tokenValue(node);
+    if (node.description && value !== null && typeof value === "object" && !Array.isArray(value)) {
+      node.commentAnchor = Object.keys(value)[0];
+    }
+    return node;
+  }
+  if (node === null || typeof node !== "object" || Array.isArray(node)) {
+    return node;
+  }
+  for (const child of Object.values(node)) {
+    markCommentAnchors(child);
+  }
+  return node;
+}
+
+StyleDictionary.registerPreprocessor({
+  name: "mmt/comment-anchor",
+  preprocessor: (dictionary) => markCommentAnchors(structuredClone(dictionary)),
+});
+
 // Named font weights (incl. the malformed "Italic" / "Semibold Italic") -> numbers.
 StyleDictionary.registerTransform({
   name: "mmt/fontWeight/number",
@@ -405,15 +435,53 @@ public extension View {
 `,
 });
 
+// Tokens Studio stores per-token prose in `description`; Style Dictionary's CSS
+// formatter emits `$description ?? comment`. Map one onto the other so descriptions
+// reach dist/web/tokens.css as comments above each custom property. Skipped for
+// expanded sub-tokens that are not the comment anchor (see mmt/comment-anchor).
+StyleDictionary.registerTransform({
+  name: "mmt/description/comment",
+  type: "attribute",
+  filter: (token) => typeof token.description === "string" && token.description.length > 0,
+  transform: (token) => {
+    if (!token.commentAnchor || token.path.at(-1) === token.commentAnchor) {
+      // Mutated in place, as sd-transforms' own ts/descriptionToComment does: the
+      // return value of an attribute transform is merged into `token.attributes`,
+      // which is not where a formatter looks for the comment.
+      token.comment = token.description.replace(/\r?\n|\r/g, "\n");
+    }
+    return {};
+  },
+});
+
 const sd = new StyleDictionary({
   source: ["tokens/tokens.json"],
-  preprocessors: ["tokens-studio", "mmt/rename-negative", "mmt/resolve-gradient-colors"],
+  preprocessors: [
+    "tokens-studio",
+    "mmt/rename-negative",
+    "mmt/resolve-gradient-colors",
+    "mmt/comment-anchor",
+  ],
   expand: { typesMap: true },
   platforms: {
     "web-css": {
-      transforms: ["attribute/cti", "mmt/fontWeight/number", "name/kebab", "fontFamily/css"],
+      transforms: [
+        "attribute/cti",
+        "mmt/description/comment",
+        "mmt/fontWeight/number",
+        "name/kebab",
+        "fontFamily/css",
+      ],
       buildPath: "dist/web/",
-      files: [{ destination: "tokens.css", format: "css/variables" }],
+      files: [
+        {
+          destination: "tokens.css",
+          format: "css/variables",
+          // Descriptions are full sentences; keep them above the declaration rather
+          // than trailing it, which would push lines past any sane wrap width.
+          options: { formatting: { commentPosition: "above" } },
+        },
+      ],
     },
     "web-js": {
       transforms: ["attribute/cti", "mmt/fontWeight/number", "name/camel"],
