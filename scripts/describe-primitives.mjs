@@ -9,6 +9,10 @@
  * Non-colour primitives are described only where the name under-specifies them (the
  * odd steps, the sentinels, the single-value scales) or where nothing references them.
  * A plain step like `spacing.16` is its own definition and stays undescribed.
+ *
+ * Avoid apostrophes in description text. Figma's variable `description` setter
+ * HTML-escapes them, so "the element's height" is stored and displayed in the
+ * variables panel as "the element&#39;s height". Write around it instead.
  */
 import { readFileSync, writeFileSync } from "node:fs";
 
@@ -75,12 +79,12 @@ function colorDescription(family, step, hex) {
 const EXPLICIT = {
   "spacing.0": "Explicit zero. Use where a layout would otherwise apply a gap, so the intent reads as deliberate rather than omitted.",
   "spacing.10": "Off-ramp step that exists for a single consumer: radio/dot-size-md, which needs 10px where the semantic space scale jumps 8 to 12. Do not reach for it in layout — it is a gap-filler, not a scale step.",
-  "spacing.-12": "Negative spacing for pulling an element outward — overlapping avatars, bleeding a child past its parent's padding. The build renames this key to `minus12` so it cannot collide with `12` once camel/kebab-cased.",
+  "spacing.-12": "Negative spacing for pulling an element outward — overlapping avatars, bleeding a child past the padding of its parent. The build renames this key to `minus12` so it cannot collide with `12` once camel/kebab-cased.",
   "spacing.-8": "Negative spacing for pulling an element outward. The build renames this key to `minus8` to avoid colliding with `8`.",
   "spacing.-4": "Negative spacing for pulling an element outward. The build renames this key to `minus4` to avoid colliding with `4`.",
   "spacing.-2": "Negative spacing for pulling an element outward. The build renames this key to `minus2` to avoid colliding with `2`.",
   "borderRadius.0": "Explicit no rounding — flush edges, full-bleed media, table cells.",
-  "borderRadius.999": "Pill sentinel, not a measured radius. Any value larger than half the element's height renders as a semicircle, so this one token gives a fully rounded end at every size without tracking the element.",
+  "borderRadius.999": "Pill sentinel, not a measured radius. Any value larger than half the height of the element renders as a semicircle, so this one token gives a fully rounded end at every size without tracking the element.",
   "borderWidth.0": "Explicit no border, for switching a border off while keeping the property bound to a token.",
   "borderWidth.1": "Default hairline border — inputs, cards, dividers, and the Checkbox box.",
   "borderWidth.2": "Heavier border, used for focus rings and for the Radio circle.",
