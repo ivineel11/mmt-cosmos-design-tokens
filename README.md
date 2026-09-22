@@ -24,7 +24,7 @@ Design tokens move from Figma authoring through a single JSON source file into p
 
 ```mermaid
 flowchart TD
-  A[Figma design file] -->|Tokens Studio plugin| B[Edit primitives & semantic tokens]
+  A[Figma design file] -->|Tokens Studio plugin| B[Edit primitives, semantic & component tokens]
   B -->|Export / sync| C["tokens/tokens.json"]
   C -->|npm run build:tokens| D[build-tokens.mjs]
   D --> E1[dist/web/tokens.css]
@@ -39,14 +39,15 @@ flowchart TD
 
 ### 1. Author in Figma (Tokens Studio)
 
-Designers maintain the token system in Figma using the [Tokens Studio](https://tokens.studio/) plugin. The file is organized into two token sets that mirror the JSON structure:
+Designers maintain the token system in Figma using the [Tokens Studio](https://tokens.studio/) plugin. The file is organized into three token sets that mirror the JSON structure:
 
 | Token set | Contents |
 |-----------|----------|
 | **primitives** | Raw values — color palettes, font stacks, pixel scales |
 | **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
+| **component** | Component-scoped aliases (`button/*`, `checkbox/*`) that reference semantic tokens — one key per property × variant × state |
 
-When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value.
+Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
 
 ### 2. Export to JSON
 
@@ -54,7 +55,7 @@ Export or sync from Tokens Studio into `tokens/tokens.json`. This file is the **
 
 The export must preserve:
 
-- `$metadata.tokenSetOrder`: `["primitives", "semantic"]` — primitives resolve first
+- `$metadata.tokenSetOrder`: `["primitives", "semantic", "component"]` — each tier resolves before the one that references it
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
 
@@ -76,7 +77,7 @@ npm run build:tokens
    - **Colors (iOS/Android only):** hex → native `Color(...)` (gradient → `Brush.linearGradient(...)` / `LinearGradient` when present) — web keeps hex strings and CSS gradients
 5. **Emits** CSS, ESM, Swift, and Kotlin files into `dist/`
 
-Both `primitives` and `semantic` tokens land in a **flat output namespace** — there is no `primitives.` prefix in generated code.
+All three sets land in a **flat output namespace** — there is no `primitives.`, `semantic.`, or `component.` prefix in generated code. Component tokens keep their group as part of the name, so `component.checkbox.bg-selected-default` emits as `--checkbox-bg-selected-default`.
 
 ### 4. Consume in product code
 
@@ -87,7 +88,7 @@ Both `primitives` and `semantic` tokens land in a **flat output namespace** — 
 | iOS | Copy / link `CosmosTokens.swift` | camelCase static lets | `CosmosTokens.colorTextPrimary` (`Color`) |
 | Android | Copy / link `CosmosTokens.kt` | camelCase vals in `com.makemytrip.cosmos.tokens` | `CosmosTokens.colorTextPrimary` (`Color`) |
 
-**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `space-md`, `body.medium.regular`) rather than primitives (`neutral-950`, `borderRadius-8`, `spacing-16`).
+**Rule of thumb:** product code should consume **semantic** tokens (`text-primary`, `radius-md`, `space-md`, `body.medium.regular`) rather than primitives (`neutral-950`, `borderRadius-8`, `spacing-16`). Inside a design system component, prefer that component's own **component** tokens (`--checkbox-bg-selected-hover`) — they are the contract the Figma component is bound to, so design and code stay in step.
 
 ### 5. Commit and ship
 
@@ -107,12 +108,13 @@ Figma (Tokens Studio plugin)
         ↓ export
 tokens/tokens.json
   ├── primitives   — raw values (colors, sizes, fonts)
-  └── semantic     — role-based aliases that reference primitives
+  ├── semantic     — role-based aliases that reference primitives
+  └── component    — component-scoped aliases that reference semantic tokens
         ↓ Style Dictionary + custom transforms
 dist/web · dist/ios · dist/android
 ```
 
-The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second**. Primitives must resolve before semantic aliases can reference them.
+The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**. Each tier must resolve before the tier that references it — primitives before semantic aliases, semantic before component aliases.
 
 ### Build pipeline internals
 
@@ -120,7 +122,7 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 
 | Stage | Name | What it does |
 |-------|------|--------------|
-| Preprocessor | `tokens-studio` | Hoists `primitives` and `semantic` sets to the dictionary root so cross-set references like `{fontSize.16}` resolve |
+| Preprocessor | `tokens-studio` | Hoists the `primitives`, `semantic`, and `component` sets to the dictionary root so cross-set references like `{fontSize.16}` and `{color.bg-fill-brand}` resolve |
 | Preprocessor | `mmt/rename-negative` | Renames keys like `spacing.-12` → `spacing.minus12` to avoid collisions after camelCase/kebab-case conversion |
 | Preprocessor | `mmt/resolve-gradient-colors` | Inlines `{color.family.step}` references inside `linear-gradient(...)` strings before platform transforms run |
 | Expand | `typesMap: true` | Splits composite `typography` tokens into individual output properties |
@@ -166,14 +168,17 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 ## Major Design Decisions
 
-### 1. Two-tier token model (primitives → semantic)
+### 1. Three-tier token model (primitives → semantic → component)
 
 | Layer | Purpose | Who uses it |
 |-------|---------|-------------|
 | **Primitives** | Raw design values — hex colors, pixel sizes, font stacks | Token authors, design system maintainers |
 | **Semantic** | Role-based names that describe *intent* (`text-primary`, `bg-fill-brand`) | Product engineers, designers in Figma |
+| **Component** | Per-component keys for every property × variant × state (`button/bg-primary-hover`, `checkbox/border-selected-error-pressed`) | Design system components, and the Figma variable bindings behind them |
 
-**Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes.
+**Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
+
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens) and Checkbox (64 tokens) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -251,7 +256,7 @@ Do not hand-write Swift or Kotlin gradient code in product apps.
 
 | Transform | Purpose |
 |-----------|---------|
-| `tokens-studio` preprocessor | Hoists `primitives` / `semantic` sets to root so cross-set `{references}` resolve |
+| `tokens-studio` preprocessor | Hoists `primitives` / `semantic` / `component` sets to root so cross-set `{references}` resolve |
 | `mmt/rename-negative` | Renames `-12` spacing keys to `minus12` to avoid name collisions |
 | `mmt/resolve-gradient-colors` | Resolves `{color.*}` references embedded in gradient strings |
 | `expand` (typography) | Splits composite typography tokens into individual properties |
@@ -265,12 +270,12 @@ Do not hand-write Swift or Kotlin gradient code in product apps.
 
 ### 10. Flat output namespace
 
-Both primitives and semantics merge into a single flat namespace in generated outputs. There is no `primitives.` prefix in CSS, JS, Swift, or Kotlin — all tokens are peers.
+Primitives, semantics, and component tokens merge into a single flat namespace in generated outputs. There is no `primitives.`, `semantic.`, or `component.` prefix in CSS, JS, Swift, or Kotlin — all tokens are peers. Component tokens stay distinguishable because their group name leads the key (`checkbox-`, `button-`).
 
-| Platform | Naming convention | Example |
-|----------|-------------------|---------|
-| CSS | kebab-case with CTI prefix | `--color-bg-fill-brand` |
-| JS / Swift / Kotlin | camelCase | `colorBgFillBrand` |
+| Platform | Naming convention | Example (semantic) | Example (component) |
+|----------|-------------------|--------------------|---------------------|
+| CSS | kebab-case with CTI prefix | `--color-bg-fill-brand` | `--checkbox-bg-selected-hover` |
+| JS / Swift / Kotlin | camelCase | `colorBgFillBrand` | `checkboxBgSelectedHover` |
 
 ---
 
@@ -280,7 +285,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 2. **Edit `tokens/tokens.json` (or Figma via Tokens Studio), never generated files.** Everything in `dist/` is auto-generated and will be overwritten on the next build.
 
-3. **Add new colors to primitives first, then wire semantic aliases.** Never put raw hex values in the semantic layer.
+3. **Add new colors to primitives first, then wire semantic aliases, then component aliases.** Never put raw hex values in the semantic layer, and never let a component token skip the semantic tier to point straight at a primitive.
 
 4. **Use paired contrast tokens.** When placing text on a filled background, use the matching `*-on-bg-fill*` token (e.g. `text-info-on-bg-fill-strong` on `bg-fill-info-strong`).
 
@@ -288,7 +293,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 6. **Run the build after every token change.** `npm run build:tokens` validates references and regenerates all platform outputs.
 
-7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic"]`.
+7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic", "component"]`. Reordering or dropping a set breaks reference resolution at build time.
 
 8. **Name semantic tokens by role, not value.** Prefer `text-caution` over `text-yellow-700` in the semantic layer (the mapping to yellow happens internally).
 
@@ -303,6 +308,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 ### Do
 
 - Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.brand.600}`).
+- Do reference semantic tokens from component tokens the same way (e.g. `{color.bg-fill-brand}`), so a palette change propagates through both tiers.
 - Do use the semantic color role system (`bg-surface`, `bg-fill`, `text`, `border`, `icon`) consistently.
 - Do add new palette steps at the primitive layer before creating semantic aliases.
 - Do use t-shirt sizes (`radius.md`, `icon.lg`, `space.md`) in components instead of raw pixel values.
@@ -316,6 +322,7 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 - Don't hardcode hex colors, pixel sizes, or font stacks in application code.
 - Don't edit files in `dist/` directly — changes will be lost.
 - Don't put raw values in the semantic layer — always alias a primitive.
+- Don't point a component token at a primitive or a raw hex — always alias a semantic token, or the tier stops earning its keep.
 - Don't skip the build step after modifying tokens.
 - Don't use primitive color or spacing tokens (e.g. `color.red.500`, `spacing.16`) directly in UI components when a semantic equivalent exists (`text-*`, `space.md`).
 - Don't create one-off semantic tokens for a single screen — extend the shared taxonomy instead.
@@ -328,11 +335,13 @@ Both primitives and semantics merge into a single flat namespace in generated ou
 
 ## Token Inventory
 
-**Totals:** 221 primitive tokens · 239 semantic tokens (171 colors + 36 typography + 10 radius + 8 icon + 14 space) · **568 values per platform** · **0 gradients**
+**Totals:** 225 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 168 component tokens (104 `button/*` + 64 `checkbox/*`) · **763 values per platform** · **0 gradients**
 
-### Primitive tokens (221)
+The emitted count exceeds the 655 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
-#### Color — 144 tokens (12 palettes × 12 steps)
+### Primitive tokens (225)
+
+#### Color — 145 tokens (12 palettes × 12 steps, plus `alpha.transparent`)
 
 Token path pattern: `color.{palette}.{step}`
 
@@ -469,9 +478,9 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 
 ---
 
-### Semantic tokens (239)
+### Semantic tokens (262)
 
-#### Color — 173 tokens
+#### Color — 194 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -630,6 +639,27 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `space.5xl` | 40px |
 | `space.6xl` | 48px |
 | `space.7xl` | 64px |
+
+### Component tokens (168)
+
+Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
+
+| Group | Tokens | Figma component set | Spec |
+|-------|--------|---------------------|------|
+| `button/*` | 104 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
+| `checkbox/*` | 64 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
+
+Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
+
+| Token | Alias | Resolves to |
+|-------|-------|-------------|
+| `button/bg-primary-default` | `{color.bg-fill-brand}` | `#0067E8` |
+| `button/bg-primary-destructive-hover` | `{color.bg-fill-warning-strong-hover}` | `#E7000B` |
+| `checkbox/bg-selected-default` | `{color.bg-fill-brand}` | `#0067E8` |
+| `checkbox/border-unselected-default` | `{color.border-strong}` | `#737373` |
+| `checkbox/control-size-md` | `{space.lg}` | `20px` |
+
+Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
 ---
 
@@ -932,7 +962,7 @@ Box(
 | `dist/ios/LineHeight.swift` | Generated SwiftUI `.lineHeight` modifier (total line-box height → line spacing) |
 | `dist/android/CosmosTokens.kt` | Generated Compose object (`com.makemytrip.cosmos.tokens`) |
 | `docs-site/` | Browsable documentation site for every token (see below) |
-| `components/*.md` | Component specifications generated by uSpec (see below) |
+| `components/*.md` | Component specifications — uSpec-generated where noted, otherwise hand-authored (see below) |
 | `uspecs.config.json` | uSpec CLI configuration (agent, Figma MCP provider, pinned CLI version) |
 | `.claude/skills/`, `.cursor/skills/`, `references/` | Vendored uSpec agent skills and reference instructions — do not hand-edit |
 
@@ -961,6 +991,8 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 The token pipeline above documents *values*. [uSpec](https://github.com/redongreen/uSpec) documents *components*: one self-contained Markdown file per component covering its API, structure, color, and screen-reader behavior, extracted from the Figma component set. Those files live in `components/` and are the source of truth — humans read them, LLMs implement from them.
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
+
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants). It is **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace it with an extracted spec; the file says so in its own header.
 
 ### Pinned versions
 
