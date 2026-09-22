@@ -58,11 +58,11 @@ The export must preserve:
 - `$metadata.tokenSetOrder`: `["primitives", "semantic", "component"]` — each tier resolves before the one that references it
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
-- `description` on every semantic and component token — see below
+- `description` on every semantic and component token, and on every primitive colour — see below
 
 #### Token descriptions
 
-Every token in the **semantic** and **component** sets carries a `description` alongside its `value` and `type`:
+Every token in the **semantic** and **component** sets carries a `description` alongside its `value` and `type`, as does every primitive colour:
 
 ```json
 "bg-fill-brand": {
@@ -76,7 +76,15 @@ These exist so that anyone choosing a token — a human reading the JSON, or an 
 
 Component-token descriptions name the part of the anatomy and the state combination (`"Outline of the checkbox box — checked and in the error state, while pressed."`), and carry the rules the names cannot: that `checkbox/min-touch-target` must not scale with `control-size-*`, that the label does not turn red in the error state, that a button's label keeps its rest colour on hover, pressed and focus, and that the button icon slots bind to semantic `color.icon-*` roles rather than to `button/label-*`.
 
-Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync. Primitives are deliberately undescribed: the name is the value.
+Primitive descriptions work differently. A numeric step like `spacing.16` is its own definition and stays undescribed; 44 such steps are left bare on purpose. What does get described:
+
+- **Every colour** carries which of the two text roles is safe on top of it and at what ratio — `"Safe text on top: text-inverse at 5.11:1 (passes AA); text-primary fails at 3.75:1."` Every swatch in the system has exactly one AA-safe text colour, except `violet.500`, which has none.
+- **The steps the name under-specifies** — `spacing.10` and its single Radio consumer, the negative steps and their `minusN` build rename, the `borderRadius.999` pill sentinel, the three-weight ramp.
+- **Anything nothing references**, flagged as raw scale rather than supported system.
+
+Those ratios are computed, not hand-written, so they go stale when a ramp moves. Regenerate them with `node scripts/describe-primitives.mjs` and commit the result.
+
+Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync.
 
 Where a token and the Figma component disagree, the description says so rather than papering over it — `button/radius-*` is unbound in Figma, `button/gap-sm` is applied at every size despite its suffix, `button/min-height-md` and `-sm` sit below the WCAG 2.5.8 target, and `radio/state-layer-opacity-focus` is an accepted 1.4.11 deviation. Each points at the component spec in `components/` that records the anomaly.
 
@@ -996,6 +1004,8 @@ Box(
 | File | Description |
 |------|-------------|
 | `tokens/tokens.json` | Source of truth — edit here or sync from Figma |
+| `scripts/describe-primitives.mjs` | Regenerates primitive descriptions, including the computed contrast ratios |
+| `proposals/` | Drafted token changes that need a design decision or Figma work before they can land |
 | `build-tokens.mjs` | Style Dictionary config and custom transforms |
 | `package.json` | Package metadata and build script |
 | `dist/web/tokens.css` | Generated CSS custom properties |
