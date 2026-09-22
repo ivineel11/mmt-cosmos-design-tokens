@@ -103,10 +103,10 @@ object CosmosTokens {
   val buttonBorderPrimaryPressed = Color(0x00FFFFFF)
   val buttonBorderSecondaryDefault = Color(0xFF0067E8)
   val buttonBorderSecondaryDestructiveDefault = Color(0xFFC10007)
-  val buttonBorderSecondaryDestructiveDisabled = Color(0xFFF5F5F5)
+  val buttonBorderSecondaryDestructiveDisabled = Color(0xFFA1A1A1)
   val buttonBorderSecondaryDestructiveHover = Color(0xFFE7000B)
   val buttonBorderSecondaryDestructivePressed = Color(0xFF9F0712)
-  val buttonBorderSecondaryDisabled = Color(0xFFF5F5F5)
+  val buttonBorderSecondaryDisabled = Color(0xFFA1A1A1)
   val buttonBorderSecondaryHover = Color(0xFF0681FF)
   val buttonBorderSecondaryPressed = Color(0xFF0857C5)
   val buttonBorderTertiaryDefault = Color(0x00FFFFFF)
@@ -127,11 +127,13 @@ object CosmosTokens {
   val buttonBorderTextPressed = Color(0x00FFFFFF)
   val buttonBorderWidth = 1.dp
   val buttonFocusRing = Color(0xFF0067E8)
+  val buttonFocusRingDestructive = Color(0xFFC10007)
   val buttonFocusRingOffset = 2.dp
   val buttonFocusRingWidth = 2.dp
   val buttonGapLg = 12.dp
   val buttonGapMd = 8.dp
   val buttonGapSm = 4.dp
+  val buttonGapXs = 2.dp
   val buttonIconSizeLg = 24.dp
   val buttonIconSizeMd = 20.dp
   val buttonIconSizeSm = 16.dp
@@ -161,6 +163,9 @@ object CosmosTokens {
   val buttonPaddingYMd = 8.dp
   val buttonPaddingYSm = 4.dp
   val buttonRadius = 8.dp
+  val buttonRadiusLg = 12.dp
+  val buttonRadiusMd = 8.dp
+  val buttonRadiusXl = 16.dp
   val colorAlphaTransparent = Color(0x00FFFFFF)
   val colorAmber100 = Color(0xFFFEF3C6)
   val colorAmber200 = Color(0xFFFEE685)
@@ -181,6 +186,8 @@ object CosmosTokens {
   val colorBgFillCautionStrong = Color(0xFFA65F00)
   val colorBgFillCautionSubtle = Color(0xFFFEF9C2)
   val colorBgFillDisabled = Color(0xFFA1A1A1)
+  val colorBgFillDisabledStrong = Color(0xFFA1A1A1)
+  val colorBgFillDisabledSubtle = Color(0xFFE5E5E5)
   val colorBgFillInfoStrong = Color(0xFF0067E8)
   val colorBgFillInfoSubtle = Color(0xFFEDF8FF)
   val colorBgFillInverse = Color(0xFF0A0A0A)
@@ -221,6 +228,8 @@ object CosmosTokens {
   val colorBorderBrandPressed = Color(0xFF0857C5)
   val colorBorderCaution = Color(0xFFFFDF20)
   val colorBorderDisabled = Color(0xFFF5F5F5)
+  val colorBorderDisabledStrong = Color(0xFFA1A1A1)
+  val colorBorderDisabledSubtle = Color(0xFFD4D4D4)
   val colorBorderFocus = Color(0xFF0681FF)
   val colorBorderInfo = Color(0xFFDBEAFE)
   val colorBorderSecondary = Color(0xFFE5E5E5)
