@@ -45,7 +45,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 |-----------|----------|
 | **primitives** | Raw values — color palettes, font stacks, pixel scales |
 | **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
-| **component** | Component-scoped aliases (`button/*`, `checkbox/*`) that reference semantic tokens — one key per property × variant × state |
+| **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`) that reference semantic tokens — one key per property × variant × state |
 
 Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
 
@@ -58,6 +58,27 @@ The export must preserve:
 - `$metadata.tokenSetOrder`: `["primitives", "semantic", "component"]` — each tier resolves before the one that references it
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
+- `description` on every semantic token and on the `checkbox` / `radio` component tokens — see below
+
+#### Token descriptions
+
+Every token in the **semantic** set, and every `checkbox` and `radio` token in the **component** set, carries a `description` alongside its `value` and `type`:
+
+```json
+"bg-fill-brand": {
+  "value": "{color.brand.700}",
+  "type": "color",
+  "description": "Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand."
+}
+```
+
+These exist so that anyone choosing a token — a human reading the JSON, or an LLM implementing from it — can tell near-identical roles apart (`bg-surface-*` vs `bg-fill-*`, `*-strong` vs `*-subtle`, `warning` vs `caution`). A description states **intent and boundary**, not the value: what the token is for, and which neighbouring token to use instead. Restating the name (`"Brand fill colour"`) adds nothing.
+
+Component-token descriptions name the part of the anatomy and the state combination (`"Outline of the checkbox box — checked and in the error state, while pressed."`), and carry the rules the names cannot: that `min-touch-target` must not scale with `control-size-*`, that the label does not turn red in the error state, that `radio-radius` is one token because the circle keeps its shape at every size.
+
+Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync. Primitives are deliberately undescribed (the name is the value). The `button` component set is not described yet; it is the one remaining gap.
+
+They reach `dist/web/tokens.css` as comments above each custom property; the other platforms currently drop them (see [Adding descriptions to other platforms](#adding-descriptions-to-other-platforms)).
 
 ### 3. Build platform outputs
 
@@ -68,7 +89,7 @@ npm run build:tokens
 
 `build-tokens.mjs` runs [Style Dictionary](https://styledictionary.com/) with Tokens Studio transforms and custom MMT transforms. The build:
 
-1. **Preprocesses** the dictionary (`tokens-studio` hoists token sets; `mmt/rename-negative` renames `-12` spacing keys to `minus12`)
+1. **Preprocesses** the dictionary (`tokens-studio` hoists token sets; `mmt/rename-negative` renames `-12` spacing keys to `minus12`; `mmt/comment-anchor` marks which expanded sub-token carries a composite token's description)
 2. **Expands** composite typography tokens into individual `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` properties
 3. **Resolves** all `{references}` to final values (including `{color.*}` refs embedded inside gradient strings via `mmt/resolve-gradient-colors`, kept for future gradient tokens)
 4. **Transforms** values per platform:
@@ -76,6 +97,21 @@ npm run build:tokens
    - Dimensions: `px` → unitless (iOS), `sp`/`dp` (Android)
    - **Colors (iOS/Android only):** hex → native `Color(...)` (gradient → `Brush.linearGradient(...)` / `LinearGradient` when present) — web keeps hex strings and CSS gradients
 5. **Emits** CSS, ESM, Swift, and Kotlin files into `dist/`
+
+On web CSS only, `mmt/description/comment` copies each token's `description` into a comment above its custom property:
+
+```css
+  /** Default text colour — body copy, headings, and any content carrying the main message. */
+  --color-text-primary: #0A0A0A;
+```
+
+Composite typography tokens expand into four custom properties that all inherit one description, so the comment is emitted once, above the first of the four.
+
+##### Adding descriptions to other platforms
+
+- **Android** — add `"mmt/description/comment"` to the `android` transform list. Style Dictionary's Compose template already renders `token.comment` as KDoc.
+- **iOS** — needs more than a transform: the stock `ios-swift/enum.swift` template emits no comments, so it would take a custom format.
+- **`tokens.ts`** — built with `minify: true`, which reduces each token to its bare value. Carrying descriptions means either dropping `minify` (changing the shape consumers import) or emitting a separate metadata file.
 
 All three sets land in a **flat output namespace** — there is no `primitives.`, `semantic.`, or `component.` prefix in generated code. Component tokens keep their group as part of the name, so `component.checkbox.bg-selected-default` emits as `--checkbox-bg-selected-default`.
 
@@ -174,11 +210,11 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 |-------|---------|-------------|
 | **Primitives** | Raw design values — hex colors, pixel sizes, font stacks | Token authors, design system maintainers |
 | **Semantic** | Role-based names that describe *intent* (`text-primary`, `bg-fill-brand`) | Product engineers, designers in Figma |
-| **Component** | Per-component keys for every property × variant × state (`button/bg-primary-hover`, `checkbox/border-selected-error-pressed`) | Design system components, and the Figma variable bindings behind them |
+| **Component** | Per-component keys for every property × variant × state (`button/bg-primary-hover`, `checkbox/border-selected-error-pressed`, `radio/dot-selected-default`) | Design system components, and the Figma variable bindings behind them |
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens) and Checkbox (64 tokens) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens) and Radio (57 tokens) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -236,7 +272,7 @@ Semantic radius, icon, and space tokens use abstract size names (`xs`, `sm`, `md
 
 ### 7. Semantic spacing via `space.*`
 
-Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. Leftover mid-steps (`44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits.
+Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. Leftover mid-steps (`10`, `44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits — `10` exists for `radio/dot-size-md`, which needs a 50% dot on a 20px control and has no `space.*` step to alias.
 
 ### 8. Gradient tokens (currently unused)
 
@@ -335,11 +371,11 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 
 ## Token Inventory
 
-**Totals:** 225 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 168 component tokens (104 `button/*` + 64 `checkbox/*`) · **763 values per platform** · **0 gradients**
+**Totals:** 226 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 225 component tokens (104 `button/*` + 64 `checkbox/*` + 57 `radio/*`) · **821 values per platform** · **0 gradients**
 
-The emitted count exceeds the 655 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 713 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
-### Primitive tokens (225)
+### Primitive tokens (226)
 
 #### Color — 145 tokens (12 palettes × 12 steps, plus `alpha.transparent`)
 
@@ -421,7 +457,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 | `lineHeight.80` | 80px |
 | `lineHeight.92` | 92px |
 
-#### Spacing — 22 tokens
+#### Spacing — 23 tokens
 
 | Token | Value | Output name |
 |-------|-------|-------------|
@@ -429,6 +465,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 | `spacing.2` | 2px | `--spacing-2` / `spacing2` |
 | `spacing.4` | 4px | `--spacing-4` / `spacing4` |
 | `spacing.8` | 8px | `--spacing-8` / `spacing8` |
+| `spacing.10` | 10px | `--spacing-10` / `spacing10` |
 | `spacing.12` | 12px | `--spacing-12` / `spacing12` |
 | `spacing.16` | 16px | `--spacing-16` / `spacing16` |
 | `spacing.20` | 20px | `--spacing-20` / `spacing20` |
@@ -640,7 +677,7 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `space.6xl` | 48px |
 | `space.7xl` | 64px |
 
-### Component tokens (168)
+### Component tokens (225)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -648,6 +685,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 |-------|--------|---------------------|------|
 | `button/*` | 104 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 64 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
+| `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -658,6 +696,8 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `checkbox/bg-selected-default` | `{color.bg-fill-brand}` | `#0067E8` |
 | `checkbox/border-unselected-default` | `{color.border-strong}` | `#737373` |
 | `checkbox/control-size-md` | `{space.lg}` | `20px` |
+| `radio/dot-selected-default` | `{color.text-brand}` | `#0067E8` |
+| `radio/radius` | `{radius.full}` | `999px` |
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
@@ -992,7 +1032,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
 
-`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants). It is **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace it with an extracted spec; the file says so in its own header.
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) and `components/radio.md` the Radio component set (`442:415`, 60 variants). Both are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
 
 ### Pinned versions
 
