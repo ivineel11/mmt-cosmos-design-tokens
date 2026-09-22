@@ -196,7 +196,7 @@ Web outputs keep token colors as hex strings (or CSS `linear-gradient(...)` if a
 
 | Input (resolved token value) | iOS output | Android output |
 |------------------------------|------------|----------------|
-| `#008CFF` | `Color(red: 0, green: 0.54902, blue: 1)` | `Color(0xFF008CFF)` |
+| `#0067E8` | `Color(red: 0, green: 0.403922, blue: 0.909804)` | `Color(0xFF0067E8)` |
 | `#RRGGBBAA` (8-digit hex) | `Color(.sRGB, red: …, green: …, blue: …, opacity: …)` | `Color(0xAARRGGBB)` |
 | `linear-gradient(90deg, #FFD230 0%, …)` | `LinearGradient(gradient: Gradient(stops: […]), startPoint: …, endPoint: …)` | `Brush.linearGradient(0f to Color(…), …, start = Offset(…), end = Offset(…))` |
 
@@ -255,10 +255,10 @@ Within each role, **intent** is expressed with suffixes:
 
 ### 4. Color scale system
 
-- **12 palettes:** neutral, brand, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
-- **12 steps per palette:** `0`, `50`, `100`–`900`, `950`
+- **13 palettes:** neutral, brand, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
+- **11–12 steps per palette:** `50`, `100`–`900`, `950`, plus `0` on neutral only
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
-- **Brand primary (interactive):** semantic brand roles use `color.brand.700` = `#008CFF` (WCAG AA on white). Scale step `color.brand.600` = `#069BFF` remains in the palette but is not used for those roles.
+- **Brand primary (interactive):** semantic brand roles rest on `color.brand.700` = `#0067E8` (WCAG AA on white). The lighter `color.brand.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
 
 ### 5. Single-font typography system (Lato)
 
@@ -381,30 +381,30 @@ Primitives, semantics, and component tokens merge into a single flat namespace i
 
 ## Token Inventory
 
-**Totals:** 226 primitive tokens · 262 semantic tokens (194 colors + 36 typography + 10 radius + 8 icon + 14 space) · 225 component tokens (104 `button/*` + 64 `checkbox/*` + 57 `radio/*`) · **821 values per platform** · **0 gradients**
+**Totals:** 226 primitive tokens · 266 semantic tokens (198 colors + 36 typography + 10 radius + 8 icon + 14 space) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **842 values per platform** · **0 gradients**
 
-The emitted count exceeds the 713 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 734 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
 ### Primitive tokens (226)
 
-#### Color — 145 tokens (12 palettes × 12 steps, plus `alpha.transparent`)
+#### Color — 145 tokens (13 palettes, 144 steps, plus `alpha.transparent`)
 
 Token path pattern: `color.{palette}.{step}`
 
 | Step | Neutral | Brand | Red | Orange | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
 |------|---------|-------|-----|--------|-------|--------|------|-------|------|--------|--------|--------|---------|
 | `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — |
-| `50` | #FAFAFA | #EDFAFF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
-| `100` | #F5F5F5 | #D6F3FF | #FFE2E2 | #FFEDD4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
-| `200` | #E6E6E6 | #B5EBFF | #FFC9C9 | #FFD6A8 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
-| `300` | #D6D6D6 | #83E1FF | #FFA2A2 | #FFB86A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
-| `400` | #A5A5A5 | #48CFFF | #FF6467 | #FF8904 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
-| `500` | #767676 | #1EB4FF | #FB2C36 | #FF6900 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
-| `600` | #575757 | #069BFF | #E7000B | #F54900 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
-| `700` | #434343 | #008CFF | #C10007 | #CA3500 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
-| `800` | #292929 | #086BC5 | #9F0712 | #9F2D00 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
-| `900` | #1A1A1A | #0D5B9B | #82181A | #7E2A0C | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
-| `950` | #000000 | #0E375D | #460809 | #441306 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
+| `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
+| `100` | #F5F5F5 | #D6EFFF | #FFE2E2 | #FFEDD4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
+| `200` | #E5E5E5 | #B5E3FF | #FFC9C9 | #FFD6A8 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
+| `300` | #D4D4D4 | #83D4FF | #FFA2A2 | #FFB86A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
+| `400` | #A1A1A1 | #48BBFF | #FF6467 | #FF8904 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
+| `500` | #737373 | #1E9CFF | #FB2C36 | #FF6900 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
+| `600` | #525252 | #0681FF | #E7000B | #F54900 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
+| `700` | #404040 | #0067E8 | #C10007 | #CA3500 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
+| `800` | #262626 | #0857C5 | #9F0712 | #9F2D00 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
+| `900` | #171717 | #0D4C9B | #82181A | #7E2A0C | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
+| `950` | #0A0A0A | #0E2F5D | #460809 | #441306 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
 
 #### Font family — 1 token
 
@@ -525,9 +525,9 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 
 ---
 
-### Semantic tokens (262)
+### Semantic tokens (266)
 
-#### Color — 194 tokens
+#### Color — 198 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -687,7 +687,7 @@ T-shirt aliases for layout spacing. Prefer these over primitive `spacing.*` in p
 | `space.6xl` | 48px |
 | `space.7xl` | 64px |
 
-### Component tokens (225)
+### Component tokens (242)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -938,7 +938,7 @@ Primitive `spacing.*` remains available for leftover steps (`44`, `52`, `56`, `6
 ```ts
 import tokens from "./dist/web/tokens.ts";
 
-console.log(tokens.colorBgFillBrand); // "#008CFF"
+console.log(tokens.colorBgFillBrand); // "#0067E8"
 ```
 
 ### iOS (SwiftUI)
