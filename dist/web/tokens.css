@@ -1627,10 +1627,10 @@
   --input-state-layer: #0A0A0A;
   /** Opacity of the hover state layer on the Filled container. Aliases opacity.state-layer-hover, the system-wide value, so retune it there. Input is the first component to use it. */
   --input-state-layer-opacity-hover: 0.08;
-  /** Outline of the Outlined field, at rest. border-strong rather than border, because the outline is the only thing marking the field and must reach 3:1. */
-  --input-border-outlined-default: #737373;
-  /** Outline of the Outlined field, on hover. Material darkens the outline to its on-surface colour; Cosmos has no neutral border step darker than border-strong, so this borrows text-primary. */
-  --input-border-outlined-hover: #0A0A0A;
+  /** Outline of the Outlined field, at rest. The light default border, so the field reads as quiet until it is hovered or focused. At 1.48:1 on white it is below the 3:1 of WCAG 1.4.11, an accepted deviation documented in components/input.md. */
+  --input-border-outlined-default: #D4D4D4;
+  /** Outline of the Outlined field, on hover. Steps up from border to border-strong so the pointer visibly lands on the field. */
+  --input-border-outlined-hover: #737373;
   /** Outline of the Outlined field, while focused. Drawn at input/border-width-focus (2px). */
   --input-border-outlined-focus: #0067E8;
   /** Outline of the Outlined field, when disabled. */
@@ -1641,10 +1641,10 @@
   --input-border-outlined-error-hover: #E7000B;
   /** Outline of the Outlined field in the error state, while focused. Drawn at input/border-width-focus (2px). An invalid field stays red while the user corrects it; it does not turn brand. */
   --input-border-outlined-error-focus: #C10007;
-  /** Active indicator along the bottom edge of the Filled field, at rest. */
-  --input-indicator-filled-default: #737373;
-  /** Active indicator of the Filled field, on hover. Borrows text-primary for the same reason as border-outlined-hover. */
-  --input-indicator-filled-hover: #0A0A0A;
+  /** Active indicator along the bottom edge of the Filled field, at rest. The light default border; on the Filled container it is 1.36:1, an accepted deviation documented in components/input.md. */
+  --input-indicator-filled-default: #D4D4D4;
+  /** Active indicator of the Filled field, on hover. Steps up from border to border-strong, the same ramp as the Outlined outline. */
+  --input-indicator-filled-hover: #737373;
   /** Active indicator of the Filled field, while focused. Drawn at input/border-width-focus (2px). */
   --input-indicator-filled-focus: #0067E8;
   /** Active indicator of the Filled field, when disabled. Uses the strong disabled step because border-disabled-subtle would vanish into the disabled container. */

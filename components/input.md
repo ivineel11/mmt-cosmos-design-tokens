@@ -162,17 +162,17 @@ The Outlined container matches the page on purpose: the floated label's notch is
 
 | Intent | Default | Hover | Focus (2 px) | Disabled |
 |---|---|---|---|---|
-| Default | `color.border-strong` | `color.text-primary` | `color.border-brand` | `color.border-disabled-subtle` |
+| Default | `color.border` | `color.border-strong` | `color.border-brand` | `color.border-disabled-subtle` |
 | Error | `color.border-warning-strong` | `color.border-warning-strong-hover` | `color.border-warning-strong` | (neutral disabled) |
 
 ### Active indicator (Filled) — `input/indicator-filled-*`
 
 | Intent | Default | Hover | Focus (2 px) | Disabled |
 |---|---|---|---|---|
-| Default | `color.border-strong` | `color.text-primary` | `color.border-brand` | `color.border-disabled-strong` |
+| Default | `color.border` | `color.border-strong` | `color.border-brand` | `color.border-disabled-strong` |
 | Error | `color.border-warning-strong` | `color.border-warning-strong-hover` | `color.border-warning-strong` | (neutral disabled) |
 
-- **Hover on the default intent borrows `color.text-primary`.** Material darkens the outline to its on-surface colour on hover, and Cosmos has no neutral border step darker than `border-strong`. This is the one place Input points a stroke at a text token. If a `border-strong-hover` role is ever added, repoint these two tokens.
+- **The default intent steps up the neutral border ramp:** `border` at rest, `border-strong` on hover, `border-brand` at 2 px on focus. Every stroke uses a border role; none borrows a text token. The resting line is deliberately light, which costs WCAG 1.4.11 (see Accessibility → Contrast).
 - **Focus in the error intent stays red.** A field the user is correcting does not flash brand.
 - **The Filled disabled indicator uses `border-disabled-strong`.** `border-disabled-subtle` (`#D4D4D4`) is nearly invisible against the `#E5E5E5` disabled container.
 
@@ -216,13 +216,13 @@ Computed from the resolved hex values. Disabled pairs are exempt from WCAG 1.4.3
 
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
-| Outline `#737373` on `#FFFFFF` | 4.74:1 | 3:1 (1.4.11) | Pass |
-| Outline hover `#0A0A0A` on `#FFFFFF` | 19.80:1 | 3:1 | Pass |
+| Outline `#D4D4D4` on `#FFFFFF` | 1.48:1 | 3:1 (1.4.11) | **Fail — accepted deviation** |
+| Outline hover `#737373` on `#FFFFFF` | 4.74:1 | 3:1 | Pass |
 | Outline focus `#0067E8` on `#FFFFFF` | 5.12:1 | 3:1 | Pass |
 | Outline error `#C10007` on `#FFFFFF` | 6.42:1 | 3:1 | Pass |
 | Outline error hover `#E7000B` on `#FFFFFF` | 4.77:1 | 3:1 | Pass |
-| Indicator `#737373` on Filled `#F5F5F5` | 4.35:1 | 3:1 | Pass |
-| Indicator hover `#0A0A0A` on hovered Filled `#E2E2E2` | 15.28:1 | 3:1 | Pass |
+| Indicator `#D4D4D4` on Filled `#F5F5F5` | 1.36:1 | 3:1 | **Fail — accepted deviation** |
+| Indicator hover `#737373` on hovered Filled `#E2E2E2` | 3.66:1 | 3:1 | Pass |
 | Indicator focus `#0067E8` on `#F5F5F5` | 4.69:1 | 3:1 | Pass |
 | Indicator error `#C10007` on `#F5F5F5` | 5.89:1 | 3:1 | Pass |
 | Indicator error hover `#E7000B` on `#E2E2E2` | 3.68:1 | 3:1 | Pass |
@@ -236,9 +236,9 @@ Computed from the resolved hex values. Disabled pairs are exempt from WCAG 1.4.3
 | Icon `#525252` on `#FFFFFF` / `#F5F5F5` / `#E2E2E2` | 7.81 / 7.17 / 6.03:1 | 3:1 (1.4.11) | Pass |
 | Icon error `#C10007` on `#FFFFFF` | 6.42:1 | 3:1 | Pass |
 
-**The Filled container itself does not reach 3:1.** `#F5F5F5` is 1.09:1 against the page. This is acceptable because the indicator line identifies the field; it is the same reasoning Material applies. Never remove the indicator from a Filled field.
+**The resting field boundary does not meet WCAG 2.1 SC 1.4.11.** This is a known, accepted deviation, chosen for a quieter resting field. The outline (`color.border`, 1.48:1 on white) and the Filled indicator (1.36:1 on `#F5F5F5`) are both below the 3:1 that identifies a component. The Filled container adds nothing (`#F5F5F5` is 1.09:1 against the page). What still makes the field findable at rest is the label inside it (7.81:1), and every interactive state clears 3:1: hover 4.74 / 3.66:1, focus 5.12 / 4.69:1, error 6.42 / 5.89:1. To restore conformance, repoint `border-outlined-default` and `indicator-filled-default` to `color.border-strong` (4.74 / 4.35:1). Hover then needs a darker step than `border-strong`, which the semantic tier does not have.
 
-The tightest pair is the Filled error indicator on hover, at 3.68:1. Re-measure it first if the warning ramp is ever re-tinted.
+The tightest passing pair is the Filled error indicator on hover, at 3.68:1, with the Filled hover indicator close behind at 3.66:1. Re-measure both if the neutral or warning ramps are re-tinted.
 
 ### Semantics
 
@@ -261,7 +261,9 @@ The tightest pair is the Filled error indicator on hover, at 3.68:1. Re-measure 
 ## Known gaps
 
 - **The Outlined notch assumes `color.bg` behind the field.** It works by painting `input/container-outlined` behind the floated label. On `bg-surface` or a card with a tinted fill, the notch shows as a white patch. Code should cut the outline instead of painting over it (Material web uses a notched `fieldset` / `legend`). In Figma, override the Notch Label fill if you must place an Outlined field on a tint.
-- **Hover on the default intent borrows `color.text-primary` for a stroke.** There is no neutral border role darker than `border-strong`. Adding `color.border-strong-hover` to the semantic tier and repointing `border-outlined-hover` and `indicator-filled-hover` would remove the borrowed role.
+- **The resting boundary fails WCAG 1.4.11 by design.** `border` at rest is 1.48:1 on white and 1.36:1 on the Filled container. It is documented under Accessibility → Contrast, with the two-token change that would restore conformance.
+- **Outlined Disabled is close to Outlined Default.** Disabled uses `border-disabled-subtle`, which resolves to the same `#D4D4D4` as the new resting border, and the Outlined container stays white. Only the text and icon colours separate the two states. A disabled fill (`bg-surface-disabled`, as exploration 2 uses) would fix it.
+- **The Filled resting indicator is faint.** At 1.36:1 against `#F5F5F5`, the one line that marks a Filled field barely shows at rest.
 - **`input/height` aliases a primitive.** The semantic space scale jumps from 48 to 64, so `height` points at `spacing.56` directly. This follows the precedent of `radio/dot-size-md` → `spacing.10`.
 - **The notch label's position is baked geometry.** x 12 / y −8 is not a variable-bindable property, so changing `input/height`, the label type size or `padding-x` means re-positioning the Notch Label on all 16 Outlined variants.
 - **The label float is not animated.** Material animates the label between its resting and floated positions (150 ms, standard easing). No motion token exists yet.
