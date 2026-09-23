@@ -1617,4 +1617,100 @@
   --radio-gap-text: 4px;
   /** Minimum tappable area around the radio, independent of the visible circle size. The hit area must reach this even at small size — do not scale it with control-size-*. */
   --radio-min-touch-target: 48px;
+  /** Fill of the Outlined field in every state. Matches the page background, because the floated label notches the outline by painting this same colour behind itself. Place Outlined fields on color.bg only. */
+  --input-container-outlined: #FFFFFF;
+  /** Fill of the Filled field at rest, on hover, and on focus. The hover tint is a separate state layer on top of it. */
+  --input-container-filled-default: #F5F5F5;
+  /** Fill of the Filled field when disabled. */
+  --input-container-filled-disabled: #E5E5E5;
+  /** Colour of the hover tint laid over the Filled container, following Material. Render it at input/state-layer-opacity-hover. Outlined fields have no state layer; they darken the outline on hover instead. */
+  --input-state-layer: #0A0A0A;
+  /** Opacity of the hover state layer on the Filled container. Aliases opacity.state-layer-hover, the system-wide value, so retune it there. Input is the first component to use it. */
+  --input-state-layer-opacity-hover: 0.08;
+  /** Outline of the Outlined field, at rest. border-strong rather than border, because the outline is the only thing marking the field and must reach 3:1. */
+  --input-border-outlined-default: #737373;
+  /** Outline of the Outlined field, on hover. Material darkens the outline to its on-surface colour; Cosmos has no neutral border step darker than border-strong, so this borrows text-primary. */
+  --input-border-outlined-hover: #0A0A0A;
+  /** Outline of the Outlined field, while focused. Drawn at input/border-width-focus (2px). */
+  --input-border-outlined-focus: #0067E8;
+  /** Outline of the Outlined field, when disabled. */
+  --input-border-outlined-disabled: #D4D4D4;
+  /** Outline of the Outlined field in the error state, at rest. */
+  --input-border-outlined-error-default: #C10007;
+  /** Outline of the Outlined field in the error state, on hover. */
+  --input-border-outlined-error-hover: #E7000B;
+  /** Outline of the Outlined field in the error state, while focused. Drawn at input/border-width-focus (2px). An invalid field stays red while the user corrects it; it does not turn brand. */
+  --input-border-outlined-error-focus: #C10007;
+  /** Active indicator along the bottom edge of the Filled field, at rest. */
+  --input-indicator-filled-default: #737373;
+  /** Active indicator of the Filled field, on hover. Borrows text-primary for the same reason as border-outlined-hover. */
+  --input-indicator-filled-hover: #0A0A0A;
+  /** Active indicator of the Filled field, while focused. Drawn at input/border-width-focus (2px). */
+  --input-indicator-filled-focus: #0067E8;
+  /** Active indicator of the Filled field, when disabled. Uses the strong disabled step because border-disabled-subtle would vanish into the disabled container. */
+  --input-indicator-filled-disabled: #A1A1A1;
+  /** Active indicator of the Filled field in the error state, at rest. */
+  --input-indicator-filled-error-default: #C10007;
+  /** Active indicator of the Filled field in the error state, on hover. */
+  --input-indicator-filled-error-hover: #E7000B;
+  /** Active indicator of the Filled field in the error state, while focused. Drawn at 2px. */
+  --input-indicator-filled-error-focus: #C10007;
+  /** Field label at rest and on hover, both resting inside the field and floated above the value. */
+  --input-label-default: #525252;
+  /** Field label while the field is focused. Only applies in the default intent; an invalid field keeps label-error. */
+  --input-label-focus: #0067E8;
+  /** Field label in the error state, in every state except Disabled. */
+  --input-label-error: #C10007;
+  /** Field label when disabled. Disabled wins over the error state. */
+  --input-label-disabled: #A1A1A1;
+  /** The text the user has entered. */
+  --input-value-default: #0A0A0A;
+  /** Entered text in a disabled field. Also used for a disabled prefix. */
+  --input-value-disabled: #A1A1A1;
+  /** Placeholder text, shown only while an empty field is focused and the label has floated. text-secondary rather than text-tertiary, because tertiary drops to 4.35:1 on the Filled container. Never a substitute for the label. */
+  --input-placeholder: #525252;
+  /** Fixed text before the value, such as a +91 country code. Shown only when the field has a value or focus. Use value-disabled when disabled. */
+  --input-prefix: #525252;
+  /** Text insertion caret while the field is focused. */
+  --input-caret-default: #0067E8;
+  /** Text insertion caret while an invalid field is focused. */
+  --input-caret-error: #C10007;
+  /** Leading and trailing icons at rest, on hover, and on focus. icon-secondary rather than icon-tertiary, because tertiary fails 3:1 against the field. */
+  --input-icon-default: #525252;
+  /** Trailing icon in the error state, such as the error glyph. The leading icon stays icon-default so it keeps describing the field, not the error. */
+  --input-icon-error: #C10007;
+  /** Leading and trailing icons when disabled. */
+  --input-icon-disabled: #A1A1A1;
+  /** Supporting text under the field — a hint or a character count. */
+  --input-supporting-default: #525252;
+  /** Supporting text in the error state, where it carries the error message. */
+  --input-supporting-error: #C10007;
+  /** Supporting text when disabled. */
+  --input-supporting-disabled: #A1A1A1;
+  /** Height of the field container, following Material. The text column is centred vertically, so no vertical padding token is needed. Aliases the primitive spacing.56 because the semantic space scale steps from 48px to 64px. */
+  --input-height: 56px;
+  /** Horizontal padding inside the container, on both sides. Icons sit directly inside it, 12px from the edge as in Material. Text gets a further input/text-inset, so it starts 16px from an edge that has no icon. */
+  --input-padding-x: 12px;
+  /** Extra horizontal inset of the text column, inside padding-x. Together they put the label and value 16px from an edge with no icon, and 52px from an edge with an icon (12 + 24 + 12 + 4). */
+  --input-text-inset: 4px;
+  /** Horizontal gap between an icon and the text column. The text column adds text-inset on top, so the text sits 16px from the icon. */
+  --input-gap: 12px;
+  /** Gap between the prefix and the value. */
+  --input-prefix-gap: 4px;
+  /** Size of the leading and trailing icons. */
+  --input-icon-size: 24px;
+  /** Corner radius of the container. The Outlined field rounds all four corners. The Filled field rounds only the top two, so its active indicator runs straight along the bottom. */
+  --input-radius: 4px;
+  /** Thickness of the outline or active indicator, at rest, on hover, and when disabled. */
+  --input-border-width: 1px;
+  /** Thickness of the outline or active indicator while focused. The field must not reflow when it thickens, so draw it inside the container. */
+  --input-border-width-focus: 2px;
+  /** Width of the text insertion caret. */
+  --input-caret-width: 2px;
+  /** Horizontal padding either side of the floated label where it cuts through the top edge of the Outlined field. */
+  --input-label-notch-padding: 4px;
+  /** Gap between the container and the supporting text beneath it. */
+  --input-supporting-padding-top: 4px;
+  /** Horizontal inset of the supporting text, so it lines up with the label and value. */
+  --input-supporting-padding-x: 16px;
 }

@@ -45,7 +45,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 |-----------|----------|
 | **primitives** | Raw values — color palettes, font stacks, pixel scales |
 | **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
-| **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`) that reference semantic tokens — one key per property × variant × state |
+| **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`, `input/*`) that reference semantic tokens — one key per property × variant × state |
 
 Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
 
@@ -225,11 +225,11 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 |-------|---------|-------------|
 | **Primitives** | Raw design values — hex colors, pixel sizes, font stacks | Token authors, design system maintainers |
 | **Semantic** | Role-based names that describe *intent* (`text-primary`, `bg-fill-brand`) | Product engineers, designers in Figma |
-| **Component** | Per-component keys for every property × variant × state (`button/bg-primary-hover`, `checkbox/border-selected-error-pressed`, `radio/dot-selected-default`) | Design system components, and the Figma variable bindings behind them |
+| **Component** | Per-component keys for every property × variant × state (`button/bg-primary-hover`, `checkbox/border-selected-error-pressed`, `radio/dot-selected-default`, `input/border-outlined-error-focus`) | Design system components, and the Figma variable bindings behind them |
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens) and Radio (57 tokens) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens), Radio (57 tokens) and Input (48 tokens) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -289,7 +289,7 @@ Opacity is deliberately **not** t-shirt sized. There is no perceptual scale to s
 
 ### 7. Semantic spacing via `space.*`
 
-Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. The same clipped-root logic separates `opacityScale.*` from `opacity.*`, where it is forced rather than chosen — see [Opacity tokens](#11-opacity-tokens). Leftover mid-steps (`10`, `44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits — `10` exists for `radio/dot-size-md`, which needs a 50% dot on a 20px control and has no `space.*` step to alias.
+Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. The same clipped-root logic separates `opacityScale.*` from `opacity.*`, where it is forced rather than chosen — see [Opacity tokens](#11-opacity-tokens). Leftover mid-steps (`10`, `44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits — `10` exists for `radio/dot-size-md`, which needs a 50% dot on a 20px control and has no `space.*` step to alias, and `56` is aliased directly by `input/height` (Material's 56px field).
 
 ### 8. Gradient tokens (currently unused)
 
@@ -353,7 +353,7 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 
 **Disabled is not an opacity.** Every disabled state in Cosmos is a solid opaque neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`). A dimming path would give the system two conflicting ways to say "disabled" with different and unpredictable contrast outcomes over a tinted surface. The same holds for hover and pressed, which are solid palette steps (`bg-fill-brand-hover`). Focus is the only state expressed as a layer, and only on Radio, whose ring was removed by design decision.
 
-**Growth path.** `opacity.state-layer-hover` and `-pressed` exist but no component consumes them yet: switching Radio to layer-based hover and pressed would diverge it from Checkbox, so it is a system-wide decision that must land on both together — see `components/radio.md` → Known gaps. `state-layer-dragged` waits on a draggable component.
+**Growth path.** `opacity.state-layer-hover` has its first consumer in `input/state-layer-opacity-hover`, the hover tint on a Filled Input. `-pressed` has none yet, and switching Radio to layer-based hover and pressed would diverge it from Checkbox, so it is a system-wide decision that must land on both together — see `components/radio.md` → Known gaps. `state-layer-dragged` waits on a draggable component.
 
 ---
 
@@ -421,9 +421,9 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 
 ## Token Inventory
 
-**Totals:** 250 primitive tokens · 295 semantic tokens (198 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **895 values per platform** · **0 gradients**
+**Totals:** 250 primitive tokens · 295 semantic tokens (198 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity) · 290 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 48 `input/*`) · **943 values per platform** · **0 gradients**
 
-The emitted count exceeds the 787 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 835 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
 ### Primitive tokens (250)
 
@@ -771,7 +771,7 @@ Five role tokens naming what is being dimmed, plus a mirror of every ramp step s
 | `opacity.scrim` | `opacityScale.32` | Wash behind a modal, drawer or bottom sheet |
 | `opacity.0` … `opacity.100` | `opacityScale.0` … `opacityScale.100` | The 24 ramp steps, one-to-one |
 
-### Component tokens (242)
+### Component tokens (290)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -780,6 +780,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `button/*` | 104 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 64 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
+| `input/*` | 48 | Input (`492:674`, 32 variants) | [`components/input.md`](components/input.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -792,6 +793,8 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `checkbox/control-size-md` | `{space.lg}` | `20px` |
 | `radio/dot-selected-default` | `{color.text-brand}` | `#0067E8` |
 | `radio/radius` | `{radius.full}` | `999px` |
+| `input/border-outlined-default` | `{color.border-strong}` | `#737373` |
+| `input/height` | `{spacing.56}` | `56px` |
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
@@ -1245,7 +1248,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
 
-`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) and `components/radio.md` the Radio component set (`442:415`, 60 variants). Both are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) `components/radio.md` the Radio component set (`442:415`, 60 variants), and `components/input.md` the Input component set (`492:674`, 32 variants). All three are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
 
 ### Pinned versions
 

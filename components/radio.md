@@ -175,7 +175,7 @@ Material's state layer takes **the colour of the content it belongs to**, so it 
 | Selected, Default intent | `radio/state-layer-selected` | `color.border-brand` |
 | Either selection, Error intent | `radio/state-layer-error` | `color.border-warning-strong` |
 
-Opacity is a separate token so it can vary per state while the colours stay shared: `radio/state-layer-opacity-focus`, which aliases the system-wide `opacity.state-layer-focus` (10%, matching Material's focus value). Retune it there, not here. The hover (8%) and pressed (10%) steps now exist as `opacity.state-layer-hover` and `-pressed`, but no component consumes them yet — see Known gaps.
+Opacity is a separate token so it can vary per state while the colours stay shared: `radio/state-layer-opacity-focus`, which aliases the system-wide `opacity.state-layer-focus` (10%, matching Material's focus value). Retune it there, not here. The hover (8%) and pressed (10%) steps now exist as `opacity.state-layer-hover` and `-pressed`, but Radio does not consume them (Input uses the hover step for its Filled style) — see Known gaps.
 
 ---
 
