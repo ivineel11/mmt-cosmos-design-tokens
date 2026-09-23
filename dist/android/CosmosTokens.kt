@@ -205,7 +205,7 @@ object CosmosTokens {
   val checkboxBorderSelectedErrorPressed = Color(0xFF9F0712)
   val checkboxBorderSelectedHover = Color(0xFF0681FF)
   val checkboxBorderSelectedPressed = Color(0xFF0857C5)
-  val checkboxBorderUnselectedDefault = Color(0xFF737373)
+  val checkboxBorderUnselectedDefault = Color(0xFFA1A1A1)
   val checkboxBorderUnselectedDisabled = Color(0xFFA1A1A1)
   val checkboxBorderUnselectedErrorDefault = Color(0xFFC10007)
   val checkboxBorderUnselectedErrorDisabled = Color(0xFFA1A1A1)
@@ -311,7 +311,7 @@ object CosmosTokens {
   val colorBorderFocus = Color(0xFF0681FF)
   val colorBorderInfo = Color(0xFF83D4FF)
   val colorBorderSecondary = Color(0xFFE5E5E5)
-  val colorBorderStrong = Color(0xFF737373)
+  val colorBorderStrong = Color(0xFFA1A1A1)
   val colorBorderSuccess = Color(0xFF7BF1A8)
   val colorBorderWarning = Color(0xFFFFA2A2)
   val colorBorderWarningStrong = Color(0xFFC10007)
@@ -669,7 +669,7 @@ object CosmosTokens {
   val inputBorderOutlinedErrorFocus = Color(0xFFC10007)
   val inputBorderOutlinedErrorHover = Color(0xFFE7000B)
   val inputBorderOutlinedFocus = Color(0xFF0067E8)
-  val inputBorderOutlinedHover = Color(0xFF737373)
+  val inputBorderOutlinedHover = Color(0xFFA1A1A1)
   val inputBorderWidth = 1.dp
   val inputBorderWidthFocus = 2.dp
   val inputCaretDefault = Color(0xFF0067E8)
@@ -690,7 +690,7 @@ object CosmosTokens {
   val inputIndicatorFilledErrorFocus = Color(0xFFC10007)
   val inputIndicatorFilledErrorHover = Color(0xFFE7000B)
   val inputIndicatorFilledFocus = Color(0xFF0067E8)
-  val inputIndicatorFilledHover = Color(0xFF737373)
+  val inputIndicatorFilledHover = Color(0xFFA1A1A1)
   val inputLabelDefault = Color(0xFF525252)
   val inputLabelDisabled = Color(0xFFA1A1A1)
   val inputLabelError = Color(0xFFC10007)
@@ -831,7 +831,7 @@ object CosmosTokens {
   val radioBorderSelectedErrorPressed = Color(0xFF9F0712)
   val radioBorderSelectedHover = Color(0xFF0681FF)
   val radioBorderSelectedPressed = Color(0xFF0857C5)
-  val radioBorderUnselectedDefault = Color(0xFF737373)
+  val radioBorderUnselectedDefault = Color(0xFFA1A1A1)
   val radioBorderUnselectedDisabled = Color(0xFFA1A1A1)
   val radioBorderUnselectedErrorDefault = Color(0xFFC10007)
   val radioBorderUnselectedErrorDisabled = Color(0xFFA1A1A1)
@@ -871,7 +871,7 @@ object CosmosTokens {
   val radioStateLayerSizeLg = 48.dp
   val radioStateLayerSizeMd = 40.dp
   val radioStateLayerSizeSm = 32.dp
-  val radioStateLayerUnselected = Color(0xFF737373)
+  val radioStateLayerUnselected = Color(0xFFA1A1A1)
   val radius2xl = 24.dp
   val radius3xl = 32.dp
   val radius4xl = 40.dp

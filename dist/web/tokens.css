@@ -420,7 +420,7 @@
   /** Lighter divider for dense or nested content — list separators, inner table rules. */
   --color-border-secondary: #E5E5E5;
   /** Higher-contrast neutral border — outlines that must stay legible on a tinted surface, and dividers separating major regions. Use border for the default outline. */
-  --color-border-strong: #737373;
+  --color-border-strong: #A1A1A1;
   /** Border of a disabled control that keeps a visible outline — disabled secondary button. */
   --color-border-disabled-strong: #A1A1A1;
   /** Border of a disabled low-emphasis control — disabled input field. */
@@ -1406,7 +1406,7 @@
   /** Fill of the checkbox box — checked and in the error state, when disabled. */
   --checkbox-bg-selected-error-disabled: #A1A1A1;
   /** Outline of the checkbox box — unchecked, at rest. */
-  --checkbox-border-unselected-default: #737373;
+  --checkbox-border-unselected-default: #A1A1A1;
   /** Outline of the checkbox box — unchecked, on hover. */
   --checkbox-border-unselected-hover: #0067E8;
   /** Outline of the checkbox box — unchecked, while pressed. */
@@ -1520,7 +1520,7 @@
   /** Fill of the radio circle in both selected and unselected states, in the error state — when disabled. */
   --radio-bg-error-disabled: #E5E5E5;
   /** Outline of the radio circle — unselected, at rest. */
-  --radio-border-unselected-default: #737373;
+  --radio-border-unselected-default: #A1A1A1;
   /** Outline of the radio circle — unselected, on hover. */
   --radio-border-unselected-hover: #0067E8;
   /** Outline of the radio circle — unselected, while pressed. */
@@ -1578,7 +1578,7 @@
   /** Colour of the helper text when the radio is disabled. */
   --radio-description-disabled: #A1A1A1;
   /** Colour of the focus state layer while the radio is unselected. The state layer takes the colour of the content it belongs to, so it follows the ring rather than the interior. */
-  --radio-state-layer-unselected: #737373;
+  --radio-state-layer-unselected: #A1A1A1;
   /** Colour of the focus state layer while the radio is selected. */
   --radio-state-layer-selected: #0067E8;
   /** Colour of the focus state layer in the error state, selected or not. */
@@ -1630,7 +1630,7 @@
   /** Outline of the Outlined field, at rest. The light default border, so the field reads as quiet until it is hovered or focused. At 1.48:1 on white it is below the 3:1 of WCAG 1.4.11, an accepted deviation documented in components/input.md. */
   --input-border-outlined-default: #D4D4D4;
   /** Outline of the Outlined field, on hover. Steps up from border to border-strong so the pointer visibly lands on the field. */
-  --input-border-outlined-hover: #737373;
+  --input-border-outlined-hover: #A1A1A1;
   /** Outline of the Outlined field, while focused. Drawn at input/border-width-focus (2px). */
   --input-border-outlined-focus: #0067E8;
   /** Outline of the Outlined field, when disabled. */
@@ -1644,7 +1644,7 @@
   /** Active indicator along the bottom edge of the Filled field, at rest. The light default border; on the Filled container it is 1.36:1, an accepted deviation documented in components/input.md. */
   --input-indicator-filled-default: #D4D4D4;
   /** Active indicator of the Filled field, on hover. Steps up from border to border-strong, the same ramp as the Outlined outline. */
-  --input-indicator-filled-hover: #737373;
+  --input-indicator-filled-hover: #A1A1A1;
   /** Active indicator of the Filled field, while focused. Drawn at input/border-width-focus (2px). */
   --input-indicator-filled-focus: #0067E8;
   /** Active indicator of the Filled field, when disabled. Uses the strong disabled step because border-disabled-subtle would vanish into the disabled container. */
