@@ -178,6 +178,7 @@ export default {
       transparent: "#FFFFFF00",
     },
     bg: "#FFFFFF",
+    "bg-secondary": "#F5F5F5",
     "bg-surface": "#F5F5F5",
     "bg-surface-disabled": "#E5E5E5",
     "bg-surface-secondary": "#FFFFFF",
