@@ -293,13 +293,15 @@
   --color-fuchsia-950: #4B004F;
   /** Fully transparent. Contrast is undefined — whatever sits behind shows through, so accessibility depends on that backdrop rather than on this token. */
   --color-alpha-transparent: #FFFFFF00;
-  /** Page background — the base layer everything else sits on. For a container within the page (card, sheet, panel) use bg-surface or bg-surface-secondary instead. */
+  /** White page background, the default canvas. Containers placed directly on it use bg-surface (grey). For the grey canvas use bg-secondary. Match the suffix: bg pairs with bg-surface. */
   --color-bg: #FFFFFF;
-  /** Default container surface, one step off the page background — page wells, grouped sections, list backgrounds. Surface tokens colour the container behind content; bg-fill-* tokens colour the body of the element itself. */
+  /** Grey page background, the alternate canvas for screens built from stacked cards. Containers placed directly on it use bg-surface-secondary (white). bg-fill-secondary is the same grey, so chips, segmented tracks and skeletons on this canvas need a border or a different fill. Match the suffix: bg-secondary pairs with bg-surface-secondary. */
+  --color-bg-secondary: #F5F5F5;
+  /** Grey container placed on the white page (bg) — wells, grouped sections, list backgrounds. Match the suffix: bg pairs with bg-surface. On the grey page (bg-secondary) it has no contrast; use bg-surface-secondary there. Surface tokens colour the container behind content; bg-fill-* tokens colour the body of the element itself. */
   --color-bg-surface: #F5F5F5;
   /** Container surface of a disabled control or section. Pair with text-disabled and border-disabled-subtle. For a disabled element that reads as solid, use bg-fill-disabled-strong or bg-fill-disabled-subtle. */
   --color-bg-surface-disabled: #E5E5E5;
-  /** Raised container surface for elements layered on bg-surface — cards, sheets, popovers, menus. Resolves to the same white as bg; pick this one when the element is a container rather than the page itself. */
+  /** White container placed on the grey page (bg-secondary) — cards, sheets, popovers, menus. Match the suffix: bg-secondary pairs with bg-surface-secondary. On the white page (bg) it has no contrast without a border; use bg-surface there, or add a border for a floating element. */
   --color-bg-surface-secondary: #FFFFFF;
   /** Brand-tinted container — tertiary button default, selected list rows, brand callouts. This is a background behind content; for a solid brand element such as a primary button use bg-fill-brand. */
   --color-bg-surface-brand: #EDF8FF;

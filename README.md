@@ -213,7 +213,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 315 color tokens (144 primitive palette steps + 171 semantic roles). All current colors are solid; gradient transforms stay wired for future use.
+**Affected tokens:** all 529 color tokens (145 primitive — 144 palette steps plus `alpha.transparent` — + 199 semantic roles + 185 component tokens). All current colors are solid; gradient transforms stay wired for future use.
 
 ---
 
@@ -243,7 +243,7 @@ Semantic colors are grouped by **role**, not by hue:
 
 | Role prefix | Meaning |
 |-------------|---------|
-| `bg` | Page-level background |
+| `bg`, `bg-secondary` | Page-level background (the canvas) |
 | `bg-surface-*` | Elevated / grouped surface backgrounds |
 | `bg-fill-*` | Interactive or emphasis fills (buttons, badges, banners) |
 | `text-*` | Foreground text |
@@ -257,6 +257,23 @@ Within each role, **intent** is expressed with suffixes:
 | `brand`, `info`, `success`, `caution`, `warning` | Semantic intent |
 | `strong` / `subtle` | Fill intensity pairs |
 | `on-bg-fill` / `on-bg-fill-strong` / `on-bg-fill-subtle` | Contrast-safe text on filled backgrounds |
+
+#### Canvas and container pairing
+
+MakeMyTrip screens sit on one of two canvases: white or grey. The container on top of a canvas must be the *other* colour, and the token names encode that pairing. **Match the suffix:**
+
+| Canvas (page) | Container on it | Result |
+|---------------|-----------------|--------|
+| `bg` (white, `neutral.0`) | `bg-surface` (grey, `neutral.100`) | Grey wells, grouped sections and list backgrounds on a white page |
+| `bg-secondary` (grey, `neutral.100`) | `bg-surface-secondary` (white, `neutral.0`) | White cards, sheets and menus on a grey page |
+
+The crossed pairs, `bg` + `bg-surface-secondary` and `bg-secondary` + `bg-surface`, resolve to the same colour twice and have no contrast. Use them only when the container carries its own `border` or elevation.
+
+For nested content, keep alternating. A grey well inside a white card on a grey page is `bg-surface` again.
+
+`bg-fill-secondary` (chips, segmented tracks, skeletons) is the same grey as `bg-secondary`. On the grey canvas, give those elements a `border` or put them inside a `bg-surface-secondary` container.
+
+Interactive controls take their body colour from `bg-fill`, never from `bg`. That way a checkbox or radio stays white whichever canvas it sits on.
 
 ### 4. Color scale system
 
@@ -390,6 +407,7 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 - Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.brand.600}`).
 - Do reference semantic tokens from component tokens the same way (e.g. `{color.bg-fill-brand}`), so a palette change propagates through both tiers.
 - Do use the semantic color role system (`bg-surface`, `bg-fill`, `text`, `border`, `icon`) consistently.
+- Do pair canvas and container by suffix: `bg` with `bg-surface`, `bg-secondary` with `bg-surface-secondary`. See [Canvas and container pairing](#canvas-and-container-pairing).
 - Do add new palette steps at the primitive layer before creating semantic aliases.
 - Do use t-shirt sizes (`radius.md`, `icon.lg`, `space.md`) in components instead of raw pixel values.
 - Do expand typography composites via the build — do not manually duplicate font properties.
@@ -411,6 +429,7 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 - Don't add font sizes without corresponding line heights in the typography scale.
 - Don't use negative spacing keys in references — the build renames them (`spacing.-8` → `spacing.minus8` in output).
 - Don't hand-convert hex colors or CSS gradients in iOS/Android app code — use the generated `Tokens` values directly.
+- Don't alias a control's fill to `bg` or `bg-secondary`; those are canvases. Use `bg-fill`.
 - Don't use opacity to express a disabled state — disabled is a solid neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`, `icon-disabled`).
 - Don't use `opacityScale.*` in product code; it is the authoring ramp, and `opacity.*` mirrors every step of it.
 - Don't author an opacity as a percentage — Figma holds `32`, `tokens.json` holds `0.32`, and the build throws on the difference.
@@ -421,9 +440,9 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 
 ## Token Inventory
 
-**Totals:** 250 primitive tokens · 295 semantic tokens (198 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **895 values per platform** · **0 gradients**
+**Totals:** 250 primitive tokens · 296 semantic tokens (199 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **896 values per platform** · **0 gradients**
 
-The emitted count exceeds the 787 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 788 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
 
 ### Primitive tokens (250)
 
@@ -596,20 +615,21 @@ Every 5% from 0 to 100, plus three off-grid steps carrying Material's state-laye
 
 ---
 
-### Semantic tokens (295)
+### Semantic tokens (296)
 
-#### Color — 198 tokens
+#### Color — 199 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — surface (9)
+##### Background — canvas and surface (10)
 
 | Token | Role |
 |-------|------|
-| `color.bg` | Page background |
-| `color.bg-surface` | Default elevated surface |
+| `color.bg` | White page background (canvas) |
+| `color.bg-secondary` | Grey page background (canvas) |
+| `color.bg-surface` | Grey container on `bg` |
 | `color.bg-surface-disabled` | Disabled surface |
-| `color.bg-surface-secondary` | Secondary surface |
+| `color.bg-surface-secondary` | White container on `bg-secondary` |
 | `color.bg-surface-brand` | Brand-tinted surface |
 | `color.bg-surface-info` | Info surface |
 | `color.bg-surface-success` | Success surface |
@@ -804,8 +824,9 @@ Add a component group only when a component has enough variant × state combinat
 | Semantic token | Primitive reference(s) |
 |----------------|--------------------------|
 | `bg` | `color.neutral.0` |
+| `bg-secondary` | `color.neutral.100` |
 | `bg-surface` | `color.neutral.100` |
-| `bg-surface-disabled` | `color.neutral.50` |
+| `bg-surface-disabled` | `color.neutral.200` |
 | `bg-surface-secondary` | `color.neutral.0` |
 | `bg-surface-brand` | `color.brand.50` |
 | `bg-surface-info` | `color.brand.50` |
