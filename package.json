@@ -5,7 +5,9 @@
   "description": "MakeMyTrip Cosmos Design System tokens compiled to platform-specific code with Style Dictionary.",
   "type": "module",
   "scripts": {
-    "build:tokens": "node build-tokens.mjs"
+    "build:tokens": "node build-tokens.mjs",
+    "sync:figma": "node scripts/sync-figma-variables.mjs",
+    "test": "node --test scripts/*.test.mjs"
   },
   "devDependencies": {
     "@tokens-studio/sd-transforms": "^1.2.13",

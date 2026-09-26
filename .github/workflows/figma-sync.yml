@@ -1,0 +1,52 @@
+# Keeps the Figma variables panel in step with tokens/tokens.json.
+#   Pull request -> dry run: the plan appears in the job summary, nothing is written.
+#   Merge to main -> applies the plan, but only once the FIGMA_SYNC_APPLY variable is "true".
+#   Run workflow -> dry run by default; tick "apply" to write (no change limit).
+name: Sync Figma variables
+
+on:
+  pull_request:
+    paths: [tokens/tokens.json, scripts/sync-figma-variables*.mjs]
+  push:
+    branches: [main]
+    paths: [tokens/tokens.json]
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Write the changes to Figma (leave unticked for a dry run)
+        type: boolean
+        default: false
+
+concurrency:
+  group: figma-variable-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm test
+      - name: Sync
+        env:
+          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+          FIGMA_FILE_KEY: ${{ vars.FIGMA_FILE_KEY }}
+          EVENT: ${{ github.event_name }}
+          MANUAL_APPLY: ${{ inputs.apply }}
+          AUTO_APPLY: ${{ vars.FIGMA_SYNC_APPLY }}
+        run: |
+          if [ -z "$FIGMA_TOKEN" ]; then
+            echo "::warning::The FIGMA_TOKEN secret is not set, so the sync was skipped."
+            exit 0
+          fi
+          args=""
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "$MANUAL_APPLY" = "true" ]; then args="--apply"; fi
+          # Unattended runs stop at 50 changes, so a bad export cannot rewrite the whole file.
+          if [ "$EVENT" = "push" ] && [ "$AUTO_APPLY" = "true" ]; then args="--apply --max-changes 50"; fi
+          node scripts/sync-figma-variables.mjs $args

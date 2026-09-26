@@ -7,10 +7,12 @@ MakeMyTrip Cosmos design tokens: one Tokens Studio JSON source compiled by Style
 ```bash
 npm install && npm run build:tokens     # regenerate dist/ from tokens/tokens.json
 node scripts/describe-primitives.mjs    # recompute primitive colour descriptions (contrast ratios)
+npm test                                # Figma sync logic, offline
+FIGMA_TOKEN=… npm run sync:figma        # dry run of the Figma variable sync; add `-- --apply` to write
 cd docs-site && npm install && npm run dev   # docs site; needs build:tokens to have run first
 ```
 
-There are no tests or linter. The build is the check: it resolves every reference and runs the opacity validator. A clean run followed by a `git diff` of `dist/` is how you verify a change.
+There is no linter. The build is the main check: it resolves every reference and runs the opacity validator. A clean run followed by a `git diff` of `dist/` is how you verify a token change.
 
 ## Layout
 
@@ -36,7 +38,7 @@ The person driving Claude here is a designer, not an engineer.
 
 - Editing `tokens/tokens.json` directly is fine. Changes don't have to start in Figma.
 - Explain changes in design terms: token names, old → new values, and contrast ratios for any colour change. Leave out build internals unless asked.
-- End every token change with a short **Figma follow-up** list of the variables to add, rename, rebind or delete so the file matches the JSON. Say "none" when nothing needs doing.
+- End every token change with a short **Figma follow-up** list of the variables to add, rename, rebind or delete so the file matches the JSON. Say "none" when nothing needs doing. Mark items the Figma sync workflow will handle on merge (new variables, value, alias, description and code syntax changes). Anything else stays manual: renames, deletions, text styles and component bindings.
 - If a request would break a rule below, say so and propose the closest compliant option before editing.
 
 ## Branches and commits

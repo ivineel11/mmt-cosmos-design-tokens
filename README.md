@@ -147,6 +147,22 @@ After any token change:
 3. Commit **both** the source JSON and regenerated `dist/` files together
 4. Publish or copy `dist/` artifacts into consuming apps
 
+### 6. Sync to Figma variables
+
+`scripts/sync-figma-variables.mjs` pushes `tokens/tokens.json` into the Figma variables panel through the [Variables REST API](https://developers.figma.com/docs/rest-api/variables/). The API needs an Enterprise plan and an Editor seat.
+
+| When | What happens |
+|------|--------------|
+| A pull request changes `tokens.json` | Dry run. The planned changes appear in the workflow's job summary |
+| A merge to `main` changes `tokens.json` | Applies the plan, only if the repo variable `FIGMA_SYNC_APPLY` is `true`. Stops if it would change more than 50 variables |
+| **Actions → Sync Figma variables → Run workflow** | Dry run, or applies with no limit when **apply** is ticked |
+
+It matches variables by name (the JSON path joined with `/`) inside the `primitives`, `semantic` and `component` collections. It creates missing variables, and updates values, aliases, descriptions and code syntax. It never deletes, renames or changes the scopes of an existing variable. Variables that exist only in Figma are listed in the report and left alone. Typography tokens are skipped because they are Figma text styles, which the REST API cannot edit. Figma applies each sync as one atomic change, so a failed request leaves the file untouched, and every sync shows up in the file's version history.
+
+**Setup.** Create a Figma personal access token with the `file_variables:read` and `file_variables:write` scopes. Add it as the repository secret `FIGMA_TOKEN`. The file key defaults to the Cosmos library file (`byPBTSedTYOO0AYwmIlncH`); set the repository variable `FIGMA_FILE_KEY` to point at another. Run the workflow once as a dry run, read the plan, then set `FIGMA_SYNC_APPLY` to `true`. Personal access tokens expire, so renew the secret when the sync starts failing with a 403.
+
+Locally: `FIGMA_TOKEN=… npm run sync:figma` for a dry run, or add `-- --apply` to write. `npm test` checks the sync logic without calling Figma.
+
 ---
 
 ## Architecture
@@ -1227,6 +1243,8 @@ Box(
 |------|-------------|
 | `tokens/tokens.json` | Source of truth — edit here or sync from Figma |
 | `scripts/describe-primitives.mjs` | Regenerates primitive descriptions, including the computed contrast ratios |
+| `scripts/sync-figma-variables.mjs` | Pushes `tokens.json` into the Figma variables panel — see [Sync to Figma variables](#6-sync-to-figma-variables) |
+| `.github/workflows/figma-sync.yml` | Runs the Figma sync: a dry run on pull requests, applied on merge to `main` |
 | `proposals/` | Drafted token changes that need a design decision or Figma work before they can land |
 | `build-tokens.mjs` | Style Dictionary config and custom transforms |
 | `package.json` | Package metadata and build script |
