@@ -30,6 +30,17 @@ There are no tests or linter. The build is the check: it resolves every referenc
 - After changing a primitive colour, re-run `describe-primitives.mjs` so the quoted contrast ratios stay correct.
 - When a token's name, value or count changes, update the matching README inventory and mapping tables in the same commit.
 
-## Committing
+## Working with the designer
 
-Commit `tokens/tokens.json` and the regenerated `dist/` together. Commit subjects are imperative sentences in sentence case that describe the outcome, for example "Add bg-secondary and pair canvases with containers by suffix".
+The person driving Claude here is a designer, not an engineer.
+
+- Editing `tokens/tokens.json` directly is fine. Changes don't have to start in Figma.
+- Explain changes in design terms: token names, old → new values, and contrast ratios for any colour change. Leave out build internals unless asked.
+- End every token change with a short **Figma follow-up** list of the variables to add, rename, rebind or delete so the file matches the JSON. Say "none" when nothing needs doing.
+- If a request would break a rule below, say so and propose the closest compliant option before editing.
+
+## Branches and commits
+
+- Branch off `main` with `feat/<topic>` for new tokens or components, `fix/<topic>` for corrections (values, contrast, descriptions) and `docs/<topic>` for README, specs or the docs site. Use a short kebab-case topic, for example `feat/toast-component-tokens`.
+- Keep one change per branch and merge it through a PR.
+- Commit `tokens/tokens.json` and the regenerated `dist/` together. Commit subjects are imperative sentences in sentence case that describe the outcome, for example "Add bg-secondary and pair canvases with containers by suffix".
