@@ -1,5 +1,6 @@
 import StyleDictionary from "style-dictionary";
 import { register } from "@tokens-studio/sd-transforms";
+import { opacityProblems } from "./scripts/lib/opacity.mjs";
 
 /**
  * Build platform-specific code from tokens/tokens.json (Tokens Studio export).
@@ -15,6 +16,11 @@ import { register } from "@tokens-studio/sd-transforms";
  */
 
 await register(StyleDictionary, { excludeParentKeys: true });
+
+// `--out <dir>` writes the platform outputs somewhere other than dist/. The linter uses it
+// to build into a scratch directory and diff the result against the committed dist/.
+const outFlag = process.argv.indexOf("--out");
+const OUT_DIR = (outFlag === -1 ? "dist" : process.argv[outFlag + 1]).replace(/\/+$/, "");
 
 const PX = /^-?\d*\.?\d+px$/;
 
@@ -250,97 +256,14 @@ function resolveGradientColors(node, dictionary = node) {
 }
 
 /**
- * Opacity is the one family where a wrong value is silently valid on every platform: no
- * transform rejects it, so `10` or "110%" would reach CSS, Swift and Kotlin intact. Figma
- * stores opacity as a percentage while tokens.json stores the 0-1 decimal, so a careless
- * re-export is the likely way that happens.
- *
+ * Fail the build on the first opacity problem. The rules themselves live in
+ * scripts/lib/opacity.mjs, shared with the linter, which reports all of them at once.
  * Runs BEFORE the tokens-studio preprocessor, which is the only point where the three
- * tiers are still distinguishable — that is what lets it enforce the tier rules as well
- * as the range. Read-only: it throws or it returns the dictionary untouched.
+ * tiers are still distinguishable. Read-only: it throws or returns the dictionary untouched.
  */
 function validateOpacity(dictionary) {
-  const isAlias = (v) => typeof v === "string" && /^\{[^}]+\}$/.test(v);
-  const primitives = dictionary.primitives?.opacityScale ?? {};
-  const semantics = dictionary.semantic?.opacity ?? {};
-
-  const walk = (node, path, tier) => {
-    if (node === null || typeof node !== "object" || Array.isArray(node)) return;
-    if (isTokenLeaf(node)) {
-      if (typeOf(node) !== "opacity") return;
-      const value = tokenValue(node);
-      const where = `${tier}.${path.join(".")}`;
-      if (isAlias(value)) return;
-      if (tier !== "primitives") {
-        throw new Error(
-          `Opacity token ${where} holds the literal ${JSON.stringify(value)}. Only primitives ` +
-            `may hold a literal opacity; semantic and component opacity tokens must alias one, ` +
-            `e.g. "{opacityScale.10}". See README -> "Opacity tokens".`,
-        );
-      }
-      const n = Number(value);
-      if (!Number.isFinite(n) || n < 0 || n > 1) {
-        throw new Error(
-          `Opacity token ${where} must be a decimal between 0 and 1, got ${JSON.stringify(value)}. ` +
-            `Figma stores opacity as a percentage (32); tokens/tokens.json stores the decimal (0.32). ` +
-            `See README -> "Opacity tokens".`,
-        );
-      }
-      return;
-    }
-    for (const [key, child] of Object.entries(node)) {
-      if (key.startsWith("$")) continue;
-      walk(child, [...path, key], tier);
-    }
-  };
-  for (const tier of ["primitives", "semantic", "component"]) {
-    walk(dictionary[tier] ?? {}, [], tier);
-  }
-
-  // The percent-key convention: the key is the number Figma holds, the value is the
-  // number code wants. Checking it here is what makes the two sources cross-verifiable.
-  for (const [key, token] of Object.entries(primitives)) {
-    if (!/^\d+$/.test(key)) {
-      throw new Error(
-        `primitives.opacityScale.${key} is not a percent integer. Primitive opacity steps are ` +
-          `keyed by percentage (0-100); role names belong in semantic.opacity.`,
-      );
-    }
-    const expected = String(Number(key) / 100);
-    if (tokenValue(token) !== expected) {
-      throw new Error(
-        `primitives.opacityScale.${key} should hold "${expected}" (the key as a decimal), got ` +
-          `${JSON.stringify(tokenValue(token))}.`,
-      );
-    }
-  }
-
-  // Every step is mirrored into the semantic tier, because product code may only consume
-  // semantic tokens. Drift between the two lists is the failure mode these two loops catch.
-  for (const key of Object.keys(primitives)) {
-    const mirror = semantics[key];
-    if (!mirror) {
-      throw new Error(
-        `primitives.opacityScale.${key} has no semantic mirror. Every ramp step needs a ` +
-          `semantic.opacity.${key} aliasing it, or product code cannot use it.`,
-      );
-    }
-    if (tokenValue(mirror) !== `{opacityScale.${key}}`) {
-      throw new Error(
-        `semantic.opacity.${key} must alias {opacityScale.${key}}, got ` +
-          `${JSON.stringify(tokenValue(mirror))}. A numeric semantic key names its own step.`,
-      );
-    }
-  }
-  for (const key of Object.keys(semantics)) {
-    if (/^\d+$/.test(key) && !primitives[key]) {
-      throw new Error(
-        `semantic.opacity.${key} mirrors a ramp step that does not exist in ` +
-          `primitives.opacityScale.`,
-      );
-    }
-  }
-
+  const [problem] = opacityProblems(dictionary);
+  if (problem) throw new Error(problem.message);
   return dictionary;
 }
 
@@ -600,7 +523,7 @@ const sd = new StyleDictionary({
         "name/kebab",
         "fontFamily/css",
       ],
-      buildPath: "dist/web/",
+      buildPath: `${OUT_DIR}/web/`,
       files: [
         {
           destination: "tokens.css",
@@ -613,7 +536,7 @@ const sd = new StyleDictionary({
     },
     "web-js": {
       transforms: ["attribute/cti", "mmt/fontWeight/number", "name/camel"],
-      buildPath: "dist/web/",
+      buildPath: `${OUT_DIR}/web/`,
       files: [
         { destination: "tokens.ts", format: "javascript/esm", options: { minify: true } },
       ],
@@ -629,7 +552,7 @@ const sd = new StyleDictionary({
         "mmt/color/ios-gradient",
         "mmt/color/ios",
       ],
-      buildPath: "dist/ios/",
+      buildPath: `${OUT_DIR}/ios/`,
       files: [
         {
           destination: "CosmosTokens.swift",
@@ -653,7 +576,7 @@ const sd = new StyleDictionary({
         "mmt/color/android-gradient",
         "mmt/color/android",
       ],
-      buildPath: "dist/android/",
+      buildPath: `${OUT_DIR}/android/`,
       files: [
         {
           destination: "CosmosTokens.kt",

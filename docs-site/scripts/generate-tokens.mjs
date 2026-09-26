@@ -6,11 +6,15 @@
  * Platform names mirror the Style Dictionary transforms in build-tokens.mjs and
  * are validated against dist/ output — a mismatch means the naming rules here
  * have drifted from the build.
+ *
+ * `--check` runs the same validation without writing anything and exits non-zero
+ * on drift; the repository linter uses it.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+const CHECK = process.argv.includes("--check");
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, "..", "..");
 const outDir = join(here, "..", "data");
@@ -206,7 +210,7 @@ if (unassigned.length > 0) {
 // exp-{hue}-{step} regrouped into palettes
 const expressive = [];
 for (const [key, raw] of expressiveEntries) {
-  const [, hue, step] = key.match(/^exp-([a-z]+)-(\d+)$/) ?? [];
+  const [, hue] = key.match(/^exp-([a-z]+)-(\d+)$/) ?? [];
   if (!hue) continue;
   let palette = expressive.find((p) => p.name === `exp-${hue}`);
   if (!palette) {
@@ -374,12 +378,18 @@ if (existsSync(cssPath)) {
     console.warn(
       `⚠ ${missing.length} generated CSS names are absent from dist/web/tokens.css (naming rules may have drifted):\n  ${missing.slice(0, 10).join("\n  ")}`,
     );
+    if (CHECK) process.exitCode = 1;
   }
-  mkdirSync(join(here, "..", "app"), { recursive: true });
-  writeFileSync(join(here, "..", "app", "tokens.css"), css);
+  if (!CHECK) {
+    mkdirSync(join(here, "..", "app"), { recursive: true });
+    writeFileSync(join(here, "..", "app", "tokens.css"), css);
+  }
 } else {
   console.warn("⚠ dist/web/tokens.css not found — run `npm run build:tokens` in the repo root.");
+  if (CHECK) process.exitCode = 1;
 }
+
+if (CHECK) process.exit();
 
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, "tokens.json"), `${JSON.stringify(data, null, 2)}\n`);

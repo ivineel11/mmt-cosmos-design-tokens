@@ -28,7 +28,9 @@ export function PlatformSwitcher({
             style={{
               background: selected ? "var(--color-bg-surface-secondary)" : "transparent",
               color: selected ? "var(--color-text-primary)" : "var(--color-text-tertiary)",
-              boxShadow: selected ? "0 1px 2px rgba(0,0,0,0.08)" : "none",
+              boxShadow: selected
+                ? "0 1px 2px color-mix(in srgb, var(--color-bg-surface-inverse) calc(var(--opacity-8) * 100%), transparent)"
+                : "none",
             }}
           >
             {option.label}
