@@ -77,6 +77,8 @@ const cases = [
   ["tokens/description-style", (j) => { j.semantic.color.bg.description = "Page background."; }, "too short"],
   ["tokens/primitive-descriptions", (j) => { j.primitives.color.red["500"].description = "Red, step 500."; }, "stale"],
   ["tokens/primitive-descriptions", (j) => { j.component.radio["dot-size-md"].value = "{space.xs}"; }, "spacing.10 description is stale"],
+  // A primitive that gains a consumer must lose its "Not referenced" note.
+  ["tokens/primitive-descriptions", (j) => { j.component.button["gap-xs"].value = "{fontSize.9}"; }, "fontSize.9 has a description the generator would drop"],
 ];
 
 describe("each token rule catches the convention it guards", () => {

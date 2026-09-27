@@ -59,7 +59,12 @@ export function parseJsonWithLocations(text) {
         i += 2;
       } else if (c === '"') {
         i += 1;
-        return JSON.parse(text.slice(start, i));
+        try {
+          return JSON.parse(text.slice(start, i));
+        } catch {
+          i = start;
+          return fail("Invalid string escape");
+        }
       } else if (c === "\n") {
         fail("Unterminated string");
       } else {

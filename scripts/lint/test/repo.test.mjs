@@ -110,9 +110,20 @@ describe("docs rules", () => {
   });
 
   it("docs/readme-coverage: a semantic colour with no inventory row", async () => {
-    const root = fixture({ copy: DIST, tokens: (j) => { j.semantic.color["text-new"] = { ...j.semantic.color["text-primary"] }; }, files: { "README.md": "### Semantic tokens (1)\n" } });
-    const hits = ofRule(await lint(root, "docs/readme-coverage"), "docs/readme-coverage");
-    assert.ok(hits.some((h) => h.subject === "color.text-new"));
+    const readme = [
+      "### Semantic tokens (1)",
+      "| Token | Role |",
+      "|---|---|",
+      "| `color.text-primary` | Body |",
+      "### Mappings",
+      "| Token | Role |",
+      "|---|---|",
+      "| `color.text-new` | Mentioned outside the inventory |",
+    ].join("\n");
+    const root = fixture({ copy: DIST, tokens: (j) => { j.semantic.color["text-new"] = { ...j.semantic.color["text-primary"] }; }, files: { "README.md": readme } });
+    const subjects = ofRule(await lint(root, "docs/readme-coverage"), "docs/readme-coverage").map((h) => h.subject);
+    assert.ok(subjects.includes("color.text-new"), "a row outside the inventory must not count");
+    assert.ok(!subjects.includes("color.text-primary"));
   });
 
   it("docs/component-spec: a component group without a spec", async () => {

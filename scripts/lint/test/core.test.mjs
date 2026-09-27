@@ -27,6 +27,7 @@ describe("parseJsonWithLocations", () => {
     assert.throws(() => parseJsonWithLocations('{\n  "a": 1,\n}'), (e) => e instanceof JsonSyntaxError && e.line === 3);
     assert.throws(() => parseJsonWithLocations('{"a": 01}'), JsonSyntaxError);
     assert.throws(() => parseJsonWithLocations('{"a": 1} x'), JsonSyntaxError);
+    assert.throws(() => parseJsonWithLocations('{\n  "a": "\\x"\n}'), (e) => e instanceof JsonSyntaxError && e.line === 2);
   });
 
   it("parses the real tokens.json identically to JSON.parse", () => {

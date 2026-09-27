@@ -425,20 +425,26 @@ const readmeCoverage = {
     const t = api.tokens();
     if (t.error || !api.exists("README.md")) return;
     const d = doc(api, "README.md");
+    const inventory = d.headings.find((h) => /^Semantic tokens \(\d+\)$/.test(h.text));
+    if (!inventory) {
+      api.report({ file: "README.md", line: 1, column: 1, message: 'No "Semantic tokens (N)" heading in the Token Inventory, so semantic colour coverage is unchecked.' });
+      return;
+    }
+    // Only rows inside the semantic inventory count; a mention in another table does not.
+    const end = d.headings.find((h) => h.line > inventory.line && h.level <= inventory.level)?.line ?? Infinity;
     const listed = new Set();
-    for (const table of d.tables) {
+    for (const table of d.tables.filter((tb) => tb.line > inventory.line && tb.line < end)) {
       for (const row of table.rows) {
         const code = firstCode(row.cells[0] ?? "");
         if (code) listed.add(code);
       }
     }
-    const inventory = d.headings.find((h) => /^Semantic tokens \(\d+\)$/.test(h.text));
     for (const leaf of t.model.inTier("semantic")) {
       if (leaf.path[0] !== "color" || leaf.path[1].startsWith("exp-")) continue;
       if (!listed.has(leaf.id)) {
         api.report({
           file: "README.md",
-          line: inventory?.line ?? 1,
+          line: inventory.line,
           column: 1,
           subject: leaf.id,
           message: `${leaf.id} has no row in the semantic colour tables of the Token Inventory. Add it under its role heading (and bump that heading's count).`,

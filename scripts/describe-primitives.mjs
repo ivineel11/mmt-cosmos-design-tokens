@@ -136,7 +136,15 @@ export function describePrimitives(json) {
     for (const [step, token] of Object.entries(steps)) {
       const explicit = EXPLICIT[`${group}.${step}`];
       const unused = !referenced.has(`${group}.${step}`);
-      if (!explicit && !unused) continue;
+      if (!explicit && !unused) {
+        // Referenced and self-describing: drop any description left from when it was
+        // unreferenced, or its "Not referenced" note would outlive the fact.
+        if ("description" in token) {
+          delete token.description;
+          others += 1;
+        }
+        continue;
+      }
       const description = [explicit, unused ? UNREFERENCED : null].filter(Boolean).join(" ");
       setDescription(token, description);
       others += 1;
