@@ -5,7 +5,7 @@ import { describe, it } from "node:test";
 import { RuleTester } from "eslint";
 import cosmos from "../eslint-plugin-cosmos.mjs";
 import { loadConfig } from "../lib/config.mjs";
-import { fixture, lint, ofRule, REPO } from "./helpers.mjs";
+import { fixture, lint, ofRule, realTokens, REPO } from "./helpers.mjs";
 
 const DIST = ["dist"];
 
@@ -85,6 +85,11 @@ describe("docs rules", () => {
   });
 
   it("docs/readme-counts: headings, totals and prose counts", async () => {
+    // The semantic colour and emitted-value counts must match the real tokens.json, which the
+    // fixture keeps, so they are read from the real README (itself checked by "passes every
+    // rule") rather than hardcoded. Hardcoding them broke this test on every token addition.
+    const real = readFileSync(join(REPO, "README.md"), "utf8");
+    const [, semanticColors, web, native] = /\((\d+) colors \+[^)]*\)[^\n]*?\*\*(\d+) values on web\*\* · \*\*(\d+) on iOS and Android\*\*/.exec(real);
     const root = readme([
       "### Primitive tokens (1)",
       "#### Font size — 3 tokens",
@@ -92,7 +97,7 @@ describe("docs rules", () => {
       "| Token | Role |",
       "|---|---|",
       "| `color.text-primary` | Body |",
-      "**Totals:** 1 primitive tokens · 2 semantic tokens (199 colors + 36 typography) · 3 component tokens (120 `button/*` + 1 `checkbox/*`) · **921 values on web** · **963 on iOS and Android** · **0 gradients**",
+      `**Totals:** 1 primitive tokens · 2 semantic tokens (${semanticColors} colors + 36 typography) · 3 component tokens (120 \`button/*\` + 1 \`checkbox/*\`) · **${web} values on web** · **${native} on iOS and Android** · **0 gradients**`,
       "Button (120 tokens) and Radio (5 tokens) qualify.",
     ].join("\n"));
     const hits = ofRule(await lint(root, "docs/readme-counts"), "docs/readme-counts");
@@ -129,7 +134,10 @@ describe("docs rules", () => {
   it("docs/component-spec: a component group without a spec", async () => {
     const root = readme("| Group |\n|---|\n| `button/*` |\n");
     const hits = ofRule(await lint(root, "docs/component-spec"), "docs/component-spec");
-    assert.deepEqual(hits.map((h) => h.subject).sort(), ["button", "checkbox", "checkbox", "radio", "radio"]);
+    // The fixture has no components/*.md, so every real group lacks a spec; all but button also
+    // lack a README row. Derived from tokens.json so adding a component does not break the test.
+    const groups = Object.keys(realTokens().component);
+    assert.deepEqual(hits.map((h) => h.subject).sort(), groups.flatMap((g) => (g === "button" ? [g] : [g, g])).sort());
   });
 });
 
