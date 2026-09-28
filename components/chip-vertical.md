@@ -10,7 +10,7 @@
 
 Chip / Vertical is the stacked sibling of [Chip](chip.md): an optional leading icon **or** leading image on top, then a required label, then an optional secondary line, all centred. It comes in two sizes, Small and Medium; there is no Large. Use it to choose among a few visual options where the icon or image carries meaning, such as trip type, cabin class, airline or time of day. For a one-line filter, choice or removable tag, use Chip.
 
-It is a separate component set, not a `Direction` axis on Chip, so each set only shows properties that apply to it. The vertical chip has no removable type. It reuses **every Chip colour token**, the `Chip / Image` component and the Chip radius, padding-x, image-radius, border and focus-ring tokens, and adds 16 `chip/vertical-*` tokens for the vertical padding, glyph and image sizes, gaps and the Medium radius.
+It is a separate component set, not a `Direction` axis on Chip, so each set only shows properties that apply to it. The vertical chip has no removable type. It reuses **every Chip colour token**, the `Chip / Image` component and the Chip radius, padding-x, image radius, border and focus-ring tokens, and adds 16 `chip/vertical-*` tokens for the vertical padding, glyph and image sizes, gaps and the Medium radius.
 
 Four variant axes drive it. `Selected` carries the real value. `State` covers the five interaction states. `Size` scales padding, glyphs, type and the corner radius together. `Leading` picks what sits above the label: an icon, an image or nothing.
 
@@ -29,7 +29,7 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 
 ### Composition
 
-- **Chip / Image** (referenced, `557:64`): circular placeholder for the leading image, shared with Chip. It ships with a beach photo (by Johannes Mändle, Unsplash License) so mocks read as travel; it is sample content, not a default to ship in code.
+- **Chip / Image** (referenced, set `598:2889`): placeholder for the leading image, shared with Chip, with `Shape` Circle or Square. It ships with a sample photo of a passenger jet in a blue sky (by John McArthur, Unsplash License) so mocks read as travel; it is sample content, not a default to ship in code.
 - **Icon / plus** (referenced, `55:11`): default leading icon.
 - **Icon / chevron-down** (referenced, `557:61`): default label and secondary trailing icons.
 - _Decorative children: 2 (Border, Focus Ring). They are documented under Structure._
@@ -45,7 +45,8 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 | `label` | string | (string) | – | Visible text. The design source ships "Label" as placeholder copy. |
 | `leading` | enum | icon \| image \| none | `icon` | What sits above the label. Maps to Figma `Leading`. A chip renders the icon or the image, never both. |
 | `icon` | icon | (icon) | – | Leading glyph, used when `leading=icon`. |
-| `image` | image | (source) | – | Circular leading image, used when `leading=image`: airline logo, avatar, flag. |
+| `image` | image | (source) | – | Leading image, used when `leading=image`: airline logo, avatar, flag, destination photo. |
+| `imageShape` | enum | circle \| square | `circle` | Maps to the exposed Figma `Shape`. Square uses `chip/image-radius-square`. |
 | `secondaryText` | string | (string) | `none` | Supporting line under the label, such as a fare. When absent, the node is not rendered. |
 | `labelTrailingIcon` | icon | (icon) | `none` | Glyph after the label, for example a chevron for a chip that opens a menu. |
 | `secondaryTrailingIcon` | icon | (icon) | `none` | Glyph after the secondary line, for example an info mark next to a fare. |
@@ -65,6 +66,7 @@ These are on the component set so every slot can be set from the right-hand insp
 | `Secondary text` | TEXT | `"Secondary text"` | Placeholder copy. |
 | `Leading icon` | INSTANCE_SWAP | `Icon / plus` | `Leading=Icon` only. Preferred values: the Icon set. |
 | `Leading image` | INSTANCE_SWAP | `Chip / Image` | `Leading=Image` only. To change one photo, select the nested `Image` layer and replace its fill. To offer a reusable image from the inspector, build a component with the same structure (a circle frame clipping an `Image` layer) and add it to the preferred values. |
+| `Shape` (exposed from `Leading image`) | VARIANT | `Circle` | `Leading=Image` only. Circle for avatars, flags and airline logos; Square for destination or hotel photos. |
 | `Show label trailing icon` | BOOLEAN | `false` | |
 | `Label trailing icon` | INSTANCE_SWAP | `Icon / chevron-down` | Preferred values: the Icon set. |
 | `Show secondary trailing icon` | BOOLEAN | `false` | Only shows while `Show secondary text` is on. |
@@ -82,6 +84,7 @@ Swapped icons keep the chip icon colour.
 | 3 | `label="Afternoon"`, `bordered=false`, `selected` on `bg-secondary` | The border stays on because the chip is selected. |
 | 4 | `label="Fri, 12 Dec"`, `secondaryText="Rs 4,532"`, `leading=none`, `selected` | Date and fare picker without a leading element. |
 | 5 | `label="IndiGo"`, `secondaryText="Rs 4,532"`, `leading=image`, `image=<logo>`, `selected` | Airline picker with fares. |
+| 6 | `label="Goa"`, `secondaryText="From Rs 3,899"`, `leading=image`, `imageShape=square`, `image=<photo>` | Destination picker. |
 
 ---
 
@@ -94,7 +97,7 @@ Chip / Vertical (component set · 592:327)
 ├─ Focus Ring (rectangle) · decorative · a11y-hidden · absolute, 4 px outside the chip
 ├─ Border (rectangle) · decorative · absolute, stretched · toggled by Show border on unselected variants, always on when selected
 ├─ Leading icon (instance · Icon / plus) · a11y-hidden · Leading=Icon only
-│  or Leading image (instance · Chip / Image) · Leading=Image only
+│  or Leading image (instance · Chip / Image · exposed, so its Shape is set from the chip panel) · Leading=Image only
 │  or nothing · Leading=None
 └─ Text (frame · vertical · centred · 2 px gap)
    ├─ Label row (frame · horizontal)
@@ -123,7 +126,8 @@ The root is a vertical auto-layout stack with `counterAxisAlignItems = CENTER`, 
 | Padding y | 8 | 12 | `chip/vertical-padding-y-*` |
 | Leading icon | 20 | 24 | `chip/vertical-icon-size-*` |
 | Leading image | 24 | 32 | `chip/vertical-image-size-*` |
-| Leading image radius | full | full | `chip/image-radius` (shared) |
+| Leading image radius, Circle | full | full | `chip/image-radius` (shared) |
+| Leading image radius, Square | 4 | 4 | `chip/image-radius-square` (shared) |
 | Leading icon or image to text gap | 4 | 4 | `chip/vertical-gap-*` |
 | Label type | 12 / 16 bold | 14 / 20 bold | `label/{small,medium}/bold` |
 | Secondary type | 12 / 16 regular | 12 / 16 regular | `body/small/regular` |
@@ -211,4 +215,4 @@ The accessible name is the label followed by the secondary text ("Economy, Rs 4,
 | `chip/vertical-radius-md` | `{radius.lg}` | – / 12 |
 | `chip/vertical-focus-ring-radius-md` | `{radius.xl}` | – / 16 |
 
-Every other value is a shared Chip token: colours, `padding-x-*`, `radius-sm`, `focus-ring-radius-sm`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `image-radius` and `min-touch-target`. The vertical chip does not use `gap-text`, `radius-md` or `focus-ring-radius-md`. Platform names follow the standard pipeline: `chip/vertical-gap-trailing` becomes `--chip-vertical-gap-trailing` (CSS), `CosmosTokens.chipVerticalGapTrailing` (Swift / Kotlin) and `tokens.chipVerticalGapTrailing` (TS).
+Every other value is a shared Chip token: colours, `padding-x-*`, `radius-sm`, `focus-ring-radius-sm`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `image-radius`, `image-radius-square` and `min-touch-target`. The vertical chip does not use `gap-text`, `radius-md` or `focus-ring-radius-md`. Platform names follow the standard pipeline: `chip/vertical-gap-trailing` becomes `--chip-vertical-gap-trailing` (CSS), `CosmosTokens.chipVerticalGapTrailing` (Swift / Kotlin) and `tokens.chipVerticalGapTrailing` (TS).

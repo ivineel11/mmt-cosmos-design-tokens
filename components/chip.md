@@ -23,7 +23,7 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 
 ### Composition
 
-- **Chip / Image** (constitutive — `557:64`) — circular placeholder for the leading image, filled with a sample beach photo (by Johannes Mändle, Unsplash License) so mocks read as travel. Created for this component and shared with Chip / Vertical.
+- **Chip / Image** (constitutive — set `598:2889`, `Shape=Circle` is `557:64`, `Shape=Square` is `598:2887`) — placeholder for the leading image, filled with a sample photo of a passenger jet in a blue sky (by John McArthur, Unsplash License) so mocks read as travel. Created for this component and shared with Chip / Vertical.
 - **Chip / Remove** (constitutive — `557:2481`, 24 variants: Size × State × Selected) — the remove button of a removable chip. Created for this component.
 - **Icon / plus** (referenced — `55:11`) — default leading icon.
 - **Icon / chevron-down** (referenced — `557:61`) — default trailing icon. Created for this component.
@@ -46,7 +46,8 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 | `size` | enum | small \| medium \| large | `medium` | Scales height, padding, glyphs and type together. |
 | `bordered` | boolean | true \| false | `true` | Maps to Figma `Show border`. Choose by canvas, not by taste: on for white, off for `bg-secondary`. |
 | `leadingIcon` | icon | (icon) | `none` | Glyph before the label. Mutually exclusive with `leadingImage`. |
-| `leadingImage` | image | (source) | `none` | Circular image before the label: avatar, flag, airline logo. Mutually exclusive with `leadingIcon`. |
+| `leadingImage` | image | (source) | `none` | Image before the label: avatar, flag, airline logo, destination photo. Mutually exclusive with `leadingIcon`. |
+| `imageShape` | enum | circle \| square | `circle` | Shape of the leading image. Maps to the exposed Figma `Shape`. |
 | `trailingIcon` | icon | (icon) | `none` | Decorative glyph after the label, usually a chevron for a chip that opens a menu. Ignored when `onRemove` is set. |
 | `onRemove` | callback | (function) | `none` | Makes the chip removable (Figma `Type=Removable`) and renders the remove button in the trailing slot. |
 | `disabled` | boolean | true \| false | `false` | Applies the disabled treatment and makes the chip, and its remove button, non-interactive. |
@@ -63,7 +64,8 @@ These exist on the component set so a designer can configure every slot from the
 | `Show leading icon` | BOOLEAN | `false` | |
 | `Leading icon` | INSTANCE_SWAP | `Icon / plus` | Preferred values: the Icon set. The swapped icon keeps the chip icon colour. |
 | `Show leading image` | BOOLEAN | `false` | Turn on the icon **or** the image, never both. |
-| `Leading image` | INSTANCE_SWAP | `Chip / Image` | To swap from the inspector, build a component with the same structure (a circle frame clipping an `Image` layer) and add it to the preferred values. To change a single photo, select the nested `Image` layer and replace its fill. |
+| `Leading image` | INSTANCE_SWAP | `Chip / Image` | To swap from the inspector, build a component with the same structure (a frame clipping an `Image` layer) and add it to the preferred values. To change a single photo, select the nested `Image` layer and replace its fill. |
+| `Shape` (exposed from `Leading image`) | VARIANT | `Circle` | The leading image is an exposed nested instance, so its `Shape` (Circle or Square) shows in the chip panel. Circle for avatars, flags and airline logos; Square for destination or hotel photos. |
 | `Show trailing icon` | BOOLEAN | `false` | `Type=Default` only. |
 | `Trailing icon` | INSTANCE_SWAP | `Icon / chevron-down` | Preferred values: the Icon set. |
 | `Show border` | BOOLEAN | `true` | Hides the `Border` layer only; the fill stays. |
@@ -90,7 +92,7 @@ These exist on the component set so a designer can configure every slot from the
 Chip (component set · 559:2943)
 ├─ Focus Ring (rectangle) · decorative · a11y-hidden · absolute, 4 px outside the chip
 ├─ Border (rectangle) · decorative · absolute, stretched to the chip · toggled by Show border
-├─ Leading image (instance · Chip / Image) · hidden by default
+├─ Leading image (instance · Chip / Image · exposed, so its Shape is set from the chip panel) · hidden by default
 ├─ Leading icon (instance · Icon / plus) · a11y-hidden · hidden by default
 ├─ Text (frame · vertical)
 │  ├─ Label (text)
@@ -118,7 +120,8 @@ The root is a horizontal auto-layout row, `counterAxisAlignItems = CENTER`, hug 
 | Secondary type | 12 / 16 regular | 12 / 16 regular | 14 / 20 regular | `body/{small,small,medium}/regular` |
 | Label to secondary gap | 0 | 0 | 0 | `chip/gap-text` |
 | Corner radius | 8 | 8 | 12 | `chip/radius-{sm,md,lg}` |
-| Leading image radius | full | full | full | `chip/image-radius` |
+| Leading image radius, Circle | full | full | full | `chip/image-radius` |
+| Leading image radius, Square | 4 | 4 | 4 | `chip/image-radius-square` |
 | Border width | 1 | 1 | 1 | `chip/border-width` |
 | Focus ring outset | 4 | 4 | 4 | `chip/focus-ring-offset` (2) + `chip/focus-ring-width` (2) |
 | Focus ring radius | 12 | 12 | 16 | `chip/focus-ring-radius-{sm,md,lg}` — always the chip radius plus 4, so the ring stays concentric |
@@ -239,7 +242,7 @@ The secondary text joins the accessible name after the label ("Fri, 12 Dec, Rs 4
 
 ## Token reference
 
-60 tokens under `component.chip` in `tokens/tokens.json`, mirrored 1:1 as `chip/*` in the Figma `component` collection:
+61 tokens under `component.chip` in `tokens/tokens.json` are used by this set, mirrored 1:1 as `chip/*` in the Figma `component` collection. The remaining 16 `chip/vertical-*` tokens belong to [Chip / Vertical](chip-vertical.md).
 
 | Group | Count |
 |---|---|
@@ -249,7 +252,7 @@ The secondary text joins the accessible name after the label ("Fri, 12 Dec, Rs 4
 | `icon-*` (colour) | 3 |
 | `remove-bg-*` | 4 |
 | `focus-ring` (colour) | 1 |
-| dimensions (`min-height`, `padding-x`, `padding-y`, `gap`, `icon-size`, `image-size`, `radius`, `image-radius`, `gap-text`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `min-touch-target`, `remove-min-touch-target`) | 29 |
+| dimensions (`min-height`, `padding-x`, `padding-y`, `gap`, `icon-size`, `image-size`, `radius`, `image-radius`, `image-radius-square`, `gap-text`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `min-touch-target`, `remove-min-touch-target`) | 30 |
 
 Platform names follow the standard pipeline: `chip/bg-selected-hover` → `--chip-bg-selected-hover` (CSS) → `CosmosTokens.chipBgSelectedHover` (Swift / Kotlin) → `tokens.chipBgSelectedHover` (TS).
 

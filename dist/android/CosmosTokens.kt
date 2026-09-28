@@ -278,6 +278,7 @@ object CosmosTokens {
   val chipIconSizeSm = 16.dp
   val chipIconUnselectedDefault = Color(0xFF525252)
   val chipImageRadius = 999.dp
+  val chipImageRadiusSquare = 4.dp
   val chipImageSizeLg = 24.dp
   val chipImageSizeMd = 20.dp
   val chipImageSizeSm = 16.dp

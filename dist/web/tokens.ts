@@ -1152,6 +1152,7 @@ export default {
     "radius-md": "8px",
     "radius-lg": "12px",
     "image-radius": "999px",
+    "image-radius-square": "4px",
     "gap-text": "0px",
     "border-width": "1px",
     "focus-ring-width": "2px",

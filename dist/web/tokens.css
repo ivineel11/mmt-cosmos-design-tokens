@@ -1763,8 +1763,10 @@
   --chip-radius-md: 8px;
   /** Corner radius of the chip container at large size, one step rounder so the corner stays in proportion to the 40px chip. */
   --chip-radius-lg: 12px;
-  /** Corner radius of the leading image, which is always a circle. */
+  /** Corner radius of the leading image in the circle shape, the default, used by both chips. For the square shape, use image-radius-square. */
   --chip-image-radius: 999px;
+  /** Corner radius of the leading image in the square shape, used by both chips for photos and thumbnails that read better uncropped, such as destinations or hotels. Softened slightly so it sits well inside the rounded chip. For the circle shape, use image-radius. */
+  --chip-image-radius-square: 4px;
   /** Vertical gap between the label and the secondary line; the line heights alone separate them. */
   --chip-gap-text: 0px;
   /** Thickness of the chip outline, in every state, when the border is switched on. */

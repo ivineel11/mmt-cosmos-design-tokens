@@ -275,6 +275,7 @@ public enum CosmosTokens {
     public static let chipIconSizeSm = CGFloat(16)
     public static let chipIconUnselectedDefault = Color(red: 0.321569, green: 0.321569, blue: 0.321569)
     public static let chipImageRadius = CGFloat(999)
+    public static let chipImageRadiusSquare = CGFloat(4)
     public static let chipImageSizeLg = CGFloat(24)
     public static let chipImageSizeMd = CGFloat(20)
     public static let chipImageSizeSm = CGFloat(16)
