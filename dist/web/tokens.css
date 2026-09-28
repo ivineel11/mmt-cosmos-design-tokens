@@ -293,6 +293,8 @@
   --color-fuchsia-950: #4B004F;
   /** Fully transparent. Contrast is undefined — whatever sits behind shows through, so accessibility depends on that backdrop rather than on this token. */
   --color-alpha-transparent: #FFFFFF00;
+  /** Neutral 950 at 4% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
+  --color-alpha-neutral-950-4: #0A0A0A0A;
   /** Neutral 950 at 6% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
   --color-alpha-neutral-950-6: #0A0A0A0F;
   /** Neutral 950 at 8% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
@@ -1159,6 +1161,10 @@
   --opacity-scrim: 0.32;
   /** Resting elevation for cards and tiles on the page, just enough lift to separate a white card from either canvas. Use raised once the card is hovered, dragged or pinned above scrolling content. */
   --shadow-card: 0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F;
+  /** Lighter alternative to card, about half its weight, for tiles and list items where a border would feel heavy. Use card when the element needs to read clearly as lifted, and card-soft for a diffuse look. */
+  --shadow-card-subtle: 0px 1px 2px #0A0A0A0A, 0px 2px 8px #0A0A0A0A;
+  /** Diffuse alternative to card with almost no edge, for feature and promotional cards that should float softly on the page. Use card-subtle for a lighter touch, and raised once the card is hovered or dragged. */
+  --shadow-card-soft: 0px 2px 8px #0A0A0A0A, 0px 8px 24px #0A0A0A0F;
   /** Lifted elevation for elements floating a little above the content around them: hovered or dragged cards, sticky headers and footers, floating action buttons. Use overlay for layers that open on top of the page. */
   --shadow-raised: 0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14;
   /** Elevation for transient layers opened over the page without blocking it: menus, dropdowns, popovers, tooltips and toasts. Use modal when the layer blocks the page behind a scrim. */

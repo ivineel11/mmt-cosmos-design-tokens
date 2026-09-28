@@ -176,6 +176,7 @@ export default {
     },
     alpha: {
       transparent: "#FFFFFF00",
+      "neutral-950-4": "#0A0A0A0A",
       "neutral-950-6": "#0A0A0A0F",
       "neutral-950-8": "#0A0A0A14",
       "neutral-950-12": "#0A0A0A1F",
@@ -841,6 +842,8 @@ export default {
   },
   shadow: {
     card: "0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F",
+    "card-subtle": "0px 1px 2px #0A0A0A0A, 0px 2px 8px #0A0A0A0A",
+    "card-soft": "0px 2px 8px #0A0A0A0A, 0px 8px 24px #0A0A0A0F",
     raised: "0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14",
     overlay: "0px 4px 8px #0A0A0A14, 0px 8px 24px #0A0A0A1F",
     modal: "0px 8px 16px #0A0A0A1F, 0px 16px 48px #0A0A0A29",

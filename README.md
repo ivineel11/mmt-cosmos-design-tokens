@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 533 color tokens (149 primitive — 144 palette steps plus `alpha.transparent` and the four shadow alphas — + 199 semantic roles + 185 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 534 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 199 semantic roles + 185 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -361,7 +361,7 @@ Where a family spans both tiers, the primitive root carries the longer technical
 
 ### 11. Opacity tokens
 
-Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. The only 8-digit hexes are in the `color.alpha.*` palette: `transparent`, and the four shadow colours, which need their alpha inside the colour because a shadow layer takes a single colour (see Shadow tokens below). There is no `rgba()` anywhere. A scrim is `color.bg-surface-inverse` rendered at `opacity.scrim`; a focus state layer is `radio/state-layer-*` rendered at `radio/state-layer-opacity-focus`. Keeping the two separable is what lets a state layer take its control's own content colour.
+Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. The only 8-digit hexes are in the `color.alpha.*` palette: `transparent`, and the five shadow colours, which need their alpha inside the colour because a shadow layer takes a single colour (see Shadow tokens below). There is no `rgba()` anywhere. A scrim is `color.bg-surface-inverse` rendered at `opacity.scrim`; a focus state layer is `radio/state-layer-*` rendered at `radio/state-layer-opacity-focus`. Keeping the two separable is what lets a state layer take its control's own content colour.
 
 **Primitives are keyed by percent and valued as decimals.** `opacityScale.32` = `0.32`. The key is the number Figma's opacity binding holds; the value is the number CSS, SwiftUI and Compose want. This is a deliberate exception to the "name is the value" rule that governs the other primitive scales, and it is what makes the Figma file and `tokens.json` verifiable against each other at a glance.
 
@@ -378,11 +378,13 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 
 Cosmos has one elevation scale, written as shadows. There is no separate `elevation` number: on web a shadow is what elevation looks like, and iOS and Android get the same layers so the three platforms match.
 
-**Four roles, named by what sits at that height.**
+**Four heights, named by what sits there, plus two softer cards.**
 
 | Token | For | Layers (y / blur / alpha) |
 |-------|-----|---------------------------|
 | `shadow.card` | Cards and tiles resting on the page | 1 / 2 / 8%, 2 / 6 / 6% |
+| `shadow.card-subtle` | Alternative to card at about half the weight, where a border would feel heavy | 1 / 2 / 4%, 2 / 8 / 4% |
+| `shadow.card-soft` | Alternative to card that is diffuse with almost no edge, for feature and promotional cards | 2 / 8 / 4%, 8 / 24 / 6% |
 | `shadow.raised` | Hovered or dragged cards, sticky headers and footers, floating buttons | 2 / 4 / 8%, 4 / 12 / 8% |
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts | 4 / 8 / 8%, 8 / 24 / 12% |
 | `shadow.modal` | Dialogs and bottom sheets, always over the scrim | 8 / 16 / 12%, 16 / 48 / 16% |
@@ -465,13 +467,13 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 268 primitive tokens · 300 semantic tokens (199 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 4 shadow) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **918 values on web** · **946 on iOS and Android** · **0 gradients**
+**Totals:** 269 primitive tokens · 302 semantic tokens (199 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 6 shadow) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **921 values on web** · **963 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 810 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 4 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 813 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 6 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (268)
+### Primitive tokens (269)
 
-#### Color — 149 tokens (13 palettes, 144 steps, plus `alpha.transparent` and four shadow alphas)
+#### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
 
 Token path pattern: `color.{palette}.{step}`
 
@@ -495,6 +497,7 @@ The `alpha` palette holds the only translucent colours. Apart from `transparent`
 | Token | Value | Alpha |
 |-------|-------|-------|
 | `color.alpha.transparent` | #FFFFFF00 | 0% |
+| `color.alpha.neutral-950-4` | #0A0A0A0A | 4% |
 | `color.alpha.neutral-950-6` | #0A0A0A0F | 6% |
 | `color.alpha.neutral-950-8` | #0A0A0A14 | 8% |
 | `color.alpha.neutral-950-12` | #0A0A0A1F | 12% |
@@ -678,7 +681,7 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (300)
+### Semantic tokens (302)
 
 #### Color — 199 tokens
 
@@ -884,13 +887,15 @@ Five role tokens naming what is being dimmed, plus a mirror of every ramp step s
 | `opacity.scrim` | `opacityScale.32` | Wash behind a modal, drawer or bottom sheet |
 | `opacity.0` … `opacity.100` | `opacityScale.0` … `opacityScale.100` | The 24 ramp steps, one-to-one |
 
-#### Shadow — 4 tokens
+#### Shadow — 6 tokens
 
-Composite two-layer shadows, one per height. See Major Design Decisions → Shadow tokens for the layer values and why there are two.
+Composite two-layer shadows: one per height, plus two softer alternatives to card. See Major Design Decisions → Shadow tokens for the layer values and why there are two.
 
 | Token | Use for |
 |-------|---------|
 | `shadow.card` | Cards and tiles resting on the page |
+| `shadow.card-subtle` | A lighter card, where a border would feel heavy |
+| `shadow.card-soft` | A diffuse card for feature and promotional content |
 | `shadow.raised` | Hovered or dragged cards, sticky headers and footers, floating buttons |
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
@@ -1113,6 +1118,10 @@ Each layer aliases one primitive per property. `x` is `shadowOffset.0` in every 
 |----------|-------|-----|--------|---------|
 | `shadow.card` | 1 | `shadowOffset.1` | `shadowBlur.2` | `color.alpha.neutral-950-8` |
 | `shadow.card` | 2 | `shadowOffset.2` | `shadowBlur.6` | `color.alpha.neutral-950-6` |
+| `shadow.card-subtle` | 1 | `shadowOffset.1` | `shadowBlur.2` | `color.alpha.neutral-950-4` |
+| `shadow.card-subtle` | 2 | `shadowOffset.2` | `shadowBlur.8` | `color.alpha.neutral-950-4` |
+| `shadow.card-soft` | 1 | `shadowOffset.2` | `shadowBlur.8` | `color.alpha.neutral-950-4` |
+| `shadow.card-soft` | 2 | `shadowOffset.8` | `shadowBlur.24` | `color.alpha.neutral-950-6` |
 | `shadow.raised` | 1 | `shadowOffset.2` | `shadowBlur.4` | `color.alpha.neutral-950-8` |
 | `shadow.raised` | 2 | `shadowOffset.4` | `shadowBlur.12` | `color.alpha.neutral-950-8` |
 | `shadow.overlay` | 1 | `shadowOffset.4` | `shadowBlur.8` | `color.alpha.neutral-950-8` |
@@ -1291,7 +1300,7 @@ Box(
 
 ### Opacity
 
-Opacity tokens are always applied **to a colour token** — apart from the four shadow colours, the system ships no pre-blended alpha colours. A state layer and a scrim are both a separate element filled with a colour and rendered at an opacity, never `opacity` set on the thing itself.
+Opacity tokens are always applied **to a colour token** — apart from the five shadow colours, the system ships no pre-blended alpha colours. A state layer and a scrim are both a separate element filled with a colour and rendered at an opacity, never `opacity` set on the thing itself.
 
 ```css
 /* Scrim: a full-page wash behind a modal or bottom sheet. */
