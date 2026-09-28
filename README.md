@@ -45,7 +45,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 |-----------|----------|
 | **primitives** | Raw values — color palettes, font stacks, pixel scales |
 | **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
-| **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`) that reference semantic tokens — one key per property × variant × state |
+| **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`, `chip/*`) that reference semantic tokens — one key per property × variant × state |
 
 Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
 
@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 535 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 200 semantic roles + 185 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 569 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 203 semantic roles + 216 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -230,7 +230,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (120 tokens), Checkbox (65 tokens) and Radio (57 tokens) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (120 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (60 tokens) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -272,9 +272,11 @@ The crossed pairs, `bg` + `bg-surface-secondary` and `bg-secondary` + `bg-surfac
 
 For nested content, keep alternating. A grey well inside a white card on a grey page is `bg-surface` again.
 
-`bg-fill-secondary` (chips, segmented tracks, skeletons) is the same grey as `bg-secondary`. On the grey canvas, give those elements a `border` or put them inside a `bg-surface-secondary` container.
+`bg-fill-secondary` (segmented tracks, skeletons) is the same grey as `bg-secondary`. On the grey canvas, give those elements a `border` or put them inside a `bg-surface-secondary` container.
 
 Interactive controls take their body colour from `bg-fill`, never from `bg`. That way a checkbox or radio stays white whichever canvas it sits on.
+
+Chips follow the same rule, and their border toggle is what adapts them to the canvas. A borderless chip is white on the grey `bg-secondary` canvas. On white pages and cards, switch the border on. The chip hover and pressed fills (`bg-fill-hover`, `bg-fill-pressed-subtle`) are both the same grey as `bg-secondary`, so a borderless chip hovered or pressed on the grey canvas loses its fill and only its label remains; use `bg-fill-pressed-strong` where a press must read on either canvas.
 
 ### 4. Color scale system
 
@@ -467,9 +469,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 269 primitive tokens · 303 semantic tokens (200 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 6 shadow) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **922 values on web** · **964 on iOS and Android** · **0 gradients**
+**Totals:** 269 primitive tokens · 306 semantic tokens (203 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 6 shadow) · 302 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 60 `chip/*`) · **985 values on web** · **1027 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 814 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 6 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 877 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 6 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (269)
 
@@ -681,9 +683,9 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (303)
+### Semantic tokens (306)
 
-#### Color — 200 tokens
+#### Color — 203 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -708,11 +710,14 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-warning-pressed` | Warning surface, pressed |
 | `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
 
-##### Background — fill (18)
+##### Background — fill (21)
 
 | Token | Role |
 |-------|------|
 | `color.bg-fill` | Default fill |
+| `color.bg-fill-hover` | Default fill, hovered — neutral controls such as chips |
+| `color.bg-fill-pressed-subtle` | Default fill, pressed, light — the unselected chip |
+| `color.bg-fill-pressed-strong` | Default fill, pressed, strong — the chip remove button, and presses that must read on either canvas |
 | `color.bg-fill-disabled-strong` | Strong disabled fill |
 | `color.bg-fill-disabled-subtle` | Subtle disabled fill |
 | `color.bg-fill-secondary` | Secondary fill |
@@ -901,7 +906,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (242)
+### Component tokens (302)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -910,6 +915,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `button/*` | 120 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
+| `chip/*` | 60 | Chip (`559:2943`, 60 variants) | [`components/chip.md`](components/chip.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -950,6 +956,9 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-warning-pressed` | `color.red.200` |
 | `bg-surface-inverse` | `color.neutral.950` |
 | `bg-fill` | `color.neutral.0` |
+| `bg-fill-hover` | `color.neutral.100` |
+| `bg-fill-pressed-subtle` | `color.neutral.100` |
+| `bg-fill-pressed-strong` | `color.neutral.200` |
 | `bg-fill-disabled-strong` | `color.neutral.400` |
 | `bg-fill-disabled-subtle` | `color.neutral.200` |
 | `bg-fill-secondary` | `color.neutral.100` |
@@ -1486,7 +1495,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
 
-`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) and `components/radio.md` the Radio component set (`442:415`, 60 variants). Both are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) and `components/chip.md` the Chip component set (`559:2943`, 60 variants). All three are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
 
 ### Pinned versions
 

@@ -305,13 +305,13 @@
   --color-alpha-neutral-950-16: #0A0A0A29;
   /** White page background, the default canvas. Containers placed directly on it use bg-surface (grey). For the grey canvas use bg-secondary. Match the suffix: bg pairs with bg-surface. */
   --color-bg: #FFFFFF;
-  /** Grey page background, the alternate canvas for screens built from stacked cards. Containers placed directly on it use bg-surface-secondary (white). bg-fill-secondary is the same grey, so chips, segmented tracks and skeletons on this canvas need a border or a different fill. Match the suffix: bg-secondary pairs with bg-surface-secondary. */
+  /** Grey page background, the alternate canvas for screens built from stacked cards. Containers placed directly on it use bg-surface-secondary (white). bg-fill-secondary is the same grey, so segmented tracks and skeletons on this canvas need a border or a different fill. Chips are white, so they sit on this canvas without a border. Match the suffix: bg-secondary pairs with bg-surface-secondary. */
   --color-bg-secondary: #F5F5F5;
   /** Grey container placed on the white page (bg) — wells, grouped sections, list backgrounds. Match the suffix: bg pairs with bg-surface. On the grey page (bg-secondary) it has no contrast; use bg-surface-secondary there. Surface tokens colour the container behind content; bg-fill-* tokens colour the body of the element itself. */
   --color-bg-surface: #F5F5F5;
   /** Container surface of a disabled control or section. Pair with text-disabled and border-disabled-subtle. For a disabled element that reads as solid, use bg-fill-disabled-strong or bg-fill-disabled-subtle. */
   --color-bg-surface-disabled: #E5E5E5;
-  /** Lighter disabled surface — a whole section or card that is unavailable, or a light control, where bg-surface-disabled would read too heavy. Pair with text-disabled. Nearly the same as white and the grey canvas, so the disabled label carries the state. */
+  /** Lighter disabled surface — the disabled chip, and a whole section or card that is unavailable, where bg-surface-disabled would read too heavy. Pair with text-disabled. Nearly the same as white and the grey canvas, so the disabled label carries the state. */
   --color-bg-surface-disabled-subtle: #FAFAFA;
   /** White container placed on the grey page (bg-secondary) — cards, sheets, popovers, menus. Match the suffix: bg-secondary pairs with bg-surface-secondary. On the white page (bg) it has no contrast without a border; use bg-surface there, or add a border for a floating element. */
   --color-bg-surface-secondary: #FFFFFF;
@@ -337,11 +337,17 @@
   --color-bg-surface-inverse: #0A0A0A;
   /** Default fill for the body of an interactive element — input fields, switch tracks, unselected controls. Fill tokens colour the element; bg-surface-* tokens colour the container behind it. */
   --color-bg-fill: #FFFFFF;
+  /** Hover step of bg-fill for a neutral control that must stay neutral under the pointer — unselected chips, and later input fields and list rows. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill on hover and only its label remains. Use bg-surface-brand when hover should hint at a brand selection. */
+  --color-bg-fill-hover: #F5F5F5;
+  /** Light pressed step of bg-fill — the unselected chip while pressed. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill while pressed and only its label remains. Use bg-fill-pressed-strong where the press must read on either canvas. */
+  --color-bg-fill-pressed-subtle: #F5F5F5;
+  /** Strong pressed step of bg-fill — the chip remove button circle, and any neutral control whose press must read on either canvas. Darker than bg-secondary. Not a disabled colour; use bg-surface-disabled or bg-fill-disabled-subtle for that. */
+  --color-bg-fill-pressed-strong: #E5E5E5;
   /** Disabled fill for a control that stays visually solid when disabled — switch tracks, sliders, filled indicators. Use bg-fill-disabled-subtle for the lighter variant. */
   --color-bg-fill-disabled-strong: #A1A1A1;
   /** Lighter disabled fill — disabled input fields and low-emphasis controls. Use bg-fill-disabled-strong when the disabled element still needs to read as solid. */
   --color-bg-fill-disabled-subtle: #E5E5E5;
-  /** Low-emphasis neutral fill — segmented control tracks, unselected chips, skeleton blocks. */
+  /** Low-emphasis neutral fill — segmented control tracks, skeleton blocks. */
   --color-bg-fill-secondary: #F5F5F5;
   /** Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand. */
   --color-bg-fill-brand: #0067E8;
@@ -1657,4 +1663,124 @@
   --radio-gap-text: 4px;
   /** Minimum tappable area around the radio, independent of the visible circle size. The hit area must reach this even at small size — do not scale it with control-size-*. */
   --radio-min-touch-target: 48px;
+  /** Fill of the chip container — unselected, at rest and on keyboard focus. White in every border setting: a borderless chip belongs on the grey bg-secondary canvas, a bordered chip on white pages and cards. */
+  --chip-bg-unselected-default: #FFFFFF;
+  /** Fill of the chip container — unselected, on hover. The same grey as bg-secondary and as the pressed fill, so hover and pressed differ only by the border, and a borderless chip on the grey canvas loses its fill. */
+  --chip-bg-unselected-hover: #F5F5F5;
+  /** Fill of the chip container — unselected, while pressed. The same grey as bg-secondary, so on the grey canvas a borderless chip loses its fill while pressed and only its label remains. */
+  --chip-bg-unselected-pressed: #F5F5F5;
+  /** Fill of the chip container — unselected, when disabled. The same light neutral in both selection states, so an inert chip does not read as chosen. */
+  --chip-bg-unselected-disabled: #FAFAFA;
+  /** Fill of the chip container — selected, at rest and on keyboard focus. A tint rather than a solid brand fill, so a row of selected chips stays calm; the label and border carry the brand colour. */
+  --chip-bg-selected-default: #EDF8FF;
+  /** Fill of the chip container — selected, on hover. */
+  --chip-bg-selected-hover: #D6EFFF;
+  /** Fill of the chip container — selected, while pressed. */
+  --chip-bg-selected-pressed: #C2E8FF;
+  /** Fill of the chip container — selected, when disabled. The same light neutral in both selection states, so an inert chip does not read as chosen. */
+  --chip-bg-selected-disabled: #FAFAFA;
+  /** Outline of the chip — unselected, at rest and on keyboard focus. Painted only when the border is switched on. A divider-weight grey on purpose: the label, not the edge, identifies the chip, so this sits below the 3:1 of border-strong by design. */
+  --chip-border-unselected-default: #D4D4D4;
+  /** Outline of the chip — unselected, on hover. Painted only when the border is switched on. Keeps the resting grey. */
+  --chip-border-unselected-hover: #D4D4D4;
+  /** Outline of the chip — unselected, while pressed. Painted only when the border is switched on. Darkens to border-strong, which is the only thing that separates pressed from hover. */
+  --chip-border-unselected-pressed: #A1A1A1;
+  /** Outline of the chip — unselected, when disabled. Painted only when the border is switched on. */
+  --chip-border-unselected-disabled: #D4D4D4;
+  /** Outline of the chip — selected, at rest and on keyboard focus. Painted only when the border is switched on. */
+  --chip-border-selected-default: #0067E8;
+  /** Outline of the chip — selected, on hover. Painted only when the border is switched on. */
+  --chip-border-selected-hover: #0681FF;
+  /** Outline of the chip — selected, while pressed. Painted only when the border is switched on. */
+  --chip-border-selected-pressed: #0857C5;
+  /** Outline of the chip — selected, when disabled. Painted only when the border is switched on. */
+  --chip-border-selected-disabled: #D4D4D4;
+  /** Colour of the chip label — unselected, in every enabled state. It keeps this colour on hover, pressed and focus; only the fill and border move. */
+  --chip-label-unselected-default: #525252;
+  /** Colour of the chip label — selected, at rest and on keyboard focus. */
+  --chip-label-selected-default: #0067E8;
+  /** Colour of the chip label — selected, on hover. Darkens with the fill so it holds AA contrast on bg-selected-hover. */
+  --chip-label-selected-hover: #0857C5;
+  /** Colour of the chip label — selected, while pressed. Darkens with the fill so it holds AA contrast on bg-selected-pressed. */
+  --chip-label-selected-pressed: #0D4C9B;
+  /** Colour of the chip label when disabled, whether or not the chip is selected. */
+  --chip-label-disabled: #A1A1A1;
+  /** Colour of the optional secondary line under the chip label, in every enabled state and both selection states. Use it for supporting detail such as a price or a date, never for the chip name. */
+  --chip-secondary-text-default: #525252;
+  /** Colour of the secondary line under the chip label when the chip is disabled. */
+  --chip-secondary-text-disabled: #A1A1A1;
+  /** Colour of the leading icon, trailing icon and remove glyph — unselected, in every enabled state. Does not apply to the leading image, which keeps its own colours. */
+  --chip-icon-unselected-default: #525252;
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, in every enabled state. Does not apply to the leading image. */
+  --chip-icon-selected-default: #0067E8;
+  /** Colour of the leading icon, trailing icon and remove glyph when the chip is disabled. The leading image is not recoloured; desaturate it in code if needed. */
+  --chip-icon-disabled: #A1A1A1;
+  /** Circle behind the remove glyph of a removable chip — unselected, when the remove button itself is hovered. Transparent at rest. */
+  --chip-remove-bg-unselected-hover: #E5E5E5;
+  /** Circle behind the remove glyph of a removable chip — unselected, while the remove button itself is pressed. */
+  --chip-remove-bg-unselected-pressed: #E5E5E5;
+  /** Circle behind the remove glyph of a removable chip — selected, when the remove button itself is hovered. */
+  --chip-remove-bg-selected-hover: #C2E8FF;
+  /** Circle behind the remove glyph of a removable chip — selected, while the remove button itself is pressed. */
+  --chip-remove-bg-selected-pressed: #C2E8FF;
+  /** Colour of the keyboard focus ring around the chip, and around the remove button of a removable chip. Apply on focus-visible so the ring does not appear on pointer interaction. */
+  --chip-focus-ring: #0681FF;
+  /** Minimum height of a one-line chip at small size. The chip hugs its content, so it grows past this when the secondary line is on. Not the tap target; see min-touch-target. */
+  --chip-min-height-sm: 28px;
+  /** Minimum height of a one-line chip at medium size. The chip hugs its content, so it grows past this when the secondary line is on. Not the tap target; see min-touch-target. */
+  --chip-min-height-md: 32px;
+  /** Minimum height of a one-line chip at large size. The chip hugs its content, so it grows past this when the secondary line is on. Not the tap target; see min-touch-target. */
+  --chip-min-height-lg: 40px;
+  /** Left and right padding inside the chip at small size, on both sides whether or not an icon or image sits there. */
+  --chip-padding-x-sm: 8px;
+  /** Left and right padding inside the chip at medium size, on both sides whether or not an icon or image sits there. */
+  --chip-padding-x-md: 12px;
+  /** Left and right padding inside the chip at large size, on both sides whether or not an icon or image sits there. */
+  --chip-padding-x-lg: 16px;
+  /** Top and bottom padding inside the chip at small size. A floor for the two-line chip; the one-line height comes from min-height. */
+  --chip-padding-y-sm: 4px;
+  /** Top and bottom padding inside the chip at medium size. A floor for the two-line chip; the one-line height comes from min-height. Currently the same value as padding-y-sm. */
+  --chip-padding-y-md: 4px;
+  /** Top and bottom padding inside the chip at large size. A floor for the two-line chip; the one-line height comes from min-height. */
+  --chip-padding-y-lg: 8px;
+  /** Horizontal gap between each slot and the label at every size: leading image or icon before it, trailing icon or remove button after it. One value for all sizes so glyphs never crowd the text on small chips. */
+  --chip-gap: 8px;
+  /** Size of the leading icon, trailing icon and remove glyph at small size. */
+  --chip-icon-size-sm: 16px;
+  /** Size of the leading icon, trailing icon and remove glyph at medium size. */
+  --chip-icon-size-md: 20px;
+  /** Size of the leading icon, trailing icon and remove glyph at large size. */
+  --chip-icon-size-lg: 24px;
+  /** Width and height of the circular leading image at small size. Matches icon-size so swapping icon for image never changes the chip height. */
+  --chip-image-size-sm: 16px;
+  /** Width and height of the circular leading image at medium size. Matches icon-size so swapping icon for image never changes the chip height. */
+  --chip-image-size-md: 20px;
+  /** Width and height of the circular leading image at large size. Matches icon-size so swapping icon for image never changes the chip height. */
+  --chip-image-size-lg: 24px;
+  /** Corner radius of the chip container at small size. A rounded rectangle rather than a pill, so two-line chips do not grow tall end caps. */
+  --chip-radius-sm: 8px;
+  /** Corner radius of the chip container at medium size. Currently the same value as radius-sm. */
+  --chip-radius-md: 8px;
+  /** Corner radius of the chip container at large size, one step rounder so the corner stays in proportion to the 40px chip. */
+  --chip-radius-lg: 12px;
+  /** Corner radius of the leading image, which is always a circle. */
+  --chip-image-radius: 999px;
+  /** Vertical gap between the label and the secondary line; the line heights alone separate them. */
+  --chip-gap-text: 0px;
+  /** Thickness of the chip outline, in every state, when the border is switched on. */
+  --chip-border-width: 1px;
+  /** Thickness of the keyboard focus ring around the chip and its remove button. */
+  --chip-focus-ring-width: 2px;
+  /** Gap between the chip edge and its focus ring. */
+  --chip-focus-ring-offset: 2px;
+  /** Corner radius of the focus ring at small size. Always the chip radius plus 4, so the ring stays concentric with the corner it surrounds 4px outside it. */
+  --chip-focus-ring-radius-sm: 12px;
+  /** Corner radius of the focus ring at medium size. Always the chip radius plus 4. Currently the same value as focus-ring-radius-sm. */
+  --chip-focus-ring-radius-md: 12px;
+  /** Corner radius of the focus ring at large size. Always the chip radius plus 4, so it follows radius-lg. */
+  --chip-focus-ring-radius-lg: 16px;
+  /** Minimum tappable height of the chip, independent of its visible size. Small and medium chips are shorter than this, so expand the hit area in code — do not scale it with min-height-*. */
+  --chip-min-touch-target: 48px;
+  /** Minimum tappable area of the remove button on a removable chip, the WCAG 2.5.8 floor. Expand the hit area around the glyph in code without growing the chip. */
+  --chip-remove-min-touch-target: 24px;
 }
