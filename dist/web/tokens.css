@@ -31,8 +31,8 @@
   --color-brand-50: #EDF8FF;
   /** Brand ramp, step 100. Safe text on top: text-primary at 16.63:1 (passes AA and AAA); text-inverse fails at 1.18:1. */
   --color-brand-100: #D6EFFF;
-  /** Brand ramp, step 200. Safe text on top: text-primary at 14.51:1 (passes AA and AAA); text-inverse fails at 1.36:1. */
-  --color-brand-200: #B5E3FF;
+  /** Brand ramp, step 200. Safe text on top: text-primary at 15.34:1 (passes AA and AAA); text-inverse fails at 1.28:1. */
+  --color-brand-200: #C2E8FF;
   /** Brand ramp, step 300. Safe text on top: text-primary at 12.09:1 (passes AA and AAA); text-inverse fails at 1.63:1. */
   --color-brand-300: #83D4FF;
   /** Brand ramp, step 400. Safe text on top: text-primary at 9.26:1 (passes AA and AAA); text-inverse fails at 2.13:1. */
@@ -311,6 +311,8 @@
   --color-bg-surface: #F5F5F5;
   /** Container surface of a disabled control or section. Pair with text-disabled and border-disabled-subtle. For a disabled element that reads as solid, use bg-fill-disabled-strong or bg-fill-disabled-subtle. */
   --color-bg-surface-disabled: #E5E5E5;
+  /** Lighter disabled surface — a whole section or card that is unavailable, or a light control, where bg-surface-disabled would read too heavy. Pair with text-disabled. Nearly the same as white and the grey canvas, so the disabled label carries the state. */
+  --color-bg-surface-disabled-subtle: #FAFAFA;
   /** White container placed on the grey page (bg-secondary) — cards, sheets, popovers, menus. Match the suffix: bg-secondary pairs with bg-surface-secondary. On the white page (bg) it has no contrast without a border; use bg-surface there, or add a border for a floating element. */
   --color-bg-surface-secondary: #FFFFFF;
   /** Brand-tinted container — tertiary button default, selected list rows, brand callouts. This is a background behind content; for a solid brand element such as a primary button use bg-fill-brand. */
@@ -318,7 +320,7 @@
   /** Hover state for bg-surface-brand, and the hover background for brand controls that are transparent at rest (secondary and text buttons). */
   --color-bg-surface-brand-hover: #D6EFFF;
   /** Pressed/active state for bg-surface-brand and for brand controls that are transparent at rest. */
-  --color-bg-surface-brand-pressed: #B5E3FF;
+  --color-bg-surface-brand-pressed: #C2E8FF;
   /** Informational container — info banners, inline info messages. Pair with text-info, border-info and icon-info. For a solid info element such as a badge use bg-fill-info-strong. */
   --color-bg-surface-info: #EDF8FF;
   /** Success container — confirmation banners, completed-state panels. Pair with text-success, border-success and icon-success. */
@@ -431,8 +433,8 @@
   --color-border: #D4D4D4;
   /** Lighter divider for dense or nested content — list separators, inner table rules. */
   --color-border-secondary: #E5E5E5;
-  /** Higher-contrast neutral border — outlines that must stay legible on a tinted surface, and dividers separating major regions. Use border for the default outline. */
-  --color-border-strong: #737373;
+  /** Higher-contrast neutral border — the unchecked Checkbox and Radio outlines, outlines that must stay legible on a tinted surface, and dividers separating major regions. At 2.58:1 on white it sits below the WCAG 1.4.11 3:1 minimum for a control boundary, an accepted deviation recorded in components/checkbox.md and components/radio.md. Use border for the default outline. */
+  --color-border-strong: #A1A1A1;
   /** Border of a disabled control that keeps a visible outline — disabled secondary button. */
   --color-border-disabled-strong: #A1A1A1;
   /** Border of a disabled low-emphasis control — disabled input field. */
@@ -1202,7 +1204,7 @@
   /** Background of the secondary (outlined) button — default intent, on hover. */
   --button-bg-secondary-hover: #D6EFFF;
   /** Background of the secondary (outlined) button — default intent, while pressed. */
-  --button-bg-secondary-pressed: #B5E3FF;
+  --button-bg-secondary-pressed: #C2E8FF;
   /** Background of the tertiary (tinted) button — default intent, at rest. */
   --button-bg-tertiary-default: #EDF8FF;
   /** Background of the tertiary (tinted) button — destructive intent, at rest. */
@@ -1218,7 +1220,7 @@
   /** Background of the tertiary (tinted) button — default intent, on hover. */
   --button-bg-tertiary-hover: #D6EFFF;
   /** Background of the tertiary (tinted) button — default intent, while pressed. */
-  --button-bg-tertiary-pressed: #B5E3FF;
+  --button-bg-tertiary-pressed: #C2E8FF;
   /** Background of the text (no fill or outline) button — default intent, at rest. */
   --button-bg-text-default: #FFFFFF00;
   /** Background of the text (no fill or outline) button — destructive intent, at rest. */
@@ -1444,7 +1446,7 @@
   /** Fill of the checkbox box — checked and in the error state, when disabled. */
   --checkbox-bg-selected-error-disabled: #A1A1A1;
   /** Outline of the checkbox box — unchecked, at rest. */
-  --checkbox-border-unselected-default: #737373;
+  --checkbox-border-unselected-default: #A1A1A1;
   /** Outline of the checkbox box — unchecked, on hover. */
   --checkbox-border-unselected-hover: #0067E8;
   /** Outline of the checkbox box — unchecked, while pressed. */
@@ -1558,7 +1560,7 @@
   /** Fill of the radio circle in both selected and unselected states, in the error state — when disabled. */
   --radio-bg-error-disabled: #E5E5E5;
   /** Outline of the radio circle — unselected, at rest. */
-  --radio-border-unselected-default: #737373;
+  --radio-border-unselected-default: #A1A1A1;
   /** Outline of the radio circle — unselected, on hover. */
   --radio-border-unselected-hover: #0067E8;
   /** Outline of the radio circle — unselected, while pressed. */
@@ -1616,7 +1618,7 @@
   /** Colour of the helper text when the radio is disabled. */
   --radio-description-disabled: #A1A1A1;
   /** Colour of the focus state layer while the radio is unselected. The state layer takes the colour of the content it belongs to, so it follows the ring rather than the interior. */
-  --radio-state-layer-unselected: #737373;
+  --radio-state-layer-unselected: #A1A1A1;
   /** Colour of the focus state layer while the radio is selected. */
   --radio-state-layer-selected: #0067E8;
   /** Colour of the focus state layer in the error state, selected or not. */

@@ -155,7 +155,7 @@ Measured against `#ffffff`. Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 a
 
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
-| Unchecked border `#737373` | 4.74:1 | 3:1 (1.4.11) | Pass |
+| Unchecked border `#A1A1A1` | 2.58:1 | 3:1 (1.4.11) | **Fail — accepted deviation** |
 | Checked box `#0067E8` | 5.12:1 | 3:1 (1.4.11) | Pass |
 | Check glyph on brand | 5.12:1 | 3:1 (1.4.11) | Pass |
 | Check glyph on error `#C10007` | 6.42:1 | 3:1 (1.4.11) | Pass |
@@ -166,6 +166,8 @@ Measured against `#ffffff`. Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 a
 | Error description `#C10007` | 6.42:1 | 4.5:1 (1.4.3) | Pass |
 
 The unchecked border is why `color.border-strong` was added to the semantic tier. The existing `color.border` (`#D4D4D4`) measures **1.48:1** and fails 1.4.11 — it is a divider colour, not a control boundary.
+
+**`color.border-strong` was lightened from `neutral.500` (`#737373`, 4.74:1) to `neutral.400` (`#A1A1A1`) on 2026-09-28, a deliberate visual choice.** At 2.58:1 on white (2.36:1 on the grey canvas) the unchecked box outline no longer meets WCAG 1.4.11, which asks 3:1 for the boundary of a control. This is an accepted deviation. The checked state is unaffected (5.12:1). To restore compliance, point `checkbox/border-unselected-default` back at a 3:1-or-better neutral; `neutral.500` is the lightest step that passes.
 
 ### Semantics
 
@@ -208,4 +210,4 @@ The unchecked border is why `color.border-strong` was added to the semantic tier
 
 Platform names follow the standard pipeline: `checkbox/bg-selected-hover` → `--checkbox-bg-selected-hover` (CSS) → `CosmosTokens.checkboxBgSelectedHover` (Swift / Kotlin) → `tokens.checkboxBgSelectedHover` (TS).
 
-This component also added one semantic token: **`color.border-strong`** (`{color.neutral.500}`) — the interactive-control boundary colour. Reuse it for Radio, Switch and Input rather than reaching for `color.border`.
+This component also added one semantic token: **`color.border-strong`** (now `{color.neutral.400}`, see Contrast) — the interactive-control boundary colour. Reuse it for Radio, Switch and Input rather than reaching for `color.border`.

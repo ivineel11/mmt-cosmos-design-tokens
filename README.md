@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 534 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 199 semantic roles + 185 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 535 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 200 semantic roles + 185 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -467,9 +467,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 269 primitive tokens · 302 semantic tokens (199 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 6 shadow) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **921 values on web** · **963 on iOS and Android** · **0 gradients**
+**Totals:** 269 primitive tokens · 303 semantic tokens (200 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 6 shadow) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **922 values on web** · **964 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 813 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 6 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 814 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 6 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (269)
 
@@ -482,7 +482,7 @@ Token path pattern: `color.{palette}.{step}`
 | `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — |
 | `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
 | `100` | #F5F5F5 | #D6EFFF | #FFE2E2 | #FFEDD4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
-| `200` | #E5E5E5 | #B5E3FF | #FFC9C9 | #FFD6A8 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
+| `200` | #E5E5E5 | #C2E8FF | #FFC9C9 | #FFD6A8 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
 | `300` | #D4D4D4 | #83D4FF | #FFA2A2 | #FFB86A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
 | `400` | #A1A1A1 | #48BBFF | #FF6467 | #FF8904 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
 | `500` | #737373 | #1E9CFF | #FB2C36 | #FF6900 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
@@ -681,13 +681,13 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (302)
+### Semantic tokens (303)
 
-#### Color — 199 tokens
+#### Color — 200 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — canvas and surface (15)
+##### Background — canvas and surface (16)
 
 | Token | Role |
 |-------|------|
@@ -695,6 +695,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-secondary` | Grey page background (canvas) |
 | `color.bg-surface` | Grey container on `bg` |
 | `color.bg-surface-disabled` | Disabled surface |
+| `color.bg-surface-disabled-subtle` | Lighter disabled surface — a whole unavailable section or card |
 | `color.bg-surface-secondary` | White container on `bg-secondary` |
 | `color.bg-surface-brand` | Brand-tinted surface |
 | `color.bg-surface-brand-hover` | Brand-tinted surface, hovered |
@@ -917,7 +918,7 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `button/bg-primary-default` | `{color.bg-fill-brand}` | `#0067E8` |
 | `button/bg-primary-destructive-hover` | `{color.bg-fill-warning-strong-hover}` | `#E7000B` |
 | `checkbox/bg-selected-default` | `{color.bg-fill-brand}` | `#0067E8` |
-| `checkbox/border-unselected-default` | `{color.border-strong}` | `#737373` |
+| `checkbox/border-unselected-default` | `{color.border-strong}` | `#A1A1A1` |
 | `checkbox/control-size-md` | `{space.lg}` | `20px` |
 | `radio/dot-selected-default` | `{color.text-brand}` | `#0067E8` |
 | `radio/radius` | `{radius.full}` | `999px` |
@@ -936,6 +937,7 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-secondary` | `color.neutral.100` |
 | `bg-surface` | `color.neutral.100` |
 | `bg-surface-disabled` | `color.neutral.200` |
+| `bg-surface-disabled-subtle` | `color.neutral.50` |
 | `bg-surface-secondary` | `color.neutral.0` |
 | `bg-surface-brand` | `color.brand.50` |
 | `bg-surface-brand-hover` | `color.brand.100` |
@@ -996,7 +998,7 @@ Add a component group only when a component has enough variant × state combinat
 | `text-warning-on-bg-surface-pressed` | `color.red.900` |
 | `border` | `color.neutral.300` |
 | `border-secondary` | `color.neutral.200` |
-| `border-strong` | `color.neutral.500` |
+| `border-strong` | `color.neutral.400` |
 | `border-disabled-strong` | `color.neutral.400` |
 | `border-disabled-subtle` | `color.neutral.300` |
 | `border-focus` | `color.brand.600` |
