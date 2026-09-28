@@ -6,11 +6,13 @@ MakeMyTrip Cosmos design tokens: one Tokens Studio JSON source compiled by Style
 
 ```bash
 npm install && npm run build:tokens     # regenerate dist/ from tokens/tokens.json
+npm run lint                            # every repo rule: tokens, dist, docs, skills, js, docs-site
+npm run test:lint                       # the linter's own tests
 node scripts/describe-primitives.mjs    # recompute primitive colour descriptions (contrast ratios)
 cd docs-site && npm install && npm run dev   # docs site; needs build:tokens to have run first
 ```
 
-There are no tests or linter. The build is the check: it resolves every reference and runs the opacity validator. A clean run followed by a `git diff` of `dist/` is how you verify a change.
+Before every commit, run `npm run build:tokens`, then `npm run lint` and `npm run test:lint`. CI runs both lint steps on every pull request, and both must pass. `npm run lint -- --only tokens` checks a single category while iterating. It does not replace the full run, and the linter tests catch things the lint does not, such as a test pinned to a token count. The build resolves every reference and runs the opacity validator. A `git diff` of `dist/` shows what a change emits.
 
 ## Layout
 
