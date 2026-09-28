@@ -101,7 +101,7 @@ npm run build:tokens
 `build-tokens.mjs` runs [Style Dictionary](https://styledictionary.com/) with Tokens Studio transforms and custom MMT transforms. The build:
 
 1. **Preprocesses** the dictionary (`tokens-studio` hoists token sets; `mmt/rename-negative` renames `-12` spacing keys to `minus12`; `mmt/comment-anchor` marks which expanded sub-token carries a composite token's description)
-2. **Expands** composite typography tokens into individual `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` properties
+2. **Expands** composite typography tokens into individual `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` properties, and on iOS and Android only, each shadow layer into `offsetX`, `offsetY`, `blur` and `color`. Web keeps a shadow whole as one `box-shadow` value (`shadow/css/shorthand`)
 3. **Resolves** all `{references}` to final values (including `{color.*}` refs embedded inside gradient strings via `mmt/resolve-gradient-colors`, kept for future gradient tokens)
 4. **Transforms** values per platform:
    - Font weights → numbers
@@ -117,7 +117,7 @@ On web CSS only, `mmt/description/comment` copies each token's `description` int
   --color-text-primary: #0A0A0A;
 ```
 
-Composite typography tokens expand into four custom properties that all inherit one description, so the comment is emitted once, above the first of the four.
+Composite typography tokens expand into four custom properties that all inherit one description, so the comment is emitted once, above the first of the four. Shadows are not expanded on web, so each carries its own comment.
 
 ##### Adding descriptions to other platforms
 
@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 529 color tokens (145 primitive — 144 palette steps plus `alpha.transparent` — + 199 semantic roles + 185 component tokens). All current colors are solid; gradient transforms stay wired for future use.
+**Affected tokens:** all 534 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 199 semantic roles + 185 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -330,7 +330,8 @@ Do not hand-write Swift or Kotlin gradient code in product apps.
 | `tokens-studio` preprocessor | Hoists `primitives` / `semantic` / `component` sets to root so cross-set `{references}` resolve |
 | `mmt/rename-negative` | Renames `-12` spacing keys to `minus12` to avoid name collisions |
 | `mmt/resolve-gradient-colors` | Resolves `{color.*}` references embedded in gradient strings |
-| `expand` (typography) | Splits composite typography tokens into individual properties |
+| `expand` (typography, shadow) | Splits composite typography tokens into individual properties on every platform, and shadow layers into `offsetX` / `offsetY` / `blur` / `color` on iOS and Android only |
+| `shadow/css/shorthand` (web) | Joins a shadow's layers into one CSS `box-shadow` value |
 | `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
 | `mmt/dimension/unitless` (iOS) | Strips `px` and wraps as `CGFloat(...)` so values drop into SwiftUI APIs |
 | `mmt/dimension/compose` (Android) | Converts `px` → `sp` (text) or `dp` (layout) |
@@ -356,10 +357,11 @@ Where a family spans both tiers, the primitive root carries the longer technical
 | `--border-radius-8` | `--radius-md` |
 | `--icon-size-24` | `--icon-md` |
 | `--opacity-scale-45` | `--opacity-45`, `--opacity-scrim` |
+| `--shadow-offset-4`, `--shadow-blur-12` | `--shadow-raised` |
 
 ### 11. Opacity tokens
 
-Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. There is one 8-digit hex in the whole system (`color.alpha.transparent`) and no `rgba()` anywhere. A scrim is `color.bg-surface-inverse` rendered at `opacity.scrim`; a focus state layer is `radio/state-layer-*` rendered at `radio/state-layer-opacity-focus`. Keeping the two separable is what lets a state layer take its control's own content colour.
+Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. The only 8-digit hexes are in the `color.alpha.*` palette: `transparent`, and the five shadow colours, which need their alpha inside the colour because a shadow layer takes a single colour (see Shadow tokens below). There is no `rgba()` anywhere. A scrim is `color.bg-surface-inverse` rendered at `opacity.scrim`; a focus state layer is `radio/state-layer-*` rendered at `radio/state-layer-opacity-focus`. Keeping the two separable is what lets a state layer take its control's own content colour.
 
 **Primitives are keyed by percent and valued as decimals.** `opacityScale.32` = `0.32`. The key is the number Figma's opacity binding holds; the value is the number CSS, SwiftUI and Compose want. This is a deliberate exception to the "name is the value" rule that governs the other primitive scales, and it is what makes the Figma file and `tokens.json` verifiable against each other at a glance.
 
@@ -372,6 +374,30 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 **Disabled is not an opacity.** Every disabled state in Cosmos is a solid opaque neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`). A dimming path would give the system two conflicting ways to say "disabled" with different and unpredictable contrast outcomes over a tinted surface. The same holds for hover and pressed, which are solid palette steps (`bg-fill-brand-hover`). Focus is the only state expressed as a layer, and only on Radio, whose ring was removed by design decision.
 
 **Growth path.** `opacity.state-layer-hover` and `-pressed` exist but no component consumes them yet: switching Radio to layer-based hover and pressed would diverge it from Checkbox, so it is a system-wide decision that must land on both together — see `components/radio.md` → Known gaps. `state-layer-dragged` waits on a draggable component.
+### 12. Shadow tokens
+
+Cosmos has one elevation scale, written as shadows. There is no separate `elevation` number: on web a shadow is what elevation looks like, and iOS and Android get the same layers so the three platforms match.
+
+**Four heights, named by what sits there, plus two softer cards.**
+
+| Token | For | Layers (y / blur / alpha) |
+|-------|-----|---------------------------|
+| `shadow.card` | Cards and tiles resting on the page | 1 / 2 / 8%, 2 / 6 / 6% |
+| `shadow.card-subtle` | Alternative to card at about half the weight, where a border would feel heavy | 1 / 2 / 4%, 2 / 8 / 4% |
+| `shadow.card-soft` | Alternative to card that is diffuse with almost no edge, for feature and promotional cards | 2 / 8 / 4%, 8 / 24 / 6% |
+| `shadow.raised` | Hovered or dragged cards, sticky headers and footers, floating buttons | 2 / 4 / 8%, 4 / 12 / 8% |
+| `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts | 4 / 8 / 8%, 8 / 24 / 12% |
+| `shadow.modal` | Dialogs and bottom sheets, always over the scrim | 8 / 16 / 12%, 16 / 48 / 16% |
+
+**Two layers, no spread.** Each shadow is a tight *key* layer that defines the edge and a soft *ambient* layer that carries the height. Shopify Polaris, which this scale was studied against, stacks five to seven layers per step and uses spread; that cannot be carried to mobile, because SwiftUI's `.shadow` draws one layer with no spread and Compose's `Modifier.shadow` takes only an elevation. Two layers are the most that stay identical everywhere, and `tokens/shadow` rejects a third layer, a spread or an inner shadow.
+
+**No ring.** Polaris draws the card edge with a 1px shadow layer. In Cosmos the edge stays a `border-*` token, so a shadow only ever means height.
+
+**Primitives follow typography.** A shadow is a composite of primitives, the way a text style is. `shadowOffset.*` and `shadowBlur.*` are named after their pixel value, and the colours are `color.alpha.neutral-950-{percent}`: neutral 950 (the text colour, not pure black) with its alpha in the hex. They are keyed `{family}-{step}-{percent}` and `describe-primitives.mjs` checks each hex against its key.
+
+**Light only.** Cosmos has no dark theme yet. When it does, the shadows will need their own dark values (a dark page needs far stronger shadows to read), which the role names already allow for.
+
+**Not included yet:** inset shadows for pressed wells, and an upward shadow for bars pinned to the bottom of the screen.
 
 ---
 
@@ -441,13 +467,13 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 
 ## Token Inventory
 
-**Totals:** 250 primitive tokens · 296 semantic tokens (199 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **896 values per platform** · **0 gradients**
+**Totals:** 269 primitive tokens · 302 semantic tokens (199 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 6 shadow) · 242 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*`) · **921 values on web** · **963 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 788 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`).
+The emitted count exceeds the 813 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 6 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (250)
+### Primitive tokens (269)
 
-#### Color — 145 tokens (13 palettes, 144 steps, plus `alpha.transparent`)
+#### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
 
 Token path pattern: `color.{palette}.{step}`
 
@@ -465,6 +491,17 @@ Token path pattern: `color.{palette}.{step}`
 | `800` | #262626 | #0857C5 | #9F0712 | #9F2D00 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
 | `900` | #171717 | #0D4C9B | #82181A | #7E2A0C | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
 | `950` | #0A0A0A | #0E2F5D | #460809 | #441306 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
+
+The `alpha` palette holds the only translucent colours. Apart from `transparent`, each step is neutral 950 at a fixed alpha, for shadow layers only:
+
+| Token | Value | Alpha |
+|-------|-------|-------|
+| `color.alpha.transparent` | #FFFFFF00 | 0% |
+| `color.alpha.neutral-950-4` | #0A0A0A0A | 4% |
+| `color.alpha.neutral-950-6` | #0A0A0A0F | 6% |
+| `color.alpha.neutral-950-8` | #0A0A0A14 | 8% |
+| `color.alpha.neutral-950-12` | #0A0A0A1F | 12% |
+| `color.alpha.neutral-950-16` | #0A0A0A29 | 16% |
 
 #### Font family — 1 token
 
@@ -614,9 +651,37 @@ Every 5% from 0 to 100, plus three off-grid steps carrying Material's state-laye
 | `opacityScale.95` | 0.95 | 95% |
 | `opacityScale.100` | 1 | 100% |
 
+#### Shadow offset — 6 tokens
+
+The vertical (and, at `0`, horizontal) distance of a shadow layer. Consumed only through `shadow.*`.
+
+| Token | Value |
+|-------|-------|
+| `shadowOffset.0` | 0px |
+| `shadowOffset.1` | 1px |
+| `shadowOffset.2` | 2px |
+| `shadowOffset.4` | 4px |
+| `shadowOffset.8` | 8px |
+| `shadowOffset.16` | 16px |
+
+#### Shadow blur — 8 tokens
+
+The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `shadow.*`.
+
+| Token | Value |
+|-------|-------|
+| `shadowBlur.2` | 2px |
+| `shadowBlur.4` | 4px |
+| `shadowBlur.6` | 6px |
+| `shadowBlur.8` | 8px |
+| `shadowBlur.12` | 12px |
+| `shadowBlur.16` | 16px |
+| `shadowBlur.24` | 24px |
+| `shadowBlur.48` | 48px |
+
 ---
 
-### Semantic tokens (296)
+### Semantic tokens (302)
 
 #### Color — 199 tokens
 
@@ -821,6 +886,19 @@ Five role tokens naming what is being dimmed, plus a mirror of every ramp step s
 | `opacity.state-layer-dragged` | `opacityScale.16` | Tint over a control being dragged |
 | `opacity.scrim` | `opacityScale.32` | Wash behind a modal, drawer or bottom sheet |
 | `opacity.0` … `opacity.100` | `opacityScale.0` … `opacityScale.100` | The 24 ramp steps, one-to-one |
+
+#### Shadow — 6 tokens
+
+Composite two-layer shadows: one per height, plus two softer alternatives to card. See Major Design Decisions → Shadow tokens for the layer values and why there are two.
+
+| Token | Use for |
+|-------|---------|
+| `shadow.card` | Cards and tiles resting on the page |
+| `shadow.card-subtle` | A lighter card, where a border would feel heavy |
+| `shadow.card-soft` | A diffuse card for feature and promotional content |
+| `shadow.raised` | Hovered or dragged cards, sticky headers and footers, floating buttons |
+| `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
+| `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
 ### Component tokens (242)
 
@@ -1032,6 +1110,25 @@ Ramp mirrors — each step aliases the primitive of the same name, and the build
 | `opacity.95` | `opacityScale.95` |
 | `opacity.100` | `opacityScale.100` |
 
+### Shadow mappings
+
+Each layer aliases one primitive per property. `x` is `shadowOffset.0` in every layer.
+
+| Semantic | Layer | `y` | `blur` | `color` |
+|----------|-------|-----|--------|---------|
+| `shadow.card` | 1 | `shadowOffset.1` | `shadowBlur.2` | `color.alpha.neutral-950-8` |
+| `shadow.card` | 2 | `shadowOffset.2` | `shadowBlur.6` | `color.alpha.neutral-950-6` |
+| `shadow.card-subtle` | 1 | `shadowOffset.1` | `shadowBlur.2` | `color.alpha.neutral-950-4` |
+| `shadow.card-subtle` | 2 | `shadowOffset.2` | `shadowBlur.8` | `color.alpha.neutral-950-4` |
+| `shadow.card-soft` | 1 | `shadowOffset.2` | `shadowBlur.8` | `color.alpha.neutral-950-4` |
+| `shadow.card-soft` | 2 | `shadowOffset.8` | `shadowBlur.24` | `color.alpha.neutral-950-6` |
+| `shadow.raised` | 1 | `shadowOffset.2` | `shadowBlur.4` | `color.alpha.neutral-950-8` |
+| `shadow.raised` | 2 | `shadowOffset.4` | `shadowBlur.12` | `color.alpha.neutral-950-8` |
+| `shadow.overlay` | 1 | `shadowOffset.4` | `shadowBlur.8` | `color.alpha.neutral-950-8` |
+| `shadow.overlay` | 2 | `shadowOffset.8` | `shadowBlur.24` | `color.alpha.neutral-950-12` |
+| `shadow.modal` | 1 | `shadowOffset.8` | `shadowBlur.16` | `color.alpha.neutral-950-12` |
+| `shadow.modal` | 2 | `shadowOffset.16` | `shadowBlur.48` | `color.alpha.neutral-950-16` |
+
 ### Typography mappings
 
 Each typography token is a composite reference. Pattern:
@@ -1203,7 +1300,7 @@ Box(
 
 ### Opacity
 
-Opacity tokens are always applied **to a colour token** — the system ships no pre-blended alpha colours. A state layer and a scrim are both a separate element filled with a colour and rendered at an opacity, never `opacity` set on the thing itself.
+Opacity tokens are always applied **to a colour token** — apart from the five shadow colours, the system ships no pre-blended alpha colours. A state layer and a scrim are both a separate element filled with a colour and rendered at an opacity, never `opacity` set on the thing itself.
 
 ```css
 /* Scrim: a full-page wash behind a modal or bottom sheet. */
@@ -1275,6 +1372,39 @@ Box(
 )
 ```
 
+### Shadow
+
+On web a shadow is one custom property holding both layers. On iOS and Android each layer is four values, applied as two shadow modifiers, key layer first.
+
+```css
+.card { box-shadow: var(--shadow-card); }
+.card:hover { box-shadow: var(--shadow-raised); }
+.menu { box-shadow: var(--shadow-overlay); }
+```
+
+```swift
+// SwiftUI measures shadow radius as half the CSS / Figma blur, so halve the blur.
+RoundedRectangle(cornerRadius: CosmosTokens.radiusLg)
+  .fill(CosmosTokens.colorBgSurfaceSecondary)
+  .shadow(color: CosmosTokens.shadowCard1Color, radius: CosmosTokens.shadowCard1Blur / 2,
+          x: CosmosTokens.shadowCard1OffsetX, y: CosmosTokens.shadowCard1OffsetY)
+  .shadow(color: CosmosTokens.shadowCard2Color, radius: CosmosTokens.shadowCard2Blur / 2,
+          x: CosmosTokens.shadowCard2OffsetX, y: CosmosTokens.shadowCard2OffsetY)
+```
+
+```kotlin
+// Compose 1.9+ dropShadow takes the CSS blur as its radius directly.
+val shape = RoundedCornerShape(CosmosTokens.radiusLg)
+Box(
+  Modifier
+    .dropShadow(shape, Shadow(radius = CosmosTokens.shadowCard1Blur, color = CosmosTokens.shadowCard1Color,
+      offset = DpOffset(CosmosTokens.shadowCard1OffsetX, CosmosTokens.shadowCard1OffsetY)))
+    .dropShadow(shape, Shadow(radius = CosmosTokens.shadowCard2Blur, color = CosmosTokens.shadowCard2Color,
+      offset = DpOffset(CosmosTokens.shadowCard2OffsetX, CosmosTokens.shadowCard2OffsetY)))
+    .background(CosmosTokens.colorBgSurfaceSecondary, shape),
+)
+```
+
 ---
 
 ## File Reference
@@ -1317,7 +1447,7 @@ npm run test:lint                    # the linter's own tests
 
 | Category | What it catches |
 |----------|-----------------|
-| `tokens/*` | Anything in `tokens/tokens.json` that breaks the conventions above: duplicate keys a bad merge left behind, a tier referencing the wrong tier (or a component skipping a semantic alias that exists), raw values above the primitive tier, dangling or circular references, values the platform transforms cannot parse, opacity outside 0–1 or out of step with its mirror, disabled expressed as opacity, a control filled with a canvas colour, typography composites with the wrong weight or missing metrics, t-shirt scales that do not grow, palettes that do not darken, names outside the role taxonomy, flat-namespace collisions, on-fill text and component labels below WCAG AA, missing or Figma-unsafe descriptions (apostrophes become `&#39;`), stale computed primitive descriptions, and non-canonical formatting |
+| `tokens/*` | Anything in `tokens/tokens.json` that breaks the conventions above: duplicate keys a bad merge left behind, a tier referencing the wrong tier (or a component skipping a semantic alias that exists), raw values above the primitive tier, dangling or circular references, values the platform transforms cannot parse, opacity outside 0–1 or out of step with its mirror, disabled expressed as opacity, a control filled with a canvas colour, typography composites with the wrong weight or missing metrics, shadows with more than two layers, a spread or an off-scale primitive, t-shirt scales that do not grow, palettes that do not darken, names outside the role taxonomy, flat-namespace collisions, on-fill text and component labels below WCAG AA, missing or Figma-unsafe descriptions (apostrophes become `&#39;`), stale computed primitive descriptions, and non-canonical formatting |
 | `dist/*` | `dist/` differs from a fresh build of the current tokens — stale, hand-edited, or carrying files the build does not produce |
 | `docs-site/*` | The site's derived CSS names drift from the build, it uses a `var(--…)` that no longer exists, or it fails to type-check |
 | `docs/*` | Markdown that has drifted from the tokens: broken links and anchors, references to tokens that do not exist, wrong values, aliases, hexes and counts in the README's tables, a semantic colour missing from the inventory, a component group without a spec |

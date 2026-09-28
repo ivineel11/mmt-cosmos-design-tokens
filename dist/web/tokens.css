@@ -293,6 +293,16 @@
   --color-fuchsia-950: #4B004F;
   /** Fully transparent. Contrast is undefined — whatever sits behind shows through, so accessibility depends on that backdrop rather than on this token. */
   --color-alpha-transparent: #FFFFFF00;
+  /** Neutral 950 at 4% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
+  --color-alpha-neutral-950-4: #0A0A0A0A;
+  /** Neutral 950 at 6% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
+  --color-alpha-neutral-950-6: #0A0A0A0F;
+  /** Neutral 950 at 8% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
+  --color-alpha-neutral-950-8: #0A0A0A14;
+  /** Neutral 950 at 12% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
+  --color-alpha-neutral-950-12: #0A0A0A1F;
+  /** Neutral 950 at 16% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead. */
+  --color-alpha-neutral-950-16: #0A0A0A29;
   /** White page background, the default canvas. Containers placed directly on it use bg-surface (grey). For the grey canvas use bg-secondary. Match the suffix: bg pairs with bg-surface. */
   --color-bg: #FFFFFF;
   /** Grey page background, the alternate canvas for screens built from stacked cards. Containers placed directly on it use bg-surface-secondary (white). bg-fill-secondary is the same grey, so chips, segmented tracks and skeletons on this canvas need a border or a different fill. Match the suffix: bg-secondary pairs with bg-surface-secondary. */
@@ -833,6 +843,20 @@
   --opacity-scale-90: 0.9;
   --opacity-scale-95: 0.95;
   --opacity-scale-100: 1;
+  --shadow-offset-0: 0px;
+  --shadow-offset-1: 1px;
+  --shadow-offset-2: 2px;
+  --shadow-offset-4: 4px;
+  --shadow-offset-8: 8px;
+  --shadow-offset-16: 16px;
+  --shadow-blur-2: 2px;
+  --shadow-blur-4: 4px;
+  --shadow-blur-6: 6px;
+  --shadow-blur-8: 8px;
+  --shadow-blur-12: 12px;
+  --shadow-blur-16: 16px;
+  --shadow-blur-24: 24px;
+  --shadow-blur-48: 48px;
   /** Largest headline — page titles and hero headings; typically one per view. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-large-regular-font-family: Lato;
   --headline-large-regular-font-weight: 400;
@@ -1135,6 +1159,18 @@
   --opacity-state-layer-dragged: 0.16;
   /** Opacity of the dim laid over the page behind a modal, drawer or bottom sheet. Apply it to a full-bleed layer filled with color.bg-surface-inverse — that pairing is what makes the scrim track the palette instead of hard-coding a black wash. */
   --opacity-scrim: 0.32;
+  /** Resting elevation for cards and tiles on the page, just enough lift to separate a white card from either canvas. Use raised once the card is hovered, dragged or pinned above scrolling content. */
+  --shadow-card: 0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F;
+  /** Lighter alternative to card, about half its weight, for tiles and list items where a border would feel heavy. Use card when the element needs to read clearly as lifted, and card-soft for a diffuse look. */
+  --shadow-card-subtle: 0px 1px 2px #0A0A0A0A, 0px 2px 8px #0A0A0A0A;
+  /** Diffuse alternative to card with almost no edge, for feature and promotional cards that should float softly on the page. Use card-subtle for a lighter touch, and raised once the card is hovered or dragged. */
+  --shadow-card-soft: 0px 2px 8px #0A0A0A0A, 0px 8px 24px #0A0A0A0F;
+  /** Lifted elevation for elements floating a little above the content around them: hovered or dragged cards, sticky headers and footers, floating action buttons. Use overlay for layers that open on top of the page. */
+  --shadow-raised: 0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14;
+  /** Elevation for transient layers opened over the page without blocking it: menus, dropdowns, popovers, tooltips and toasts. Use modal when the layer blocks the page behind a scrim. */
+  --shadow-overlay: 0px 4px 8px #0A0A0A14, 0px 8px 24px #0A0A0A1F;
+  /** Highest elevation, for layers that block the page: dialogs and bottom sheets, always shown over the scrim. Nothing in the product sits above it. */
+  --shadow-modal: 0px 8px 16px #0A0A0A1F, 0px 16px 48px #0A0A0A29;
   /** Background of the primary (solid fill) button — default intent, at rest. */
   --button-bg-primary-default: #0067E8;
   /** Background of the primary (solid fill) button — destructive intent, at rest. */

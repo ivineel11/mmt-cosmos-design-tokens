@@ -7,7 +7,7 @@ import { contrast, formatRatio, HEX, isFullyTransparent, luminance } from "../..
 import { opacityProblems } from "../../lib/opacity.mjs";
 import { describePrimitives } from "../../describe-primitives.mjs";
 import { TOKENS_FILE } from "../lib/context.mjs";
-import { aliasTarget, isLeaf, isPlainObject, referencesIn, TIERS } from "../lib/tokens.mjs";
+import { aliasTarget, isLeaf, isPlainObject, membersOf, referencesIn, TIERS } from "../lib/tokens.mjs";
 
 // ------------------------------------------------------------------ helpers --
 
@@ -39,7 +39,21 @@ export const TYPE_FAMILY = {
   dimension: "dimension",
   opacity: "opacity",
   typography: "typography",
+  boxShadow: "shadow",
 };
+
+/**
+ * What each member of a shadow layer must alias. Offsets and blur come from their own
+ * primitive scales and the colour from the translucent alpha palette, because a shadow
+ * layer carries its alpha in the colour rather than taking an opacity token.
+ */
+const SHADOW_MEMBERS = {
+  x: "shadowOffset",
+  y: "shadowOffset",
+  blur: "shadowBlur",
+  color: "color.alpha",
+};
+const MAX_SHADOW_LAYERS = 2;
 
 const TYPOGRAPHY_MEMBERS = {
   fontFamily: "fontFamily",
@@ -61,10 +75,24 @@ export const camelName = (parts) =>
     .map((w, i) => (i === 0 || !/^[a-z]/.test(w) ? w : w[0].toUpperCase() + w.slice(1)))
     .join("");
 
-/** Names every leaf emits: composite typography expands into one name per member. */
-export function emittedPaths(leaf) {
+/**
+ * Names a leaf emits. Composite typography expands into one name per member everywhere.
+ * A shadow stays whole on web (one box-shadow) and expands into one name per layer member
+ * on iOS and Android (shadowCard1OffsetX). `platform` is "web", "native" or "all" (every
+ * name any platform emits, for collision checks).
+ */
+export function emittedPaths(leaf, platform = "all") {
   if (leaf.type === "typography" && isPlainObject(leaf.value)) {
     return Object.keys(leaf.value).map((member) => [...leaf.path, member]);
+  }
+  if (leaf.type === "boxShadow" && Array.isArray(leaf.value)) {
+    const renamed = { x: "offsetX", y: "offsetY" };
+    const layers = leaf.value.flatMap((layer, i) =>
+      isPlainObject(layer) ? Object.keys(layer).map((m) => [...leaf.path, `${i + 1}`, renamed[m] ?? m]) : [],
+    );
+    if (platform === "web") return [leaf.path];
+    if (platform === "native") return layers;
+    return [leaf.path, ...layers];
   }
   return [leaf.path];
 }
@@ -267,6 +295,8 @@ const valueFormat = {
         if (typeof v !== "string" || !v.trim() || /["']/.test(v)) report(`is ${JSON.stringify(v)}; a font family is a bare name — the build adds platform quoting.`);
       } else if (family === "typography") {
         if (!isPlainObject(v)) report("must be a composite object (fontFamily, fontWeight, fontSize, lineHeight).");
+      } else if (family === "shadow") {
+        if (!Array.isArray(v) || !v.length || !v.every(isPlainObject)) report("must be an array of shadow layers ({ x, y, blur, color }), even when there is only one.");
       }
     }
   },
@@ -300,8 +330,7 @@ const reference = {
     const { model } = t;
     for (const leaf of model.leaves) {
       const report = (message) => api.report({ ...at(leaf), message: `${label(leaf)} ${message}` });
-      const strings = typeof leaf.value === "string" ? [leaf.value] : isPlainObject(leaf.value) ? Object.values(leaf.value) : [];
-      for (const s of strings) {
+      for (const [, s] of membersOf(leaf.value)) {
         if (typeof s !== "string" || !s.includes("{")) continue;
         if (!aliasTarget(s) && !GRADIENT.test(s)) {
           report(`embeds a reference inside a longer string (${JSON.stringify(s)}). Only a whole-value alias like "{color.brand.700}" resolves on every platform (gradients excepted).`);
@@ -365,8 +394,7 @@ const aliasRequired = {
     if (!t) return;
     for (const leaf of t.model.leaves) {
       if (leaf.tier === "primitives" || leaf.type === "opacity") continue; // opacity: tokens/opacity
-      const members = isPlainObject(leaf.value) ? Object.entries(leaf.value) : [[null, leaf.value]];
-      for (const [member, v] of members) {
+      for (const [member, v] of membersOf(leaf.value)) {
         if (typeof v === "string" && aliasTarget(v)) continue;
         api.report({
           ...at(leaf),
@@ -475,6 +503,40 @@ const typography = {
           report(`.${m} is ${leaf.value[m]} but ${first.id} uses ${first.value[m]}. Weights of one size share metrics; only fontWeight varies.`);
         }
       }
+    }
+  },
+};
+
+// ---------------------------------------------------------------- shadow ---
+
+const shadow = {
+  id: "tokens/shadow",
+  description: "Shadows are one or two drop-shadow layers of x, y, blur and color only, aliasing shadowOffset, shadowBlur and color.alpha primitives (README → Shadow tokens). No spread and no inner shadows: SwiftUI and Compose cannot draw them.",
+  check(api) {
+    const t = load(api);
+    if (!t) return;
+    for (const leaf of t.model.leaves) {
+      if (leaf.type !== "boxShadow" || !Array.isArray(leaf.value)) continue;
+      const report = (message) => api.report({ ...at(leaf), message: `${label(leaf)} ${message}` });
+      if (leaf.value.length > MAX_SHADOW_LAYERS) {
+        report(`has ${leaf.value.length} layers. Cosmos shadows use at most ${MAX_SHADOW_LAYERS} (a tight key layer and a soft ambient one), because iOS and Android draw one layer per modifier.`);
+      }
+      leaf.value.forEach((layer, i) => {
+        if (!isPlainObject(layer)) return; // tokens/value-format
+        const n = i + 1;
+        const keys = Object.keys(layer);
+        const missing = Object.keys(SHADOW_MEMBERS).filter((m) => !keys.includes(m));
+        if (missing.length) report(`layer ${n} is missing ${missing.join(", ")}. Every layer states all four, so no platform falls back to its own default.`);
+        for (const key of keys) {
+          if (key === "spread") report(`layer ${n} has a spread. SwiftUI shadows have no spread and Compose elevation has none either, so the shadow would look different on every platform; grow the blur instead.`);
+          else if (key === "type") report(`layer ${n} sets a type. Every Cosmos shadow is a drop shadow, which is the default; leave the type out.`);
+          else if (!(key in SHADOW_MEMBERS)) report(`layer ${n} has "${key}"; a layer holds only ${Object.keys(SHADOW_MEMBERS).join(", ")}.`);
+        }
+        for (const [member, root] of Object.entries(SHADOW_MEMBERS)) {
+          const ref = aliasTarget(layer[member]);
+          if (ref && !ref.startsWith(`${root}.`)) report(`layer ${n}.${member} aliases {${ref}}; it should alias a ${root}.* primitive.`);
+        }
+      });
     }
   },
 };
@@ -792,6 +854,7 @@ export default [
   noDisabledOpacity,
   canvasAsFill,
   typography,
+  shadow,
   scaleOrder,
   colorRamp,
   semanticColorRole,

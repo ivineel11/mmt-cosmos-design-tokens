@@ -17,15 +17,29 @@ export const isLeaf = (node) => isPlainObject(node) && ("value" in node || "$val
 export const leafValue = (node) => node.value ?? node.$value;
 export const leafType = (node) => node.type ?? node.$type;
 
-/** Every `{ref}` inside a token value, including inside composite (typography) values. */
+/** Every `{ref}` inside a token value, including inside composite (typography, shadow) values. */
 export function referencesIn(value) {
   const found = [];
   const scan = (v) => {
     if (typeof v === "string") for (const m of v.matchAll(REFERENCE)) found.push(m[1]);
-    else if (isPlainObject(v)) Object.values(v).forEach(scan);
+    else if (Array.isArray(v) || isPlainObject(v)) Object.values(v).forEach(scan);
   };
   scan(value);
   return found;
+}
+
+/**
+ * The scalar members of a value as [name, value] pairs: [[null, v]] for a plain value,
+ * one pair per key for a typography object, and "1.color"-style names for the layers of
+ * a shadow array (numbered from 1, as the build numbers them).
+ */
+export function membersOf(value) {
+  if (Array.isArray(value)) {
+    return value.flatMap((layer, i) =>
+      isPlainObject(layer) ? Object.entries(layer).map(([k, v]) => [`${i + 1}.${k}`, v]) : [[`${i + 1}`, layer]],
+    );
+  }
+  return isPlainObject(value) ? Object.entries(value) : [[null, value]];
 }
 
 export function aliasTarget(value) {
