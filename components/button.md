@@ -309,7 +309,7 @@ _Confidence: high._
 
 | Element | rest | hovered (platform-driven) | pressed (platform-driven) | focus-visible (platform-driven) | isDisabled === true | Notes |
 |---|---|---|---|---|---|---|
-| Container fill | var(--button-bg-secondary-default) | var(--button-bg-secondary-hover) (#D6EFFF) | var(--button-bg-secondary-pressed) (#B5E3FF) | var(--button-bg-secondary-default) | var(--button-bg-secondary-disabled) | Surface fill. Transparent at rest. |
+| Container fill | var(--button-bg-secondary-default) | var(--button-bg-secondary-hover) (#D6EFFF) | var(--button-bg-secondary-pressed) (#C2E8FF) | var(--button-bg-secondary-default) | var(--button-bg-secondary-disabled) | Surface fill. Transparent at rest. |
 | Container stroke | var(--button-border-secondary-default) (#0067E8) | var(--button-border-secondary-hover) (#0681FF) | var(--button-border-secondary-pressed) (#0857C5) | var(--button-border-secondary-default) (#0067E8) | var(--button-border-secondary-disabled) (#A1A1A1) | Visible outline border stroke |
 | Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
 | Leading icon fill | color/icon-brand (#0067E8) | color/icon-brand (#0067E8) | color/icon-brand (#0067E8) | color/icon-brand (#0067E8) | color/icon-disabled (#A1A1A1) | Leading slot icon (Icon / plus) |
@@ -333,7 +333,7 @@ _Confidence: high._
 
 | Element | rest | hovered (platform-driven) | pressed (platform-driven) | focus-visible (platform-driven) | isDisabled === true | Notes |
 |---|---|---|---|---|---|---|
-| Container fill | var(--button-bg-tertiary-default) (#EDF8FF) | var(--button-bg-tertiary-hover) (#D6EFFF) | var(--button-bg-tertiary-pressed) (#B5E3FF) | var(--button-bg-tertiary-default) (#EDF8FF) | var(--button-bg-tertiary-disabled) (#E5E5E5) | Button surface fill |
+| Container fill | var(--button-bg-tertiary-default) (#EDF8FF) | var(--button-bg-tertiary-hover) (#D6EFFF) | var(--button-bg-tertiary-pressed) (#C2E8FF) | var(--button-bg-tertiary-default) (#EDF8FF) | var(--button-bg-tertiary-disabled) (#E5E5E5) | Button surface fill |
 | Container stroke | var(--button-border-tertiary-default) | var(--button-border-tertiary-hover) | var(--button-border-tertiary-pressed) | var(--button-border-tertiary-default) | var(--button-border-tertiary-disabled) | Border token renders fully transparent |
 | Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
 | Leading icon fill | color/icon-brand (#0067E8) | color/icon-brand (#0067E8) | color/icon-brand (#0067E8) | color/icon-brand (#0067E8) | color/icon-disabled (#A1A1A1) | Leading slot icon (Icon / plus) |
