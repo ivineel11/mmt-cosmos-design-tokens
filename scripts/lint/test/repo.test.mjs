@@ -92,7 +92,7 @@ describe("docs rules", () => {
       "| Token | Role |",
       "|---|---|",
       "| `color.text-primary` | Body |",
-      "**Totals:** 1 primitive tokens · 2 semantic tokens (199 colors + 36 typography) · 3 component tokens (120 `button/*` + 1 `checkbox/*`) · **896 values per platform** · **0 gradients**",
+      "**Totals:** 1 primitive tokens · 2 semantic tokens (199 colors + 36 typography) · 3 component tokens (120 `button/*` + 1 `checkbox/*`) · **918 values on web** · **946 on iOS and Android** · **0 gradients**",
       "Button (120 tokens) and Radio (5 tokens) qualify.",
     ].join("\n"));
     const hits = ofRule(await lint(root, "docs/readme-counts"), "docs/readme-counts");

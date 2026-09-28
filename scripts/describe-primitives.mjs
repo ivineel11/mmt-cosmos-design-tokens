@@ -79,6 +79,31 @@ const EXPLICIT = {
   "fontWeight.black": "Heaviest of the three weights, for promotional and marketing emphasis rather than routine UI.",
 };
 
+/**
+ * The alpha palette holds the only colours with alpha baked into the hex. Apart from
+ * `transparent`, each step is a palette step at a fixed alpha, keyed {family}-{step}-{percent}
+ * (neutral-950-8), and exists for shadow layers, which take one colour and so cannot be
+ * given a separate opacity token. The key is checked against the value so it cannot lie.
+ */
+function alphaDescription(json, key, value, isReferenced) {
+  if (key === "transparent") {
+    return "Fully transparent. Contrast is undefined — whatever sits behind shows through, so accessibility depends on that backdrop rather than on this token.";
+  }
+  const m = /^([a-z]+)-(\d+)-(\d+)$/.exec(key);
+  const base = m && json.primitives.color[m[1]]?.[m[2]]?.value;
+  if (!base) {
+    throw new Error(`color.alpha.${key} should be keyed {family}-{step}-{percent} after an existing palette step, like neutral-950-8.`);
+  }
+  const percent = Number(m[3]);
+  const expected = `${base}${Math.round(percent * 2.55).toString(16).toUpperCase().padStart(2, "0")}`;
+  if (value !== expected) {
+    throw new Error(`color.alpha.${key} should be ${expected} (${base} at ${percent}% alpha), got ${value}.`);
+  }
+  const family = m[1][0].toUpperCase() + m[1].slice(1);
+  const text = `${family} ${m[2]} at ${percent}% alpha, for shadow layers only. A shadow layer takes a single colour, so its alpha lives in the hex; everywhere else, apply an opacity token to a solid colour instead.`;
+  return isReferenced ? text : `${text} ${UNREFERENCED}`;
+}
+
 // --- apply ---------------------------------------------------------------------
 const UNREFERENCED = "Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system.";
 
@@ -107,8 +132,11 @@ export function describePrimitives(json) {
         for (const m of String(s).matchAll(/\{([^}]+)\}/g)) referenced.add(m[1]);
       };
       const v = node.value;
-      if (typeof v === "string") scan(v);
-      else if (v && typeof v === "object") Object.values(v).forEach(scan);
+      const scanAll = (x) => {
+        if (typeof x === "string") scan(x);
+        else if (x && typeof x === "object") Object.values(x).forEach(scanAll);
+      };
+      scanAll(v);
       return;
     }
     if (node && typeof node === "object" && !Array.isArray(node)) Object.values(node).forEach(walk);
@@ -120,10 +148,7 @@ export function describePrimitives(json) {
   for (const [family, steps] of Object.entries(json.primitives.color)) {
     for (const [step, token] of Object.entries(steps)) {
       if (family === "alpha") {
-        setDescription(
-          token,
-          "Fully transparent. Contrast is undefined — whatever sits behind shows through, so accessibility depends on that backdrop rather than on this token.",
-        );
+        setDescription(token, alphaDescription(json, step, token.value, referenced.has(`color.alpha.${step}`)));
       } else {
         setDescription(token, colorDescription(family, step, token.value, textPrimary, textInverse));
       }

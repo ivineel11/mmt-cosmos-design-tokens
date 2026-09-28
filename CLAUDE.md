@@ -26,6 +26,7 @@ There are no tests or linter. The build is the check: it resolves every referenc
 - **Every semantic and component token needs a `description`** that states intent and boundary (which neighbouring token to use instead) and not the value. Descriptions sync to Figma, so **don't use apostrophes** in them, because Figma HTML-escapes them.
 - Opacity is a decimal from 0 to 1 in JSON (Figma holds the percentage). Every `opacityScale` step needs an `opacity.*` mirror, and the build throws otherwise.
 - Keep `$metadata.tokenSetOrder` as `["primitives", "semantic", "component"]`.
+- Shadows (`semantic.shadow.*`) are one or two drop-shadow layers of `x`, `y`, `blur` and `color` only, aliasing `shadowOffset.*`, `shadowBlur.*` and `color.alpha.*` primitives. No spread and no inner shadows: SwiftUI and Compose cannot draw them.
 - Name semantic tokens by role (`text-caution`), not by value (`text-yellow-700`).
 - After changing a primitive colour, re-run `describe-primitives.mjs` so the quoted contrast ratios stay correct.
 - When a token's name, value or count changes, update the matching README inventory and mapping tables in the same commit.

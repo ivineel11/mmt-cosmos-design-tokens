@@ -32,12 +32,12 @@ function tokenIndex(api) {
   const { model } = t;
   const cssToLeaf = new Map();
   for (const leaf of model.leaves) {
-    for (const parts of emittedPaths(leaf)) {
+    for (const parts of emittedPaths(leaf, "web")) {
       if (parts.length === leaf.path.length) cssToLeaf.set(cssName(parts), leaf);
     }
   }
   const componentGroups = new Set(Object.keys(t.value.component ?? {}));
-  const cssVars = api.distCssVars() ?? new Set([...model.leaves.flatMap((l) => emittedPaths(l).map(cssName))]);
+  const cssVars = api.distCssVars() ?? new Set([...model.leaves.flatMap((l) => emittedPaths(l, "web").map(cssName))]);
   const cssPrefixes = new Set([...cssVars].map((v) => v.slice(2).split("-")[0]));
 
   /** Resolve a doc spelling (`color.bg`, `bg`, `button/bg-x`, `--space-md`, `{x}`) to a leaf. */
@@ -308,15 +308,15 @@ function counts(t) {
     palettes,
     paletteSteps: palettes.reduce((n, p) => n + leavesIn(t.value.primitives.color[p]), 0),
     total: model.leaves.length,
-    emitted: model.leaves.reduce((n, l) => n + emittedPathsCount(l), 0),
+    emittedWeb: model.leaves.reduce((n, l) => n + emittedPaths(l, "web").length, 0),
+    emittedNative: model.leaves.reduce((n, l) => n + emittedPaths(l, "native").length, 0),
     gradients: model.leaves.filter((l) => typeof l.value === "string" && /linear-gradient\(/.test(l.value)).length,
   };
 }
-const emittedPathsCount = (leaf) => emittedPaths(leaf).length;
 
 const readmeCounts = {
   id: "docs/readme-counts",
-  description: "The inventory numbers the README states — per-tier and per-group token counts, section heading counts, the totals line, palettes and emitted values per platform — match tokens.json.",
+  description: "The inventory numbers the README states — per-tier and per-group token counts, section heading counts, the totals line, palettes and the values emitted on web and on iOS and Android — match tokens.json.",
   check(api) {
     const t = api.tokens();
     if (t.error || !api.exists("README.md")) return;
@@ -366,7 +366,7 @@ const readmeCounts = {
     for (const line of d.lines) {
       if (line.inFence) continue;
       const text = line.text;
-      const totals = /\*\*Totals:\*\*\s*(\d+) primitive tokens · (\d+) semantic tokens \(([^)]*)\) · (\d+) component tokens \(([^)]*)\) · \*\*(\d+) values per platform\*\* · \*\*(\d+) gradients\*\*/.exec(text);
+      const totals = /\*\*Totals:\*\*\s*(\d+) primitive tokens · (\d+) semantic tokens \(([^)]*)\) · (\d+) component tokens \(([^)]*)\) · \*\*(\d+) values on web\*\* · \*\*(\d+) on iOS and Android\*\* · \*\*(\d+) gradients\*\*/.exec(text);
       if (text.includes("**Totals:**")) sawTotals = true;
       if (totals) {
         expect(line.n, "primitive tokens", totals[1], c.byTier("primitives"));
@@ -380,13 +380,14 @@ const readmeCounts = {
         for (const m of totals[5].matchAll(/(\d+) `(\w+)\/\*`/g)) {
           if (comp[m[2]]) expect(line.n, `${m[2]}/* tokens`, m[1], c.leavesIn(comp[m[2]]));
         }
-        expect(line.n, "values per platform", totals[6], c.emitted);
-        expect(line.n, "gradient tokens", totals[7], c.gradients);
+        expect(line.n, "values on web", totals[6], c.emittedWeb);
+        expect(line.n, "values on iOS and Android", totals[7], c.emittedNative);
+        expect(line.n, "gradient tokens", totals[8], c.gradients);
       } else if (text.includes("**Totals:**")) {
-        report(line.n, "Could not parse the **Totals:** line, so its numbers are unchecked. Keep the shape `N primitive tokens · N semantic tokens (…) · N component tokens (…) · **N values per platform** · **N gradients**`.");
+        report(line.n, "Could not parse the **Totals:** line, so its numbers are unchecked. Keep the shape `N primitive tokens · N semantic tokens (…) · N component tokens (…) · **N values on web** · **N on iOS and Android** · **N gradients**`.");
       }
 
-      const colorsLine = /all (\d+) color tokens \((\d+) primitive — (\d+) palette steps plus `[\w.]+` — \+ (\d+) semantic roles \+ (\d+) component tokens\)/.exec(text);
+      const colorsLine = /all (\d+) color tokens \((\d+) primitive — (\d+) palette steps plus [^—]+ — \+ (\d+) semantic roles \+ (\d+) component tokens\)/.exec(text);
       if (colorsLine) {
         expect(line.n, "color tokens", colorsLine[1], c.colors("primitives") + c.colors("semantic") + c.colors("component"));
         expect(line.n, "primitive color tokens", colorsLine[2], c.colors("primitives"));

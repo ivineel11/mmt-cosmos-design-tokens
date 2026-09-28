@@ -10,7 +10,10 @@ import { opacityProblems } from "./scripts/lib/opacity.mjs";
  *                                  (so `{fontFamily.x}` refs resolve) and aligns types
  *   mmt/rename-negative         -> `-12` keys become `minus12` (avoids name collisions)
  *   expand                      -> composite `typography` tokens become individual
- *                                  fontFamily / fontWeight / fontSize / lineHeight / letterSpacing
+ *                                  fontFamily / fontWeight / fontSize / lineHeight / letterSpacing;
+ *                                  on iOS and Android, composite shadows also become one
+ *                                  offsetX / offsetY / blur / color set per layer (web keeps
+ *                                  them whole as a CSS box-shadow shorthand)
  *
  * Outputs: web (CSS vars + ESM), iOS (SwiftUI Swift enum), Android (Compose Kotlin object).
  */
@@ -283,26 +286,28 @@ StyleDictionary.registerPreprocessor({
 });
 
 /**
- * Mark the first sub-key of every composite token that carries a description.
+ * Mark every composite token that carries a description with its own path.
  *
- * `expand` turns one composite `typography` token into four sub-tokens (fontFamily,
- * fontWeight, fontSize, lineHeight), and each inherits the parent's description — so
- * emitting it verbatim would repeat the same paragraph four times in the output. The
- * anchor records which sub-token should carry the comment; the rest stay silent.
+ * `expand` turns one composite token into several sub-tokens (a typography token into
+ * fontFamily / fontWeight / fontSize / lineHeight, a two-layer shadow into ten), and each
+ * inherits the parent description, so emitting it verbatim would repeat the same
+ * paragraph once per sub-token. The mark lets mmt/description/comment tell an expanded
+ * sub-token from its parent, so only the first sub-token of each composite carries the
+ * comment. A composite a platform keeps whole (shadows on web) still gets it once.
  */
-function markCommentAnchors(node) {
+function markCommentAnchors(node, path = []) {
   if (isTokenLeaf(node)) {
     const value = tokenValue(node);
-    if (node.description && value !== null && typeof value === "object" && !Array.isArray(value)) {
-      node.commentAnchor = Object.keys(value)[0];
+    if (node.description && value !== null && typeof value === "object") {
+      node.commentAnchor = path.join(".");
     }
     return node;
   }
   if (node === null || typeof node !== "object" || Array.isArray(node)) {
     return node;
   }
-  for (const child of Object.values(node)) {
-    markCommentAnchors(child);
+  for (const [key, child] of Object.entries(node)) {
+    markCommentAnchors(child, [...path, key]);
   }
   return node;
 }
@@ -488,13 +493,21 @@ public extension View {
 // Tokens Studio stores per-token prose in `description`; Style Dictionary's CSS
 // formatter emits `$description ?? comment`. Map one onto the other so descriptions
 // reach dist/web/tokens.css as comments above each custom property. Skipped for
-// expanded sub-tokens that are not the comment anchor (see mmt/comment-anchor).
+// every expanded sub-token after the first of its composite (see mmt/comment-anchor).
+// The first-seen record is kept per platform, since each platform transforms its own copy.
+const commentedComposites = new WeakMap();
+
 StyleDictionary.registerTransform({
   name: "mmt/description/comment",
   type: "attribute",
   filter: (token) => typeof token.description === "string" && token.description.length > 0,
-  transform: (token) => {
-    if (!token.commentAnchor || token.path.at(-1) === token.commentAnchor) {
+  transform: (token, platform) => {
+    if (!commentedComposites.has(platform)) commentedComposites.set(platform, new Set());
+    const seen = commentedComposites.get(platform);
+    const anchor = token.commentAnchor;
+    const isExpandedChild = anchor !== undefined && token.path.join(".") !== anchor;
+    if (!isExpandedChild || !seen.has(anchor)) {
+      if (isExpandedChild) seen.add(anchor);
       // Mutated in place, as sd-transforms' own ts/descriptionToComment does: the
       // return value of an attribute transform is merged into `token.attributes`,
       // which is not where a formatter looks for the comment.
@@ -513,7 +526,10 @@ const sd = new StyleDictionary({
     "mmt/resolve-gradient-colors",
     "mmt/comment-anchor",
   ],
-  expand: { typesMap: true },
+  // Typography expands everywhere. Shadows expand only on iOS and Android (see their
+  // platform `expand`): CSS takes a whole multi-layer box-shadow, SwiftUI and Compose
+  // draw one layer per modifier and need each layer's numbers separately.
+  expand: { typesMap: true, include: ["typography"] },
   platforms: {
     "web-css": {
       transforms: [
@@ -522,6 +538,7 @@ const sd = new StyleDictionary({
         "mmt/fontWeight/number",
         "name/kebab",
         "fontFamily/css",
+        "shadow/css/shorthand",
       ],
       buildPath: `${OUT_DIR}/web/`,
       files: [
@@ -535,13 +552,14 @@ const sd = new StyleDictionary({
       ],
     },
     "web-js": {
-      transforms: ["attribute/cti", "mmt/fontWeight/number", "name/camel"],
+      transforms: ["attribute/cti", "mmt/fontWeight/number", "name/camel", "shadow/css/shorthand"],
       buildPath: `${OUT_DIR}/web/`,
       files: [
         { destination: "tokens.ts", format: "javascript/esm", options: { minify: true } },
       ],
     },
     ios: {
+      expand: { typesMap: true, include: ["typography", "shadow"] },
       transforms: [
         "attribute/cti",
         "name/camel",
@@ -566,6 +584,7 @@ const sd = new StyleDictionary({
       ],
     },
     android: {
+      expand: { typesMap: true, include: ["typography", "shadow"] },
       transforms: [
         "attribute/cti",
         "name/camel",

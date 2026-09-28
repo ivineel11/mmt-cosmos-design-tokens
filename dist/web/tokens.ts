@@ -176,6 +176,10 @@ export default {
     },
     alpha: {
       transparent: "#FFFFFF00",
+      "neutral-950-6": "#0A0A0A0F",
+      "neutral-950-8": "#0A0A0A14",
+      "neutral-950-12": "#0A0A0A1F",
+      "neutral-950-16": "#0A0A0A29",
     },
     bg: "#FFFFFF",
     "bg-secondary": "#F5F5F5",
@@ -500,6 +504,24 @@ export default {
     95: "0.95",
     100: "1",
   },
+  shadowOffset: {
+    0: "0px",
+    1: "1px",
+    2: "2px",
+    4: "4px",
+    8: "8px",
+    16: "16px",
+  },
+  shadowBlur: {
+    2: "2px",
+    4: "4px",
+    6: "6px",
+    8: "8px",
+    12: "12px",
+    16: "16px",
+    24: "24px",
+    48: "48px",
+  },
   headline: {
     large: {
       regular: {
@@ -816,6 +838,12 @@ export default {
     "state-layer-pressed": "0.1",
     "state-layer-dragged": "0.16",
     scrim: "0.32",
+  },
+  shadow: {
+    card: "0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F",
+    raised: "0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14",
+    overlay: "0px 4px 8px #0A0A0A14, 0px 8px 24px #0A0A0A1F",
+    modal: "0px 8px 16px #0A0A0A1F, 0px 16px 48px #0A0A0A29",
   },
   button: {
     "bg-primary-default": "#0067E8",
