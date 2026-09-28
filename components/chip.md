@@ -23,7 +23,7 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 
 ### Composition
 
-- **Chip / Image** (constitutive — `557:64`) — circular placeholder for the leading image. Created for this component.
+- **Chip / Image** (constitutive — `557:64`) — circular placeholder for the leading image, filled with a sample beach photo (by Johannes Mändle, Unsplash License) so mocks read as travel. Created for this component and shared with Chip / Vertical.
 - **Chip / Remove** (constitutive — `557:2481`, 24 variants: Size × State × Selected) — the remove button of a removable chip. Created for this component.
 - **Icon / plus** (referenced — `55:11`) — default leading icon.
 - **Icon / chevron-down** (referenced — `557:61`) — default trailing icon. Created for this component.

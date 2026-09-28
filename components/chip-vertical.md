@@ -29,7 +29,7 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 
 ### Composition
 
-- **Chip / Image** (referenced, `557:64`): circular placeholder for the leading image, shared with Chip.
+- **Chip / Image** (referenced, `557:64`): circular placeholder for the leading image, shared with Chip. It ships with a beach photo (by Johannes Mändle, Unsplash License) so mocks read as travel; it is sample content, not a default to ship in code.
 - **Icon / plus** (referenced, `55:11`): default leading icon.
 - **Icon / chevron-down** (referenced, `557:61`): default label and secondary trailing icons.
 - _Decorative children: 2 (Border, Focus Ring). They are documented under Structure._
@@ -187,7 +187,6 @@ The accessible name is the label followed by the secondary text ("Economy, Rs 4,
 - **No truncation or max width.** Labels do not wrap or truncate. Keep them to one or two words; a product-defined max width and ellipsis rule is still to come, as on Chip.
 - **The secondary trailing icon toggle only matters while the secondary line is on.** Figma cannot nest the booleans, so the inspector shows both regardless.
 - **Leading image is not dimmed when disabled.** Disabled is a solid colour change in Cosmos, never an opacity, and an image cannot be recoloured. Desaturate it in code if needed, as on Chip.
-- **The Chip / Image placeholder is pale blue.** It blends into the selected hover fill in the variant grid; real images do not.
 - **Hover and pressed on the grey canvas.** As on Chip, an unselected borderless chip loses its fill on hover and pressed on `bg-secondary`.
 - **`chip/focus-ring-offset` is not bound in Figma.** The 4 px outset is ring geometry, as on Chip.
 - **No dark mode.** All variable collections are single-mode.
