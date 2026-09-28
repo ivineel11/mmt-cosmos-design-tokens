@@ -8,11 +8,13 @@
 
 ## Overview
 
-Chip / Vertical is the stacked sibling of [Chip](chip.md): an optional leading icon on top, then a required label, then an optional secondary line, all centred. It comes in two sizes, Small and Medium; there is no Large. Use it to choose among a few visual options where the icon carries meaning, such as trip type, cabin class or time of day. For a one-line filter, choice or removable tag, use Chip.
+Chip / Vertical is the stacked sibling of [Chip](chip.md): an optional leading icon **or** leading image on top, then a required label, then an optional secondary line, all centred. It comes in two sizes, Small and Medium; there is no Large. Use it to choose among a few visual options where the icon or image carries meaning, such as trip type, cabin class, airline or time of day. For a one-line filter, choice or removable tag, use Chip.
 
-It is a separate component set, not a `Direction` axis on Chip, so each set only shows properties that apply to it. The vertical chip has no leading image and no removable type. It reuses **every Chip colour token** and the Chip radius, padding-x, border and focus-ring tokens, and adds 14 `chip/vertical-*` tokens for the vertical padding, glyph sizes, gaps and the Medium radius.
+It is a separate component set, not a `Direction` axis on Chip, so each set only shows properties that apply to it. The vertical chip has no removable type. It reuses **every Chip colour token**, the `Chip / Image` component and the Chip radius, padding-x, image-radius, border and focus-ring tokens, and adds 16 `chip/vertical-*` tokens for the vertical padding, glyph and image sizes, gaps and the Medium radius.
 
-Three variant axes drive it. `Selected` carries the real value. `State` covers the five interaction states. `Size` scales padding, glyphs, type and the corner radius together.
+Four variant axes drive it. `Selected` carries the real value. `State` covers the five interaction states. `Size` scales padding, glyphs, type and the corner radius together. `Leading` picks what sits above the label: an icon, an image or nothing.
+
+**The leading slot is a variant, not two toggles.** Figma booleans cannot switch each other off, so separate `Show leading icon` and `Show leading image` toggles could both be on at once. As a single `Leading` choice (Icon, Image, None), only one element can ever render. Each variant contains only its own leading layer, so the inspector shows the `Leading icon` swap only for `Leading=Icon` and the `Leading image` swap only for `Leading=Image`.
 
 As on Chip, **the border is a layer, not a variant**: an absolutely positioned `Border` rectangle toggled by `Show border`. There is one difference. **A selected vertical chip always draws its border, whatever `Show border` says.** Chip relies on a check icon in the leading slot to show selection on the grey canvas, but the vertical chip leading slot is its content icon, so the border takes that job (see Accessibility).
 
@@ -23,10 +25,11 @@ As on Chip, **the border is a layer, not a variant**: an absolutely positioned `
 
 Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on Chip, so showing focus never reflows a row of chips.
 
-**Variant axes.** 3 axes across 20 variants: **Size** (Small, Medium; default `Small` in Figma, `medium` in code); **State** (Default, Hover, Pressed, Focus, Disabled; default `Default`); **Selected** (False, True; default `False`).
+**Variant axes.** 4 axes across 60 variants: **Size** (Small, Medium; default `Small` in Figma, `medium` in code); **State** (Default, Hover, Pressed, Focus, Disabled; default `Default`); **Selected** (False, True; default `False`); **Leading** (Icon, Image, None; default `Icon`).
 
 ### Composition
 
+- **Chip / Image** (referenced, `557:64`): circular placeholder for the leading image, shared with Chip.
 - **Icon / plus** (referenced, `55:11`): default leading icon.
 - **Icon / chevron-down** (referenced, `557:61`): default label and secondary trailing icons.
 - _Decorative children: 2 (Border, Focus Ring). They are documented under Structure._
@@ -40,7 +43,9 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 | Property | Type | Values | Default | Notes |
 |---|---|---|---|---|
 | `label` | string | (string) | – | Visible text. The design source ships "Label" as placeholder copy. |
-| `icon` | icon | (icon) | `none` | Leading icon above the label. Leave it out for text-only options such as dates with fares. |
+| `leading` | enum | icon \| image \| none | `icon` | What sits above the label. Maps to Figma `Leading`. A chip renders the icon or the image, never both. |
+| `icon` | icon | (icon) | – | Leading glyph, used when `leading=icon`. |
+| `image` | image | (source) | – | Circular leading image, used when `leading=image`: airline logo, avatar, flag. |
 | `secondaryText` | string | (string) | `none` | Supporting line under the label, such as a fare. When absent, the node is not rendered. |
 | `labelTrailingIcon` | icon | (icon) | `none` | Glyph after the label, for example a chevron for a chip that opens a menu. |
 | `secondaryTrailingIcon` | icon | (icon) | `none` | Glyph after the secondary line, for example an info mark next to a fare. |
@@ -58,8 +63,8 @@ These are on the component set so every slot can be set from the right-hand insp
 | `Label` | TEXT | `"Label"` | Placeholder copy. |
 | `Show secondary text` | BOOLEAN | `false` | Toggles the secondary row (text and its trailing icon). |
 | `Secondary text` | TEXT | `"Secondary text"` | Placeholder copy. |
-| `Show leading icon` | BOOLEAN | `true` | Hides the leading icon; the chip then hugs its text. |
-| `Leading icon` | INSTANCE_SWAP | `Icon / plus` | Preferred values: the Icon set. |
+| `Leading icon` | INSTANCE_SWAP | `Icon / plus` | `Leading=Icon` only. Preferred values: the Icon set. |
+| `Leading image` | INSTANCE_SWAP | `Chip / Image` | `Leading=Image` only. To change one photo, select the nested `Image` layer and replace its fill. To offer a reusable image from the inspector, build a component with the same structure (a circle frame clipping an `Image` layer) and add it to the preferred values. |
 | `Show label trailing icon` | BOOLEAN | `false` | |
 | `Label trailing icon` | INSTANCE_SWAP | `Icon / chevron-down` | Preferred values: the Icon set. |
 | `Show secondary trailing icon` | BOOLEAN | `false` | Only shows while `Show secondary text` is on. |
@@ -75,7 +80,8 @@ Swapped icons keep the chip icon colour.
 | 1 | `label="One way"`, `icon=<plane>`, `selected`; siblings "Round trip", "Multi-city" | Single-choice trip type row. Set each instance to Fill so the chips are equal width. |
 | 2 | `label="Economy"`, `secondaryText="Rs 4,532"`, `labelTrailingIcon=chevron-down`, `selected` | Cabin class with a fare. |
 | 3 | `label="Afternoon"`, `bordered=false`, `selected` on `bg-secondary` | The border stays on because the chip is selected. |
-| 4 | `label="Fri, 12 Dec"`, `secondaryText="Rs 4,532"`, no icon, `selected` | Date and fare picker without a leading icon. |
+| 4 | `label="Fri, 12 Dec"`, `secondaryText="Rs 4,532"`, `leading=none`, `selected` | Date and fare picker without a leading element. |
+| 5 | `label="IndiGo"`, `secondaryText="Rs 4,532"`, `leading=image`, `image=<logo>`, `selected` | Airline picker with fares. |
 
 ---
 
@@ -87,7 +93,9 @@ Swapped icons keep the chip icon colour.
 Chip / Vertical (component set · 592:327)
 ├─ Focus Ring (rectangle) · decorative · a11y-hidden · absolute, 4 px outside the chip
 ├─ Border (rectangle) · decorative · absolute, stretched · toggled by Show border on unselected variants, always on when selected
-├─ Leading icon (instance · Icon / plus) · a11y-hidden · toggled by Show leading icon
+├─ Leading icon (instance · Icon / plus) · a11y-hidden · Leading=Icon only
+│  or Leading image (instance · Chip / Image) · Leading=Image only
+│  or nothing · Leading=None
 └─ Text (frame · vertical · centred · 2 px gap)
    ├─ Label row (frame · horizontal)
    │  ├─ Label (text · centred)
@@ -107,12 +115,16 @@ The root is a vertical auto-layout stack with `counterAxisAlignItems = CENTER`, 
 |---|---|---|---|
 | Height, icon and label | 56 | 72 | hugs content |
 | Height, icon, label and secondary line | 74 | 90 | hugs content |
-| Height, label only (icon off) | 32 | 44 | hugs content |
-| Height, label and secondary line (icon off) | 50 | 62 | hugs content |
+| Height, image and label | 60 | 80 | hugs content |
+| Height, image, label and secondary line | 78 | 98 | hugs content |
+| Height, label only (`Leading=None`) | 32 | 44 | hugs content |
+| Height, label and secondary line (`Leading=None`) | 50 | 62 | hugs content |
 | Padding x | 8 | 12 | `chip/padding-x-*` (shared with Chip) |
 | Padding y | 8 | 12 | `chip/vertical-padding-y-*` |
 | Leading icon | 20 | 24 | `chip/vertical-icon-size-*` |
-| Leading icon to text gap | 4 | 4 | `chip/vertical-gap-*` |
+| Leading image | 24 | 32 | `chip/vertical-image-size-*` |
+| Leading image radius | full | full | `chip/image-radius` (shared) |
+| Leading icon or image to text gap | 4 | 4 | `chip/vertical-gap-*` |
 | Label type | 12 / 16 bold | 14 / 20 bold | `label/{small,medium}/bold` |
 | Secondary type | 12 / 16 regular | 12 / 16 regular | `body/small/regular` |
 | Label to secondary gap | 2 | 2 | `chip/vertical-gap-text` |
@@ -141,7 +153,7 @@ The vertical chip uses the Chip colour tokens unchanged. See [Chip, Color](chip.
 | Leading icon, both trailing icons | `chip/icon-unselected-default`, `chip/icon-selected-default`, `chip/icon-disabled` |
 | Focus ring | `chip/focus-ring` |
 
-The secondary trailing icon follows the icon tokens, not the secondary text: on a selected chip it turns brand blue while the secondary line stays grey.
+The leading image is never recoloured. The secondary trailing icon follows the icon tokens, not the secondary text: on a selected chip it turns brand blue while the secondary line stays grey.
 
 ---
 
@@ -162,11 +174,11 @@ On the grey canvas with the border off, a selected fill (`#EDF8FF`) is 1.01:1 ag
 | Choice (single-select in a group), the usual case | `role="radiogroup"` on the row, `role="radio"` + `aria-checked` on each chip, arrow-key roving focus | Button trait + `.isSelected`, group labelled | `Modifier.selectable` with `Role.RadioButton` inside `selectableGroup()` |
 | Filter (multi-select) | `<button aria-pressed="true\|false">` | Button trait, `.isSelected` when selected | `Modifier.toggleable`, `selected` |
 
-The accessible name is the label followed by the secondary text ("Economy, Rs 4,532"). The leading icon and both trailing icons are presentational. If a trailing icon carries meaning, such as a chevron that opens a menu, express it in semantics (`aria-haspopup`, hint "Opens menu"), not as an extra label.
+The accessible name is the label followed by the secondary text ("Economy, Rs 4,532"). The leading icon and both trailing icons are presentational. The leading image needs alt text only when it carries information the label does not; an airline logo beside the airline name is decorative (`alt=""`). If a trailing icon carries meaning, such as a chevron that opens a menu, express it in semantics (`aria-haspopup`, hint "Opens menu"), not as an extra label.
 
 **Precedence.** `disabled` wins: a disabled chip is not selectable.
 
-**Touch target.** With the leading icon off, a Small chip is only 32 tall, and a short label can leave any chip narrower than 48 (a Small chip labelled "Label" is 45 wide). Expand the hit area to `chip/min-touch-target` (48) in code, or lay chips out at Fill width.
+**Touch target.** With `Leading=None`, a Small chip is only 32 tall, and a short label can leave any chip narrower than 48 (a Small chip labelled "Label" is 45 wide). Expand the hit area to `chip/min-touch-target` (48) in code, or lay chips out at Fill width.
 
 ---
 
@@ -174,6 +186,8 @@ The accessible name is the label followed by the secondary text ("Economy, Rs 4,
 
 - **No truncation or max width.** Labels do not wrap or truncate. Keep them to one or two words; a product-defined max width and ellipsis rule is still to come, as on Chip.
 - **The secondary trailing icon toggle only matters while the secondary line is on.** Figma cannot nest the booleans, so the inspector shows both regardless.
+- **Leading image is not dimmed when disabled.** Disabled is a solid colour change in Cosmos, never an opacity, and an image cannot be recoloured. Desaturate it in code if needed, as on Chip.
+- **The Chip / Image placeholder is pale blue.** It blends into the selected hover fill in the variant grid; real images do not.
 - **Hover and pressed on the grey canvas.** As on Chip, an unselected borderless chip loses its fill on hover and pressed on `bg-secondary`.
 - **`chip/focus-ring-offset` is not bound in Figma.** The 4 px outset is ring geometry, as on Chip.
 - **No dark mode.** All variable collections are single-mode.
@@ -183,12 +197,13 @@ The accessible name is the label followed by the secondary text ("Economy, Rs 4,
 
 ## Token reference
 
-14 tokens were added under `component.chip` in `tokens/tokens.json`, mirrored 1:1 as `chip/vertical-*` in the Figma `component` collection:
+16 tokens were added under `component.chip` in `tokens/tokens.json`, mirrored 1:1 as `chip/vertical-*` in the Figma `component` collection:
 
 | Token | Alias | Value (sm / md) |
 |---|---|---|
 | `chip/vertical-padding-y-{sm,md}` | `{space.xs}`, `{space.sm}` | 8 / 12 |
 | `chip/vertical-icon-size-{sm,md}` | `{icon.sm}`, `{icon.md}` | 20 / 24 |
+| `chip/vertical-image-size-{sm,md}` | `{icon.md}`, `{icon.lg}` | 24 / 32 |
 | `chip/vertical-gap-{sm,md}` | `{space.2xs}`, `{space.2xs}` | 4 / 4 |
 | `chip/vertical-label-trailing-icon-size-{sm,md}` | `{icon.2xs}`, `{icon.xs}` | 12 / 16 |
 | `chip/vertical-secondary-trailing-icon-size-{sm,md}` | `{icon.2xs}`, `{icon.2xs}` | 12 / 12 |
@@ -197,4 +212,4 @@ The accessible name is the label followed by the secondary text ("Economy, Rs 4,
 | `chip/vertical-radius-md` | `{radius.lg}` | – / 12 |
 | `chip/vertical-focus-ring-radius-md` | `{radius.xl}` | – / 16 |
 
-Every other value is a shared Chip token: colours, `padding-x-*`, `radius-sm`, `focus-ring-radius-sm`, `border-width`, `focus-ring-width`, `focus-ring-offset` and `min-touch-target`. The vertical chip does not use `gap-text`, `radius-md` or `focus-ring-radius-md`. Platform names follow the standard pipeline: `chip/vertical-gap-trailing` becomes `--chip-vertical-gap-trailing` (CSS), `CosmosTokens.chipVerticalGapTrailing` (Swift / Kotlin) and `tokens.chipVerticalGapTrailing` (TS).
+Every other value is a shared Chip token: colours, `padding-x-*`, `radius-sm`, `focus-ring-radius-sm`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `image-radius` and `min-touch-target`. The vertical chip does not use `gap-text`, `radius-md` or `focus-ring-radius-md`. Platform names follow the standard pipeline: `chip/vertical-gap-trailing` becomes `--chip-vertical-gap-trailing` (CSS), `CosmosTokens.chipVerticalGapTrailing` (Swift / Kotlin) and `tokens.chipVerticalGapTrailing` (TS).

@@ -1175,6 +1175,8 @@ export default {
     "vertical-gap-text": "2px",
     "vertical-radius-md": "12px",
     "vertical-focus-ring-radius-md": "16px",
+    "vertical-image-size-sm": "24px",
+    "vertical-image-size-md": "32px",
   },
   tokenSetOrder: ["primitives", "semantic", "component"],
 };

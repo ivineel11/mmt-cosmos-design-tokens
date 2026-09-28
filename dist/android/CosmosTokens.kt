@@ -313,6 +313,8 @@ object CosmosTokens {
   val chipVerticalGapTrailing = 4.dp
   val chipVerticalIconSizeMd = 24.dp
   val chipVerticalIconSizeSm = 20.dp
+  val chipVerticalImageSizeMd = 32.dp
+  val chipVerticalImageSizeSm = 24.dp
   val chipVerticalLabelTrailingIconSizeMd = 16.dp
   val chipVerticalLabelTrailingIconSizeSm = 12.dp
   val chipVerticalPaddingYMd = 12.dp

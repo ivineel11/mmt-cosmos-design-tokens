@@ -310,6 +310,8 @@ public enum CosmosTokens {
     public static let chipVerticalGapTrailing = CGFloat(4)
     public static let chipVerticalIconSizeMd = CGFloat(24)
     public static let chipVerticalIconSizeSm = CGFloat(20)
+    public static let chipVerticalImageSizeMd = CGFloat(32)
+    public static let chipVerticalImageSizeSm = CGFloat(24)
     public static let chipVerticalLabelTrailingIconSizeMd = CGFloat(16)
     public static let chipVerticalLabelTrailingIconSizeSm = CGFloat(12)
     public static let chipVerticalPaddingYMd = CGFloat(12)

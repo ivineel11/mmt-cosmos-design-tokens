@@ -1811,4 +1811,8 @@
   --chip-vertical-radius-md: 12px;
   /** Corner radius of the focus ring around the medium vertical chip: vertical-radius-md plus the 4 px outset, so the ring stays concentric. The small vertical chip uses focus-ring-radius-sm. */
   --chip-vertical-focus-ring-radius-md: 16px;
+  /** Width and height of the circular leading image above the label in the vertical chip at small size, one step larger than vertical-icon-size so a photo or logo stays legible. The corner radius is image-radius. A chip shows the leading image or the leading icon, never both. */
+  --chip-vertical-image-size-sm: 24px;
+  /** Width and height of the circular leading image above the label in the vertical chip at medium size, one step larger than vertical-icon-size so a photo or logo stays legible. The corner radius is image-radius. A chip shows the leading image or the leading icon, never both. */
+  --chip-vertical-image-size-md: 32px;
 }
