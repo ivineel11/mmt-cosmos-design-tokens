@@ -144,8 +144,9 @@ After any token change:
 
 1. Update `tokens/tokens.json` (via Figma export or direct edit)
 2. Run `npm run build:tokens`
-3. Commit **both** the source JSON and regenerated `dist/` files together
-4. Publish or copy `dist/` artifacts into consuming apps
+3. Run `npm run lint` and fix what it reports (see [Linting](#linting))
+4. Commit **both** the source JSON and regenerated `dist/` files together
+5. Publish or copy `dist/` artifacts into consuming apps
 
 ---
 
@@ -170,7 +171,7 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 
 | Stage | Name | What it does |
 |-------|------|--------------|
-| Preprocessor | `mmt/validate-opacity` | Rejects an opacity value outside 0–1, a literal opacity outside the primitive tier, and any drift between the `opacityScale` ramp and its semantic mirrors. Runs **before** `tokens-studio`, the only point at which the three tiers are still distinguishable |
+| Preprocessor | `mmt/validate-opacity` | Rejects an opacity value outside 0–1, a literal opacity outside the primitive tier, and any drift between the `opacityScale` ramp and its semantic mirrors. Runs **before** `tokens-studio`, the only point at which the three tiers are still distinguishable. The rules live in `scripts/lib/opacity.mjs`, shared with the linter's `tokens/opacity` rule |
 | Preprocessor | `tokens-studio` | Hoists the `primitives`, `semantic`, and `component` sets to the dictionary root so cross-set references like `{fontSize.16}` and `{color.bg-fill-brand}` resolve |
 | Preprocessor | `mmt/rename-negative` | Renames keys like `spacing.-12` → `spacing.minus12` to avoid collisions after camelCase/kebab-case conversion |
 | Preprocessor | `mmt/resolve-gradient-colors` | Inlines `{color.family.step}` references inside `linear-gradient(...)` strings before platform transforms run |
@@ -229,7 +230,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (104 tokens), Checkbox (64 tokens) and Radio (57 tokens) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (120 tokens), Checkbox (65 tokens) and Radio (57 tokens) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -386,7 +387,7 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 
 5. **Use composite typography tokens.** Reference the full typography token (e.g. `body.medium.regular`) rather than assembling individual font properties in components.
 
-6. **Run the build after every token change.** `npm run build:tokens` validates references and regenerates all platform outputs.
+6. **Run the build and the linter after every token change.** `npm run build:tokens` regenerates all platform outputs; `npm run lint` checks the tier, naming, contrast and description rules and that `dist/` and the docs still match.
 
 7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic", "component"]`. Reordering or dropping a set breaks reference resolution at build time.
 
@@ -621,7 +622,7 @@ Every 5% from 0 to 100, plus three off-grid steps carrying Material's state-laye
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — canvas and surface (10)
+##### Background — canvas and surface (15)
 
 | Token | Role |
 |-------|------|
@@ -631,12 +632,17 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-disabled` | Disabled surface |
 | `color.bg-surface-secondary` | White container on `bg-secondary` |
 | `color.bg-surface-brand` | Brand-tinted surface |
+| `color.bg-surface-brand-hover` | Brand-tinted surface, hovered |
+| `color.bg-surface-brand-pressed` | Brand-tinted surface, pressed |
 | `color.bg-surface-info` | Info surface |
 | `color.bg-surface-success` | Success surface |
 | `color.bg-surface-caution` | Caution surface |
 | `color.bg-surface-warning` | Warning surface |
+| `color.bg-surface-warning-hover` | Warning surface, hovered |
+| `color.bg-surface-warning-pressed` | Warning surface, pressed |
+| `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
 
-##### Background — fill (13)
+##### Background — fill (18)
 
 | Token | Role |
 |-------|------|
@@ -645,6 +651,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-disabled-subtle` | Subtle disabled fill |
 | `color.bg-fill-secondary` | Secondary fill |
 | `color.bg-fill-brand` | Brand button / emphasis fill |
+| `color.bg-fill-brand-hover` | Brand fill, hovered |
+| `color.bg-fill-brand-pressed` | Brand fill, pressed |
 | `color.bg-fill-info-strong` | Strong info fill |
 | `color.bg-fill-info-subtle` | Subtle info fill |
 | `color.bg-fill-success-strong` | Strong success fill |
@@ -652,9 +660,12 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-caution-strong` | Strong caution fill |
 | `color.bg-fill-caution-subtle` | Subtle caution fill |
 | `color.bg-fill-warning-strong` | Strong warning fill |
+| `color.bg-fill-warning-strong-hover` | Strong warning fill, hovered |
+| `color.bg-fill-warning-strong-pressed` | Strong warning fill, pressed |
 | `color.bg-fill-warning-subtle` | Subtle warning fill |
+| `color.bg-fill-inverse` | Inverted (dark) fill — badges, toasts |
 
-##### Text (21)
+##### Text (29)
 
 | Token | Role |
 |-------|------|
@@ -666,7 +677,11 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-inverse-disabled` | Disabled inverse text |
 | `color.text-link` | Hyperlink text |
 | `color.text-brand` | Brand-colored text |
+| `color.text-brand-hover` | Brand text, hovered |
+| `color.text-brand-pressed` | Brand text, pressed |
 | `color.text-brand-on-bg-fill` | Text on brand fill |
+| `color.text-brand-on-bg-surface-hover` | Text on a hovered brand surface |
+| `color.text-brand-on-bg-surface-pressed` | Text on a pressed brand surface |
 | `color.text-info` | Info status text |
 | `color.text-info-on-bg-fill-strong` | Text on strong info fill |
 | `color.text-info-on-bg-fill-subtle` | Text on subtle info fill |
@@ -677,23 +692,33 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-caution-on-bg-fill-strong` | Text on strong caution fill |
 | `color.text-caution-on-bg-fill-subtle` | Text on subtle caution fill |
 | `color.text-warning` | Warning status text |
+| `color.text-warning-hover` | Warning text, hovered |
+| `color.text-warning-pressed` | Warning text, pressed |
 | `color.text-warning-on-bg-fill-strong` | Text on strong warning fill |
 | `color.text-warning-on-bg-fill-subtle` | Text on subtle warning fill |
+| `color.text-warning-on-bg-surface-hover` | Text on a hovered warning surface |
+| `color.text-warning-on-bg-surface-pressed` | Text on a pressed warning surface |
 
-##### Border (10)
+##### Border (16)
 
 | Token | Role |
 |-------|------|
 | `color.border` | Default border |
 | `color.border-secondary` | Secondary border |
+| `color.border-strong` | High-contrast neutral border |
 | `color.border-disabled-strong` | Strong disabled border |
 | `color.border-disabled-subtle` | Subtle disabled border |
 | `color.border-focus` | Focus ring |
 | `color.border-brand` | Brand border |
+| `color.border-brand-hover` | Brand border, hovered |
+| `color.border-brand-pressed` | Brand border, pressed |
 | `color.border-info` | Info border |
 | `color.border-success` | Success border |
 | `color.border-caution` | Caution border |
 | `color.border-warning` | Warning border |
+| `color.border-warning-strong` | Strong warning border — destructive outline |
+| `color.border-warning-strong-hover` | Strong warning border, hovered |
+| `color.border-warning-strong-pressed` | Strong warning border, pressed |
 
 ##### Icon (10)
 
@@ -709,6 +734,12 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-caution` | Caution icon |
 | `color.icon-warning` | Warning icon |
 | `color.icon-info` | Info icon |
+
+##### Utility (1)
+
+| Token | Role |
+|-------|------|
+| `color.transparent` | Explicit no-fill (fully transparent) |
 
 #### Typography — 36 composite tokens
 
@@ -797,8 +828,8 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 
 | Group | Tokens | Figma component set | Spec |
 |-------|--------|---------------------|------|
-| `button/*` | 104 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
-| `checkbox/*` | 64 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
+| `button/*` | 120 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
+| `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
@@ -829,23 +860,33 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-disabled` | `color.neutral.200` |
 | `bg-surface-secondary` | `color.neutral.0` |
 | `bg-surface-brand` | `color.brand.50` |
+| `bg-surface-brand-hover` | `color.brand.100` |
+| `bg-surface-brand-pressed` | `color.brand.200` |
 | `bg-surface-info` | `color.brand.50` |
 | `bg-surface-success` | `color.green.50` |
 | `bg-surface-caution` | `color.yellow.50` |
 | `bg-surface-warning` | `color.red.50` |
+| `bg-surface-warning-hover` | `color.red.100` |
+| `bg-surface-warning-pressed` | `color.red.200` |
+| `bg-surface-inverse` | `color.neutral.950` |
 | `bg-fill` | `color.neutral.0` |
 | `bg-fill-disabled-strong` | `color.neutral.400` |
 | `bg-fill-disabled-subtle` | `color.neutral.200` |
 | `bg-fill-secondary` | `color.neutral.100` |
 | `bg-fill-brand` | `color.brand.700` |
-| `bg-fill-info-strong` | `color.blue.600` |
-| `bg-fill-info-subtle` | `color.blue.50` |
+| `bg-fill-brand-hover` | `color.brand.800` |
+| `bg-fill-brand-pressed` | `color.brand.900` |
+| `bg-fill-info-strong` | `color.brand.700` |
+| `bg-fill-info-subtle` | `color.brand.50` |
 | `bg-fill-success-strong` | `color.green.700` |
 | `bg-fill-success-subtle` | `color.green.100` |
-| `bg-fill-caution-strong` | `color.yellow.600` |
+| `bg-fill-caution-strong` | `color.yellow.700` |
 | `bg-fill-caution-subtle` | `color.yellow.100` |
 | `bg-fill-warning-strong` | `color.red.700` |
+| `bg-fill-warning-strong-hover` | `color.red.600` |
+| `bg-fill-warning-strong-pressed` | `color.red.800` |
 | `bg-fill-warning-subtle` | `color.red.100` |
+| `bg-fill-inverse` | `color.neutral.950` |
 | `text-primary` | `color.neutral.950` |
 | `text-secondary` | `color.neutral.600` |
 | `text-tertiary` | `color.neutral.500` |
@@ -854,39 +895,54 @@ Add a component group only when a component has enough variant × state combinat
 | `text-inverse-disabled` | `color.neutral.200` |
 | `text-link` | `color.brand.700` |
 | `text-brand` | `color.brand.700` |
+| `text-brand-hover` | `color.brand.600` |
+| `text-brand-pressed` | `color.brand.800` |
 | `text-brand-on-bg-fill` | `color.neutral.0` |
-| `text-info` | `color.blue.700` |
+| `text-brand-on-bg-surface-hover` | `color.brand.800` |
+| `text-brand-on-bg-surface-pressed` | `color.brand.900` |
+| `text-info` | `color.brand.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
-| `text-info-on-bg-fill-subtle` | `color.blue.700` |
+| `text-info-on-bg-fill-subtle` | `color.brand.700` |
 | `text-success` | `color.green.700` |
 | `text-success-on-bg-fill-strong` | `color.neutral.0` |
 | `text-success-on-bg-fill-subtle` | `color.green.700` |
-| `text-caution` | `color.yellow.600` |
+| `text-caution` | `color.yellow.700` |
 | `text-caution-on-bg-fill-strong` | `color.neutral.0` |
-| `text-caution-on-bg-fill-subtle` | `color.yellow.600` |
+| `text-caution-on-bg-fill-subtle` | `color.yellow.800` |
 | `text-warning` | `color.red.700` |
+| `text-warning-hover` | `color.red.600` |
+| `text-warning-pressed` | `color.red.800` |
 | `text-warning-on-bg-fill-strong` | `color.neutral.0` |
 | `text-warning-on-bg-fill-subtle` | `color.red.700` |
+| `text-warning-on-bg-surface-hover` | `color.red.800` |
+| `text-warning-on-bg-surface-pressed` | `color.red.900` |
 | `border` | `color.neutral.300` |
 | `border-secondary` | `color.neutral.200` |
+| `border-strong` | `color.neutral.500` |
 | `border-disabled-strong` | `color.neutral.400` |
 | `border-disabled-subtle` | `color.neutral.300` |
-| `border-focus` | `color.brand.400` |
+| `border-focus` | `color.brand.600` |
 | `border-brand` | `color.brand.700` |
-| `border-info` | `color.blue.100` |
+| `border-brand-hover` | `color.brand.600` |
+| `border-brand-pressed` | `color.brand.800` |
+| `border-info` | `color.brand.300` |
 | `border-success` | `color.green.300` |
 | `border-caution` | `color.yellow.300` |
 | `border-warning` | `color.red.300` |
+| `border-warning-strong` | `color.red.700` |
+| `border-warning-strong-hover` | `color.red.600` |
+| `border-warning-strong-pressed` | `color.red.800` |
 | `icon` | `color.neutral.950` |
-| `icon-disabled` | `color.neutral.200` |
+| `icon-disabled` | `color.neutral.400` |
 | `icon-inverse` | `color.neutral.50` |
 | `icon-secondary` | `color.neutral.600` |
 | `icon-tertiary` | `color.neutral.400` |
 | `icon-brand` | `color.brand.700` |
 | `icon-success` | `color.green.700` |
-| `icon-caution` | `color.yellow.600` |
+| `icon-caution` | `color.yellow.700` |
 | `icon-warning` | `color.red.700` |
-| `icon-info` | `color.blue.700` |
+| `icon-info` | `color.brand.700` |
+| `transparent` | `color.alpha.transparent` |
 
 ### Radius mappings
 
@@ -1227,6 +1283,10 @@ Box(
 |------|-------------|
 | `tokens/tokens.json` | Source of truth — edit here or sync from Figma |
 | `scripts/describe-primitives.mjs` | Regenerates primitive descriptions, including the computed contrast ratios |
+| `scripts/lint/` | The repository linter (`npm run lint`); rules in `rules/`, tests in `test/` |
+| `scripts/lib/` | Code shared by the build, `describe-primitives.mjs` and the linter (opacity rules, WCAG contrast) |
+| `lint.config.mjs` | Linter severity overrides and reasoned ignores |
+| `eslint.config.mjs` | ESLint config for the build scripts and the docs site |
 | `proposals/` | Drafted token changes that need a design decision or Figma work before they can land |
 | `build-tokens.mjs` | Style Dictionary config and custom transforms |
 | `package.json` | Package metadata and build script |
@@ -1239,6 +1299,34 @@ Box(
 | `components/*.md` | Component specifications — uSpec-generated where noted, otherwise hand-authored (see below) |
 | `uspecs.config.json` | uSpec CLI configuration (agent, Figma MCP provider, pinned CLI version) |
 | `.claude/skills/`, `.cursor/skills/`, `references/` | Vendored uSpec agent skills and reference instructions — do not hand-edit |
+
+---
+
+## Linting
+
+`npm run lint` checks the whole repository against the rules this README states, in one report with one exit code. CI runs it on every pull request (`.github/workflows/lint.yml`) and annotates findings on the diff.
+
+```bash
+npm run lint                         # everything
+npm run lint -- --fix                # apply automatic fixes, then report what is left
+npm run lint -- --only tokens        # one category: tokens, dist, docs-site, docs, skills, js
+npm run lint -- --list               # every rule, with what it checks and why
+npm run lint -- --format json        # machine-readable (also: github)
+npm run test:lint                    # the linter's own tests
+```
+
+| Category | What it catches |
+|----------|-----------------|
+| `tokens/*` | Anything in `tokens/tokens.json` that breaks the conventions above: duplicate keys a bad merge left behind, a tier referencing the wrong tier (or a component skipping a semantic alias that exists), raw values above the primitive tier, dangling or circular references, values the platform transforms cannot parse, opacity outside 0–1 or out of step with its mirror, disabled expressed as opacity, a control filled with a canvas colour, typography composites with the wrong weight or missing metrics, t-shirt scales that do not grow, palettes that do not darken, names outside the role taxonomy, flat-namespace collisions, on-fill text and component labels below WCAG AA, missing or Figma-unsafe descriptions (apostrophes become `&#39;`), stale computed primitive descriptions, and non-canonical formatting |
+| `dist/*` | `dist/` differs from a fresh build of the current tokens — stale, hand-edited, or carrying files the build does not produce |
+| `docs-site/*` | The site's derived CSS names drift from the build, it uses a `var(--…)` that no longer exists, or it fails to type-check |
+| `docs/*` | Markdown that has drifted from the tokens: broken links and anchors, references to tokens that do not exist, wrong values, aliases, hexes and counts in the README's tables, a semantic colour missing from the inventory, a component group without a spec |
+| `skills/*` | The `.claude` and `.cursor` uSpec installs disagree where they must be byte-identical, or `uspecs.config.json` and the docs pin different CLI versions |
+| `js/*` | ESLint over the build scripts and the docs site (typescript-eslint, React hooks, jsx-a11y, Next.js), plus `cosmos/no-hardcoded-color`, which rejects colour literals in styles |
+
+`--fix` regenerates stale primitive descriptions, reformats `tokens.json`, rebuilds `dist/` and applies ESLint's fixes. Everything else needs a decision, and the message says which rule of this README it enforces.
+
+To accept a specific finding, add an entry to `ignores` in `lint.config.mjs` naming the rule, the file or token, and a `reason`. An ignore that stops matching is itself reported, so an exception cannot outlive what it excused.
 
 ---
 

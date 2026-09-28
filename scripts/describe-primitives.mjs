@@ -15,30 +15,15 @@
  * variables panel as "the element&#39;s height". Write around it instead.
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { contrast, formatRatio as fmt } from "./lib/color.mjs";
 
 const FILE = new URL("../tokens/tokens.json", import.meta.url);
-const json = JSON.parse(readFileSync(FILE, "utf8"));
 
-// --- WCAG 2.1 relative luminance and contrast ---------------------------------
-const channel = (c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
-function luminance(hex) {
-  const h = hex.slice(1);
-  const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
-  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-}
-function contrast(a, b) {
-  const [hi, lo] = [luminance(a), luminance(b)].sort((m, n) => n - m);
-  return (hi + 0.05) / (lo + 0.05);
-}
-// Floor rather than round: violet.500 sits at 4.4981 against text-primary, which
-// `toFixed` would print as "4.50:1" right next to a sentence saying it fails the 4.5
-// threshold. Flooring never overstates the contrast a swatch actually has.
-const fmt = (r) => `${(Math.floor(r * 100) / 100).toFixed(2)}:1`;
+// Flooring (in formatRatio) rather than rounding matters: violet.500 sits at 4.4981
+// against text-primary, which `toFixed` would print as "4.50:1" right next to a sentence
+// saying it fails the 4.5 threshold. Flooring never overstates the contrast a swatch has.
 const level = (r) => (r >= 7 ? "AA and AAA" : "AA");
-
-// The two text roles that can sit on a filled swatch.
-const TEXT_PRIMARY = json.primitives.color.neutral["950"].value; // semantic text-primary
-const TEXT_INVERSE = json.primitives.color.neutral["0"].value; // semantic text-inverse
 
 // Primitives whose real-world pairing already fails, called out on the swatch itself.
 const PAIRING_NOTES = {
@@ -52,9 +37,9 @@ const PAIRING_NOTES = {
     " In use as text-disabled on bg-surface-disabled this reads at 2.05:1. WCAG 1.4.3 exempts inactive controls, so this is allowed rather than a defect.",
 };
 
-function colorDescription(family, step, hex) {
-  const dark = contrast(hex, TEXT_PRIMARY);
-  const light = contrast(hex, TEXT_INVERSE);
+function colorDescription(family, step, hex, textPrimary, textInverse) {
+  const dark = contrast(hex, textPrimary);
+  const light = contrast(hex, textInverse);
   const head = `${family[0].toUpperCase()}${family.slice(1)} ramp, step ${step}.`;
   const note = PAIRING_NOTES[`${family}.${step}`] ?? "";
 
@@ -95,22 +80,6 @@ const EXPLICIT = {
 };
 
 // --- apply ---------------------------------------------------------------------
-// Anything in semantic or component that points at a primitive, so unused steps can
-// say so rather than looking like part of the supported scale.
-const referenced = new Set();
-(function walk(node) {
-  if (node && typeof node === "object" && "value" in node) {
-    const scan = (s) => {
-      for (const m of String(s).matchAll(/\{([^}]+)\}/g)) referenced.add(m[1]);
-    };
-    const v = node.value;
-    if (typeof v === "string") scan(v);
-    else if (v && typeof v === "object") Object.values(v).forEach(scan);
-    return;
-  }
-  if (node && typeof node === "object" && !Array.isArray(node)) Object.values(node).forEach(walk);
-})({ semantic: json.semantic, component: json.component });
-
 const UNREFERENCED = "Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system.";
 
 function setDescription(token, description) {
@@ -120,35 +89,75 @@ function setDescription(token, description) {
   Object.assign(token, rebuilt);
 }
 
-let colors = 0;
-let others = 0;
+/**
+ * Rewrite the description of every primitive in `json` in place. Pure apart from that
+ * mutation, so the linter can run it on a copy and diff the result against the file.
+ */
+export function describePrimitives(json) {
+  // The two text roles that can sit on a filled swatch.
+  const textPrimary = json.primitives.color.neutral["950"].value; // semantic text-primary
+  const textInverse = json.primitives.color.neutral["0"].value; // semantic text-inverse
 
-for (const [family, steps] of Object.entries(json.primitives.color)) {
-  for (const [step, token] of Object.entries(steps)) {
-    if (family === "alpha") {
-      setDescription(
-        token,
-        "Fully transparent. Contrast is undefined — whatever sits behind shows through, so accessibility depends on that backdrop rather than on this token.",
-      );
-    } else {
-      setDescription(token, colorDescription(family, step, token.value));
+  // Anything in semantic or component that points at a primitive, so unused steps can
+  // say so rather than looking like part of the supported scale.
+  const referenced = new Set();
+  (function walk(node) {
+    if (node && typeof node === "object" && "value" in node) {
+      const scan = (s) => {
+        for (const m of String(s).matchAll(/\{([^}]+)\}/g)) referenced.add(m[1]);
+      };
+      const v = node.value;
+      if (typeof v === "string") scan(v);
+      else if (v && typeof v === "object") Object.values(v).forEach(scan);
+      return;
     }
-    colors += 1;
+    if (node && typeof node === "object" && !Array.isArray(node)) Object.values(node).forEach(walk);
+  })({ semantic: json.semantic, component: json.component });
+
+  let colors = 0;
+  let others = 0;
+
+  for (const [family, steps] of Object.entries(json.primitives.color)) {
+    for (const [step, token] of Object.entries(steps)) {
+      if (family === "alpha") {
+        setDescription(
+          token,
+          "Fully transparent. Contrast is undefined — whatever sits behind shows through, so accessibility depends on that backdrop rather than on this token.",
+        );
+      } else {
+        setDescription(token, colorDescription(family, step, token.value, textPrimary, textInverse));
+      }
+      colors += 1;
+    }
   }
+
+  for (const [group, steps] of Object.entries(json.primitives)) {
+    if (group === "color") continue;
+    for (const [step, token] of Object.entries(steps)) {
+      const explicit = EXPLICIT[`${group}.${step}`];
+      const unused = !referenced.has(`${group}.${step}`);
+      if (!explicit && !unused) {
+        // Referenced and self-describing: drop any description left from when it was
+        // unreferenced, or its "Not referenced" note would outlive the fact.
+        if ("description" in token) {
+          delete token.description;
+          others += 1;
+        }
+        continue;
+      }
+      const description = [explicit, unused ? UNREFERENCED : null].filter(Boolean).join(" ");
+      setDescription(token, description);
+      others += 1;
+    }
+  }
+
+  return { colors, others };
 }
 
-for (const [group, steps] of Object.entries(json.primitives)) {
-  if (group === "color") continue;
-  for (const [step, token] of Object.entries(steps)) {
-    const explicit = EXPLICIT[`${group}.${step}`];
-    const unused = !referenced.has(`${group}.${step}`);
-    if (!explicit && !unused) continue;
-    const description = [explicit, unused ? UNREFERENCED : null].filter(Boolean).join(" ");
-    setDescription(token, description);
-    others += 1;
-  }
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const json = JSON.parse(readFileSync(FILE, "utf8"));
+  const { colors, others } = describePrimitives(json);
+  writeFileSync(FILE, `${JSON.stringify(json, null, 2)}\n`);
+  console.log(`colour primitives described: ${colors}`);
+  console.log(`other primitives described:  ${others}`);
 }
-
-writeFileSync(FILE, `${JSON.stringify(json, null, 2)}\n`);
-console.log(`colour primitives described: ${colors}`);
-console.log(`other primitives described:  ${others}`);

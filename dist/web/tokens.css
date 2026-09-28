@@ -1081,13 +1081,13 @@
   --opacity-0: 0;
   /** Faintest perceptible tint — a hairline wash over a surface, or the first frame of a state layer fading in. Below the threshold where most people notice a change on a light background. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
   --opacity-5: 0.05;
-  /** Barely-there tint, Material's hover weight. On a control, use state-layer-hover, which aliases this step and says when the state-layer pattern applies; this raw step is for non-control surfaces that need the same weight. */
+  /** Barely-there tint, the Material hover weight. On a control, use state-layer-hover, which aliases this step and says when the state-layer pattern applies; this raw step is for non-control surfaces that need the same weight. */
   --opacity-8: 0.08;
-  /** Barely-there tint, Material's focus and pressed weight. On a control, use state-layer-focus or state-layer-pressed, which alias this step; this raw step is for non-control surfaces that need the same weight. */
+  /** Barely-there tint, the Material focus and pressed weight. On a control, use state-layer-focus or state-layer-pressed, which alias this step; this raw step is for non-control surfaces that need the same weight. */
   --opacity-10: 0.1;
   /** Light tint — a subtle wash over a surface, or a separator that should read softer than border-subtle. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
   --opacity-15: 0.15;
-  /** Light tint, Material's dragged weight. On a control, use state-layer-dragged, which aliases this step; this raw step is for non-control surfaces that need the same weight. */
+  /** Light tint, the Material dragged weight. On a control, use state-layer-dragged, which aliases this step; this raw step is for non-control surfaces that need the same weight. */
   --opacity-16: 0.16;
   /** Light veil — dimming a surface without obscuring it, such as an inactive panel beside an active one. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
   --opacity-20: 0.2;
@@ -1095,7 +1095,7 @@
   --opacity-25: 0.25;
   /** Light veil at the edge of the scrim band — a backdrop over an already-dark surface, where the full scrim would read as solid. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
   --opacity-30: 0.3;
-  /** The scrim weight, following Material's backdrop value. For a modal, drawer or bottom-sheet backdrop use scrim, which aliases this step and names the colour to pair it with; this raw step is for backdrops the role does not describe. */
+  /** The scrim weight, following the Material backdrop value. For a modal, drawer or bottom-sheet backdrop use scrim, which aliases this step and names the colour to pair it with; this raw step is for backdrops the role does not describe. */
   --opacity-32: 0.32;
   /** Heavier veil than the scrim — a backdrop over light, busy imagery where the scrim does not separate the layers enough. Prefer a role token when one describes the job; ramp steps are for the one-off dimming the roles do not cover. */
   --opacity-35: 0.35;
@@ -1125,7 +1125,7 @@
   --opacity-95: 0.95;
   /** Fully visible — the resting value, and the end of a fade-in. Exists so a transition can name both ends with tokens instead of mixing a token with a bare 1. */
   --opacity-100: 1;
-  /** Opacity of the tint laid over a control while the pointer rests on it, following Material's hover value. Only for the state-layer pattern, where a separate layer takes the content colour; controls that swap to a solid hover step use bg-fill-*-hover or bg-surface-*-hover instead. */
+  /** Opacity of the tint laid over a control while the pointer rests on it, following the Material hover value. Only for the state-layer pattern, where a separate layer takes the content colour; controls that swap to a solid hover step use bg-fill-*-hover or bg-surface-*-hover instead. */
   --opacity-state-layer-hover: 0.08;
   /** Opacity of the tint laid over a control while it holds keyboard focus. A state layer at this value does not meet WCAG 1.4.11 on its own — pair it with a focus ring in color.border-focus, as Button and Checkbox do, rather than raising the opacity until it passes. */
   --opacity-state-layer-focus: 0.1;
