@@ -2411,4 +2411,120 @@
   --tab-focus-ring-inset: 2px;
   /** Corner radius of the focus ring on both tab types, the same 8 px as the tab fill radius. Inset 2 px at the top and sides, the top corners read slightly rounder than a concentric 6 px curve, which the radius scale does not have. */
   --tab-focus-ring-radius: 8px;
+  /** Background of the white card that holds a grouped list on the grey bg-secondary page. A plain list has no background of its own and shows the white bg page through its rows. */
+  --list-bg-grouped: #FFFFFF;
+  /** Fill of a list row at rest. Transparent, so the row shows the list background behind it. */
+  --list-item-bg-default: #FFFFFF00;
+  /** Fill of an interactive list row on hover, a neutral state layer. Rows with a trailing button are static and never take it. */
+  --list-item-bg-hover: #F5F5F5;
+  /** Fill of an interactive list row while pressed. Stronger than item-bg-hover so the press reads on touch screens without a hover step. */
+  --list-item-bg-pressed: #E5E5E5;
+  /** Fill of a disabled list row. Transparent; the dimmed text and icons carry the disabled state. */
+  --list-item-bg-disabled: #FFFFFF00;
+  /** Colour of the title, the first and main line of a list row. Use supporting-text-default for the lines below it. */
+  --list-title-default: #0A0A0A;
+  /** Colour of the title of a disabled list row. */
+  --list-title-disabled: #A1A1A1;
+  /** Colour of the second and third lines of a list row, which add detail under the title. Use meta-text-default for the short value at the end of the row. */
+  --list-supporting-text-default: #525252;
+  /** Colour of the supporting lines of a disabled list row. */
+  --list-supporting-text-disabled: #A1A1A1;
+  /** Colour of the short trailing value of a list row, such as a price, a time or an airport code. Use supporting-text-default for lines under the title. */
+  --list-meta-text-default: #525252;
+  /** Colour of the trailing value of a disabled list row. */
+  --list-meta-text-disabled: #A1A1A1;
+  /** Colour of a bare leading icon in a list row. For an icon inside a tinted circle use the leading-container-icon tokens. */
+  --list-leading-icon-default: #525252;
+  /** Colour of a bare leading icon in a disabled list row. */
+  --list-leading-icon-disabled: #A1A1A1;
+  /** Fill of the neutral grey circle behind a leading icon, for everyday menu rows. Use leading-container-bg-brand to call out one row. */
+  --list-leading-container-bg-neutral: #F5F5F5;
+  /** Fill of the light blue circle behind a leading icon, for a row that should stand out from its neutral neighbours. Use sparingly, at most one kind per list. */
+  --list-leading-container-bg-brand: #EDF8FF;
+  /** Fill of the circle behind a leading icon in a disabled list row, whichever tint it has when enabled. */
+  --list-leading-container-bg-disabled: #FAFAFA;
+  /** Colour of the icon inside a neutral leading circle. Pairs with leading-container-bg-neutral. */
+  --list-leading-container-icon-neutral: #0A0A0A;
+  /** Colour of the icon inside a brand leading circle. Pairs with leading-container-bg-brand. */
+  --list-leading-container-icon-brand: #0067E8;
+  /** Colour of the icon inside a leading circle in a disabled list row. */
+  --list-leading-container-icon-disabled: #A1A1A1;
+  /** Colour of the trailing chevron that marks a list row as a link to another screen. Quieter than leading icons so the row content leads. */
+  --list-chevron-default: #737373;
+  /** Colour of the trailing chevron of a disabled list row. */
+  --list-chevron-disabled: #A1A1A1;
+  /** Colour of the hairline between list rows. It starts where the row text starts and is left off the last row. Use grouped-gap spacing, not a divider, between groups. */
+  --list-divider: #E5E5E5;
+  /** Colour of the section header label that names a group of rows, such as Recent searches. Use title-default for the rows themselves. */
+  --list-section-header-text: #525252;
+  /** Colour of the keyboard focus ring drawn inside the edge of a focused list row. */
+  --list-focus-ring: #0681FF;
+  /** Minimum height of a one-line Comfortable row, also its touch target. Taller rows grow with their content. Comfortable is the default and the only density for touch screens. */
+  --list-min-height-comfortable: 48px;
+  /** Minimum height of a one-line Compact row. Compact is for pointer-first web lists only; use min-height-comfortable on touch screens. */
+  --list-min-height-compact: 40px;
+  /** Space between the row edge and its content, left and right, in a Comfortable row. */
+  --list-padding-x-comfortable: 16px;
+  /** Space between the row edge and its content, left and right, in a Compact row. Kept equal to Comfortable so densities align in one layout. */
+  --list-padding-x-compact: 16px;
+  /** Space above and below the content of a Comfortable row. */
+  --list-padding-y-comfortable: 12px;
+  /** Space above and below the content of a Compact row. */
+  --list-padding-y-compact: 8px;
+  /** Space between the leading slot, the text and the trailing slot of a Comfortable row. Use gap-trailing-comfortable inside the trailing slot. */
+  --list-gap-comfortable: 16px;
+  /** Space between the leading slot, the text and the trailing slot of a Compact row. Use gap-trailing-compact inside the trailing slot. */
+  --list-gap-compact: 12px;
+  /** Space between items inside the trailing slot of a Comfortable row, such as a meta value and its chevron. */
+  --list-gap-trailing-comfortable: 8px;
+  /** Space between items inside the trailing slot of a Compact row, such as a meta value and its chevron. */
+  --list-gap-trailing-compact: 4px;
+  /** Space between the title and the supporting lines of a row. None, because the line heights already separate them. */
+  --list-gap-text: 0px;
+  /** Size of a bare leading icon in a Comfortable row. Icons inside a circle use leading-container-icon-size-comfortable. */
+  --list-leading-icon-size-comfortable: 24px;
+  /** Size of a bare leading icon in a Compact row. */
+  --list-leading-icon-size-compact: 20px;
+  /** Diameter of the tinted circle behind a leading icon in a Comfortable row. */
+  --list-leading-container-size-comfortable: 40px;
+  /** Diameter of the tinted circle behind a leading icon in a Compact row. */
+  --list-leading-container-size-compact: 32px;
+  /** Size of the icon inside a leading circle in a Comfortable row. */
+  --list-leading-container-icon-size-comfortable: 24px;
+  /** Size of the icon inside a leading circle in a Compact row. */
+  --list-leading-container-icon-size-compact: 20px;
+  /** Width and height of a leading avatar or thumbnail in a Comfortable row. Matches the leading circle so mixed rows align. */
+  --list-leading-image-size-comfortable: 40px;
+  /** Width and height of a leading avatar or thumbnail in a Compact row. */
+  --list-leading-image-size-compact: 32px;
+  /** Size of the trailing chevron in a Comfortable row. */
+  --list-chevron-size-comfortable: 20px;
+  /** Size of the trailing chevron in a Compact row. */
+  --list-chevron-size-compact: 16px;
+  /** Space above a section header label in a Comfortable list. Its left and right padding follow padding-x-comfortable. */
+  --list-section-header-padding-top-comfortable: 16px;
+  /** Space above a section header label in a Compact list. */
+  --list-section-header-padding-top-compact: 12px;
+  /** Space between a section header label and the first row below it, in a Comfortable list. */
+  --list-section-header-padding-bottom-comfortable: 8px;
+  /** Space between a section header label and the first row below it, in a Compact list. */
+  --list-section-header-padding-bottom-compact: 4px;
+  /** Corner radius of the tinted circle behind a leading icon. Always a full circle. */
+  --list-leading-container-radius: 999px;
+  /** Corner radius of a leading avatar, a full circle. Use image-radius-square for hotel or airline thumbnails. */
+  --list-image-radius: 999px;
+  /** Corner radius of a square leading thumbnail, such as a hotel photo or an airline logo. Use image-radius for people. */
+  --list-image-radius-square: 8px;
+  /** Corner radius of the card that holds a grouped list. The first and last rows clip their hover and pressed fills to it. */
+  --list-grouped-radius: 16px;
+  /** Space between two grouped cards, or between a card and the next section header. */
+  --list-grouped-gap: 24px;
+  /** Thickness of the hairline between list rows. */
+  --list-divider-width: 1px;
+  /** Thickness of the keyboard focus ring of a list row. */
+  --list-focus-ring-width: 2px;
+  /** Distance from the row edge in to the focus ring. The ring sits inside because rows run edge to edge and a neighbour would cover an outside ring. */
+  --list-focus-ring-inset: 2px;
+  /** Corner radius of the keyboard focus ring of a list row. */
+  --list-focus-ring-radius: 8px;
 }
