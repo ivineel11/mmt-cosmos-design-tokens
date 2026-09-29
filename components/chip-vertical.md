@@ -154,7 +154,7 @@ The vertical chip uses the Chip colour tokens unchanged. See [Chip, Color](chip.
 | Border | `chip/border-{unselected,selected}-{default,hover,pressed,disabled}` |
 | Label | `chip/label-unselected-default`, `chip/label-selected-{default,hover,pressed}`, `chip/label-disabled` |
 | Secondary text | `chip/secondary-text-default`, `chip/secondary-text-disabled` |
-| Leading icon, both trailing icons | `chip/icon-unselected-default`, `chip/icon-selected-default`, `chip/icon-disabled` |
+| Leading icon, both trailing icons | `chip/icon-unselected-default`, `chip/icon-selected-{default,hover,pressed}`, `chip/icon-disabled` |
 | Focus ring | `chip/focus-ring` |
 
 The leading image is never recoloured. The secondary trailing icon follows the icon tokens, not the secondary text: on a selected chip it turns brand blue while the secondary line stays grey.

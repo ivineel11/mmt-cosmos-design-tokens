@@ -1899,8 +1899,12 @@
   --chip-secondary-text-disabled: #A1A1A1;
   /** Colour of the leading icon, trailing icon and remove glyph — unselected, in every enabled state. Does not apply to the leading image, which keeps its own colours. */
   --chip-icon-unselected-default: #525252;
-  /** Colour of the leading icon, trailing icon and remove glyph — selected, in every enabled state. Does not apply to the leading image. */
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, Default and Focus. Hover and pressed have their own tokens so the icons darken with the label. Does not apply to the leading image. */
   --chip-icon-selected-default: #0067E8;
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, on hover. Matches chip/label-selected-hover so icons and label darken together as the fill deepens. */
+  --chip-icon-selected-hover: #0857C5;
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, while pressed. Matches chip/label-selected-pressed so icons and label darken together as the fill deepens. */
+  --chip-icon-selected-pressed: #0D4C9B;
   /** Colour of the leading icon, trailing icon and remove glyph when the chip is disabled. The leading image is not recoloured; desaturate it in code if needed. */
   --chip-icon-disabled: #A1A1A1;
   /** Circle behind the remove glyph of a removable chip — unselected, when the remove button itself is hovered. Transparent at rest. */

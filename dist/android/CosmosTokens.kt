@@ -306,6 +306,8 @@ object CosmosTokens {
   val chipGapText = 0.dp
   val chipIconDisabled = Color(0xFFA1A1A1)
   val chipIconSelectedDefault = Color(0xFF0067E8)
+  val chipIconSelectedHover = Color(0xFF0857C5)
+  val chipIconSelectedPressed = Color(0xFF0D4C9B)
   val chipIconSizeLg = 24.dp
   val chipIconSizeMd = 20.dp
   val chipIconSizeSm = 16.dp
