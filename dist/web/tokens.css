@@ -1873,8 +1873,10 @@
   --chip-radius-md: 8px;
   /** Corner radius of the chip container at large size, one step rounder so the corner stays in proportion to the 40px chip. */
   --chip-radius-lg: 12px;
-  /** Corner radius of the leading image, which is always a circle. */
+  /** Corner radius of the leading image in the circle shape, the default, used by both chips. For the square shape, use image-radius-square. */
   --chip-image-radius: 999px;
+  /** Corner radius of the leading image in the square shape, used by both chips for photos and thumbnails that read better uncropped, such as destinations or hotels. Softened slightly so it sits well inside the rounded chip. For the circle shape, use image-radius. */
+  --chip-image-radius-square: 4px;
   /** Vertical gap between the label and the secondary line; the line heights alone separate them. */
   --chip-gap-text: 0px;
   /** Thickness of the chip outline, in every state, when the border is switched on. */
@@ -1893,4 +1895,36 @@
   --chip-min-touch-target: 48px;
   /** Minimum tappable area of the remove button on a removable chip, the WCAG 2.5.8 floor. Expand the hit area around the glyph in code without growing the chip. */
   --chip-remove-min-touch-target: 24px;
+  /** Top and bottom padding inside the vertical chip at small size. Deeper than the one-line chip padding-y because the vertical chip has no min-height; the side padding reuses padding-x. */
+  --chip-vertical-padding-y-sm: 8px;
+  /** Top and bottom padding inside the vertical chip at medium size. Deeper than the one-line chip padding-y because the vertical chip has no min-height; the side padding reuses padding-x. */
+  --chip-vertical-padding-y-md: 12px;
+  /** Size of the leading icon above the label in the vertical chip at small size. One step larger than the one-line chip icon-size because the icon leads the chip rather than decorating the label. */
+  --chip-vertical-icon-size-sm: 20px;
+  /** Size of the leading icon above the label in the vertical chip at medium size. One step larger than the one-line chip icon-size because the icon leads the chip rather than decorating the label. */
+  --chip-vertical-icon-size-md: 24px;
+  /** Vertical gap between the leading icon and the text block in the vertical chip at small size. For the gap beside a label or secondary trailing icon, use vertical-gap-trailing. */
+  --chip-vertical-gap-sm: 4px;
+  /** Vertical gap between the leading icon and the text block in the vertical chip at medium size. For the gap beside a label or secondary trailing icon, use vertical-gap-trailing. */
+  --chip-vertical-gap-md: 4px;
+  /** Size of the trailing icon beside the label in the vertical chip at small size, sized to the label line height. For the icon beside the secondary line, use vertical-secondary-trailing-icon-size. */
+  --chip-vertical-label-trailing-icon-size-sm: 12px;
+  /** Size of the trailing icon beside the label in the vertical chip at medium size, sized to the label line height. For the icon beside the secondary line, use vertical-secondary-trailing-icon-size. */
+  --chip-vertical-label-trailing-icon-size-md: 16px;
+  /** Size of the trailing icon beside the secondary line in the vertical chip at small size, sized to the secondary line height. For the icon beside the label, use vertical-label-trailing-icon-size. */
+  --chip-vertical-secondary-trailing-icon-size-sm: 12px;
+  /** Size of the trailing icon beside the secondary line in the vertical chip at medium size, sized to the secondary line height. For the icon beside the label, use vertical-label-trailing-icon-size. */
+  --chip-vertical-secondary-trailing-icon-size-md: 12px;
+  /** Horizontal gap between the label or secondary line and its trailing icon in the vertical chip, at every size. For the gap between the leading icon and the text, use vertical-gap. */
+  --chip-vertical-gap-trailing: 4px;
+  /** Vertical gap between the label and the secondary line in the vertical chip, at every size. The one-line chip uses gap-text instead. */
+  --chip-vertical-gap-text: 2px;
+  /** Corner radius of the vertical chip at medium size, rounder than the one-line chip because the chip is taller. The small vertical chip uses radius-sm. */
+  --chip-vertical-radius-md: 12px;
+  /** Corner radius of the focus ring around the medium vertical chip: vertical-radius-md plus the 4 px outset, so the ring stays concentric. The small vertical chip uses focus-ring-radius-sm. */
+  --chip-vertical-focus-ring-radius-md: 16px;
+  /** Width and height of the circular leading image above the label in the vertical chip at small size, one step larger than vertical-icon-size so a photo or logo stays legible. The corner radius is image-radius. A chip shows the leading image or the leading icon, never both. */
+  --chip-vertical-image-size-sm: 24px;
+  /** Width and height of the circular leading image above the label in the vertical chip at medium size, one step larger than vertical-icon-size so a photo or logo stays legible. The corner radius is image-radius. A chip shows the leading image or the leading icon, never both. */
+  --chip-vertical-image-size-md: 32px;
 }
