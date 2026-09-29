@@ -431,8 +431,8 @@
   --color-text-inverse: #FFFFFF;
   /** Supporting text on an inverted background — the subtitle of a dark toast or tooltip. For the main line use text-inverse. */
   --color-text-inverse-secondary: #A1A1A1;
-  /** Disabled text on an inverted background. */
-  --color-text-inverse-disabled: #E5E5E5;
+  /** Disabled text on an inverted background. Dimmer than text-inverse-secondary so a disabled item never reads as supporting copy. */
+  --color-text-inverse-disabled: #737373;
   /** Inline hyperlink inside body copy, with text-link-hover and text-link-pressed for its states. For a brand-coloured control label (secondary, tertiary or text button) use text-brand; on dark backgrounds use text-link-inverse. */
   --color-text-link: #0067E8;
   /** Hovered inline hyperlink inside body copy. Darker than text-link so the change reads without relying on the underline alone. */
@@ -503,8 +503,8 @@
   --color-border-hover: #A1A1A1;
   /** Lighter divider for dense or nested content — list separators, inner table rules. */
   --color-border-secondary: #E5E5E5;
-  /** Higher-contrast neutral border — the unchecked Checkbox and Radio outlines, outlines that must stay legible on a tinted surface, and dividers separating major regions. At 2.58:1 on white it sits below the WCAG 1.4.11 3:1 minimum for a control boundary, an accepted deviation recorded in components/checkbox.md and components/radio.md. Use border for the default outline. */
-  --color-border-strong: #A1A1A1;
+  /** Higher-contrast neutral border — the unchecked Checkbox and Radio outlines, outlines that must stay legible on a tinted surface, and dividers separating major regions. Meets the WCAG 1.4.11 3:1 minimum for a control boundary on both canvases. Use border for the default outline and border-disabled-strong for a disabled control. */
+  --color-border-strong: #737373;
   /** Border of a disabled control that keeps a visible outline — disabled secondary button. */
   --color-border-disabled-strong: #A1A1A1;
   /** Border of a disabled low-emphasis control — disabled input field. */
@@ -541,16 +541,16 @@
   --color-icon-disabled: #A1A1A1;
   /** Icon on the solid disabled fill (bg-fill-disabled-strong) — the tick of a disabled selected Checkbox. For an icon inside a disabled control on a light background use icon-disabled. */
   --color-icon-on-bg-fill-disabled-strong: #FFFFFF;
-  /** Icon on an inverted background (bg-surface-inverse, bg-fill-inverse). Use icon-inverse-secondary for supporting icons and icon-inverse-disabled for disabled ones. */
-  --color-icon-inverse: #FAFAFA;
+  /** Icon on an inverted background (bg-surface-inverse, bg-fill-inverse), matching text-inverse. Use icon-inverse-secondary for supporting icons and icon-inverse-disabled for disabled ones. */
+  --color-icon-inverse: #FFFFFF;
   /** Supporting icon on an inverted background, beside text-inverse-secondary. For the main icon use icon-inverse. */
   --color-icon-inverse-secondary: #A1A1A1;
-  /** Disabled icon on an inverted background, matching text-inverse-disabled. */
-  --color-icon-inverse-disabled: #E5E5E5;
+  /** Disabled icon on an inverted background, matching text-inverse-disabled. Dimmer than icon-inverse-secondary. */
+  --color-icon-inverse-disabled: #737373;
   /** Supporting icon beside secondary text. */
   --color-icon-secondary: #525252;
-  /** Lowest-emphasis icon — decorative affordances, input adornments, chevrons. */
-  --color-icon-tertiary: #A1A1A1;
+  /** Lowest-emphasis icon — decorative affordances, input adornments, chevrons. Matches text-tertiary; for an icon inside a disabled control use icon-disabled. */
+  --color-icon-tertiary: #737373;
   /** Brand-coloured icon on a neutral or brand-tinted background. On a solid brand fill use icon-brand-on-bg-fill. */
   --color-icon-brand: #0067E8;
   /** Hovered brand icon on a neutral background, tracking text-brand-hover and border-brand-hover. On a tinted brand surface keep the icon in step with the label instead. */
@@ -1562,7 +1562,7 @@
   /** Fill of the checkbox box — checked and in the error state, when disabled. */
   --checkbox-bg-selected-error-disabled: #A1A1A1;
   /** Outline of the checkbox box — unchecked, at rest. */
-  --checkbox-border-unselected-default: #A1A1A1;
+  --checkbox-border-unselected-default: #737373;
   /** Outline of the checkbox box — unchecked, on hover. */
   --checkbox-border-unselected-hover: #0067E8;
   /** Outline of the checkbox box — unchecked, while pressed. */
@@ -1676,7 +1676,7 @@
   /** Fill of the radio circle in both selected and unselected states, in the error state — when disabled. */
   --radio-bg-error-disabled: #E5E5E5;
   /** Outline of the radio circle — unselected, at rest. */
-  --radio-border-unselected-default: #A1A1A1;
+  --radio-border-unselected-default: #737373;
   /** Outline of the radio circle — unselected, on hover. */
   --radio-border-unselected-hover: #0067E8;
   /** Outline of the radio circle — unselected, while pressed. */
@@ -1734,7 +1734,7 @@
   /** Colour of the helper text when the radio is disabled. */
   --radio-description-disabled: #A1A1A1;
   /** Colour of the focus state layer while the radio is unselected. The state layer takes the colour of the content it belongs to, so it follows the ring rather than the interior. */
-  --radio-state-layer-unselected: #A1A1A1;
+  --radio-state-layer-unselected: #737373;
   /** Colour of the focus state layer while the radio is selected. */
   --radio-state-layer-selected: #0067E8;
   /** Colour of the focus state layer in the error state, selected or not. */
@@ -1794,7 +1794,7 @@
   /** Outline of the chip — unselected, on hover. Painted only when the border is switched on. Keeps the resting grey. */
   --chip-border-unselected-hover: #D4D4D4;
   /** Outline of the chip — unselected, while pressed. Painted only when the border is switched on. Darkens to border-strong, which is the only thing that separates pressed from hover. */
-  --chip-border-unselected-pressed: #A1A1A1;
+  --chip-border-unselected-pressed: #737373;
   /** Outline of the chip — unselected, when disabled. Painted only when the border is switched on. */
   --chip-border-unselected-disabled: #D4D4D4;
   /** Outline of the chip — selected, at rest and on keyboard focus. Painted only when the border is switched on. */

@@ -199,7 +199,7 @@ A focus indicator must reach 3:1 against what surrounds it. The state layer does
 
 | State layer | Colour | At 10% over white | Opacity needed for 3:1 |
 |---|---|---|---|
-| Unselected | `#A1A1A1` | 1.08:1 | not reachable — the colour itself is 2.58:1 |
+| Unselected | `#737373` | 1.13:1 | ~77% |
 | Selected | `#0067E8` | 1.15:1 | ~69% |
 | Error | `#C10007` | 1.20:1 | ~54% |
 
@@ -217,7 +217,7 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed. The dot i
 
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
-| Unselected ring `#A1A1A1` on `#FFFFFF` | 2.58:1 | 3:1 (1.4.11) | **Fail — accepted deviation** |
+| Unselected ring `#737373` on `#FFFFFF` | 4.74:1 | 3:1 (1.4.11) | Pass |
 | Selected ring `#0067E8` on `#FFFFFF` | 5.12:1 | 3:1 (1.4.11) | Pass |
 | Dot `#0067E8` on interior `#FFFFFF` | 5.12:1 | 3:1 (1.4.11) | Pass |
 | Dot hover `#0681FF` on interior `#EDF8FF` | 3.48:1 | 3:1 (1.4.11) | Pass |
@@ -232,7 +232,7 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed. The dot i
 
 Hover is the tightest pair at 3.48:1 — the dot darkens one step less than the interior lightens. It clears 1.4.11, but it is the pair to re-measure first if the brand ramp is ever re-tinted.
 
-Radio adds no new semantic colours; `color.border-strong` (added by Checkbox as the interactive-control boundary colour) carries the unselected ring here too. It was lightened to `neutral.400` (`#A1A1A1`) on 2026-09-28, so the unselected ring now measures 2.58:1 on white and 2.36:1 on the grey canvas — below 1.4.11, an accepted deviation shared with Checkbox (see `components/checkbox.md`).
+Radio adds no new semantic colours; `color.border-strong` (added by Checkbox as the interactive-control boundary colour) carries the unselected ring here too. It is `neutral.500` (`#737373`), so the unselected ring measures 4.74:1 on white and 4.35:1 on the grey canvas and meets 1.4.11. A brief lightening to `neutral.400` (2.58:1) on 2026-09-28 was reverted to restore compliance (see `components/checkbox.md`).
 
 ### Semantics
 
