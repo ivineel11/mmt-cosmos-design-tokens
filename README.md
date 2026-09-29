@@ -1641,7 +1641,7 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ## Figma component pages
 
-Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Button (`58:202`) and Snackbar (`637:3233`) follow it. Checkbox, Radio and Chip predate it and still need migrating. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Button (`58:202`), Snackbar (`637:3233`) and Chip (`559:2943`, with Chip / Vertical `592:327`) follow it. Checkbox and Radio predate it and still need migrating. When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
 
 ### 1. Page
 
@@ -1668,6 +1668,7 @@ Every component gets its own page in the Cosmos Figma file, laid out the way the
 - A frame named with the plural of the set, such as `Buttons` or `Snackbars`. Fill #FAFAFA, radius 56, no auto layout, no clipping.
 - **Component set:** placed 250 px in from the left and 140 px down from the top. The frame extends 126 px to the right of the set and 100 px below it.
 - **Set styling:** white fill, radius 32, 80 px padding.
+- **Spacing:** the grid should feel spacious, never compact. For an auto-grid set, set every column and row track to Hug, and let the set hug too. Use a column gap of about 160 and a row gap of 80; Button uses 189 and 80. For a free-positioned set, place variants on the same rhythm. Tiny parts such as Chip / Remove use about 120 between columns and 64 between rows.
 - **Grid:** each column is one value of one axis. Each row is one combination of the remaining axes. Values run in the same order as the property dropdown. Every cell in a row is the same height, with its variant vertically centred.
 - **Column axis:** State, when the component has one. Otherwise, use the axis that changes the look most. For Snackbar that is Intent.
 
@@ -1677,7 +1678,7 @@ A frame named `Grid Legend`, the same position and size as the set, with no fill
 
 | | Column labels | Row labels |
 |---|---|---|
-| Text | The variant value exactly as in the property (`Hover`) | One line per axis value (`Primary` / `Medium`) |
+| Text | The variant value exactly as in the property (`Hover`) | One line per axis value (`Primary` / `Medium`), up to three lines. True / False axes use the adjective (`Selected` / `Unselected`) |
 | Position | Centred on the column, top edge 60 px above the set | Right-aligned, right edge 92 px left of the set, centred on the row |
 | Type | SF Mono Medium 14, #242424, line height 20 | SF Mono Medium 14, #242424, line height 24 |
 
