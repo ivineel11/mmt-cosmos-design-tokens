@@ -64,12 +64,13 @@ Three variant axes drive it:
 | `Show icon` | BOOLEAN | `true` | |
 | `Show title` | BOOLEAN | `false` | |
 | `Title` | TEXT | `"Title"` | Placeholder copy. |
+| `Message` | TEXT | `"Message"` | Placeholder copy, the same in every variant. |
 | `Show action` | BOOLEAN | `true` | In Stacked it hides the whole action row. |
 | `Show close` | BOOLEAN | `false` | |
-| `Action` | Nested instance | `State=Default` | Exposed. Set its `Label` and `State` (Default, Hover, Pressed, Focus) from the Snackbar panel. |
+| `Action` | Nested instance | `State=Default` | Exposed. Set its `Label` (placeholder `"Action"`) and `State` (Default, Hover, Pressed, Focus) from the Snackbar panel. |
 | `Close` | Nested instance | `State=Default` | Exposed, so its `State` can be mocked. |
 
-The message is edited directly on the `Message` layer. Each variant ships realistic sample copy for its intent. There is no `Leading icon` swap property, because a set-level default would reset every intent to one glyph. Swap the glyph on the layer instead.
+Every variant ships placeholder copy only (Title, Message, Action), so no sample sentence is mistaken for approved product copy. Realistic copy lives in the `Snackbar examples` frame. There is no `Leading icon` swap property, because a set-level default would reset every intent to one glyph. Swap the glyph on the layer instead.
 
 ### Examples
 
