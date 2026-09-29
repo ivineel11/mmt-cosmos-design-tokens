@@ -38,6 +38,7 @@ Before every commit, run `npm run build:tokens`, then `npm run lint` and `npm ru
 - Lay out every new component page the way the Button page is: the Docs card, then one showcase frame per set with a Grid Legend, then an examples frame. `README.md` → "Figma component pages" has the exact measurements. Run through that checklist before reporting a component as done.
 - Put placeholder copy in variants and realistic copy only in the examples frame.
 - Grid Legend labels are meant to be SF Mono Medium. Scripts cannot load it, so write them in JetBrains Mono Medium and tell the designer to switch the font.
+- Bind every Grid Legend label to the `color/text-tertiary` variable, never a raw hex. Keep the row labels (the vertical legend) at least 80px apart, measured from the bottom of one label to the top of the next, and centre each row of variants on its label. Check both with a script before reporting a page as done.
 
 ## Working with the designer
 
