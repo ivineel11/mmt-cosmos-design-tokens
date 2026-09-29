@@ -2203,12 +2203,14 @@
   --snackbar-padding-top-stacked: 12px;
   /** End padding when an action or close button sits at the trailing edge, and bottom padding of the stacked layout below the action row. Tighter than padding-x because the button carries its own padding. */
   --snackbar-padding-end-control: 8px;
-  /** Horizontal gap between the leading icon and the text, and between the text and the controls in the inline layout. */
+  /** Horizontal gap between the leading icon and the text in both layouts. */
   --snackbar-gap: 12px;
   /** Vertical gap between the title and the message. Use none when there is no title. */
   --snackbar-gap-text: 2px;
-  /** Gap between the action button and the close button. */
+  /** Gap before each visible control: between the text block and the first control, and between the action and close buttons in the inline layout; between the text block and the close button in the stacked layout. Hidden controls leave no gap, so the text fills the row. */
   --snackbar-gap-controls: 4px;
+  /** End padding of the icon and text block in both layouts. Adds to gap-controls for 12px between the text and the first control, and to padding-end-control for 16px from the edge when no control sits beside the text. */
+  --snackbar-content-padding-end: 8px;
   /** Vertical gap between the text block and the action row in the stacked layout, used when the action label is too long to sit inline. */
   --snackbar-stacked-gap: 8px;
   /** Size of the leading status icon, one step larger than the 20px text line so the status reads at a glance. Centred on the text block in the inline layout. */
