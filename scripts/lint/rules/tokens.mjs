@@ -732,11 +732,16 @@ const contrastRule = {
       const m = /^text-([a-z]+)-on-(bg-fill|bg-surface)(-[a-z-]+)?$/.exec(key);
       if (!m) continue;
       const bgKey = `${m[2]}-${m[1]}${m[3] ?? ""}`;
-      if (!model.byId.has(`color.${bgKey}`)) {
-        api.report({ ...at(leaf, "key"), message: `color.${key} is named for color.${bgKey}, which does not exist. An on-* text role needs the fill it pairs with.` });
+      // A background split into -strong/-subtle (bg-surface-brand-pressed-*) keeps one
+      // on-* text role, which must pass on every variant.
+      const bgIds = model.byId.has(`color.${bgKey}`)
+        ? [`color.${bgKey}`]
+        : ["strong", "subtle"].map((s) => `color.${bgKey}-${s}`).filter((id) => model.byId.has(id));
+      if (!bgIds.length) {
+        api.report({ ...at(leaf, "key"), message: `color.${key} is named for color.${bgKey}, which does not exist (nor a -strong or -subtle variant of it). An on-* text role needs the fill it pairs with.` });
         continue;
       }
-      check(leaf, [`color.${bgKey}`], AA_TEXT, "1.4.3");
+      check(leaf, bgIds, AA_TEXT, "1.4.3");
     }
 
     for (const leaf of model.inTier("component")) {

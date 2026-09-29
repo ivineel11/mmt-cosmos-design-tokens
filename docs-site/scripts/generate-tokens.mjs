@@ -307,7 +307,12 @@ function backgroundFor(key) {
   // pairing the tokens/contrast lint rule checks: text-info-on-bg-surface-hover
   // sits on bg-surface-info-hover, text-brand-on-bg-fill on bg-fill-brand.
   const on = key.match(/^text-([a-z]+)-on-(bg-fill|bg-surface)(-[a-z-]+)?$/);
-  if (on) return `${on[2]}-${on[1]}${on[3] ?? ""}`;
+  if (on) {
+    // A background split into -strong/-subtle keeps one on-* text role; measure the
+    // stronger variant, the harder of the two for the text to pass on.
+    const bg = `${on[2]}-${on[1]}${on[3] ?? ""}`;
+    return source.semantic.color[bg] || !source.semantic.color[`${bg}-strong`] ? bg : `${bg}-strong`;
+  }
   if (key.startsWith("text-inverse") || key === "text-link-inverse") return "bg-surface-inverse";
   return "bg";
 }

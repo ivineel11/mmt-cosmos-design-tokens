@@ -79,6 +79,7 @@ const cases = [
   ["tokens/contrast", (j) => { j.component.button["label-primary-hover"].value = "{color.text-brand}"; }, "button.label-primary-hover"],
   ["tokens/contrast", (j) => { j.component.checkbox["icon-selected-default"].value = "{color.bg-fill-brand}"; }, "WCAG 1.4.11"],
   ["tokens/contrast", (j) => { j.semantic.color["text-teal-on-bg-fill-strong"] = { ...j.semantic.color["text-info-on-bg-fill-strong"] }; }, "does not exist"],
+  ["tokens/contrast", (j) => { j.semantic.color["bg-surface-brand-pressed-subtle"].value = "{color.brand.800}"; }, "on color.bg-surface-brand-pressed-subtle"],
   ["tokens/description-required", (j) => { delete j.semantic.color.bg.description; }, "has no description"],
   ["tokens/description-required", (j) => { delete j.primitives.color.red["500"].description; }, "describe-primitives"],
   ["tokens/description-style", (j) => { j.semantic.color.bg.description = "The page's white background canvas."; }, "apostrophe"],

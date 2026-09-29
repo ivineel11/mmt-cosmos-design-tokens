@@ -141,7 +141,7 @@ Token names follow `chip/{property}-{selection}-{state}`. `State=Focus` reuses t
 | Selected | Default | Hover | Pressed | Disabled |
 |---|---|---|---|---|
 | False | `color.bg-fill` | `color.bg-fill-hover` | `color.bg-fill-pressed-subtle` | `color.bg-surface-disabled-subtle` |
-| True | `color.bg-surface-brand` | `color.bg-surface-brand-hover` | `color.bg-surface-brand-pressed` | `color.bg-surface-disabled-subtle` |
+| True | `color.bg-surface-brand` | `color.bg-surface-brand-hover` | `color.bg-surface-brand-pressed-strong` | `color.bg-surface-disabled-subtle` |
 
 `bg-fill-hover` and `bg-fill-pressed-subtle` were added to the semantic tier for this component. Both are `neutral.100`, the same grey as `bg-secondary` (1.00:1): hover and pressed share one fill and differ only by the border (pressed darkens it to `border-strong`), and a borderless chip hovered or pressed on the grey canvas loses its fill and only its label remains. The disabled fill, `bg-surface-disabled-subtle` (`neutral.50`), is 1.04:1 against both canvases, so the grey disabled label carries the state.
 
@@ -177,7 +177,7 @@ A circle behind the remove glyph, painted only while the remove button itself is
 | Selected | Hover | Pressed |
 |---|---|---|
 | False | `color.bg-fill-pressed-strong` | `color.bg-fill-pressed-strong` |
-| True | `color.bg-surface-brand-pressed` | `color.bg-surface-brand-pressed` |
+| True | `color.bg-surface-brand-pressed-strong` | `color.bg-surface-brand-pressed-strong` |
 
 Disabled collapses to the neutral ramp whether or not the chip is selected — an inert chip should not still read as chosen.
 

@@ -327,8 +327,10 @@
   --color-bg-surface-brand: #EDF8FF;
   /** Hover state for bg-surface-brand, and the hover background for brand controls that are transparent at rest (secondary and text buttons). */
   --color-bg-surface-brand-hover: #D6EFFF;
-  /** Pressed/active state for bg-surface-brand and for brand controls that are transparent at rest. */
-  --color-bg-surface-brand-pressed: #C2E8FF;
+  /** Light pressed step for a brand-tinted surface, the same tint as bg-surface-brand-hover, for presses that should barely deepen. Pair the label with text-brand-on-bg-surface-hover. For the standard pressed state use bg-surface-brand-pressed-strong. */
+  --color-bg-surface-brand-pressed-subtle: #D6EFFF;
+  /** Pressed state for bg-surface-brand and for brand controls that are transparent at rest — secondary and tertiary button presses, the selected chip. Pair the label with text-brand-on-bg-surface-pressed. For a lighter press use bg-surface-brand-pressed-subtle. */
+  --color-bg-surface-brand-pressed-strong: #C2E8FF;
   /** Informational container — info banners, inline info messages. Pair with text-info, border-info and icon-info. For a solid info element such as a badge use bg-fill-info-strong. */
   --color-bg-surface-info: #EDF8FF;
   /** Hover state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-hover. */
