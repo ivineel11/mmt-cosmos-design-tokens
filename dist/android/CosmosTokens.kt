@@ -1154,7 +1154,7 @@ object CosmosTokens {
   val snackbarIconInverseNeutral = Color(0xFFFFFFFF)
   val snackbarIconInverseSuccess = Color(0xFF05DF72)
   val snackbarIconInverseWarning = Color(0xFFFF6467)
-  val snackbarIconSize = 20.dp
+  val snackbarIconSize = 24.dp
   val snackbarIconTintedCaution = Color(0xFFA65F00)
   val snackbarIconTintedInfo = Color(0xFF0067E8)
   val snackbarIconTintedNeutral = Color(0xFF0A0A0A)
@@ -1193,8 +1193,9 @@ object CosmosTokens {
   val snackbarMinHeight = 48.dp
   val snackbarMinTouchTarget = 48.dp
   val snackbarPaddingEndControl = 8.dp
+  val snackbarPaddingTopStacked = 12.dp
   val snackbarPaddingX = 16.dp
-  val snackbarPaddingY = 12.dp
+  val snackbarPaddingY = 8.dp
   val snackbarRadius = 12.dp
   val snackbarStackedGap = 8.dp
   val space2xl = 28.dp

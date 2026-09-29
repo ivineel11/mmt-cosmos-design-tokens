@@ -148,7 +148,7 @@ Snackbar / Control (component set · 636:3088)
    or Icon (instance · Icon / close)  — Type=Close
 ```
 
-In the Inline layout, items are centred on the cross axis, so the icon and the controls sit mid-height beside a two-line message. In Stacked, the content row is top-aligned, so the 20 px icon lines up with the first 20 px text line.
+Both layouts hug their content vertically: the snackbar never drops below `snackbar/min-height` (48), and it grows by 20 px for each extra message line and by 22 px for the title (its line plus `snackbar/gap-text`). In the Inline layout, items are centred on the cross axis, so the 24 px icon and the controls sit mid-height beside a message of any length. In Stacked, the content row is top-aligned: the 24 px icon starts level with the first text line and overhangs its 20 px line box by 4 px below.
 
 ### Dimensions
 
@@ -156,17 +156,18 @@ The same in every Appearance and Intent.
 
 | Property | Value | Token |
 |---|---|---|
-| Min height | 48 | `snackbar/min-height` |
+| Min height | 48; hugs content above that | `snackbar/min-height` |
 | Width | Mobile: screen minus 2 × 16. Web: 288 to 560, hugging content. Figma mocks: 360. | not tokenised |
 | Padding start | 16 | `snackbar/padding-x` |
 | Padding end, with a control at the edge | 8 | `snackbar/padding-end-control` |
-| Padding top and bottom | 12 | `snackbar/padding-y` |
+| Padding top and bottom, Inline | 8 | `snackbar/padding-y` |
+| Padding top, Stacked | 12 | `snackbar/padding-top-stacked` |
 | Padding bottom, Stacked | 8 | `snackbar/padding-end-control` |
 | Gap: icon, text and controls | 12 | `snackbar/gap` |
 | Gap: title to message | 2 | `snackbar/gap-text` |
 | Gap: action to close | 4 | `snackbar/gap-controls` |
 | Gap: text to action row, Stacked | 8 | `snackbar/stacked-gap` |
-| Leading icon | 20 | `snackbar/icon-size` |
+| Leading icon | 24 | `snackbar/icon-size` |
 | Title type | 14 / 20 bold | `body/medium/bold` |
 | Message type | 14 / 20 regular | `body/medium/regular` |
 | Corner radius | 12 | `snackbar/radius` |
@@ -182,7 +183,7 @@ The same in every Appearance and Intent.
 | Focus ring | 2 px, 2 px outside, radius 12 | `snackbar/focus-ring-width`, `snackbar/focus-ring-offset`, `snackbar/focus-ring-radius` |
 | Screen margin | 16 mobile, 24 web | `snackbar/margin-mobile`, `snackbar/margin-desktop` |
 
-The Stacked bottom padding is 8, not 12, because the 32 px action button already carries its own inner space. The same reasoning applies to the end padding beside a control.
+Inline padding is 8 so that 8 + 32 px action + 8 lands exactly on the 48 px min height. A one-line message without an action is also 48 tall, held by the min height, and each extra line adds 20 (two lines: 56). Stacked keeps 12 above the text because nothing tall sits beside it, and 8 below the action row because the 32 px button already carries its own inner space. The same reasoning applies to the end padding beside a control.
 
 ---
 
@@ -276,7 +277,7 @@ On the Inverse bar the icon is the only intent signal, and on Tinted the tint ad
 
 ## Known gaps
 
-- **Appearance is a trial.** Inverse and Tinted both ship. Once one is chosen, delete the other appearance tokens (about 50 of the 112), its Figma variants and its Control tones.
+- **Appearance is a trial.** Inverse and Tinted both ship. Once one is chosen, delete the other appearance tokens (about 50 of the 113), its Figma variants and its Control tones.
 - **No motion tokens.** Durations and easing are documented above, not tokenised. They belong in a separate motion token branch that covers every component.
 - **Web width is not tokenised.** 288 min and 560 max are beyond the space scale, which stops at 64. They are documented here only.
 - **End padding with no controls.** When both the action and the close are hidden, the end padding should be `snackbar/padding-x` (16). Figma keeps `snackbar/padding-end-control` (8), because a variable binding cannot switch on a boolean. Code should pick the right value.
@@ -290,7 +291,7 @@ On the Inverse bar the icon is the only intent signal, and on Tinted the tint ad
 
 ## Token reference
 
-112 tokens under `component.snackbar` in `tokens/tokens.json`, mirrored 1:1 as `snackbar/*` in the Figma `component` collection:
+113 tokens under `component.snackbar` in `tokens/tokens.json`, mirrored 1:1 as `snackbar/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
@@ -302,6 +303,6 @@ On the Inverse bar the icon is the only intent signal, and on Tinted the tint ad
 | `label-control-*` (action) | 18 |
 | `icon-control-*` (close) | 18 |
 | `focus-ring` (colour) | 1 |
-| dimensions (`min-height`, `padding-x`, `padding-y`, `padding-end-control`, `gap`, `gap-text`, `gap-controls`, `stacked-gap`, `icon-size`, `radius`, `border-width`, `control-height`, `control-padding-x`, `control-radius`, `close-size`, `close-icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `margin-mobile`, `margin-desktop`) | 22 |
+| dimensions (`min-height`, `padding-x`, `padding-y`, `padding-top-stacked`, `padding-end-control`, `gap`, `gap-text`, `gap-controls`, `stacked-gap`, `icon-size`, `radius`, `border-width`, `control-height`, `control-padding-x`, `control-radius`, `close-size`, `close-icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `margin-mobile`, `margin-desktop`) | 23 |
 
 Platform names follow the standard pipeline: `snackbar/bg-control-inverse-hover` → `--snackbar-bg-control-inverse-hover` (CSS) → `CosmosTokens.snackbarBgControlInverseHover` (Swift / Kotlin) → `tokens.snackbarBgControlInverseHover` (TS).
