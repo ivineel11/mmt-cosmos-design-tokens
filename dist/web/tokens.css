@@ -1657,18 +1657,18 @@
   --checkbox-border-unselected-error-disabled: #A1A1A1;
   /** Outline of the checkbox box — checked, at rest. */
   --checkbox-border-selected-default: #0067E8;
-  /** Outline of the checkbox box — checked, on hover. */
-  --checkbox-border-selected-hover: #0681FF;
-  /** Outline of the checkbox box — checked, while pressed. */
-  --checkbox-border-selected-pressed: #0857C5;
+  /** Outline of the checkbox box — checked, on hover. Transparent: the fill darkening to bg-fill-brand-hover is the hover feedback, so no stroke is drawn. */
+  --checkbox-border-selected-hover: #FFFFFF00;
+  /** Outline of the checkbox box — checked, while pressed. Transparent: the fill darkening to bg-fill-brand-pressed is the pressed feedback, so no stroke is drawn. */
+  --checkbox-border-selected-pressed: #FFFFFF00;
   /** Outline of the checkbox box — checked, when disabled. */
   --checkbox-border-selected-disabled: #A1A1A1;
   /** Outline of the checkbox box — checked and in the error state, at rest. */
   --checkbox-border-selected-error-default: #C10007;
-  /** Outline of the checkbox box — checked and in the error state, on hover. */
-  --checkbox-border-selected-error-hover: #E7000B;
-  /** Outline of the checkbox box — checked and in the error state, while pressed. */
-  --checkbox-border-selected-error-pressed: #9F0712;
+  /** Outline of the checkbox box — checked and in the error state, on hover. Transparent: the fill change is the hover feedback, so no stroke is drawn. */
+  --checkbox-border-selected-error-hover: #FFFFFF00;
+  /** Outline of the checkbox box — checked and in the error state, while pressed. Transparent: the fill change is the pressed feedback, so no stroke is drawn. */
+  --checkbox-border-selected-error-pressed: #FFFFFF00;
   /** Outline of the checkbox box — checked and in the error state, when disabled. */
   --checkbox-border-selected-error-disabled: #A1A1A1;
   /** Colour of the checkmark glyph inside the box — checked, at rest. */
