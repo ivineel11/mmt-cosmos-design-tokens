@@ -116,7 +116,7 @@ Tab / Primary (component set · 694:2811)
 │  └─ Badge (instance · Badge · Count, Strong, Warning, Small) · x 16, y −4 (primary-badge-offset-x, -y) · Show badge · exposed · hidden in Disabled
 ├─ Label (text · label/medium/bold)
 ├─ Indicator (rectangle) · decorative · absolute, bottom, inset by padding-x · Selected=True only
-└─ Focus ring (rectangle) · decorative · absolute, 2 px inside the edge · State=Focus only
+└─ Focus ring (rectangle) · decorative · absolute, 2 px inside the top and sides, flush with the bottom, under the Indicator · State=Focus only
 
 Tab / Secondary (component set · 697:59)
 ├─ Label (text · label/medium/bold)
@@ -141,11 +141,11 @@ The indicator and focus ring are absolutely positioned, so selecting or focusing
 | Hover and pressed fill radius | 8 | 8 | `tab/radius` |
 | Indicator | 2 thick, inset 16 each side, round ends | same | `tab/indicator-height`, `tab/indicator-radius` |
 | Track (under the list) | 1, full width | 1, full width | `tab/track-width` |
-| Focus ring | 2 px, 2 px inside the edge, radius 8 | same | `tab/focus-ring-width`, `tab/focus-ring-inset`, `tab/focus-ring-radius` |
+| Focus ring | 2 px, 2 px inside the top and side edges, flush with the bottom edge, radius 8 | same | `tab/focus-ring-width`, `tab/focus-ring-inset`, `tab/focus-ring-radius` |
 
 A Primary tab is 8 + 24 + 4 + 20 + 8 = 64 tall, exactly its min height. A Secondary tab is 12 + 20 + 12 = 44 of content, so the 48 min height governs.
 
-The focus ring sits inside the tab rather than outside, because neighbouring tabs and a scrolling row would clip an outer ring. Its radius matches the 8 px tab radius. A ring 2 px inside an 8 px corner would be exactly concentric at 6 px, which the radius scale does not have, so the ring corners read very slightly rounder than the fill.
+The focus ring sits inside the tab rather than outside, because neighbouring tabs and a scrolling row would clip an outer ring. It is inset 2 px at the top and sides and runs down to the bottom edge, so on a selected tab it encloses the indicator instead of stacking a second line on it. The indicator is drawn above the ring, so the brand underline still shows as a darker section of the ring bottom edge (#0067E8 over #0681FF). Its radius matches the 8 px tab radius; at the inset top corners a concentric curve would be 6 px, which the radius scale does not have.
 
 ---
 

@@ -2407,8 +2407,8 @@
   --tab-track-width: 1px;
   /** Thickness of the keyboard focus ring. */
   --tab-focus-ring-width: 2px;
-  /** Gap between the tab edge and its focus ring, drawn inside so neighbouring tabs and a scrolling bar never clip it. */
+  /** Gap between the top, left and right edges of the tab and its focus ring. The ring is drawn inside so neighbouring tabs and a scrolling row never clip it, and it runs down to the bottom edge, where it merges with the selected indicator. */
   --tab-focus-ring-inset: 2px;
-  /** Corner radius of the inset focus ring on both tab types, the same 8 px as the tab fill radius. Sitting 2 px inside the edge, the ring corners read slightly rounder than a concentric 6 px curve, which the radius scale does not have. */
+  /** Corner radius of the focus ring on both tab types, the same 8 px as the tab fill radius. Inset 2 px at the top and sides, the top corners read slightly rounder than a concentric 6 px curve, which the radius scale does not have. */
   --tab-focus-ring-radius: 8px;
 }
