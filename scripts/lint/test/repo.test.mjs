@@ -8,6 +8,8 @@ import { loadConfig } from "../lib/config.mjs";
 import { fixture, lint, ofRule, realTokens, REPO } from "./helpers.mjs";
 
 const DIST = ["dist"];
+// Live count, so adding a Button token does not break the count assertions below.
+const BUTTON_TOKENS = Object.keys(realTokens().component.button).length;
 
 describe("the repository itself", () => {
   it("passes every rule", async () => {
@@ -80,7 +82,7 @@ describe("docs rules", () => {
     assert.match(text, /border-focus aliases color\.brand\.400; tokens\.json has \{color\.brand\.600\}/);
     assert.match(text, /fontSize\.14 is 15px; it resolves to 14px/);
     assert.match(text, /color\.brand\.0 \(#000000\), which does not exist/);
-    assert.match(text, /button\/\* has 104 tokens; tokens\.json has 120/);
+    assert.match(text, new RegExp(`button/\\* has 104 tokens; tokens\\.json has ${BUTTON_TOKENS}`));
     assert.match(text, /body\.medium\.regular/);
   });
 
@@ -97,8 +99,8 @@ describe("docs rules", () => {
       "| Token | Role |",
       "|---|---|",
       "| `color.text-primary` | Body |",
-      `**Totals:** 1 primitive tokens · 2 semantic tokens (${semanticColors} colors + 36 typography) · 3 component tokens (120 \`button/*\` + 1 \`checkbox/*\`) · **${web} values on web** · **${native} on iOS and Android** · **0 gradients**`,
-      "Button (120 tokens) and Radio (5 tokens) qualify.",
+      `**Totals:** 1 primitive tokens · 2 semantic tokens (${semanticColors} colors + 36 typography) · 3 component tokens (${BUTTON_TOKENS} \`button/*\` + 1 \`checkbox/*\`) · **${web} values on web** · **${native} on iOS and Android** · **0 gradients**`,
+      `Button (${BUTTON_TOKENS} tokens) and Radio (5 tokens) qualify.`,
     ].join("\n"));
     const hits = ofRule(await lint(root, "docs/readme-counts"), "docs/readme-counts");
     const subjects = hits.map((h) => h.subject).sort();
