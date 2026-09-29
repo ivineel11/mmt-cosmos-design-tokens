@@ -230,7 +230,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (120 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (60 tokens) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (120 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -278,7 +278,7 @@ For nested content, keep alternating. A grey well inside a white card on a grey 
 
 Interactive controls take their body colour from `bg-fill`, never from `bg`. That way a checkbox or radio stays white whichever canvas it sits on.
 
-Chips follow the same rule, and their border toggle is what adapts them to the canvas. A borderless chip is white on the grey `bg-secondary` canvas. On white pages and cards, switch the border on. The chip hover and pressed fills (`bg-fill-hover`, `bg-fill-pressed-subtle`) are both the same grey as `bg-secondary`, so a borderless chip hovered or pressed on the grey canvas loses its fill and only its label remains; use `bg-fill-pressed-strong` where a press must read on either canvas.
+Chips follow the same rule, and their border toggle is what adapts them to the canvas. A borderless chip is white on the grey `bg-secondary` canvas. On white pages and cards, switch the border on. The chip hover and pressed fills (`bg-fill-hover`, `bg-fill-pressed-subtle`) are both the same grey as `bg-secondary`, so a borderless chip hovered or pressed on the grey canvas loses its fill and only its label remains; use `bg-fill-pressed-strong` where a press must read on either canvas. The vertical chip keeps the same toggle for unselected chips, but a selected vertical chip always draws its border: it has no free slot for a check icon, so the border is what keeps selection from relying on the fill colour alone.
 
 ### 4. Color scale system
 
@@ -475,9 +475,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 271 primitive tokens · 360 semantic tokens (253 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 302 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 60 `chip/*`) · **1041 values on web** · **1090 on iOS and Android** · **0 gradients**
+**Totals:** 271 primitive tokens · 360 semantic tokens (253 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 319 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*`) · **1058 values on web** · **1107 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 933 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 950 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (271)
 
@@ -975,7 +975,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (302)
+### Component tokens (319)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -984,7 +984,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `button/*` | 120 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
-| `chip/*` | 60 | Chip (`559:2943`, 60 variants) | [`components/chip.md`](components/chip.md) |
+| `chip/*` | 77 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -1624,7 +1624,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
 
-`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) and `components/chip.md` the Chip component set (`559:2943`, 60 variants). All three are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants) and `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants). All four are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
 
 ### Pinned versions
 
