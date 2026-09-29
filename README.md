@@ -1641,7 +1641,7 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ## Figma component pages
 
-Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Button (`58:202`), Snackbar (`637:3233`) and Chip (`559:2943`, with Chip / Vertical `592:327`) follow it. Checkbox and Radio predate it and still need migrating. When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`) and Checkbox (`427:62`) follow it. Radio predates it and still needs migrating. When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
 
 ### 1. Page
 
