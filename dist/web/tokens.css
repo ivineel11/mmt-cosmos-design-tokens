@@ -2241,4 +2241,86 @@
   --snackbar-margin-mobile: 16px;
   /** Distance from the snackbar to the viewport edge on web and tablet layouts. */
   --snackbar-margin-desktop: 24px;
+  /** Solid fill of a strong neutral badge, used for counts and tags that carry no status, such as a result count or Sold out. Count badges default to strong; for a calmer tag use bg-subtle-neutral. */
+  --badge-bg-strong-neutral: #0A0A0A;
+  /** Solid fill of a strong brand badge, used for promotional tags such as New, Deal or MMT Exclusive. Count badges default to strong; for a calmer tag use bg-subtle-brand. */
+  --badge-bg-strong-brand: #0067E8;
+  /** Solid fill of a strong info badge, used for informational tags and counts such as Updated or Beta. Count badges default to strong; for a calmer tag use bg-subtle-info. */
+  --badge-bg-strong-info: #0067E8;
+  /** Solid fill of a strong success badge, used for positive status such as Free cancellation or Confirmed. Count badges default to strong; for a calmer tag use bg-subtle-success. */
+  --badge-bg-strong-success: #008236;
+  /** Solid fill of a strong caution badge, used for advisory status such as Few seats left or Price rising. Count badges default to strong; for a calmer tag use bg-subtle-caution. */
+  --badge-bg-strong-caution: #A65F00;
+  /** Solid fill of a strong warning badge, used for unread notification counts and error status such as Payment failed. Count badges default to strong; for a calmer tag use bg-subtle-warning. */
+  --badge-bg-strong-warning: #C10007;
+  /** Count or text colour on a strong neutral badge. Paired with bg-strong-neutral and holds AA contrast on it. */
+  --badge-label-strong-neutral: #FFFFFF;
+  /** Count or text colour on a strong brand badge. Paired with bg-strong-brand and holds AA contrast on it. */
+  --badge-label-strong-brand: #FFFFFF;
+  /** Count or text colour on a strong info badge. Paired with bg-strong-info and holds AA contrast on it. */
+  --badge-label-strong-info: #FFFFFF;
+  /** Count or text colour on a strong success badge. Paired with bg-strong-success and holds AA contrast on it. */
+  --badge-label-strong-success: #FFFFFF;
+  /** Count or text colour on a strong caution badge. Paired with bg-strong-caution and holds AA contrast on it. */
+  --badge-label-strong-caution: #FFFFFF;
+  /** Count or text colour on a strong warning badge. Paired with bg-strong-warning and holds AA contrast on it. */
+  --badge-label-strong-warning: #FFFFFF;
+  /** Tinted fill of a subtle neutral badge, the calm option for status tags beside content. Not used for dots, which are strong only. On the grey bg-secondary canvas the fill edge disappears and the text alone carries the badge. */
+  --badge-bg-subtle-neutral: #F5F5F5;
+  /** Tinted fill of a subtle brand badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
+  --badge-bg-subtle-brand: #EDF8FF;
+  /** Tinted fill of a subtle info badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
+  --badge-bg-subtle-info: #EDF8FF;
+  /** Tinted fill of a subtle success badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
+  --badge-bg-subtle-success: #DCFCE7;
+  /** Tinted fill of a subtle caution badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
+  --badge-bg-subtle-caution: #FEF9C2;
+  /** Tinted fill of a subtle warning badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
+  --badge-bg-subtle-warning: #FFE2E2;
+  /** Count or text colour on a subtle neutral badge. Paired with bg-subtle-neutral and holds AA contrast on it. */
+  --badge-label-subtle-neutral: #525252;
+  /** Count or text colour on a subtle brand badge. Paired with bg-subtle-brand and holds AA contrast on it. */
+  --badge-label-subtle-brand: #0067E8;
+  /** Count or text colour on a subtle info badge. Paired with bg-subtle-info and holds AA contrast on it. */
+  --badge-label-subtle-info: #0067E8;
+  /** Count or text colour on a subtle success badge. Paired with bg-subtle-success and holds AA contrast on it. */
+  --badge-label-subtle-success: #008236;
+  /** Count or text colour on a subtle caution badge. Paired with bg-subtle-caution and holds AA contrast on it. */
+  --badge-label-subtle-caution: #894B00;
+  /** Count or text colour on a subtle warning badge. Paired with bg-subtle-warning and holds AA contrast on it. */
+  --badge-label-subtle-warning: #C10007;
+  /** Fill of a neutral dot badge, a count-free marker for new or unread content. The same colour as bg-strong-neutral, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
+  --badge-dot-neutral: #0A0A0A;
+  /** Fill of a brand dot badge, a count-free marker for new or unread content. The same colour as bg-strong-brand, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
+  --badge-dot-brand: #0067E8;
+  /** Fill of an info dot badge, a count-free marker for new or unread content. The same colour as bg-strong-info, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
+  --badge-dot-info: #0067E8;
+  /** Fill of a success dot badge, a count-free marker for new or unread content. The same colour as bg-strong-success, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
+  --badge-dot-success: #008236;
+  /** Fill of a caution dot badge, a count-free marker for new or unread content. The same colour as bg-strong-caution, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
+  --badge-dot-caution: #A65F00;
+  /** Fill of a warning dot badge, a count-free marker for new or unread content. The same colour as bg-strong-warning, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
+  --badge-dot-warning: #C10007;
+  /** Height of a small count or text badge. Small badges sit in tabs, on icons and in dense rows; use height-md beside larger text. */
+  --badge-height-sm: 16px;
+  /** Height of a medium count or text badge, used on cards and beside headings. Use height-sm in tabs and on icons. */
+  --badge-height-md: 24px;
+  /** Minimum width of a small count or text badge. Equal to height-sm so a one-digit count renders as a circle. */
+  --badge-min-width-sm: 16px;
+  /** Minimum width of a medium count or text badge. Equal to height-md so a one-digit count renders as a circle. */
+  --badge-min-width-md: 24px;
+  /** Left and right padding inside a count badge at both sizes. Kept tight so a one-digit count stays a circle and 99+ stays compact; text badges use padding-x-text-sm or padding-x-text-md. */
+  --badge-padding-x-count: 4px;
+  /** Left and right padding inside a small text badge. For count badges use padding-x-count. */
+  --badge-padding-x-text-sm: 4px;
+  /** Left and right padding inside a medium text badge, roomier than the small size so a tag beside a card title does not look cramped. For count badges use padding-x-count. */
+  --badge-padding-x-text-md: 8px;
+  /** Width and height of a small dot badge, used in tabs and on icons. */
+  --badge-dot-size-sm: 8px;
+  /** Width and height of a medium dot badge, used beside larger text such as a card title. */
+  --badge-dot-size-md: 12px;
+  /** Corner radius of count and dot badges, a full pill so they read as notifications. Text badges use radius-text instead. */
+  --badge-radius: 999px;
+  /** Corner radius of text badges, a small rounding so a tag such as New reads as a label rather than a notification count. Count and dot badges use radius. */
+  --badge-radius-text: 4px;
 }

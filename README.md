@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 750 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 262 semantic roles + 338 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 780 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 262 semantic roles + 368 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -475,9 +475,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 272 primitive tokens · 369 semantic tokens (262 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 466 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*`) · **1215 values on web** · **1264 on iOS and Android** · **0 gradients**
+**Totals:** 272 primitive tokens · 369 semantic tokens (262 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 507 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 41 `badge/*`) · **1256 values on web** · **1305 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1107 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1148 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (272)
 
@@ -985,7 +985,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (466)
+### Component tokens (507)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -996,6 +996,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 | `chip/*` | 77 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
 | `snackbar/*` | 114 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
+| `badge/*` | 41 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -1009,6 +1010,7 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `radio/dot-selected-default` | `{color.text-brand}` | `#0067E8` |
 | `radio/radius` | `{radius.full}` | `999px` |
 | `snackbar/icon-inverse-success` | `{color.icon-success-inverse}` | `#05DF72` |
+| `badge/bg-strong-warning` | `{color.bg-fill-warning-strong}` | `#C10007` |
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
@@ -1641,7 +1643,7 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ## Figma component pages
 
-Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`) and Radio (`442:415`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`) and Badge (`683:2823`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
 
 ### 1. Page
 
@@ -1696,7 +1698,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
 
-`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants), `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants) and `components/snackbar.md` the Snackbar component set (`637:3233`, 20 variants) with its Snackbar / Control sub-component (`636:3088`, 48 variants). All five are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants), `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants) `components/snackbar.md` the Snackbar component set (`637:3233`, 20 variants) with its Snackbar / Control sub-component (`636:3088`, 48 variants), and `components/badge.md` the Badge component set (`683:2823`, 60 variants). All six are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
 
 ### Pinned versions
 
