@@ -201,7 +201,7 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed.
 | Focus ring `#0681FF` on white / grey canvas | 3.75 / 3.44:1 | 3:1 (1.4.11) | Pass |
 | Unselected border `#D4D4D4` on white | 1.48:1 | – | See below |
 
-The unselected border is a divider-weight grey on purpose. A chip is identified by its label, not its edge, so 1.4.11 does not require the boundary to reach 3:1 — the same reasoning that lets a white card sit on the grey page at 1.09:1. If research shows chips are being missed, a stronger edge needs a neutral of at least `neutral.500` (4.74:1). `color.border-strong` no longer qualifies: it is `neutral.400` (2.58:1). The border keeps this grey on hover and darkens to `border-strong` only while pressed.
+The unselected border is a divider-weight grey on purpose. A chip is identified by its label, not its edge, so 1.4.11 does not require the boundary to reach 3:1 — the same reasoning that lets a white card sit on the grey page at 1.09:1. If research shows chips are being missed, `color.border-strong` (`neutral.500`, 4.74:1) is the stronger edge to switch to. The border keeps this grey on hover and darkens to `border-strong` only while pressed.
 
 ### Selection must not rely on colour alone
 

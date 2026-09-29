@@ -993,7 +993,7 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `button/bg-primary-default` | `{color.bg-fill-brand}` | `#0067E8` |
 | `button/bg-primary-destructive-hover` | `{color.bg-fill-warning-strong-hover}` | `#E7000B` |
 | `checkbox/bg-selected-default` | `{color.bg-fill-brand}` | `#0067E8` |
-| `checkbox/border-unselected-default` | `{color.border-strong}` | `#A1A1A1` |
+| `checkbox/border-unselected-default` | `{color.border-strong}` | `#737373` |
 | `checkbox/control-size-md` | `{space.lg}` | `20px` |
 | `radio/dot-selected-default` | `{color.text-brand}` | `#0067E8` |
 | `radio/radius` | `{radius.full}` | `999px` |
@@ -1072,7 +1072,7 @@ Add a component group only when a component has enough variant × state combinat
 | `text-disabled` | `color.neutral.400` |
 | `text-inverse` | `color.neutral.0` |
 | `text-inverse-secondary` | `color.neutral.400` |
-| `text-inverse-disabled` | `color.neutral.200` |
+| `text-inverse-disabled` | `color.neutral.500` |
 | `text-link` | `color.brand.700` |
 | `text-link-hover` | `color.brand.800` |
 | `text-link-pressed` | `color.brand.900` |
@@ -1108,7 +1108,7 @@ Add a component group only when a component has enough variant × state combinat
 | `border` | `color.neutral.300` |
 | `border-hover` | `color.neutral.400` |
 | `border-secondary` | `color.neutral.200` |
-| `border-strong` | `color.neutral.400` |
+| `border-strong` | `color.neutral.500` |
 | `border-disabled-strong` | `color.neutral.400` |
 | `border-disabled-subtle` | `color.neutral.300` |
 | `border-focus` | `color.brand.600` |
@@ -1127,11 +1127,11 @@ Add a component group only when a component has enough variant × state combinat
 | `icon` | `color.neutral.950` |
 | `icon-disabled` | `color.neutral.400` |
 | `icon-on-bg-fill-disabled-strong` | `color.neutral.0` |
-| `icon-inverse` | `color.neutral.50` |
+| `icon-inverse` | `color.neutral.0` |
 | `icon-inverse-secondary` | `color.neutral.400` |
-| `icon-inverse-disabled` | `color.neutral.200` |
+| `icon-inverse-disabled` | `color.neutral.500` |
 | `icon-secondary` | `color.neutral.600` |
-| `icon-tertiary` | `color.neutral.400` |
+| `icon-tertiary` | `color.neutral.500` |
 | `icon-brand` | `color.brand.700` |
 | `icon-brand-hover` | `color.brand.600` |
 | `icon-brand-pressed` | `color.brand.800` |
