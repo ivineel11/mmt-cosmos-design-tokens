@@ -108,8 +108,8 @@ The Figma page has a live `Badge examples` frame (`686:177`) with counts on the 
   - Use one or two words in sentence case: "New", "Free cancellation".
   - Text badges do not wrap or truncate, so keep them short enough to fit beside their content on a 360 px screen.
 - **Placement.**
-  - Inline badges sit after their label with a gap set by the host component, for example `tab/gap-badge`.
-  - Badges on an icon sit on its top-right corner, centred on the corner of the icon bounding box. That overlay is not tokenised yet (see Known gaps).
+  - Inline badges sit after their label with a gap set by the host component, for example `tab/secondary-gap-badge`.
+  - Badges on an icon are pinned to its top-right corner: the badge left edge sits 16 px in from the icon left edge and its top 4 px above the icon top, and the badge grows to the right. On a 24 px icon a count overhangs the corner by 8 px right and 4 px up, and a dot straddles the corner. Tab / Primary tokenises this as `tab/primary-badge-offset-x` and `tab/primary-badge-offset-y`. Other hosts reuse the same rule until a shared overlay token exists (see Known gaps).
 - **Change.** When a count changes, update it in place. Do not animate it, and do not move it.
 
 ---
@@ -212,7 +212,7 @@ A badge is not focusable and has no role of its own. Its text becomes part of th
 ## Known gaps
 
 - **Brand and Info look identical.** Both resolve to #0067E8 (strong) and #EDF8FF (subtle) today, because Cosmos info uses the brand hue. Both intents ship because their meaning differs, and they separate if either semantic role changes.
-- **No icon overlay tokens.** The offset of a badge over an icon corner, and an outline ring that separates it from a busy icon or an avatar, are not tokenised.
+- **No shared icon overlay tokens.** Only Tab / Primary tokenises the offset of a badge over an icon corner (`tab/primary-badge-offset-x`, `tab/primary-badge-offset-y`). A shared badge-level offset, and an outline ring that separates the badge from a busy icon or an avatar, are not tokenised.
 - **No leading icon in text badges**, such as a bolt beside "Deal".
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
