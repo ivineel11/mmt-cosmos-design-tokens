@@ -2325,4 +2325,92 @@
   --badge-radius: 999px;
   /** Corner radius of text badges, a small rounding so a tag such as New reads as a label rather than a notification count. Count and dot badges use radius. */
   --badge-radius-text: 4px;
+  /** Fill of an unselected tab at rest and on keyboard focus. Transparent, so the tab bar or page shows through; the label carries the tab. */
+  --tab-bg-unselected-default: #FFFFFF00;
+  /** Fill of an unselected tab on hover, a neutral state layer. Selected tabs hover to the same grey through bg-selected-hover. */
+  --tab-bg-unselected-hover: #F5F5F5;
+  /** Fill of an unselected tab while pressed. One step darker than hover, because bg-fill-pressed-subtle is the same grey as hover and would show no change. */
+  --tab-bg-unselected-pressed: #E5E5E5;
+  /** Fill of the selected tab at rest and on keyboard focus. Transparent: the brand label and the indicator mark the selection, not a fill. */
+  --tab-bg-selected-default: #FFFFFF00;
+  /** Fill of the selected tab on hover, the same neutral state layer as an unselected tab. */
+  --tab-bg-selected-hover: #F5F5F5;
+  /** Fill of the selected tab while pressed. The label darkens to label-selected-pressed so it keeps AA contrast on this grey. */
+  --tab-bg-selected-pressed: #E5E5E5;
+  /** Fill of a disabled tab, selected or not. Transparent, with no hover or pressed layer. */
+  --tab-bg-disabled: #FFFFFF00;
+  /** Label colour of an unselected tab at rest and on keyboard focus. Quieter than the selected brand label so the active tab stands out. */
+  --tab-label-unselected-default: #525252;
+  /** Label colour of an unselected tab on hover, darkening to invite the tap. */
+  --tab-label-unselected-hover: #0A0A0A;
+  /** Label colour of an unselected tab while pressed. */
+  --tab-label-unselected-pressed: #0A0A0A;
+  /** Label colour of the selected tab at rest and on keyboard focus. Pairs with the brand indicator. */
+  --tab-label-selected-default: #0067E8;
+  /** Label colour of the selected tab on hover. Stays text-brand, which holds AA on the hover grey. */
+  --tab-label-selected-hover: #0067E8;
+  /** Label colour of the selected tab while pressed. One step darker than text-brand, which falls below AA on the pressed grey. */
+  --tab-label-selected-pressed: #0857C5;
+  /** Label colour of a disabled tab, selected or not. */
+  --tab-label-disabled: #A1A1A1;
+  /** Colour of the icon above the label on an unselected Primary tab, at rest and on keyboard focus. Matches label-unselected-default. */
+  --tab-icon-unselected-default: #525252;
+  /** Colour of the icon on an unselected Primary tab on hover, darkening with the label. */
+  --tab-icon-unselected-hover: #0A0A0A;
+  /** Colour of the icon on an unselected Primary tab while pressed. */
+  --tab-icon-unselected-pressed: #0A0A0A;
+  /** Colour of the icon on the selected Primary tab, at rest and on keyboard focus. Matches label-selected-default. */
+  --tab-icon-selected-default: #0067E8;
+  /** Colour of the icon on the selected Primary tab on hover. */
+  --tab-icon-selected-hover: #0067E8;
+  /** Colour of the icon on the selected Primary tab while pressed, darkening with the label on the pressed grey. */
+  --tab-icon-selected-pressed: #0857C5;
+  /** Colour of the icon on a disabled Primary tab, selected or not. */
+  --tab-icon-disabled: #A1A1A1;
+  /** Colour of the underline under the selected tab in every enabled state. Only the selected tab draws it. */
+  --tab-indicator-default: #0067E8;
+  /** Colour of the underline under a selected tab that is disabled. */
+  --tab-indicator-disabled: #A1A1A1;
+  /** Colour of the vertical line between Primary tabs, drawn on the right edge of each tab. Switch it off on the last tab. */
+  --tab-divider: #E5E5E5;
+  /** Colour of the full-width line under a row of Secondary tabs, drawn by the tab list rather than by each tab. The selected indicator sits on top of it. */
+  --tab-track: #E5E5E5;
+  /** Colour of the keyboard focus ring drawn inside the tab edge. */
+  --tab-focus-ring: #0681FF;
+  /** Minimum height of a Primary tab with its icon above the label. Also its touch target. */
+  --tab-primary-min-height: 64px;
+  /** Left and right padding inside a Primary tab. The indicator is inset by the same amount. */
+  --tab-primary-padding-x: 16px;
+  /** Top and bottom padding inside a Primary tab. */
+  --tab-primary-padding-y: 8px;
+  /** Vertical gap between the icon and the label row in a Primary tab. */
+  --tab-primary-gap: 4px;
+  /** Width and height of the icon above the label in a Primary tab. */
+  --tab-primary-icon-size: 24px;
+  /** Minimum height of a Secondary tab. Also its touch target. */
+  --tab-secondary-min-height: 48px;
+  /** Left and right padding inside a Secondary tab. The indicator is inset by the same amount. */
+  --tab-secondary-padding-x: 16px;
+  /** Top and bottom padding inside a Secondary tab. The min height sets the final height. */
+  --tab-secondary-padding-y: 12px;
+  /** Horizontal gap between the label and its badge in both tab types. */
+  --tab-gap-badge: 4px;
+  /** Corner radius of the hover and pressed fill of a tab. */
+  --tab-radius: 8px;
+  /** Thickness of the underline under the selected tab. */
+  --tab-indicator-height: 2px;
+  /** Corner radius of the underline, rounding its ends. */
+  --tab-indicator-radius: 999px;
+  /** Thickness of the vertical divider between Primary tabs. */
+  --tab-divider-width: 1px;
+  /** Height of the vertical divider between Primary tabs, centred on the tab so it never touches the indicator. */
+  --tab-divider-height: 32px;
+  /** Thickness of the line under a row of Secondary tabs. */
+  --tab-track-width: 1px;
+  /** Thickness of the keyboard focus ring. */
+  --tab-focus-ring-width: 2px;
+  /** Gap between the tab edge and its focus ring, drawn inside so neighbouring tabs and a scrolling bar never clip it. */
+  --tab-focus-ring-inset: 2px;
+  /** Corner radius of the inset focus ring. A ring 2 px inside an 8 px corner would be concentric at 6 px; 4 is the nearest step in the radius scale. */
+  --tab-focus-ring-radius: 4px;
 }
