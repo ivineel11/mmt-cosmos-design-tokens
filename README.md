@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 619 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 253 semantic roles + 216 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 620 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 254 semantic roles + 216 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -475,9 +475,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 271 primitive tokens · 360 semantic tokens (253 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 319 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*`) · **1058 values on web** · **1107 on iOS and Android** · **0 gradients**
+**Totals:** 271 primitive tokens · 361 semantic tokens (254 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 319 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*`) · **1059 values on web** · **1108 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 950 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 951 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (271)
 
@@ -691,13 +691,13 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (360)
+### Semantic tokens (361)
 
-#### Color — 253 tokens
+#### Color — 254 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — canvas and surface (26)
+##### Background — canvas and surface (27)
 
 | Token | Role |
 |-------|------|
@@ -713,7 +713,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-secondary-pressed` | White container on `bg-secondary`, pressed |
 | `color.bg-surface-brand` | Brand-tinted surface |
 | `color.bg-surface-brand-hover` | Brand-tinted surface, hovered |
-| `color.bg-surface-brand-pressed` | Brand-tinted surface, pressed |
+| `color.bg-surface-brand-pressed-subtle` | Brand-tinted surface, pressed, light — same tint as hover |
+| `color.bg-surface-brand-pressed-strong` | Brand-tinted surface, pressed — secondary and tertiary buttons, the selected chip |
 | `color.bg-surface-info` | Info surface |
 | `color.bg-surface-info-hover` | Info surface, hovered |
 | `color.bg-surface-info-pressed` | Info surface, pressed |
@@ -1020,7 +1021,8 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-secondary-pressed` | `color.neutral.100` |
 | `bg-surface-brand` | `color.brand.50` |
 | `bg-surface-brand-hover` | `color.brand.100` |
-| `bg-surface-brand-pressed` | `color.brand.200` |
+| `bg-surface-brand-pressed-subtle` | `color.brand.100` |
+| `bg-surface-brand-pressed-strong` | `color.brand.200` |
 | `bg-surface-info` | `color.brand.50` |
 | `bg-surface-info-hover` | `color.brand.100` |
 | `bg-surface-info-pressed` | `color.brand.200` |
