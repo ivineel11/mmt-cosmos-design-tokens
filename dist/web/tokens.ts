@@ -1379,6 +1379,7 @@ export default {
     gap: "12px",
     "gap-text": "2px",
     "gap-controls": "4px",
+    "content-padding-end": "8px",
     "stacked-gap": "8px",
     "icon-size": "24px",
     radius: "12px",

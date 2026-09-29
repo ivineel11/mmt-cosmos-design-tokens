@@ -1118,6 +1118,7 @@ public enum CosmosTokens {
     public static let snackbarBorderWidth = CGFloat(1)
     public static let snackbarCloseIconSize = CGFloat(20)
     public static let snackbarCloseSize = CGFloat(32)
+    public static let snackbarContentPaddingEnd = CGFloat(8)
     public static let snackbarControlHeight = CGFloat(32)
     public static let snackbarControlPaddingX = CGFloat(8)
     public static let snackbarControlRadius = CGFloat(8)
