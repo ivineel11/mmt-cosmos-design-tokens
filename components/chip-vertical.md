@@ -29,7 +29,7 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 
 ### Composition
 
-- **Chip / Image** (referenced, set `598:2889`): placeholder for the leading image, shared with Chip, with `Shape` Circle or Square. It ships with a sample photo of a passenger jet in a blue sky (by John McArthur, Unsplash License) so mocks read as travel; it is sample content, not a default to ship in code.
+- **Chip / Image** (referenced, set `598:2889`): placeholder for the leading image, shared with Chip, with `Shape` Circle or Square. It ships with a sample aerial photo of a beach with boats so mocks read as travel; it is sample content, not a default to ship in code.
 - **Icon / plus** (referenced, `55:11`): default leading icon.
 - **Icon / chevron-down** (referenced, `557:61`): default label and secondary trailing icons.
 - _Decorative children: 2 (Border, Focus Ring). They are documented under Structure._
