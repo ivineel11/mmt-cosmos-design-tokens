@@ -1434,6 +1434,7 @@ export default {
     "padding-x-count": "4px",
     "padding-x-text-sm": "4px",
     "padding-x-text-md": "8px",
+    "padding-bottom-sm": "2px",
     "dot-size-sm": "8px",
     "dot-size-md": "12px",
     radius: "999px",

@@ -120,7 +120,7 @@ The Figma page has a live `Badge examples` frame (`686:177`) with counts on the 
 
 ```text
 Badge (component set · 683:2823)
-├─ Type=Count · horizontal auto layout · hug width, fixed height · centred
+├─ Type=Count · horizontal auto layout · hug width, fixed height · centred · Small: bottom padding padding-bottom-sm
 │  └─ Count (text · label/small/bold or label/medium/bold)
 ├─ Type=Text · the same frame with radius-text
 │  └─ Label (text · label/small/bold or label/medium/bold)
@@ -135,12 +135,15 @@ Badge (component set · 683:2823)
 | Min width (Count, Text) | 16 | 24 | `badge/min-width-sm`, `badge/min-width-md` |
 | Padding left and right, Count | 4 | 4 | `badge/padding-x-count` |
 | Padding left and right, Text | 4 | 8 | `badge/padding-x-text-sm`, `badge/padding-x-text-md` |
+| Padding top / bottom (Count, Text) | 0 / 2 | 0 / 0 | `badge/padding-bottom-sm` |
 | Type | 12 / 16 bold | 14 / 20 bold | `label/small/bold`, `label/medium/bold` |
 | Dot | 8 × 8 | 12 × 12 | `badge/dot-size-sm`, `badge/dot-size-md` |
 | Radius (Count, Dot) | pill | pill | `badge/radius` |
 | Radius (Text) | 4 | 4 | `badge/radius-text` |
 
 Min width equals height, so a one-digit count is a perfect circle. Count padding is 4 at both sizes: at 8, a medium "3" would come out 25 wide and turn oval. Padding only shows once the content is wider than the circle, so "12" and "99+" stretch into a pill. Text badges get 8 at Medium so a tag beside a card title does not look cramped.
+
+**Optical centring.** Lato places its capitals low in a line box. In a 16 px box at 12 px, the glyphs sit about 0.65 px below centre: 4.2 px of space above them and 2.9 px below. Small badges therefore take 2 px of bottom padding and no top padding. The 16 px line box stays in the 14 px content area and is centred, so the label rises 1 px, and its ink ends about 0.3 px above geometric centre, which reads as centred. Medium badges measure within 0.15 px of centre, so they need no offset. In code, keep the fixed height and centre alignment, and apply the same bottom padding. Do not trim the text box or change the line height instead, because that detaches the text style in Figma and changes the metrics on each platform.
 
 The medium dot is 12 rather than 10. There is no 10 px step in the semantic space scale, and component tokens may not point at primitives.
 
@@ -218,7 +221,7 @@ A badge is not focusable and has no role of its own. Its text becomes part of th
 
 ## Token reference
 
-41 tokens under `component.badge` in `tokens/tokens.json`, mirrored 1:1 as `badge/*` in the Figma `component` collection:
+42 tokens under `component.badge` in `tokens/tokens.json`, mirrored 1:1 as `badge/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
@@ -227,6 +230,6 @@ A badge is not focusable and has no role of its own. Its text becomes part of th
 | `bg-subtle-{intent}` | 6 |
 | `label-subtle-{intent}` | 6 |
 | `dot-{intent}` | 6 |
-| dimensions (`height-sm`, `height-md`, `min-width-sm`, `min-width-md`, `padding-x-count`, `padding-x-text-sm`, `padding-x-text-md`, `dot-size-sm`, `dot-size-md`, `radius`, `radius-text`) | 11 |
+| dimensions (`height-sm`, `height-md`, `min-width-sm`, `min-width-md`, `padding-x-count`, `padding-x-text-sm`, `padding-x-text-md`, `padding-bottom-sm`, `dot-size-sm`, `dot-size-md`, `radius`, `radius-text`) | 12 |
 
 Platform names follow the standard pipeline: `badge/bg-strong-warning` → `--badge-bg-strong-warning` (CSS) → `CosmosTokens.badgeBgStrongWarning` (Swift / Kotlin) → `tokens.badgeBgStrongWarning` (TS).

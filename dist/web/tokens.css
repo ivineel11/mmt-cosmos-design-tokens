@@ -2315,6 +2315,8 @@
   --badge-padding-x-text-sm: 4px;
   /** Left and right padding inside a medium text badge, roomier than the small size so a tag beside a card title does not look cramped. For count badges use padding-x-count. */
   --badge-padding-x-text-md: 8px;
+  /** Bottom padding inside a small count or text badge, with no top padding. Lato capitals sit low in the 16 px line box, so this lifts the label by 1 px and centres it optically. Medium badges need no offset. */
+  --badge-padding-bottom-sm: 2px;
   /** Width and height of a small dot badge, used in tabs and on icons. */
   --badge-dot-size-sm: 8px;
   /** Width and height of a medium dot badge, used beside larger text such as a card title. */

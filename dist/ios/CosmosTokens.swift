@@ -45,6 +45,7 @@ public enum CosmosTokens {
     public static let badgeLabelSubtleWarning = Color(red: 0.756863, green: 0, blue: 0.027451)
     public static let badgeMinWidthMd = CGFloat(24)
     public static let badgeMinWidthSm = CGFloat(16)
+    public static let badgePaddingBottomSm = CGFloat(2)
     public static let badgePaddingXCount = CGFloat(4)
     public static let badgePaddingXTextMd = CGFloat(8)
     public static let badgePaddingXTextSm = CGFloat(4)

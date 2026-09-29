@@ -48,6 +48,7 @@ object CosmosTokens {
   val badgeLabelSubtleWarning = Color(0xFFC10007)
   val badgeMinWidthMd = 24.dp
   val badgeMinWidthSm = 16.dp
+  val badgePaddingBottomSm = 2.dp
   val badgePaddingXCount = 4.dp
   val badgePaddingXTextMd = 8.dp
   val badgePaddingXTextSm = 4.dp
