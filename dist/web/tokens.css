@@ -2371,9 +2371,7 @@
   --tab-indicator-default: #0067E8;
   /** Colour of the underline under a selected tab that is disabled. */
   --tab-indicator-disabled: #A1A1A1;
-  /** Colour of the vertical line between Primary tabs, drawn on the right edge of each tab. Switch it off on the last tab. */
-  --tab-divider: #E5E5E5;
-  /** Colour of the full-width line under a row of Secondary tabs, drawn by the tab list rather than by each tab. The selected indicator sits on top of it. */
+  /** Colour of the full-width line under a row of Primary or Secondary tabs, drawn by the tab list rather than by each tab so it runs past the last tab. The selected indicator sits on top of it. */
   --tab-track: #E5E5E5;
   /** Colour of the keyboard focus ring drawn inside the tab edge. */
   --tab-focus-ring: #0681FF;
@@ -2387,25 +2385,25 @@
   --tab-primary-gap: 4px;
   /** Width and height of the icon above the label in a Primary tab. */
   --tab-primary-icon-size: 24px;
+  /** Distance from the left edge of the Primary tab icon to the left edge of its badge. The badge is pinned to the top right of the icon and grows to the right, so 99+ never covers the glyph more than a single digit does. */
+  --tab-primary-badge-offset-x: 16px;
+  /** How far the top of the Primary tab badge rises above the top of the icon. A count overhangs the icon corner and a dot straddles it. */
+  --tab-primary-badge-offset-y: 4px;
   /** Minimum height of a Secondary tab. Also its touch target. */
   --tab-secondary-min-height: 48px;
   /** Left and right padding inside a Secondary tab. The indicator is inset by the same amount. */
   --tab-secondary-padding-x: 16px;
   /** Top and bottom padding inside a Secondary tab. The min height sets the final height. */
   --tab-secondary-padding-y: 12px;
-  /** Horizontal gap between the label and its badge in both tab types. */
-  --tab-gap-badge: 4px;
+  /** Horizontal gap between the label and its badge in a Secondary tab. Primary tabs pin the badge to the icon instead, with primary-badge-offset-x and primary-badge-offset-y. */
+  --tab-secondary-gap-badge: 4px;
   /** Corner radius of the hover and pressed fill of a tab. */
   --tab-radius: 8px;
   /** Thickness of the underline under the selected tab. */
   --tab-indicator-height: 2px;
   /** Corner radius of the underline, rounding its ends. */
   --tab-indicator-radius: 999px;
-  /** Thickness of the vertical divider between Primary tabs. */
-  --tab-divider-width: 1px;
-  /** Height of the vertical divider between Primary tabs, centred on the tab so it never touches the indicator. */
-  --tab-divider-height: 32px;
-  /** Thickness of the line under a row of Secondary tabs. */
+  /** Thickness of the line under a row of Primary or Secondary tabs, drawn by the tab list. */
   --tab-track-width: 1px;
   /** Thickness of the keyboard focus ring. */
   --tab-focus-ring-width: 2px;

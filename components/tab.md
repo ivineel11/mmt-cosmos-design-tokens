@@ -12,10 +12,10 @@ Tabs switch between views of the same context without leaving the screen: Flight
 
 There are two tab types, each its own component set, so each panel shows only the properties that apply to it:
 
-- **Tab / Primary** puts an icon above the label and sits in a row, with an optional divider between tabs. Use it for top-level switches where the icon helps recognition, such as the lines of business.
-- **Tab / Secondary** is label only, in a row, over a thin track line. Use it for sections inside a page.
+- **Tab / Primary** puts an icon above the label and sits in a row. Use it for top-level switches where the icon helps recognition, such as the lines of business.
+- **Tab / Secondary** is label only, in a row. Use it for sections inside a page.
 
-Both mark the selected tab with a brand label and a brand underline. Both can carry a [Badge](badge.md) after the label.
+Both mark the selected tab with a brand label and a brand underline, and both rows sit on one thin track line drawn by the tab list. Both can carry a [Badge](badge.md): pinned to the top right of the icon on Primary, and after the label on Secondary. There are no dividers between tabs.
 
 Two variant axes drive each set:
 
@@ -33,9 +33,9 @@ Two variant axes drive each set:
 
 ### Composition
 
-- **Badge** (referenced: set `683:2823`) sits after the label in both sets. The nested instance defaults to Count, Strong, Warning, Small, "3", and is exposed, so its Type, Emphasis, Intent and Count can be changed from the tab panel.
+- **Badge** (referenced: set `683:2823`) is pinned to the top right of the icon in Tab / Primary and sits after the label in Tab / Secondary. The nested instance defaults to Count, Strong, Warning, Small, "3", and is exposed, so its Type, Emphasis, Intent and Count can be changed from the tab panel.
 - **Icon / plus** (referenced: `55:11`) is the placeholder glyph above the label in Tab / Primary, swapped through the `Icon` property. The travel glyphs used in the examples live on the Icons page (`645:2`): **Icon / flight** (`685:31`), **Icon / hotel** (`685:34`), **Icon / homestay** (`685:37`), **Icon / train** (`685:40`) and **Icon / bus** (`685:43`). They are Material Symbols Rounded (`flight`, `hotel`, `cottage`, `train`, `directions_bus`) at weight 300, grade 0, optical size 24.
-- _Decorative children: 3 (Indicator, Divider, Focus ring). They are documented under Structure._
+- _Decorative children: 2 (Indicator, Focus ring). They are documented under Structure. The track line under the row belongs to the tab list, not to a tab._
 
 ---
 
@@ -52,7 +52,7 @@ Two variant axes drive each set:
 | `value` | string | (id) | first enabled item | The selected tab. Exactly one is always selected. |
 | `onChange` | callback | `(id) => void` | – | Fires when a tab is activated. |
 | `layout` | enum | auto \| fixed \| scrollable | `auto` | `auto` is fixed when every tab fits at its hug width, and scrollable otherwise. See Behaviour. |
-| `showDividers` | boolean | true \| false | `true` | Primary only. The last tab never draws one. |
+| `showTrack` | boolean | true \| false | `true` | The 1 px line under the whole row, for both types. Turn it off when the bar already sits on a divider or card edge. |
 
 ### Tab (one item)
 
@@ -60,7 +60,7 @@ Two variant axes drive each set:
 |---|---|---|---|---|
 | `label` | string | (string) | – | Required. One or two words. |
 | `icon` | icon | (icon) | – | Primary only, and required there in product use. |
-| `badge` | Badge props | (object) | `none` | Count or Dot. See [Badge](badge.md). Never rendered on a disabled tab. |
+| `badge` | Badge props | (object) | `none` | Count or Dot. See [Badge](badge.md). Never rendered on a disabled tab. On Primary it needs the icon, because it is pinned to it. |
 | `disabled` | boolean | true \| false | `false` | The tab stays visible but cannot be selected. |
 
 ### Figma-only properties
@@ -72,7 +72,8 @@ Two variant axes drive each set:
 | Both | `Badge` | Nested instance | Count, Strong, Warning, Small | Exposed. |
 | Primary | `Show icon` | BOOLEAN | `true` | |
 | Primary | `Icon` | INSTANCE_SWAP | `Icon / plus` | The same default in every variant. |
-| Primary | `Show divider` | BOOLEAN | `true` | Switch it off on the last tab in a row. |
+
+On Primary, `Show icon` hides the whole icon slot, badge included, because the badge is pinned to the icon. Primary tabs always carry an icon in product use.
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Tab examples` frame (`698:12`).
 
@@ -80,7 +81,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Tab exam
 
 | # | Configuration | Notes |
 |---|---|---|
-| 1 | `type=primary`, items Flights, Hotels, Homestays (badge dot), Trains, Buses; value Flights | The home screen lines of business. The last divider is off. At 375 px the row scrolls. |
+| 1 | `type=primary`, items Flights, Hotels, Homestays (badge dot), Trains (badge count 2), Buses; value Flights | The home screen lines of business, over the track line. At 375 px the row scrolls. |
 | 2 | `type=secondary`, items Overview, Rooms (badge count 3, Subtle Neutral), Reviews, Location; value Overview | Sections of a hotel page, over the track line. |
 
 ---
@@ -93,7 +94,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Tab exam
 - **Layout:**
   - *Fixed:* tabs share the width equally. Use it only when every tab fits at its hug width, for example three or four short Primary labels on a phone.
   - *Scrollable:* tabs hug their content and the row scrolls horizontally. Keep the selected tab in view by scrolling it to the start edge plus 16 px when it changes. Let the last visible tab be cut by the screen edge, so the row reads as scrollable.
-  - The five lines of business in the examples (Flights, Hotels, Homestays with a dot, Trains, Buses) need 402 px, so on a 375 px phone the row scrolls.
+  - The five lines of business in the examples (Flights, Hotels, Homestays with a dot, Trains, Buses) need 390 px, so on a 375 px phone the row scrolls.
 - **Label copy:** one or two words in title case. Do not truncate. If the labels do not fit, switch to scrollable.
 - **Badges** follow the Badge rules: a count above 99 shows "99+", and zero hides the badge. Remove a Dot once the user has opened the tab.
 - **Disabled tabs** keep their place so the row does not shift. Explain why nearby when the reason is not obvious, such as "Trains are not available for this route".
@@ -110,22 +111,21 @@ The indicator slides from the old tab to the new one and resizes to the new widt
 
 ```text
 Tab / Primary (component set · 694:2811)
-├─ Icon (instance · Icon / plus) · a11y-hidden · Show icon · swap: Icon
-├─ Label row (frame · horizontal · item spacing gap-badge)
-│  ├─ Label (text · label/medium/bold)
-│  └─ Badge (instance · Badge · Count, Strong, Warning, Small) · Show badge · exposed · hidden in Disabled
-├─ Divider (rectangle) · decorative · absolute, right edge, centred · Show divider
+├─ Icon slot (frame · 24 × 24, primary-icon-size) · Show icon
+│  ├─ Icon (instance · Icon / plus) · a11y-hidden · swap: Icon
+│  └─ Badge (instance · Badge · Count, Strong, Warning, Small) · x 16, y −4 (primary-badge-offset-x, -y) · Show badge · exposed · hidden in Disabled
+├─ Label (text · label/medium/bold)
 ├─ Indicator (rectangle) · decorative · absolute, bottom, inset by padding-x · Selected=True only
 └─ Focus ring (rectangle) · decorative · absolute, 2 px inside the edge · State=Focus only
 
 Tab / Secondary (component set · 697:59)
 ├─ Label (text · label/medium/bold)
-├─ Badge (instance) · Show badge · exposed · hidden in Disabled
+├─ Badge (instance) · after the label, secondary-gap-badge · Show badge · exposed · hidden in Disabled
 ├─ Indicator · Selected=True only
 └─ Focus ring · State=Focus only
 ```
 
-The indicator, divider and focus ring are absolutely positioned, so selecting, focusing or switching a divider never reflows the row. The icon, label and badge are direct auto-layout children, so a hidden icon or badge leaves no gap. The label weight stays bold in every state, so selecting a tab never changes its width.
+The indicator and focus ring are absolutely positioned, so selecting or focusing a tab never reflows the row. On Primary the badge floats over the icon slot, so showing it never widens the tab: a count overhangs the icon corner by 8 px right and 4 px up, a dot straddles the corner, and 99+ grows to the right. On Secondary the badge is an auto-layout child after the label, so hiding it leaves no gap. The label weight stays bold in every state, so selecting a tab never changes its width.
 
 ### Dimensions
 
@@ -136,12 +136,11 @@ The indicator, divider and focus ring are absolutely positioned, so selecting, f
 | Padding top and bottom | 8 | 12 | `tab/primary-padding-y`, `tab/secondary-padding-y` |
 | Icon | 24 | – | `tab/primary-icon-size` |
 | Gap: icon to label row | 4 | – | `tab/primary-gap` |
-| Gap: label to badge | 4 | 4 | `tab/gap-badge` |
+| Badge position | left edge 16 from the icon left, top 4 above the icon top | after the label, gap 4 | `tab/primary-badge-offset-x`, `tab/primary-badge-offset-y`, `tab/secondary-gap-badge` |
 | Label type | 14 / 20 bold | 14 / 20 bold | `label/medium/bold` |
 | Hover and pressed fill radius | 8 | 8 | `tab/radius` |
 | Indicator | 2 thick, inset 16 each side, round ends | same | `tab/indicator-height`, `tab/indicator-radius` |
-| Divider | 1 × 32, right edge, centred | – | `tab/divider-width`, `tab/divider-height` |
-| Track (under the list) | – | 1, full width | `tab/track-width` |
+| Track (under the list) | 1, full width | 1, full width | `tab/track-width` |
 | Focus ring | 2 px, 2 px inside the edge, radius 4 | same | `tab/focus-ring-width`, `tab/focus-ring-inset`, `tab/focus-ring-radius` |
 
 A Primary tab is 8 + 24 + 4 + 20 + 8 = 64 tall, exactly its min height. A Secondary tab is 12 + 20 + 12 = 44 of content, so the 48 min height governs.
@@ -165,8 +164,7 @@ Token names follow `tab/{property}-{selected|unselected}-{state}`. Focus uses th
 |---|---|---|
 | Indicator | `tab/indicator-default` → `bg-fill-brand` | #0067E8 |
 | Indicator, disabled | `tab/indicator-disabled` → `bg-fill-disabled-strong` | #A1A1A1 |
-| Divider | `tab/divider` → `border-secondary` | #E5E5E5 |
-| Track | `tab/track` → `border-secondary` | #E5E5E5 |
+| Track, under either row | `tab/track` → `border-secondary` | #E5E5E5 |
 | Focus ring | `tab/focus-ring` → `border-focus` | #0681FF |
 
 Pressed uses `bg-fill-pressed-strong`, not `bg-fill-pressed-subtle`, because the subtle pressed grey is the same #F5F5F5 as hover and a press would show no change. Selected and unselected tabs share one neutral state layer, so hover reads the same across the row.
@@ -187,7 +185,7 @@ This component adds no semantic roles.
 | Unselected hover and pressed label #0A0A0A on #E5E5E5 | 15.72:1 | 4.5:1 | Pass |
 | Indicator #0067E8 on white / on #F5F5F5 | 5.12 / 4.69:1 | 3:1 (1.4.11) | Pass |
 | Focus ring #0681FF on white | 3.76:1 | 3:1 | Pass |
-| Divider and track #E5E5E5 | 1.26:1 | – | Decorative; the labels identify the tabs |
+| Track #E5E5E5 | 1.26:1 | – | Decorative; the labels identify the tabs |
 
 ### Selection is never colour alone
 
@@ -214,7 +212,7 @@ The selected tab differs from the others in three ways: the label colour, the ic
 | | Android | iOS | Web |
 |---|---|---|---|
 | Base | Material 3 `PrimaryTabRow` / `SecondaryTabRow` (fixed) or `PrimaryScrollableTabRow` / `SecondaryScrollableTabRow`, with custom `Tab` content and a custom indicator for Cosmos visuals | A custom tab strip: an `HStack` in a `ScrollView(.horizontal)` for scrollable, with the indicator drawn using `matchedGeometryEffect`. `TabView` is bottom navigation, not tabs | A `Tabs` component that renders the ARIA tabs pattern, with the indicator positioned from the selected tab's measured box |
-| Track | Row divider | A 1 px bottom border on the strip | A `border-bottom` on the tab list |
+| Track | The `TabRow` divider | A 1 px bottom border on the strip | A `border-bottom` on the tab list |
 
 ---
 
@@ -222,6 +220,7 @@ The selected tab differs from the others in three ways: the label colour, the ic
 
 - **No motion tokens.** The indicator slide is documented above, not tokenised.
 - **No list-level tokens** for the scroll edge fade or the start inset of a scrollable row.
+- **Badge offsets are not bound in Figma.** Figma cannot bind a position to a variable, so the Primary badge sits at x 16, y −4 inside the icon slot by hand. Code should use `tab/primary-badge-offset-x` and `tab/primary-badge-offset-y`.
 - **Indicator inset is not bound in Figma.** It follows the padding through constraints, and code should use `tab/primary-padding-x` or `tab/secondary-padding-x`.
 - **`tab/focus-ring-inset` is not bound in Figma.** As on Chip and Snackbar, the ring position is geometry. The ring binds its width, radius and colour.
 - **No dark mode.** All variable collections are single-mode.
@@ -231,7 +230,7 @@ The selected tab differs from the others in three ways: the label colour, the ic
 
 ## Token reference
 
-44 tokens under `component.tab` in `tokens/tokens.json`, mirrored 1:1 as `tab/*` in the Figma `component` collection:
+43 tokens under `component.tab` in `tokens/tokens.json`, mirrored 1:1 as `tab/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
@@ -239,7 +238,7 @@ The selected tab differs from the others in three ways: the label colour, the ic
 | `label-{unselected,selected}-{default,hover,pressed}`, `label-disabled` | 7 |
 | `icon-{unselected,selected}-{default,hover,pressed}`, `icon-disabled` (Primary only) | 7 |
 | `indicator-default`, `indicator-disabled` | 2 |
-| `divider`, `track`, `focus-ring` | 3 |
-| dimensions (`primary-min-height`, `primary-padding-x`, `primary-padding-y`, `primary-gap`, `primary-icon-size`, `secondary-min-height`, `secondary-padding-x`, `secondary-padding-y`, `gap-badge`, `radius`, `indicator-height`, `indicator-radius`, `divider-width`, `divider-height`, `track-width`, `focus-ring-width`, `focus-ring-inset`, `focus-ring-radius`) | 18 |
+| `track`, `focus-ring` | 2 |
+| dimensions (`primary-min-height`, `primary-padding-x`, `primary-padding-y`, `primary-gap`, `primary-icon-size`, `secondary-min-height`, `secondary-padding-x`, `secondary-padding-y`, `primary-badge-offset-x`, `primary-badge-offset-y`, `secondary-gap-badge`, `radius`, `indicator-height`, `indicator-radius`, `track-width`, `focus-ring-width`, `focus-ring-inset`, `focus-ring-radius`) | 18 |
 
 Platform names follow the standard pipeline: `tab/label-selected-pressed` → `--tab-label-selected-pressed` (CSS) → `CosmosTokens.tabLabelSelectedPressed` (Swift / Kotlin) → `tokens.tabLabelSelectedPressed` (TS).
