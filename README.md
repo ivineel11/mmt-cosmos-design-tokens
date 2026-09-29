@@ -80,7 +80,7 @@ Component-token descriptions name the part of the anatomy and the state combinat
 Primitive descriptions work differently. A numeric step like `spacing.16` is its own definition and stays undescribed; 44 such steps are left bare on purpose. What does get described:
 
 - **Every colour** carries which of the two text roles is safe on top of it and at what ratio — `"Safe text on top: text-inverse at 5.11:1 (passes AA); text-primary fails at 3.75:1."` Every swatch in the system has exactly one AA-safe text colour, except `violet.500`, which has none.
-- **The steps the name under-specifies** — `spacing.10` and its single Radio consumer, the negative steps and their `minusN` build rename, the `borderRadius.999` pill sentinel, the three-weight ramp.
+- **The steps the name under-specifies** — `spacing.10` and `spacing.86` and their single consumers (Radio dot, Button minimum width), the negative steps and their `minusN` build rename, the `borderRadius.999` pill sentinel, the three-weight ramp.
 - **Anything nothing references**, flagged as raw scale rather than supported system.
 
 Those ratios are computed, not hand-written, so they go stale when a ramp moves. Regenerate them with `node scripts/describe-primitives.mjs` and commit the result.
@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 620 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 254 semantic roles + 216 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 656 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 258 semantic roles + 248 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -230,7 +230,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (120 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (153 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -311,7 +311,7 @@ Opacity is deliberately **not** t-shirt sized. There is no perceptual scale to s
 
 ### 7. Semantic spacing via `space.*`
 
-Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. The same clipped-root logic separates `opacityScale.*` from `opacity.*`, where it is forced rather than chosen — see [Opacity tokens](#11-opacity-tokens). Leftover mid-steps (`10`, `44`, `52`, `56`, `60`) remain primitive-only when no semantic step fits — `10` exists for `radio/dot-size-md`, which needs a 50% dot on a 20px control and has no `space.*` step to alias.
+Primitives keep the numeric scale (`spacing.0` … `spacing.64`, plus negatives). Product layout should prefer the semantic **`space.*`** aliases (`space.none` … `space.7xl`), which reference those primitives. The semantic root is `space` (not `spacing`) so flat outputs stay collision-free (`--space-md` vs `--spacing-16`). Negative spacing stays primitive-only for optical tweaks. The same clipped-root logic separates `opacityScale.*` from `opacity.*`, where it is forced rather than chosen — see [Opacity tokens](#11-opacity-tokens). Leftover mid-steps (`10`, `44`, `52`, `56`, `60`, `86`) remain primitive-only when no semantic step fits — `10` exists for `radio/dot-size-md`, which needs a 50% dot on a 20px control and has no `space.*` step to alias, and `86` exists for `button/min-width`, the one shared minimum that lets a stretched button keep its width when its size changes.
 
 ### 8. Gradient tokens (currently unused)
 
@@ -475,11 +475,11 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 271 primitive tokens · 361 semantic tokens (254 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 319 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*`) · **1059 values on web** · **1108 on iOS and Android** · **0 gradients**
+**Totals:** 272 primitive tokens · 365 semantic tokens (258 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 352 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*`) · **1097 values on web** · **1146 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 951 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 989 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (271)
+### Primitive tokens (272)
 
 #### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
 
@@ -572,7 +572,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 | `lineHeight.80` | 80px |
 | `lineHeight.92` | 92px |
 
-#### Spacing — 23 tokens
+#### Spacing — 24 tokens
 
 | Token | Value | Output name |
 |-------|-------|-------------|
@@ -595,6 +595,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 | `spacing.56` | 56px | `--spacing-56` / `spacing56` |
 | `spacing.60` | 60px | `--spacing-60` / `spacing60` |
 | `spacing.64` | 64px | `--spacing-64` / `spacing64` |
+| `spacing.86` | 86px | `--spacing-86` / `spacing86` |
 | `spacing.-2` | -2px | `--spacing-minus2` / `spacingMinus2` |
 | `spacing.-4` | -4px | `--spacing-minus4` / `spacingMinus4` |
 | `spacing.-8` | -8px | `--spacing-minus8` / `spacingMinus8` |
@@ -691,9 +692,9 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (361)
+### Semantic tokens (365)
 
-#### Color — 254 tokens
+#### Color — 258 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -834,7 +835,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.border-warning-strong-pressed` | Strong warning border, pressed |
 | `color.border-inverse` | Divider or outline on dark backgrounds |
 
-##### Icon (26)
+##### Icon (30)
 
 | Token | Role |
 |-------|------|
@@ -850,6 +851,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-brand-hover` | Brand icon, hovered |
 | `color.icon-brand-pressed` | Brand icon, pressed |
 | `color.icon-brand-on-bg-fill` | Icon on brand fill |
+| `color.icon-brand-on-bg-surface-hover` | Icon on a hovered brand surface |
+| `color.icon-brand-on-bg-surface-pressed` | Icon on a pressed brand surface |
 | `color.icon-success` | Success icon |
 | `color.icon-success-on-bg-fill-strong` | Icon on strong success fill |
 | `color.icon-success-on-bg-fill-subtle` | Icon on subtle success fill |
@@ -860,6 +863,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-warning-hover` | Warning icon, hovered |
 | `color.icon-warning-pressed` | Warning icon, pressed |
 | `color.icon-warning-on-bg-fill-strong` | Icon on strong warning fill |
+| `color.icon-warning-on-bg-surface-hover` | Icon on a hovered warning surface |
+| `color.icon-warning-on-bg-surface-pressed` | Icon on a pressed warning surface |
 | `color.icon-warning-on-bg-fill-subtle` | Icon on subtle warning fill |
 | `color.icon-info` | Info icon |
 | `color.icon-info-on-bg-fill-strong` | Icon on strong info fill |
@@ -976,13 +981,13 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (319)
+### Component tokens (352)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
 | Group | Tokens | Figma component set | Spec |
 |-------|--------|---------------------|------|
-| `button/*` | 120 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
+| `button/*` | 153 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 | `chip/*` | 77 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
@@ -1138,6 +1143,8 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-brand-hover` | `color.brand.600` |
 | `icon-brand-pressed` | `color.brand.800` |
 | `icon-brand-on-bg-fill` | `color.neutral.0` |
+| `icon-brand-on-bg-surface-hover` | `color.brand.800` |
+| `icon-brand-on-bg-surface-pressed` | `color.brand.900` |
 | `icon-success` | `color.green.700` |
 | `icon-success-on-bg-fill-strong` | `color.neutral.0` |
 | `icon-success-on-bg-fill-subtle` | `color.green.700` |
@@ -1148,6 +1155,8 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-hover` | `color.red.600` |
 | `icon-warning-pressed` | `color.red.800` |
 | `icon-warning-on-bg-fill-strong` | `color.neutral.0` |
+| `icon-warning-on-bg-surface-hover` | `color.red.800` |
+| `icon-warning-on-bg-surface-pressed` | `color.red.900` |
 | `icon-warning-on-bg-fill-subtle` | `color.red.700` |
 | `icon-info` | `color.brand.700` |
 | `icon-info-on-bg-fill-strong` | `color.neutral.0` |
