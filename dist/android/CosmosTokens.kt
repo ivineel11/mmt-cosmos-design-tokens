@@ -1291,7 +1291,7 @@ object CosmosTokens {
   val tabBgUnselectedPressed = Color(0xFFE5E5E5)
   val tabFocusRing = Color(0xFF0681FF)
   val tabFocusRingInset = 2.dp
-  val tabFocusRingRadius = 4.dp
+  val tabFocusRingRadius = 8.dp
   val tabFocusRingWidth = 2.dp
   val tabIconDisabled = Color(0xFFA1A1A1)
   val tabIconSelectedDefault = Color(0xFF0067E8)

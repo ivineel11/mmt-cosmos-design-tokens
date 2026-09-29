@@ -141,11 +141,11 @@ The indicator and focus ring are absolutely positioned, so selecting or focusing
 | Hover and pressed fill radius | 8 | 8 | `tab/radius` |
 | Indicator | 2 thick, inset 16 each side, round ends | same | `tab/indicator-height`, `tab/indicator-radius` |
 | Track (under the list) | 1, full width | 1, full width | `tab/track-width` |
-| Focus ring | 2 px, 2 px inside the edge, radius 4 | same | `tab/focus-ring-width`, `tab/focus-ring-inset`, `tab/focus-ring-radius` |
+| Focus ring | 2 px, 2 px inside the edge, radius 8 | same | `tab/focus-ring-width`, `tab/focus-ring-inset`, `tab/focus-ring-radius` |
 
 A Primary tab is 8 + 24 + 4 + 20 + 8 = 64 tall, exactly its min height. A Secondary tab is 12 + 20 + 12 = 44 of content, so the 48 min height governs.
 
-The focus ring sits inside the tab rather than outside, because neighbouring tabs and a scrolling row would clip an outer ring. A ring 2 px inside an 8 px corner would be concentric at 6 px. 4 is the nearest step in the radius scale.
+The focus ring sits inside the tab rather than outside, because neighbouring tabs and a scrolling row would clip an outer ring. Its radius matches the 8 px tab radius. A ring 2 px inside an 8 px corner would be exactly concentric at 6 px, which the radius scale does not have, so the ring corners read very slightly rounder than the fill.
 
 ---
 

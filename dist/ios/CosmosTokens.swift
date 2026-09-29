@@ -1288,7 +1288,7 @@ public enum CosmosTokens {
     public static let tabBgUnselectedPressed = Color(red: 0.898039, green: 0.898039, blue: 0.898039)
     public static let tabFocusRing = Color(red: 0.023529, green: 0.505882, blue: 1)
     public static let tabFocusRingInset = CGFloat(2)
-    public static let tabFocusRingRadius = CGFloat(4)
+    public static let tabFocusRingRadius = CGFloat(8)
     public static let tabFocusRingWidth = CGFloat(2)
     public static let tabIconDisabled = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
     public static let tabIconSelectedDefault = Color(red: 0, green: 0.403922, blue: 0.909804)

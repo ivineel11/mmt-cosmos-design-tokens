@@ -1483,7 +1483,7 @@ export default {
     "track-width": "1px",
     "focus-ring-width": "2px",
     "focus-ring-inset": "2px",
-    "focus-ring-radius": "4px",
+    "focus-ring-radius": "8px",
   },
   tokenSetOrder: ["primitives", "semantic", "component"],
 };
