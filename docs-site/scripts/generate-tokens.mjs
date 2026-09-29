@@ -303,12 +303,12 @@ const data = {
 const colorValue = (key) => resolve(source.semantic.color[key]?.value);
 
 function backgroundFor(key) {
-  const strong = key.match(/^text-([a-z]+)-on-bg-fill-strong$/);
-  if (strong) return `bg-fill-${strong[1]}-strong`;
-  const subtle = key.match(/^text-([a-z]+)-on-bg-fill-subtle$/);
-  if (subtle) return `bg-fill-${subtle[1]}-subtle`;
-  if (key === "text-brand-on-bg-fill") return "bg-fill-brand";
-  if (key.startsWith("text-inverse")) return "bg-surface-inverse";
+  // text-{intent}-on-{bg-fill|bg-surface}{-suffix} names its background, the same
+  // pairing the tokens/contrast lint rule checks: text-info-on-bg-surface-hover
+  // sits on bg-surface-info-hover, text-brand-on-bg-fill on bg-fill-brand.
+  const on = key.match(/^text-([a-z]+)-on-(bg-fill|bg-surface)(-[a-z-]+)?$/);
+  if (on) return `${on[2]}-${on[1]}${on[3] ?? ""}`;
+  if (key.startsWith("text-inverse") || key === "text-link-inverse") return "bg-surface-inverse";
   return "bg";
 }
 

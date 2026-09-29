@@ -218,11 +218,14 @@ const structure = {
   },
 };
 
+/** Primitive scales allowed negative steps: optical spacing tweaks, and upward shadows. */
+const NEGATIVE_KEY_ROOTS = ["spacing", "shadowOffset"];
+
 const KEY = /^(?:[a-z0-9]+(?:-[a-z0-9]+)*|[a-z]+(?:[A-Z][a-z0-9]*)+)$/;
 
 const keyFormat = {
   id: "tokens/key-format",
-  description: "Keys are lowercase kebab-case (or camelCase group names such as fontSize). Dots and braces would break {reference} paths; negative keys exist only on the spacing primitives.",
+  description: "Keys are lowercase kebab-case (or camelCase group names such as fontSize). Dots and braces would break {reference} paths; negative keys exist only on the spacing and shadowOffset primitives.",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -235,8 +238,8 @@ const keyFormat = {
         const loc = t.locations.get(JSON.stringify([leaf.tier, ...leaf.path.slice(0, i + 1)])) ?? {};
         const report = (message) => api.report({ file: TOKENS_FILE, ...loc, subject: where, message });
         if (/^-\d+$/.test(key)) {
-          if (!(leaf.tier === "primitives" && leaf.path[0] === "spacing" && i === 1)) {
-            report(`Negative key "${key}" outside primitives.spacing. Negative steps are for optical spacing tweaks only.`);
+          if (!(leaf.tier === "primitives" && NEGATIVE_KEY_ROOTS.includes(leaf.path[0]) && i === 1)) {
+            report(`Negative key "${key}" outside primitives.spacing and primitives.shadowOffset. Negative steps are for optical spacing tweaks and upward shadows only.`);
           }
         } else if (!KEY.test(key)) {
           report(`Key "${key}" is not kebab-case or camelCase. Use lowercase letters, digits and hyphens.`);

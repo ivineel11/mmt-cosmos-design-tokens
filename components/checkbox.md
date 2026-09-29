@@ -129,7 +129,7 @@ Disabled collapses to the neutral ramp in both intents — an inert control shou
 
 ### Indicator glyph — `checkbox/icon-*`
 
-Only rendered when selected. Default / Hover / Pressed all use `color.text-brand-on-bg-fill` (Default intent) or `color.text-warning-on-bg-fill-strong` (Error); Disabled uses `color.icon-inverse`.
+Only rendered when selected. Default / Hover / Pressed all use `color.icon-brand-on-bg-fill` (Default intent) or `color.icon-warning-on-bg-fill-strong` (Error); Disabled uses `color.icon-on-bg-fill-disabled-strong`.
 
 ### Text and focus
 
