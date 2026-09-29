@@ -120,10 +120,12 @@ Token names follow `checkbox/{property}-{selection}-{intent}-{state}`, where `in
 |---|---|---|---|---|---|
 | Unchecked | Default | `color.border-strong` | `color.border-brand` | `color.border-brand-pressed` | `color.border-disabled-strong` |
 | Unchecked | Error | `color.border-warning-strong` | `color.border-warning-strong-hover` | `color.border-warning-strong-pressed` | `color.border-disabled-strong` |
-| Selected | Default | `color.border-brand` | `color.border-brand-hover` | `color.border-brand-pressed` | `color.border-disabled-strong` |
-| Selected | Error | `color.border-warning-strong` | `color.border-warning-strong-hover` | `color.border-warning-strong-pressed` | `color.border-disabled-strong` |
+| Selected | Default | `color.border-brand` | `color.transparent` | `color.transparent` | `color.border-disabled-strong` |
+| Selected | Error | `color.border-warning-strong` | `color.transparent` | `color.transparent` | `color.border-disabled-strong` |
 
-Border and fill resolve to the same hex in every selected state, so the box reads as a solid chip rather than a filled box with a rim. Both are still bound separately so the ramps can diverge later.
+A checked box draws no stroke on Hover or Pressed: the fill darkening is the feedback, and a second change in the stroke adds nothing. At rest the stroke matches the fill (`border-brand` on `bg-fill-brand`), so the box reads as one solid shape in every checked state. The stroke stays bound, with its 1px width unchanged, so the box never shifts size between states.
+
+An unchecked box keeps its stroke on Hover and Pressed. Its fills there are pale tints (1.01 to 1.22:1 against the page), so without the outline the box would almost disappear.
 
 Disabled collapses to the neutral ramp in both intents — an inert control should not also shout "error".
 
