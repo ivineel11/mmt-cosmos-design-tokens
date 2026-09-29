@@ -23,7 +23,7 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 
 ### Composition
 
-- **Chip / Image** (constitutive — set `598:2889`, `Shape=Circle` is `557:64`, `Shape=Square` is `598:2887`) — placeholder for the leading image, filled with a sample photo of a passenger jet in a blue sky (by John McArthur, Unsplash License) so mocks read as travel. Created for this component and shared with Chip / Vertical.
+- **Chip / Image** (constitutive — set `598:2889`, `Shape=Circle` is `557:64`, `Shape=Square` is `598:2887`) — placeholder for the leading image: a `color/bg-fill-secondary` fill with an image glyph in `color/icon-tertiary`, so mocks show where an image goes without implying real content. An empty `Image` layer sits above the placeholder; an image fill added to it covers the placeholder. Created for this component and shared with Chip / Vertical.
 - **Chip / Remove** (constitutive — `557:2481`, 24 variants: Size × State × Selected) — the remove button of a removable chip. Created for this component.
 - **Icon / plus** (referenced — `55:11`) — default leading icon.
 - **Icon / chevron-down** (referenced — `557:61`) — default trailing icon. Created for this component.
@@ -64,7 +64,7 @@ These exist on the component set so a designer can configure every slot from the
 | `Show leading icon` | BOOLEAN | `false` | |
 | `Leading icon` | INSTANCE_SWAP | `Icon / plus` | Preferred values: the Icon set. The swapped icon keeps the chip icon colour. |
 | `Show leading image` | BOOLEAN | `false` | Turn on the icon **or** the image, never both. |
-| `Leading image` | INSTANCE_SWAP | `Chip / Image` | To swap from the inspector, build a component with the same structure (a frame clipping an `Image` layer) and add it to the preferred values. To change a single photo, select the nested `Image` layer and replace its fill. |
+| `Leading image` | INSTANCE_SWAP | `Chip / Image` | To swap from the inspector, build a component with the same structure (a frame clipping an `Image` layer) and add it to the preferred values. To show a single photo, select the nested `Image` layer and add an image fill; it covers the placeholder. |
 | `Shape` (exposed from `Leading image`) | VARIANT | `Circle` | The leading image is an exposed nested instance, so its `Shape` (Circle or Square) shows in the chip panel. Circle for avatars, flags and airline logos; Square for destination or hotel photos. |
 | `Show trailing icon` | BOOLEAN | `false` | `Type=Default` only. |
 | `Trailing icon` | INSTANCE_SWAP | `Icon / chevron-down` | Preferred values: the Icon set. |
@@ -93,6 +93,8 @@ Chip (component set · 559:2943)
 ├─ Focus Ring (rectangle) · decorative · a11y-hidden · absolute, 4 px outside the chip
 ├─ Border (rectangle) · decorative · absolute, stretched to the chip · toggled by Show border
 ├─ Leading image (instance · Chip / Image · exposed, so its Shape is set from the chip panel) · hidden by default
+│  ├─ Placeholder (frame · grey fill + image glyph) · Figma only
+│  └─ Image (rectangle · empty until a photo is added)
 ├─ Leading icon (instance · Icon / plus) · a11y-hidden · hidden by default
 ├─ Text (frame · vertical)
 │  ├─ Label (text)

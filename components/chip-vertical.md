@@ -29,7 +29,7 @@ Focus is drawn by a dedicated ring rectangle outside the auto-layout flow, as on
 
 ### Composition
 
-- **Chip / Image** (referenced, set `598:2889`): placeholder for the leading image, shared with Chip, with `Shape` Circle or Square. It ships with a sample photo of a passenger jet in a blue sky (by John McArthur, Unsplash License) so mocks read as travel; it is sample content, not a default to ship in code.
+- **Chip / Image** (referenced, set `598:2889`): placeholder for the leading image, shared with Chip, with `Shape` Circle or Square. By default it shows a neutral image placeholder (a grey fill with an image glyph) under an empty `Image` layer; an image fill added to that layer covers it. The placeholder is a Figma stand-in, not a default to ship in code.
 - **Icon / plus** (referenced, `55:11`): default leading icon.
 - **Icon / chevron-down** (referenced, `557:61`): default label and secondary trailing icons.
 - _Decorative children: 2 (Border, Focus Ring). They are documented under Structure._
@@ -65,7 +65,7 @@ These are on the component set so every slot can be set from the right-hand insp
 | `Show secondary text` | BOOLEAN | `false` | Toggles the secondary row (text and its trailing icon). |
 | `Secondary text` | TEXT | `"Secondary text"` | Placeholder copy. |
 | `Leading icon` | INSTANCE_SWAP | `Icon / plus` | `Leading=Icon` only. Preferred values: the Icon set. |
-| `Leading image` | INSTANCE_SWAP | `Chip / Image` | `Leading=Image` only. To change one photo, select the nested `Image` layer and replace its fill. To offer a reusable image from the inspector, build a component with the same structure (a circle frame clipping an `Image` layer) and add it to the preferred values. |
+| `Leading image` | INSTANCE_SWAP | `Chip / Image` | `Leading=Image` only. To show one photo, select the nested `Image` layer and add an image fill; it covers the placeholder. To offer a reusable image from the inspector, build a component with the same structure (a circle frame clipping an `Image` layer) and add it to the preferred values. |
 | `Shape` (exposed from `Leading image`) | VARIANT | `Circle` | `Leading=Image` only. Circle for avatars, flags and airline logos; Square for destination or hotel photos. |
 | `Show label trailing icon` | BOOLEAN | `false` | |
 | `Label trailing icon` | INSTANCE_SWAP | `Icon / chevron-down` | Preferred values: the Icon set. |
