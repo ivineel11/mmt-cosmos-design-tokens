@@ -33,6 +33,12 @@ Before every commit, run `npm run build:tokens`, then `npm run lint` and `npm ru
 - After changing a primitive colour, re-run `describe-primitives.mjs` so the quoted contrast ratios stay correct.
 - When a token's name, value or count changes, update the matching README inventory and mapping tables in the same commit.
 
+## New components in Figma
+
+- Lay out every new component page the way the Button page is: the Docs card, then one showcase frame per set with a Grid Legend, then an examples frame. `README.md` → "Figma component pages" has the exact measurements. Run through that checklist before reporting a component as done.
+- Put placeholder copy in variants and realistic copy only in the examples frame.
+- Grid Legend labels are meant to be SF Mono Medium. Scripts cannot load it, so write them in JetBrains Mono Medium and tell the designer to switch the font.
+
 ## Working with the designer
 
 The person driving Claude here is a designer, not an engineer.

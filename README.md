@@ -1639,6 +1639,56 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ---
 
+## Figma component pages
+
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Button (`58:202`) and Snackbar (`637:3233`) follow it. Checkbox, Radio and Chip predate it and still need migrating. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+
+### 1. Page
+
+- One page per component, named after it, such as `Snackbar`. Its sub-components, such as Snackbar / Control, live on the same page.
+- From top to bottom, the page holds:
+  1. the **Docs** card
+  2. one **showcase** frame per component set, with the main set first and then its sub-components, 120 px apart
+  3. the **examples** frame
+
+### 2. Docs card
+
+- A frame named `Docs`: 1100 px wide, white, radius 32, vertical auto layout, padding 32, gap 16. Its bottom edge sits 300 px above the first showcase.
+- **Title:** the component name, in Lato Bold 40.
+- **Description:** Lato Regular 16 in `color/text-tertiary`. Cover, in order:
+  - the variant formula (for example "Hierarchy x State x Size x Intent = 120 variants") and the non-variant properties
+  - which axes are design-only (State: Hover, Pressed and Focus exist for mocks; in code they are `:hover`, `:active` and `:focus-visible`)
+  - that variants carry placeholder copy
+  - the binding rule, with one example key mapping (`button/bg-primary-hover` here is `--button-bg-primary-hover` in code)
+  - the spec path
+- The quickest start is to clone the Button Docs card and replace its two texts.
+
+### 3. Showcase frame
+
+- A frame named with the plural of the set, such as `Buttons` or `Snackbars`. Fill #FAFAFA, radius 56, no auto layout, no clipping.
+- **Component set:** placed 250 px in from the left and 140 px down from the top. The frame extends 126 px to the right of the set and 100 px below it.
+- **Set styling:** white fill, radius 32, 80 px padding.
+- **Grid:** each column is one value of one axis. Each row is one combination of the remaining axes. Values run in the same order as the property dropdown. Every cell in a row is the same height, with its variant vertically centred.
+- **Column axis:** State, when the component has one. Otherwise, use the axis that changes the look most. For Snackbar that is Intent.
+
+### 4. Grid Legend
+
+A frame named `Grid Legend`, the same position and size as the set, with no fill and locked. It holds one text label per column and per row:
+
+| | Column labels | Row labels |
+|---|---|---|
+| Text | The variant value exactly as in the property (`Hover`) | One line per axis value (`Primary` / `Medium`) |
+| Position | Centred on the column, top edge 60 px above the set | Right-aligned, right edge 92 px left of the set, centred on the row |
+| Type | SF Mono Medium 14, #242424, line height 20 | SF Mono Medium 14, #242424, line height 24 |
+
+The Figma scripting API cannot load SF Mono, so labels written by Claude come out in JetBrains Mono Medium at the same size, colour and line height. Afterwards, select the `Grid Legend` frames, unlock them and switch the font to SF Mono Medium.
+
+### 5. Variants and examples
+
+- Variants carry placeholder copy that names the slot: `Label`, `Title`, `Message`, `Action`. Expose each text as a TEXT component property.
+- Realistic copy lives only in a separate examples frame, named `{Component} examples`, below the last showcase.
+- Every fill, stroke, radius, padding, gap and size binds to a `{component}/*` variable. Check this with a script before publishing.
+
 ## Component specifications (uSpec)
 
 The token pipeline above documents *values*. [uSpec](https://github.com/redongreen/uSpec) documents *components*: one self-contained Markdown file per component covering its API, structure, color, and screen-reader behavior, extracted from the Figma component set. Those files live in `components/` and are the source of truth — humans read them, LLMs implement from them.
