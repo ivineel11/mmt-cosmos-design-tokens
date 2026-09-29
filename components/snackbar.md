@@ -31,7 +31,7 @@ Three variant axes drive it:
 
 - **Snackbar / Control** (constitutive: set `636:3088`, 48 variants of Type × Tone × State) holds the action and close buttons. It is nested in every Snackbar variant with the Tone that matches, and exposed, so its `State` and `Label` can be set from the Snackbar panel. It was created for this component.
 - **Icon / check** (referenced: `55:14`) is the Neutral glyph.
-- **Icon / info** (`635:120`), **Icon / check-circle** (`635:123`), **Icon / alert-triangle** (`635:126`) and **Icon / alert-circle** (`635:129`) are referenced status glyphs, created for this component beside the Icon set on the Button page. The paths come from Material Icons (Apache 2.0).
+- **Icon / info** (`635:120`), **Icon / check-circle** (`635:123`), **Icon / alert-triangle** (`635:126`) and **Icon / alert-circle** (`635:129`) are referenced status glyphs, created for this component. Like every Cosmos glyph they live on the Figma **Icons** page (`645:2`) and are Material Symbols Rounded (`info`, `check_circle`, `warning`, `error`) at weight 300, grade 0, optical size 24 (Apache 2.0). Outside a component, use the Icon container set (`645:28`), which swaps glyphs and sizes them to the `icon.*` tokens.
 - **Icon / close** (referenced: `55:17`) is the close glyph.
 - _Decorative children: 1 (Focus Ring, inside Snackbar / Control). It is documented under Structure._
 
