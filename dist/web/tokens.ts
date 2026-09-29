@@ -1223,6 +1223,8 @@ export default {
     "secondary-text-disabled": "#A1A1A1",
     "icon-unselected-default": "#525252",
     "icon-selected-default": "#0067E8",
+    "icon-selected-hover": "#0857C5",
+    "icon-selected-pressed": "#0D4C9B",
     "icon-disabled": "#A1A1A1",
     "remove-bg-unselected-hover": "#E5E5E5",
     "remove-bg-unselected-pressed": "#E5E5E5",

@@ -164,7 +164,9 @@ Token names follow `chip/{property}-{selection}-{state}`. `State=Focus` reuses t
 | `chip/secondary-text-default` | `color.text-secondary` | Secondary line, every enabled state |
 | `chip/secondary-text-disabled` | `color.text-disabled` | Secondary line, Disabled |
 | `chip/icon-unselected-default` | `color.icon-secondary` | Leading icon, trailing icon, remove glyph — unselected |
-| `chip/icon-selected-default` | `color.icon-brand` | The same, selected |
+| `chip/icon-selected-default` | `color.icon-brand` | The same, selected, Default and Focus |
+| `chip/icon-selected-hover` | `color.icon-brand-on-bg-surface-hover` | The same, selected, Hover. Matches `chip/label-selected-hover` |
+| `chip/icon-selected-pressed` | `color.icon-brand-on-bg-surface-pressed` | The same, selected, Pressed. Matches `chip/label-selected-pressed` |
 | `chip/icon-disabled` | `color.icon-disabled` | The same, Disabled |
 | `chip/focus-ring` | `color.border-focus` | Chip ring and remove-button ring |
 

@@ -303,6 +303,8 @@ public enum CosmosTokens {
     public static let chipGapText = CGFloat(0)
     public static let chipIconDisabled = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
     public static let chipIconSelectedDefault = Color(red: 0, green: 0.403922, blue: 0.909804)
+    public static let chipIconSelectedHover = Color(red: 0.031373, green: 0.341176, blue: 0.772549)
+    public static let chipIconSelectedPressed = Color(red: 0.05098, green: 0.298039, blue: 0.607843)
     public static let chipIconSizeLg = CGFloat(24)
     public static let chipIconSizeMd = CGFloat(20)
     public static let chipIconSizeSm = CGFloat(16)
