@@ -164,7 +164,7 @@ _Confidence: high._ _Reconciliation: 0 auto-fixed, 1 retried, 0 unresolved._
 >
 > Width constraint — every size has minWidth bound to button/min-width (86), one shared value so a button a designer has stretched keeps its width when its Size changes (Figma keeps a resized width across a variant swap only when both variants share a default width). The default label is "Label" so even Large hugs to 79 and every variant starts at exactly 86. Longer labels still grow the button without bound, and the focus ring grows with it.
 >
-> Consistency — the focus ring outset is a single rule. The ring is always exactly 8 wider and 8 taller than the button box (Large 99x56 vs 91x48, Medium 84x48 vs 76x40, Small 70x40 vs 62x32) and its focused radius is always the button radius plus 4. One implementation rule covers all three sizes.
+> Consistency — the focus ring outset is a single rule. The ring is always exactly 8 wider and 8 taller than the button box (Large 94x56 vs 86x48, Medium 94x48 vs 86x40, Small 94x40 vs 86x32 at the default width) and its focused radius is always the button radius plus 4. One implementation rule covers all three sizes.
 >
 > Consistency — icon size tracks the Label text box. Leading, trailing and loading glyphs are all 24 / 20 / 16, matching the Label text box at Large / Medium / Small so glyphs and text share one optical centre line. The Label type metrics themselves are emitted as structured rows in the Button sizes section and in _extractionArtifacts.typographyTable — never as prose.
 >
@@ -269,10 +269,10 @@ State is structural rather than visual-only: the Focus Ring rectangle is hidden 
 | Focus Ring | – | – | – | – | – | Absolutely-positioned overlay rectangle, sibling to the content, not part of the auto-layout flow. |
 | ├ visibility | hidden | hidden | hidden | visible | hidden | Painted only under focus-visible. Pointer hover and press must not render it, and it stays hidden when disabled. |
 | ├ fixedWidth | 94 | 94 | 94 | 94 | 94 | Medium reference: 4 beyond each horizontal edge of the 86-wide default button (button/min-width). It tracks label growth, preserving the same 4 outset at any width. |
-| ├ fixedHeight | 48 | 48 | 48 | 48 | 48 | 4 above and below the 40 minHeight — the outset is uniform on all four sides. Large is 99x56 and Small 70x40 on the same rule. |
+| ├ fixedHeight | 48 | 48 | 48 | 48 | 48 | 4 above and below the 40 minHeight — the outset is uniform on all four sides. Large is 94x56 and Small 94x40 on the same rule, since every size shares the 86 button/min-width. |
 | ├ cornerRadius | 12 | 12 | 12 | 16 | 12 | Focus raises the radius to button radius + 4, keeping the ring concentric with the corner it surrounds. The same rule holds at Small, where the button radius is 8 and the focused ring is 12. |
 | ├ borderWidth | 2 | 2 | 2 | 2 | 2 | 2 ring stroke, constant across states and sizes. The stroke paint is bound in every state; visibility, not weight, is what gates the ring. |
-| └ borderAlign | inside | inside | inside | inside | inside | Inside alignment keeps the 2 stroke within the 84x48 ring box, so the painted ring sits 2 clear of the button edge rather than touching it. |
+| └ borderAlign | inside | inside | inside | inside | inside | Inside alignment keeps the 2 stroke within the 94x48 ring box, so the painted ring sits 2 clear of the button edge rather than touching it. |
 
 ---
 
