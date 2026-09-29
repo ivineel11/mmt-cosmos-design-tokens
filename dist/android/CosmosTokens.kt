@@ -1121,7 +1121,7 @@ object CosmosTokens {
   val snackbarBorderWidth = 1.dp
   val snackbarCloseIconSize = 20.dp
   val snackbarCloseSize = 32.dp
-  val snackbarContentPaddingEnd = 8.dp
+  val snackbarContentPaddingEnd = 4.dp
   val snackbarContentPaddingTopStacked = 4.dp
   val snackbarControlHeight = 32.dp
   val snackbarControlPaddingX = 8.dp
@@ -1131,7 +1131,7 @@ object CosmosTokens {
   val snackbarFocusRingRadius = 12.dp
   val snackbarFocusRingWidth = 2.dp
   val snackbarGap = 12.dp
-  val snackbarGapControls = 4.dp
+  val snackbarGapControls = 8.dp
   val snackbarGapText = 2.dp
   val snackbarIconControlInverseDefault = Color(0xFFA1A1A1)
   val snackbarIconControlInverseHover = Color(0xFFA1A1A1)
@@ -1194,7 +1194,7 @@ object CosmosTokens {
   val snackbarMarginMobile = 16.dp
   val snackbarMinHeight = 48.dp
   val snackbarMinTouchTarget = 48.dp
-  val snackbarPaddingEndControl = 8.dp
+  val snackbarPaddingEndControl = 12.dp
   val snackbarPaddingX = 16.dp
   val snackbarPaddingY = 8.dp
   val snackbarRadius = 12.dp
