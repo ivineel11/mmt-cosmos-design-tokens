@@ -173,7 +173,7 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 |-------|------|--------------|
 | Preprocessor | `mmt/validate-opacity` | Rejects an opacity value outside 0–1, a literal opacity outside the primitive tier, and any drift between the `opacityScale` ramp and its semantic mirrors. Runs **before** `tokens-studio`, the only point at which the three tiers are still distinguishable. The rules live in `scripts/lib/opacity.mjs`, shared with the linter's `tokens/opacity` rule |
 | Preprocessor | `tokens-studio` | Hoists the `primitives`, `semantic`, and `component` sets to the dictionary root so cross-set references like `{fontSize.16}` and `{color.bg-fill-brand}` resolve |
-| Preprocessor | `mmt/rename-negative` | Renames keys like `spacing.-12` → `spacing.minus12` to avoid collisions after camelCase/kebab-case conversion |
+| Preprocessor | `mmt/rename-negative` | Renames keys like `spacing.-12` → `spacing.minus12` (and `shadowOffset.-4`) to avoid collisions after camelCase/kebab-case conversion, and rewrites `{…-4}` references to match |
 | Preprocessor | `mmt/resolve-gradient-colors` | Inlines `{color.family.step}` references inside `linear-gradient(...)` strings before platform transforms run |
 | Expand | `typesMap: true` | Splits composite `typography` tokens into individual output properties |
 | Transform | `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 569 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 203 semantic roles + 216 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 619 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 253 semantic roles + 216 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -257,7 +257,9 @@ Within each role, **intent** is expressed with suffixes:
 |--------|---------|
 | `brand`, `info`, `success`, `caution`, `warning` | Semantic intent |
 | `strong` / `subtle` | Fill intensity pairs |
-| `on-bg-fill` / `on-bg-fill-strong` / `on-bg-fill-subtle` | Contrast-safe text on filled backgrounds |
+| `on-bg-fill` / `on-bg-fill-strong` / `on-bg-fill-subtle` | Contrast-safe text and icons on filled backgrounds |
+| `on-bg-surface-hover` / `on-bg-surface-pressed` | Contrast-safe text on a tinted surface that deepens on interaction |
+| `hover` / `pressed` | Interaction steps of the token they extend |
 
 #### Canvas and container pairing
 
@@ -330,7 +332,7 @@ Do not hand-write Swift or Kotlin gradient code in product apps.
 | Transform | Purpose |
 |-----------|---------|
 | `tokens-studio` preprocessor | Hoists `primitives` / `semantic` / `component` sets to root so cross-set `{references}` resolve |
-| `mmt/rename-negative` | Renames `-12` spacing keys to `minus12` to avoid name collisions |
+| `mmt/rename-negative` | Renames negative spacing and shadow-offset keys (`-12` → `minus12`) to avoid name collisions, and rewrites references to them |
 | `mmt/resolve-gradient-colors` | Resolves `{color.*}` references embedded in gradient strings |
 | `expand` (typography, shadow) | Splits composite typography tokens into individual properties on every platform, and shadow layers into `offsetX` / `offsetY` / `blur` / `color` on iOS and Android only |
 | `shadow/css/shorthand` (web) | Joins a shadow's layers into one CSS `box-shadow` value |
@@ -360,6 +362,7 @@ Where a family spans both tiers, the primitive root carries the longer technical
 | `--icon-size-24` | `--icon-md` |
 | `--opacity-scale-45` | `--opacity-45`, `--opacity-scrim` |
 | `--shadow-offset-4`, `--shadow-blur-12` | `--shadow-raised` |
+| `--border-width-1` | `--stroke-default` |
 
 ### 11. Opacity tokens
 
@@ -387,7 +390,8 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 | `shadow.card` | Cards and tiles resting on the page | 1 / 2 / 8%, 2 / 6 / 6% |
 | `shadow.card-subtle` | Alternative to card at about half the weight, where a border would feel heavy | 1 / 2 / 4%, 2 / 8 / 4% |
 | `shadow.card-soft` | Alternative to card that is diffuse with almost no edge, for feature and promotional cards | 2 / 8 / 4%, 8 / 24 / 6% |
-| `shadow.raised` | Hovered or dragged cards, sticky headers and footers, floating buttons | 2 / 4 / 8%, 4 / 12 / 8% |
+| `shadow.raised` | Hovered or dragged cards, sticky headers, floating buttons | 2 / 4 / 8%, 4 / 12 / 8% |
+| `shadow.sticky-bottom` | Bars pinned to the bottom of the screen: sticky footers, bottom navigation | −2 / 4 / 8%, −4 / 12 / 8% |
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts | 4 / 8 / 8%, 8 / 24 / 12% |
 | `shadow.modal` | Dialogs and bottom sheets, always over the scrim | 8 / 16 / 12%, 16 / 48 / 16% |
 
@@ -399,7 +403,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 **Light only.** Cosmos has no dark theme yet. When it does, the shadows will need their own dark values (a dark page needs far stronger shadows to read), which the role names already allow for.
 
-**Not included yet:** inset shadows for pressed wells, and an upward shadow for bars pinned to the bottom of the screen.
+**Upward shadow.** `shadow.sticky-bottom` is `raised` mirrored: the same blur and alpha, with negative `y` offsets so the shadow falls onto the content above a bar pinned to the bottom edge. It is the only consumer of the negative `shadowOffset.*` steps.
+
+**Not included yet:** inset shadows for pressed wells.
 
 ---
 
@@ -469,11 +475,11 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 269 primitive tokens · 306 semantic tokens (203 colors + 36 typography + 10 radius + 8 icon + 14 space + 29 opacity + 6 shadow) · 302 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 60 `chip/*`) · **985 values on web** · **1027 on iOS and Android** · **0 gradients**
+**Totals:** 271 primitive tokens · 360 semantic tokens (253 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 302 component tokens (120 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 60 `chip/*`) · **1041 values on web** · **1090 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 877 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 6 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 933 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (269)
+### Primitive tokens (271)
 
 #### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
 
@@ -653,9 +659,9 @@ Every 5% from 0 to 100, plus three off-grid steps carrying Material's state-laye
 | `opacityScale.95` | 0.95 | 95% |
 | `opacityScale.100` | 1 | 100% |
 
-#### Shadow offset — 6 tokens
+#### Shadow offset — 8 tokens
 
-The vertical (and, at `0`, horizontal) distance of a shadow layer. Consumed only through `shadow.*`.
+The vertical (and, at `0`, horizontal) distance of a shadow layer. Consumed only through `shadow.*`. The negative steps cast a shadow upward, for `shadow.sticky-bottom`; like negative spacing they emit as `minus2` / `minus4`.
 
 | Token | Value |
 |-------|-------|
@@ -665,6 +671,8 @@ The vertical (and, at `0`, horizontal) distance of a shadow layer. Consumed only
 | `shadowOffset.4` | 4px |
 | `shadowOffset.8` | 8px |
 | `shadowOffset.16` | 16px |
+| `shadowOffset.-2` | -2px |
+| `shadowOffset.-4` | -4px |
 
 #### Shadow blur — 8 tokens
 
@@ -683,34 +691,44 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (306)
+### Semantic tokens (360)
 
-#### Color — 203 tokens
+#### Color — 253 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — canvas and surface (16)
+##### Background — canvas and surface (26)
 
 | Token | Role |
 |-------|------|
 | `color.bg` | White page background (canvas) |
 | `color.bg-secondary` | Grey page background (canvas) |
 | `color.bg-surface` | Grey container on `bg` |
+| `color.bg-surface-hover` | Grey container on `bg`, hovered — tappable list rows |
+| `color.bg-surface-pressed` | Grey container on `bg`, pressed |
 | `color.bg-surface-disabled` | Disabled surface |
 | `color.bg-surface-disabled-subtle` | Lighter disabled surface — a whole unavailable section or card |
 | `color.bg-surface-secondary` | White container on `bg-secondary` |
+| `color.bg-surface-secondary-hover` | White container on `bg-secondary`, hovered — tappable cards and menu items |
+| `color.bg-surface-secondary-pressed` | White container on `bg-secondary`, pressed |
 | `color.bg-surface-brand` | Brand-tinted surface |
 | `color.bg-surface-brand-hover` | Brand-tinted surface, hovered |
 | `color.bg-surface-brand-pressed` | Brand-tinted surface, pressed |
 | `color.bg-surface-info` | Info surface |
+| `color.bg-surface-info-hover` | Info surface, hovered |
+| `color.bg-surface-info-pressed` | Info surface, pressed |
 | `color.bg-surface-success` | Success surface |
+| `color.bg-surface-success-hover` | Success surface, hovered |
+| `color.bg-surface-success-pressed` | Success surface, pressed |
 | `color.bg-surface-caution` | Caution surface |
+| `color.bg-surface-caution-hover` | Caution surface, hovered |
+| `color.bg-surface-caution-pressed` | Caution surface, pressed |
 | `color.bg-surface-warning` | Warning surface |
 | `color.bg-surface-warning-hover` | Warning surface, hovered |
 | `color.bg-surface-warning-pressed` | Warning surface, pressed |
 | `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
 
-##### Background — fill (21)
+##### Background — fill (31)
 
 | Token | Role |
 |-------|------|
@@ -721,32 +739,47 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-disabled-strong` | Strong disabled fill |
 | `color.bg-fill-disabled-subtle` | Subtle disabled fill |
 | `color.bg-fill-secondary` | Secondary fill |
+| `color.bg-fill-secondary-hover` | Secondary fill, hovered |
+| `color.bg-fill-secondary-pressed` | Secondary fill, pressed |
 | `color.bg-fill-brand` | Brand button / emphasis fill |
 | `color.bg-fill-brand-hover` | Brand fill, hovered |
 | `color.bg-fill-brand-pressed` | Brand fill, pressed |
 | `color.bg-fill-info-strong` | Strong info fill |
+| `color.bg-fill-info-strong-hover` | Strong info fill, hovered |
+| `color.bg-fill-info-strong-pressed` | Strong info fill, pressed |
 | `color.bg-fill-info-subtle` | Subtle info fill |
 | `color.bg-fill-success-strong` | Strong success fill |
+| `color.bg-fill-success-strong-hover` | Strong success fill, hovered |
+| `color.bg-fill-success-strong-pressed` | Strong success fill, pressed |
 | `color.bg-fill-success-subtle` | Subtle success fill |
 | `color.bg-fill-caution-strong` | Strong caution fill |
+| `color.bg-fill-caution-strong-hover` | Strong caution fill, hovered |
+| `color.bg-fill-caution-strong-pressed` | Strong caution fill, pressed |
 | `color.bg-fill-caution-subtle` | Subtle caution fill |
 | `color.bg-fill-warning-strong` | Strong warning fill |
 | `color.bg-fill-warning-strong-hover` | Strong warning fill, hovered |
 | `color.bg-fill-warning-strong-pressed` | Strong warning fill, pressed |
 | `color.bg-fill-warning-subtle` | Subtle warning fill |
 | `color.bg-fill-inverse` | Inverted (dark) fill — badges, toasts |
+| `color.bg-fill-inverse-hover` | Inverted fill, hovered |
+| `color.bg-fill-inverse-pressed` | Inverted fill, pressed |
 
-##### Text (29)
+##### Text (40)
 
 | Token | Role |
 |-------|------|
 | `color.text-primary` | Primary body text |
 | `color.text-secondary` | Secondary text |
 | `color.text-tertiary` | Tertiary / hint text |
+| `color.text-placeholder` | Placeholder text in an empty input |
 | `color.text-disabled` | Disabled text |
 | `color.text-inverse` | Text on dark backgrounds |
+| `color.text-inverse-secondary` | Supporting text on dark backgrounds |
 | `color.text-inverse-disabled` | Disabled inverse text |
 | `color.text-link` | Hyperlink text |
+| `color.text-link-hover` | Hyperlink text, hovered |
+| `color.text-link-pressed` | Hyperlink text, pressed |
+| `color.text-link-inverse` | Hyperlink text on dark backgrounds |
 | `color.text-brand` | Brand-colored text |
 | `color.text-brand-hover` | Brand text, hovered |
 | `color.text-brand-pressed` | Brand text, pressed |
@@ -756,12 +789,18 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-info` | Info status text |
 | `color.text-info-on-bg-fill-strong` | Text on strong info fill |
 | `color.text-info-on-bg-fill-subtle` | Text on subtle info fill |
+| `color.text-info-on-bg-surface-hover` | Text on a hovered info surface |
+| `color.text-info-on-bg-surface-pressed` | Text on a pressed info surface |
 | `color.text-success` | Success status text |
 | `color.text-success-on-bg-fill-strong` | Text on strong success fill |
 | `color.text-success-on-bg-fill-subtle` | Text on subtle success fill |
+| `color.text-success-on-bg-surface-hover` | Text on a hovered success surface |
+| `color.text-success-on-bg-surface-pressed` | Text on a pressed success surface |
 | `color.text-caution` | Caution status text |
 | `color.text-caution-on-bg-fill-strong` | Text on strong caution fill |
 | `color.text-caution-on-bg-fill-subtle` | Text on subtle caution fill |
+| `color.text-caution-on-bg-surface-hover` | Text on a hovered caution surface |
+| `color.text-caution-on-bg-surface-pressed` | Text on a pressed caution surface |
 | `color.text-warning` | Warning status text |
 | `color.text-warning-hover` | Warning text, hovered |
 | `color.text-warning-pressed` | Warning text, pressed |
@@ -770,11 +809,12 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-warning-on-bg-surface-hover` | Text on a hovered warning surface |
 | `color.text-warning-on-bg-surface-pressed` | Text on a pressed warning surface |
 
-##### Border (16)
+##### Border (19)
 
 | Token | Role |
 |-------|------|
 | `color.border` | Default border |
+| `color.border-hover` | Default border, hovered — input outlines |
 | `color.border-secondary` | Secondary border |
 | `color.border-strong` | High-contrast neutral border |
 | `color.border-disabled-strong` | Strong disabled border |
@@ -785,26 +825,44 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.border-brand-pressed` | Brand border, pressed |
 | `color.border-info` | Info border |
 | `color.border-success` | Success border |
+| `color.border-success-strong` | Strong success border — validated input outline |
 | `color.border-caution` | Caution border |
 | `color.border-warning` | Warning border |
 | `color.border-warning-strong` | Strong warning border — destructive outline |
 | `color.border-warning-strong-hover` | Strong warning border, hovered |
 | `color.border-warning-strong-pressed` | Strong warning border, pressed |
+| `color.border-inverse` | Divider or outline on dark backgrounds |
 
-##### Icon (10)
+##### Icon (26)
 
 | Token | Role |
 |-------|------|
 | `color.icon` | Default icon |
 | `color.icon-disabled` | Disabled icon |
+| `color.icon-on-bg-fill-disabled-strong` | Icon on the strong disabled fill — disabled Checkbox tick |
 | `color.icon-inverse` | Icon on dark backgrounds |
+| `color.icon-inverse-secondary` | Supporting icon on dark backgrounds |
+| `color.icon-inverse-disabled` | Disabled icon on dark backgrounds |
 | `color.icon-secondary` | Secondary icon |
 | `color.icon-tertiary` | Tertiary icon |
 | `color.icon-brand` | Brand icon |
+| `color.icon-brand-hover` | Brand icon, hovered |
+| `color.icon-brand-pressed` | Brand icon, pressed |
+| `color.icon-brand-on-bg-fill` | Icon on brand fill |
 | `color.icon-success` | Success icon |
+| `color.icon-success-on-bg-fill-strong` | Icon on strong success fill |
+| `color.icon-success-on-bg-fill-subtle` | Icon on subtle success fill |
 | `color.icon-caution` | Caution icon |
+| `color.icon-caution-on-bg-fill-strong` | Icon on strong caution fill |
+| `color.icon-caution-on-bg-fill-subtle` | Icon on subtle caution fill |
 | `color.icon-warning` | Warning icon |
+| `color.icon-warning-hover` | Warning icon, hovered |
+| `color.icon-warning-pressed` | Warning icon, pressed |
+| `color.icon-warning-on-bg-fill-strong` | Icon on strong warning fill |
+| `color.icon-warning-on-bg-fill-subtle` | Icon on subtle warning fill |
 | `color.icon-info` | Info icon |
+| `color.icon-info-on-bg-fill-strong` | Icon on strong info fill |
+| `color.icon-info-on-bg-fill-subtle` | Icon on subtle info fill |
 
 ##### Utility (1)
 
@@ -845,6 +903,16 @@ Flat shape `{group}.{size}.{weight}` · font family Lato · no letter spacing.
 | `radius.3xl` | 3× extra large |
 | `radius.4xl` | 4× extra large |
 | `radius.full` | Pill / circle |
+
+#### Stroke — 3 tokens
+
+Border and outline thickness, named by role. Components bind these, never the `borderWidth.*` primitives.
+
+| Token | Meaning |
+|-------|---------|
+| `stroke.default` | 1px — inputs, cards, chips, the Checkbox box, outlined buttons |
+| `stroke.strong` | 2px — a control drawn as its outline, such as the Radio circle |
+| `stroke.focus` | 2px — every keyboard focus ring |
 
 #### Icon — 8 tokens
 
@@ -893,7 +961,7 @@ Five role tokens naming what is being dimmed, plus a mirror of every ramp step s
 | `opacity.scrim` | `opacityScale.32` | Wash behind a modal, drawer or bottom sheet |
 | `opacity.0` … `opacity.100` | `opacityScale.0` … `opacityScale.100` | The 24 ramp steps, one-to-one |
 
-#### Shadow — 6 tokens
+#### Shadow — 7 tokens
 
 Composite two-layer shadows: one per height, plus two softer alternatives to card. See Major Design Decisions → Shadow tokens for the layer values and why there are two.
 
@@ -902,7 +970,8 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.card` | Cards and tiles resting on the page |
 | `shadow.card-subtle` | A lighter card, where a border would feel heavy |
 | `shadow.card-soft` | A diffuse card for feature and promotional content |
-| `shadow.raised` | Hovered or dragged cards, sticky headers and footers, floating buttons |
+| `shadow.raised` | Hovered or dragged cards, sticky headers, floating buttons |
+| `shadow.sticky-bottom` | Bars pinned to the bottom of the screen: sticky footers, bottom navigation (casts upward) |
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
@@ -942,15 +1011,25 @@ Add a component group only when a component has enough variant × state combinat
 | `bg` | `color.neutral.0` |
 | `bg-secondary` | `color.neutral.100` |
 | `bg-surface` | `color.neutral.100` |
+| `bg-surface-hover` | `color.neutral.200` |
+| `bg-surface-pressed` | `color.neutral.300` |
 | `bg-surface-disabled` | `color.neutral.200` |
 | `bg-surface-disabled-subtle` | `color.neutral.50` |
 | `bg-surface-secondary` | `color.neutral.0` |
+| `bg-surface-secondary-hover` | `color.neutral.50` |
+| `bg-surface-secondary-pressed` | `color.neutral.100` |
 | `bg-surface-brand` | `color.brand.50` |
 | `bg-surface-brand-hover` | `color.brand.100` |
 | `bg-surface-brand-pressed` | `color.brand.200` |
 | `bg-surface-info` | `color.brand.50` |
+| `bg-surface-info-hover` | `color.brand.100` |
+| `bg-surface-info-pressed` | `color.brand.200` |
 | `bg-surface-success` | `color.green.50` |
+| `bg-surface-success-hover` | `color.green.100` |
+| `bg-surface-success-pressed` | `color.green.200` |
 | `bg-surface-caution` | `color.yellow.50` |
+| `bg-surface-caution-hover` | `color.yellow.100` |
+| `bg-surface-caution-pressed` | `color.yellow.200` |
 | `bg-surface-warning` | `color.red.50` |
 | `bg-surface-warning-hover` | `color.red.100` |
 | `bg-surface-warning-pressed` | `color.red.200` |
@@ -962,27 +1041,42 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-disabled-strong` | `color.neutral.400` |
 | `bg-fill-disabled-subtle` | `color.neutral.200` |
 | `bg-fill-secondary` | `color.neutral.100` |
+| `bg-fill-secondary-hover` | `color.neutral.200` |
+| `bg-fill-secondary-pressed` | `color.neutral.300` |
 | `bg-fill-brand` | `color.brand.700` |
 | `bg-fill-brand-hover` | `color.brand.800` |
 | `bg-fill-brand-pressed` | `color.brand.900` |
 | `bg-fill-info-strong` | `color.brand.700` |
+| `bg-fill-info-strong-hover` | `color.brand.800` |
+| `bg-fill-info-strong-pressed` | `color.brand.900` |
 | `bg-fill-info-subtle` | `color.brand.50` |
 | `bg-fill-success-strong` | `color.green.700` |
+| `bg-fill-success-strong-hover` | `color.green.800` |
+| `bg-fill-success-strong-pressed` | `color.green.900` |
 | `bg-fill-success-subtle` | `color.green.100` |
 | `bg-fill-caution-strong` | `color.yellow.700` |
+| `bg-fill-caution-strong-hover` | `color.yellow.800` |
+| `bg-fill-caution-strong-pressed` | `color.yellow.900` |
 | `bg-fill-caution-subtle` | `color.yellow.100` |
 | `bg-fill-warning-strong` | `color.red.700` |
 | `bg-fill-warning-strong-hover` | `color.red.600` |
 | `bg-fill-warning-strong-pressed` | `color.red.800` |
 | `bg-fill-warning-subtle` | `color.red.100` |
 | `bg-fill-inverse` | `color.neutral.950` |
+| `bg-fill-inverse-hover` | `color.neutral.900` |
+| `bg-fill-inverse-pressed` | `color.neutral.800` |
 | `text-primary` | `color.neutral.950` |
 | `text-secondary` | `color.neutral.600` |
 | `text-tertiary` | `color.neutral.500` |
+| `text-placeholder` | `color.neutral.500` |
 | `text-disabled` | `color.neutral.400` |
 | `text-inverse` | `color.neutral.0` |
+| `text-inverse-secondary` | `color.neutral.400` |
 | `text-inverse-disabled` | `color.neutral.200` |
 | `text-link` | `color.brand.700` |
+| `text-link-hover` | `color.brand.800` |
+| `text-link-pressed` | `color.brand.900` |
+| `text-link-inverse` | `color.brand.300` |
 | `text-brand` | `color.brand.700` |
 | `text-brand-hover` | `color.brand.600` |
 | `text-brand-pressed` | `color.brand.800` |
@@ -992,12 +1086,18 @@ Add a component group only when a component has enough variant × state combinat
 | `text-info` | `color.brand.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
 | `text-info-on-bg-fill-subtle` | `color.brand.700` |
+| `text-info-on-bg-surface-hover` | `color.brand.800` |
+| `text-info-on-bg-surface-pressed` | `color.brand.900` |
 | `text-success` | `color.green.700` |
 | `text-success-on-bg-fill-strong` | `color.neutral.0` |
 | `text-success-on-bg-fill-subtle` | `color.green.700` |
+| `text-success-on-bg-surface-hover` | `color.green.800` |
+| `text-success-on-bg-surface-pressed` | `color.green.900` |
 | `text-caution` | `color.yellow.700` |
 | `text-caution-on-bg-fill-strong` | `color.neutral.0` |
 | `text-caution-on-bg-fill-subtle` | `color.yellow.800` |
+| `text-caution-on-bg-surface-hover` | `color.yellow.800` |
+| `text-caution-on-bg-surface-pressed` | `color.yellow.900` |
 | `text-warning` | `color.red.700` |
 | `text-warning-hover` | `color.red.600` |
 | `text-warning-pressed` | `color.red.800` |
@@ -1006,6 +1106,7 @@ Add a component group only when a component has enough variant × state combinat
 | `text-warning-on-bg-surface-hover` | `color.red.800` |
 | `text-warning-on-bg-surface-pressed` | `color.red.900` |
 | `border` | `color.neutral.300` |
+| `border-hover` | `color.neutral.400` |
 | `border-secondary` | `color.neutral.200` |
 | `border-strong` | `color.neutral.400` |
 | `border-disabled-strong` | `color.neutral.400` |
@@ -1016,21 +1117,39 @@ Add a component group only when a component has enough variant × state combinat
 | `border-brand-pressed` | `color.brand.800` |
 | `border-info` | `color.brand.300` |
 | `border-success` | `color.green.300` |
+| `border-success-strong` | `color.green.700` |
 | `border-caution` | `color.yellow.300` |
 | `border-warning` | `color.red.300` |
 | `border-warning-strong` | `color.red.700` |
 | `border-warning-strong-hover` | `color.red.600` |
 | `border-warning-strong-pressed` | `color.red.800` |
+| `border-inverse` | `color.neutral.800` |
 | `icon` | `color.neutral.950` |
 | `icon-disabled` | `color.neutral.400` |
+| `icon-on-bg-fill-disabled-strong` | `color.neutral.0` |
 | `icon-inverse` | `color.neutral.50` |
+| `icon-inverse-secondary` | `color.neutral.400` |
+| `icon-inverse-disabled` | `color.neutral.200` |
 | `icon-secondary` | `color.neutral.600` |
 | `icon-tertiary` | `color.neutral.400` |
 | `icon-brand` | `color.brand.700` |
+| `icon-brand-hover` | `color.brand.600` |
+| `icon-brand-pressed` | `color.brand.800` |
+| `icon-brand-on-bg-fill` | `color.neutral.0` |
 | `icon-success` | `color.green.700` |
+| `icon-success-on-bg-fill-strong` | `color.neutral.0` |
+| `icon-success-on-bg-fill-subtle` | `color.green.700` |
 | `icon-caution` | `color.yellow.700` |
+| `icon-caution-on-bg-fill-strong` | `color.neutral.0` |
+| `icon-caution-on-bg-fill-subtle` | `color.yellow.800` |
 | `icon-warning` | `color.red.700` |
+| `icon-warning-hover` | `color.red.600` |
+| `icon-warning-pressed` | `color.red.800` |
+| `icon-warning-on-bg-fill-strong` | `color.neutral.0` |
+| `icon-warning-on-bg-fill-subtle` | `color.red.700` |
 | `icon-info` | `color.brand.700` |
+| `icon-info-on-bg-fill-strong` | `color.neutral.0` |
+| `icon-info-on-bg-fill-subtle` | `color.brand.700` |
 | `transparent` | `color.alpha.transparent` |
 
 ### Radius mappings
@@ -1047,6 +1166,14 @@ Add a component group only when a component has enough variant × state combinat
 | `radius.3xl` | `borderRadius.32` |
 | `radius.4xl` | `borderRadius.40` |
 | `radius.full` | `borderRadius.999` |
+
+### Stroke mappings
+
+| Semantic | Primitive |
+|----------|-----------|
+| `stroke.default` | `borderWidth.1` |
+| `stroke.strong` | `borderWidth.2` |
+| `stroke.focus` | `borderWidth.2` |
 
 ### Icon size mappings
 
@@ -1135,6 +1262,8 @@ Each layer aliases one primitive per property. `x` is `shadowOffset.0` in every 
 | `shadow.card-soft` | 2 | `shadowOffset.8` | `shadowBlur.24` | `color.alpha.neutral-950-6` |
 | `shadow.raised` | 1 | `shadowOffset.2` | `shadowBlur.4` | `color.alpha.neutral-950-8` |
 | `shadow.raised` | 2 | `shadowOffset.4` | `shadowBlur.12` | `color.alpha.neutral-950-8` |
+| `shadow.sticky-bottom` | 1 | `shadowOffset.-2` | `shadowBlur.4` | `color.alpha.neutral-950-8` |
+| `shadow.sticky-bottom` | 2 | `shadowOffset.-4` | `shadowBlur.12` | `color.alpha.neutral-950-8` |
 | `shadow.overlay` | 1 | `shadowOffset.4` | `shadowBlur.8` | `color.alpha.neutral-950-8` |
 | `shadow.overlay` | 2 | `shadowOffset.8` | `shadowBlur.24` | `color.alpha.neutral-950-12` |
 | `shadow.modal` | 1 | `shadowOffset.8` | `shadowBlur.16` | `color.alpha.neutral-950-12` |

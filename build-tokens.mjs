@@ -181,9 +181,17 @@ function toAndroidColorValue(value) {
   throw new Error(`Unsupported Android color value: ${value}`);
 }
 
-/** `-12` style object keys collide with `12` once camel/kebab-cased; rename them. */
+/**
+ * `-12` style object keys collide with `12` once camel/kebab-cased; rename them, and
+ * rewrite `{shadowOffset.-4}` style references to match (tokens.json keeps the authored
+ * form). Arrays are walked because shadow layers hold their references inside one.
+ */
 function renameNegativeKeys(node) {
-  if (node === null || typeof node !== "object" || Array.isArray(node)) {
+  if (typeof node === "string") {
+    return node.replace(/\{[^{}]*\}/g, (ref) => ref.replace(/\.-(\d+)(?=[.}])/g, ".minus$1"));
+  }
+  if (Array.isArray(node)) return node.map(renameNegativeKeys);
+  if (node === null || typeof node !== "object") {
     return node;
   }
   const out = {};

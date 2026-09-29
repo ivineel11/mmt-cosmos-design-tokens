@@ -309,12 +309,20 @@
   --color-bg-secondary: #F5F5F5;
   /** Grey container placed on the white page (bg) — wells, grouped sections, list backgrounds. Match the suffix: bg pairs with bg-surface. On the grey page (bg-secondary) it has no contrast; use bg-surface-secondary there. Surface tokens colour the container behind content; bg-fill-* tokens colour the body of the element itself. */
   --color-bg-surface: #F5F5F5;
+  /** Hover state for a tappable grey container on the white page (bg-surface) — list rows, grouped options. For a white card on the grey page use bg-surface-secondary-hover; for the body of a control such as a chip use bg-fill-hover. */
+  --color-bg-surface-hover: #E5E5E5;
+  /** Pressed state for a tappable grey container on the white page (bg-surface) — list rows, grouped options. For a white card on the grey page use bg-surface-secondary-pressed. */
+  --color-bg-surface-pressed: #D4D4D4;
   /** Container surface of a disabled control or section. Pair with text-disabled and border-disabled-subtle. For a disabled element that reads as solid, use bg-fill-disabled-strong or bg-fill-disabled-subtle. */
   --color-bg-surface-disabled: #E5E5E5;
   /** Lighter disabled surface — the disabled chip, and a whole section or card that is unavailable, where bg-surface-disabled would read too heavy. Pair with text-disabled. Nearly the same as white and the grey canvas, so the disabled label carries the state. */
   --color-bg-surface-disabled-subtle: #FAFAFA;
   /** White container placed on the grey page (bg-secondary) — cards, sheets, popovers, menus. Match the suffix: bg-secondary pairs with bg-surface-secondary. On the white page (bg) it has no contrast without a border; use bg-surface there, or add a border for a floating element. */
   --color-bg-surface-secondary: #FFFFFF;
+  /** Hover state for a tappable white card, sheet row or menu item on the grey page (bg-surface-secondary). For a grey container on the white page use bg-surface-hover. */
+  --color-bg-surface-secondary-hover: #FAFAFA;
+  /** Pressed state for a tappable white card, sheet row or menu item on the grey page (bg-surface-secondary). The same grey as bg-secondary, so on the grey canvas a pressed card keeps its edge only through its border or shadow. */
+  --color-bg-surface-secondary-pressed: #F5F5F5;
   /** Brand-tinted container — tertiary button default, selected list rows, brand callouts. This is a background behind content; for a solid brand element such as a primary button use bg-fill-brand. */
   --color-bg-surface-brand: #EDF8FF;
   /** Hover state for bg-surface-brand, and the hover background for brand controls that are transparent at rest (secondary and text buttons). */
@@ -323,10 +331,22 @@
   --color-bg-surface-brand-pressed: #C2E8FF;
   /** Informational container — info banners, inline info messages. Pair with text-info, border-info and icon-info. For a solid info element such as a badge use bg-fill-info-strong. */
   --color-bg-surface-info: #EDF8FF;
+  /** Hover state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-hover. */
+  --color-bg-surface-info-hover: #D6EFFF;
+  /** Pressed state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-pressed. */
+  --color-bg-surface-info-pressed: #C2E8FF;
   /** Success container — confirmation banners, completed-state panels. Pair with text-success, border-success and icon-success. */
   --color-bg-surface-success: #F0FDF4;
+  /** Hover state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-hover. */
+  --color-bg-surface-success-hover: #DCFCE7;
+  /** Pressed state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-pressed. */
+  --color-bg-surface-success-pressed: #B9F8CF;
   /** Caution container — amber advisory banners and inline notices. In Cosmos, caution is the amber advisory role; for errors and destructive flows use the warning tokens. */
   --color-bg-surface-caution: #FEFCE8;
+  /** Hover state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-hover. */
+  --color-bg-surface-caution-hover: #FEF9C2;
+  /** Pressed state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-pressed. */
+  --color-bg-surface-caution-pressed: #FFF085;
   /** Error/destructive container — error banners, inline validation messages, destructive tertiary button default. In Cosmos, warning is the red error role; for amber advisories use bg-surface-caution. */
   --color-bg-surface-warning: #FEF2F2;
   /** Hover state for bg-surface-warning, and the hover background for destructive controls that are transparent at rest. */
@@ -337,7 +357,7 @@
   --color-bg-surface-inverse: #0A0A0A;
   /** Default fill for the body of an interactive element — input fields, switch tracks, unselected controls. Fill tokens colour the element; bg-surface-* tokens colour the container behind it. */
   --color-bg-fill: #FFFFFF;
-  /** Hover step of bg-fill for a neutral control that must stay neutral under the pointer — unselected chips, and later input fields and list rows. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill on hover and only its label remains. Use bg-surface-brand when hover should hint at a brand selection. */
+  /** Hover step of bg-fill for a neutral control that must stay neutral under the pointer — unselected chips, and later input fields. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill on hover and only its label remains. Use bg-surface-brand when hover should hint at a brand selection, and bg-surface-hover or bg-surface-secondary-hover for a tappable row or card. */
   --color-bg-fill-hover: #F5F5F5;
   /** Light pressed step of bg-fill — the unselected chip while pressed. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill while pressed and only its label remains. Use bg-fill-pressed-strong where the press must read on either canvas. */
   --color-bg-fill-pressed-subtle: #F5F5F5;
@@ -347,8 +367,12 @@
   --color-bg-fill-disabled-strong: #A1A1A1;
   /** Lighter disabled fill — disabled input fields and low-emphasis controls. Use bg-fill-disabled-strong when the disabled element still needs to read as solid. */
   --color-bg-fill-disabled-subtle: #E5E5E5;
-  /** Low-emphasis neutral fill — segmented control tracks, skeleton blocks. */
+  /** Low-emphasis neutral fill — segmented control tracks, skeleton blocks. For its interactive states use bg-fill-secondary-hover and bg-fill-secondary-pressed. */
   --color-bg-fill-secondary: #F5F5F5;
+  /** Hover state for bg-fill-secondary — an interactive segmented track or low-emphasis neutral control. For the white control fill use bg-fill-hover. */
+  --color-bg-fill-secondary-hover: #E5E5E5;
+  /** Pressed state for bg-fill-secondary — an interactive segmented track or low-emphasis neutral control. */
+  --color-bg-fill-secondary-pressed: #D4D4D4;
   /** Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand. */
   --color-bg-fill-brand: #0067E8;
   /** Hover state for bg-fill-brand — primary button hover. */
@@ -357,14 +381,26 @@
   --color-bg-fill-brand-pressed: #0D4C9B;
   /** Solid informational fill — info badges, counters, status dots. Pair the label with text-info-on-bg-fill-strong. */
   --color-bg-fill-info-strong: #0067E8;
+  /** Hover state for bg-fill-info-strong on an interactive info element. The label stays text-info-on-bg-fill-strong. */
+  --color-bg-fill-info-strong-hover: #0857C5;
+  /** Pressed state for bg-fill-info-strong on an interactive info element. The label stays text-info-on-bg-fill-strong. */
+  --color-bg-fill-info-strong-pressed: #0D4C9B;
   /** Tinted informational fill — low-emphasis info badges and tags. Pair the label with text-info-on-bg-fill-subtle. */
   --color-bg-fill-info-subtle: #EDF8FF;
   /** Solid success fill — success badges and status dots. Pair the label with text-success-on-bg-fill-strong. */
   --color-bg-fill-success-strong: #008236;
+  /** Hover state for bg-fill-success-strong on an interactive success element. Darker than the rest step, because a lighter green would drop the white label below AA. */
+  --color-bg-fill-success-strong-hover: #016630;
+  /** Pressed state for bg-fill-success-strong on an interactive success element. The label stays text-success-on-bg-fill-strong. */
+  --color-bg-fill-success-strong-pressed: #0D542B;
   /** Tinted success fill — low-emphasis success badges and tags. Pair the label with text-success-on-bg-fill-subtle. */
   --color-bg-fill-success-subtle: #DCFCE7;
   /** Solid caution fill — amber advisory badges and status dots. Pair the label with text-caution-on-bg-fill-strong. */
   --color-bg-fill-caution-strong: #A65F00;
+  /** Hover state for bg-fill-caution-strong on an interactive caution element. Darker than the rest step, because a lighter amber would drop the white label below AA. */
+  --color-bg-fill-caution-strong-hover: #894B00;
+  /** Pressed state for bg-fill-caution-strong on an interactive caution element. The label stays text-caution-on-bg-fill-strong. */
+  --color-bg-fill-caution-strong-pressed: #733E0A;
   /** Tinted caution fill — low-emphasis advisory badges and tags. Pair the label with text-caution-on-bg-fill-subtle. */
   --color-bg-fill-caution-subtle: #FEF9C2;
   /** Solid error/destructive fill — destructive primary button default, error badges. Pair the label with text-warning-on-bg-fill-strong. */
@@ -375,29 +411,43 @@
   --color-bg-fill-warning-strong-pressed: #9F0712;
   /** Tinted error fill — low-emphasis error badges and tags. Pair the label with text-warning-on-bg-fill-subtle. */
   --color-bg-fill-warning-subtle: #FFE2E2;
-  /** Solid inverted fill — dark badges, toasts and controls on a light page. Pair with text-inverse and icon-inverse. */
+  /** Solid inverted fill — dark badges, toasts and controls on a light page. Pair with text-inverse and icon-inverse, and use bg-fill-inverse-hover and bg-fill-inverse-pressed when it is interactive. */
   --color-bg-fill-inverse: #0A0A0A;
+  /** Hover state for bg-fill-inverse — an action on a dark toast or a dark control. Lighter than the rest step, since the fill is already near black. */
+  --color-bg-fill-inverse-hover: #171717;
+  /** Pressed state for bg-fill-inverse — an action on a dark toast or a dark control. */
+  --color-bg-fill-inverse-pressed: #262626;
   /** Default text colour — body copy, headings, and any content carrying the main message. */
   --color-text-primary: #0A0A0A;
   /** Supporting text at lower emphasis — descriptions, captions, secondary list lines. */
   --color-text-secondary: #525252;
-  /** Lowest-emphasis text — placeholders, helper text, timestamps, metadata. Avoid for content the user must read in order to act. */
+  /** Lowest-emphasis text — helper text, timestamps, metadata. For input placeholders use text-placeholder. Avoid for content the user must read in order to act. */
   --color-text-tertiary: #737373;
+  /** Placeholder text inside an empty input field. Meets AA on the white control fill (bg-fill) but not on the grey canvas, so keep inputs white. For helper text below a field use text-tertiary. */
+  --color-text-placeholder: #737373;
   /** Text inside a disabled control, menu item or list row. Pair with bg-surface-disabled. */
   --color-text-disabled: #A1A1A1;
-  /** Text on an inverted background (bg-surface-inverse, bg-fill-inverse) — tooltips, dark toasts. */
+  /** Text on an inverted background (bg-surface-inverse, bg-fill-inverse) — tooltips, dark toasts. For supporting lines use text-inverse-secondary and for links text-link-inverse. */
   --color-text-inverse: #FFFFFF;
+  /** Supporting text on an inverted background — the subtitle of a dark toast or tooltip. For the main line use text-inverse. */
+  --color-text-inverse-secondary: #A1A1A1;
   /** Disabled text on an inverted background. */
   --color-text-inverse-disabled: #E5E5E5;
-  /** Inline hyperlink inside body copy. For a brand-coloured control label (secondary, tertiary or text button) use text-brand. */
+  /** Inline hyperlink inside body copy, with text-link-hover and text-link-pressed for its states. For a brand-coloured control label (secondary, tertiary or text button) use text-brand; on dark backgrounds use text-link-inverse. */
   --color-text-link: #0067E8;
+  /** Hovered inline hyperlink inside body copy. Darker than text-link so the change reads without relying on the underline alone. */
+  --color-text-link-hover: #0857C5;
+  /** Pressed inline hyperlink inside body copy. */
+  --color-text-link-pressed: #0D4C9B;
+  /** Inline hyperlink on an inverted background (bg-surface-inverse, bg-fill-inverse) — links inside dark toasts and tooltips. On light backgrounds use text-link. */
+  --color-text-link-inverse: #83D4FF;
   /** Brand-coloured label on a neutral or brand-tinted background — secondary, tertiary and text button labels, selected tab labels. On a solid brand fill use text-brand-on-bg-fill. */
   --color-text-brand: #0067E8;
   /** Hover state for text-brand. */
   --color-text-brand-hover: #0681FF;
   /** Pressed/active state for text-brand. */
   --color-text-brand-pressed: #0857C5;
-  /** Label and icon colour on bg-fill-brand — primary button content. Do not use on tinted brand surfaces, where it will not have contrast. */
+  /** Label colour on bg-fill-brand — primary button content. For an icon on the same fill use icon-brand-on-bg-fill. Do not use on tinted brand surfaces, where it will not have contrast. */
   --color-text-brand-on-bg-fill: #FFFFFF;
   /** Brand label colour on a tinted brand surface while hovered — the secondary, tertiary and text button labels. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For a label on a solid brand fill use text-brand-on-bg-fill; for brand foreground marks such as the Radio dot use text-brand-hover, which tracks border-brand-hover instead. */
   --color-text-brand-on-bg-surface-hover: #0857C5;
@@ -405,29 +455,41 @@
   --color-text-brand-on-bg-surface-pressed: #0D4C9B;
   /** Informational text on a neutral or info-tinted surface (bg-surface-info). On a solid info fill use the text-info-on-bg-fill-* variants. */
   --color-text-info: #0067E8;
-  /** Label colour on bg-fill-info-strong. */
+  /** Label colour on bg-fill-info-strong and its hover and pressed steps. For an icon on the same fill use icon-info-on-bg-fill-strong. */
   --color-text-info-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-info-subtle. */
   --color-text-info-on-bg-fill-subtle: #0067E8;
+  /** Info label colour on bg-surface-info-hover. Darker than text-info so the label keeps AA as the surface deepens beneath it. */
+  --color-text-info-on-bg-surface-hover: #0857C5;
+  /** Info label colour on bg-surface-info-pressed. Darker than text-info so the label keeps AA as the surface deepens beneath it. */
+  --color-text-info-on-bg-surface-pressed: #0D4C9B;
   /** Success text on a neutral or success-tinted surface (bg-surface-success). On a solid success fill use the text-success-on-bg-fill-* variants. */
   --color-text-success: #008236;
-  /** Label colour on bg-fill-success-strong. */
+  /** Label colour on bg-fill-success-strong and its hover and pressed steps. For an icon on the same fill use icon-success-on-bg-fill-strong. */
   --color-text-success-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-success-subtle. */
   --color-text-success-on-bg-fill-subtle: #008236;
+  /** Success label colour on bg-surface-success-hover. Darker than text-success so the label keeps AA as the surface deepens beneath it. */
+  --color-text-success-on-bg-surface-hover: #016630;
+  /** Success label colour on bg-surface-success-pressed. Darker than text-success so the label keeps AA as the surface deepens beneath it. */
+  --color-text-success-on-bg-surface-pressed: #0D542B;
   /** Amber advisory text on a neutral or caution-tinted surface. In Cosmos, caution is the amber advisory role; for errors and destructive copy use text-warning. */
   --color-text-caution: #A65F00;
-  /** Label colour on bg-fill-caution-strong. */
+  /** Label colour on bg-fill-caution-strong and its hover and pressed steps. For an icon on the same fill use icon-caution-on-bg-fill-strong. */
   --color-text-caution-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-caution-subtle. */
   --color-text-caution-on-bg-fill-subtle: #894B00;
+  /** Caution label colour on bg-surface-caution-hover. Darker than text-caution so the label keeps AA as the surface deepens beneath it. */
+  --color-text-caution-on-bg-surface-hover: #894B00;
+  /** Caution label colour on bg-surface-caution-pressed. Darker than text-caution so the label keeps AA as the surface deepens beneath it. */
+  --color-text-caution-on-bg-surface-pressed: #733E0A;
   /** Error and destructive text — validation messages, destructive button labels. In Cosmos, warning is the red error role; for amber advisories use text-caution. */
   --color-text-warning: #C10007;
   /** Hover state for text-warning — destructive secondary and text buttons. */
   --color-text-warning-hover: #E7000B;
   /** Pressed/active state for text-warning — destructive secondary and text buttons. */
   --color-text-warning-pressed: #9F0712;
-  /** Label colour on bg-fill-warning-strong — destructive primary button content. */
+  /** Label colour on bg-fill-warning-strong — destructive primary button content. For an icon on the same fill use icon-warning-on-bg-fill-strong. */
   --color-text-warning-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-warning-subtle. */
   --color-text-warning-on-bg-fill-subtle: #C10007;
@@ -435,8 +497,10 @@
   --color-text-warning-on-bg-surface-hover: #9F0712;
   /** Destructive label colour on a tinted red surface while pressed. One step darker than text-warning-on-bg-surface-hover, matching the deeper surface underneath. */
   --color-text-warning-on-bg-surface-pressed: #82181A;
-  /** Default border and divider — input outlines, card edges, table rules. Use border-secondary where a lighter separation is wanted. */
+  /** Default border and divider — input outlines, card edges, table rules. Use border-secondary where a lighter separation is wanted, border-hover for a hovered outline, and border-inverse on dark backgrounds. */
   --color-border: #D4D4D4;
+  /** Hovered neutral outline — input fields and outlined neutral controls under the pointer. For an outline that is strong at rest use border-strong. */
+  --color-border-hover: #A1A1A1;
   /** Lighter divider for dense or nested content — list separators, inner table rules. */
   --color-border-secondary: #E5E5E5;
   /** Higher-contrast neutral border — the unchecked Checkbox and Radio outlines, outlines that must stay legible on a tinted surface, and dividers separating major regions. At 2.58:1 on white it sits below the WCAG 1.4.11 3:1 minimum for a control boundary, an accepted deviation recorded in components/checkbox.md and components/radio.md. Use border for the default outline. */
@@ -455,8 +519,10 @@
   --color-border-brand-pressed: #0857C5;
   /** Border of an informational container (bg-surface-info). */
   --color-border-info: #83D4FF;
-  /** Border of a success container (bg-surface-success). */
+  /** Border of a success container (bg-surface-success). For the outline of a validated control use border-success-strong. */
   --color-border-success: #7BF1A8;
+  /** Strong green outline for a control in a success state — a validated input field or a confirmed selection. For the edge of a success banner use border-success. */
+  --color-border-success-strong: #008236;
   /** Border of a caution container (bg-surface-caution). */
   --color-border-caution: #FFDF20;
   /** Border of an error container (bg-surface-warning). For the outline of a destructive control use border-warning-strong. */
@@ -467,26 +533,60 @@
   --color-border-warning-strong-hover: #E7000B;
   /** Pressed/active state for border-warning-strong. */
   --color-border-warning-strong-pressed: #9F0712;
+  /** Divider or outline on an inverted background (bg-surface-inverse, bg-fill-inverse) — separators inside dark toasts and tooltips. On light backgrounds use border. */
+  --color-border-inverse: #262626;
   /** Default icon colour, matching text-primary — standalone icons and icons beside primary text. */
   --color-icon: #0A0A0A;
-  /** Icon inside a disabled control. */
+  /** Icon inside a disabled control on a light background. On the solid disabled fill (bg-fill-disabled-strong) use icon-on-bg-fill-disabled-strong. */
   --color-icon-disabled: #A1A1A1;
-  /** Icon on an inverted background (bg-surface-inverse, bg-fill-inverse). */
+  /** Icon on the solid disabled fill (bg-fill-disabled-strong) — the tick of a disabled selected Checkbox. For an icon inside a disabled control on a light background use icon-disabled. */
+  --color-icon-on-bg-fill-disabled-strong: #FFFFFF;
+  /** Icon on an inverted background (bg-surface-inverse, bg-fill-inverse). Use icon-inverse-secondary for supporting icons and icon-inverse-disabled for disabled ones. */
   --color-icon-inverse: #FAFAFA;
+  /** Supporting icon on an inverted background, beside text-inverse-secondary. For the main icon use icon-inverse. */
+  --color-icon-inverse-secondary: #A1A1A1;
+  /** Disabled icon on an inverted background, matching text-inverse-disabled. */
+  --color-icon-inverse-disabled: #E5E5E5;
   /** Supporting icon beside secondary text. */
   --color-icon-secondary: #525252;
   /** Lowest-emphasis icon — decorative affordances, input adornments, chevrons. */
   --color-icon-tertiary: #A1A1A1;
-  /** Brand-coloured icon on a neutral or brand-tinted background. On a solid brand fill use text-brand-on-bg-fill. */
+  /** Brand-coloured icon on a neutral or brand-tinted background. On a solid brand fill use icon-brand-on-bg-fill. */
   --color-icon-brand: #0067E8;
+  /** Hovered brand icon on a neutral background, tracking text-brand-hover and border-brand-hover. On a tinted brand surface keep the icon in step with the label instead. */
+  --color-icon-brand-hover: #0681FF;
+  /** Pressed brand icon on a neutral background, tracking text-brand-pressed and border-brand-pressed. */
+  --color-icon-brand-pressed: #0857C5;
+  /** Icon on bg-fill-brand and its hover and pressed steps — the primary button icon and the selected Checkbox tick. For brand icons on neutral or tinted backgrounds use icon-brand. */
+  --color-icon-brand-on-bg-fill: #FFFFFF;
   /** Status icon in a success message or container. */
   --color-icon-success: #008236;
+  /** Icon on bg-fill-success-strong — success badges. For a success icon on a neutral or tinted background use icon-success. */
+  --color-icon-success-on-bg-fill-strong: #FFFFFF;
+  /** Icon on bg-fill-success-subtle — subtle success badges and tags. */
+  --color-icon-success-on-bg-fill-subtle: #008236;
   /** Status icon in an amber advisory message or container. */
   --color-icon-caution: #A65F00;
+  /** Icon on bg-fill-caution-strong — amber advisory badges. For a caution icon on a neutral or tinted background use icon-caution. */
+  --color-icon-caution-on-bg-fill-strong: #FFFFFF;
+  /** Icon on bg-fill-caution-subtle — subtle advisory badges and tags. Darker than icon-caution, matching text-caution-on-bg-fill-subtle. */
+  --color-icon-caution-on-bg-fill-subtle: #894B00;
   /** Status icon in an error message or destructive confirmation. */
   --color-icon-warning: #C10007;
+  /** Hovered warning icon on a neutral background, tracking text-warning-hover and border-warning-strong-hover. */
+  --color-icon-warning-hover: #E7000B;
+  /** Pressed warning icon on a neutral background, tracking text-warning-pressed and border-warning-strong-pressed. */
+  --color-icon-warning-pressed: #9F0712;
+  /** Icon on bg-fill-warning-strong and its hover and pressed steps — the destructive primary button icon and the selected error Checkbox tick. For a warning icon on a neutral or tinted background use icon-warning. */
+  --color-icon-warning-on-bg-fill-strong: #FFFFFF;
+  /** Icon on bg-fill-warning-subtle — subtle error badges and tags. */
+  --color-icon-warning-on-bg-fill-subtle: #C10007;
   /** Status icon in an informational message or container. */
   --color-icon-info: #0067E8;
+  /** Icon on bg-fill-info-strong — info badges and counters. For an info icon on a neutral or tinted background use icon-info. */
+  --color-icon-info-on-bg-fill-strong: #FFFFFF;
+  /** Icon on bg-fill-info-subtle — subtle info badges and tags. */
+  --color-icon-info-on-bg-fill-subtle: #0067E8;
   /** Explicit no-fill. Use where a colour token is required but the element must be see-through — the resting background of secondary and text buttons — so the value stays swappable instead of hard-coded to `transparent`. */
   --color-transparent: #FFFFFF00;
   /** Experimental pass-through to the raw amber 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
@@ -857,6 +957,8 @@
   --shadow-offset-4: 4px;
   --shadow-offset-8: 8px;
   --shadow-offset-16: 16px;
+  --shadow-offset-minus2: -2px;
+  --shadow-offset-minus4: -4px;
   --shadow-blur-2: 2px;
   --shadow-blur-4: 4px;
   --shadow-blur-6: 6px;
@@ -1065,6 +1167,12 @@
   --radius-4xl: 40px;
   /** Fully rounded — pills, chips, avatars and icon-only round buttons. A large fixed value that reads as a semicircle at any element height, so it never needs to track the size. */
   --radius-full: 999px;
+  /** Default outline thickness — input fields, cards, chips, the Checkbox box and outlined buttons. Use stroke-strong for a heavier control outline and stroke-focus for focus rings. */
+  --stroke-default: 1px;
+  /** Heavier outline thickness for a control that is drawn as its outline, such as the Radio circle. For focus rings use stroke-focus, which can change independently. */
+  --stroke-strong: 2px;
+  /** Thickness of the keyboard focus ring on every control. For a resting outline use stroke-default or stroke-strong. */
+  --stroke-focus: 2px;
   /** Smallest icon — inline with small labels and in dense table rows. */
   --icon-2xs: 12px;
   /** Icon inside small controls — small buttons, chips and input adornments. */
@@ -1173,8 +1281,10 @@
   --shadow-card-subtle: 0px 1px 2px #0A0A0A0A, 0px 2px 8px #0A0A0A0A;
   /** Diffuse alternative to card with almost no edge, for feature and promotional cards that should float softly on the page. Use card-subtle for a lighter touch, and raised once the card is hovered or dragged. */
   --shadow-card-soft: 0px 2px 8px #0A0A0A0A, 0px 8px 24px #0A0A0A0F;
-  /** Lifted elevation for elements floating a little above the content around them: hovered or dragged cards, sticky headers and footers, floating action buttons. Use overlay for layers that open on top of the page. */
+  /** Lifted elevation for elements floating a little above the content around them: hovered or dragged cards, sticky headers, floating action buttons. Use overlay for layers that open on top of the page, and sticky-bottom for bars pinned to the bottom edge. */
   --shadow-raised: 0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14;
+  /** The raised elevation cast upward, for bars pinned to the bottom of the screen — sticky booking and price footers, bottom navigation. For elements that float above the content below them use raised. */
+  --shadow-sticky-bottom: 0px -2px 4px #0A0A0A14, 0px -4px 12px #0A0A0A14;
   /** Elevation for transient layers opened over the page without blocking it: menus, dropdowns, popovers, tooltips and toasts. Use modal when the layer blocks the page behind a scrim. */
   --shadow-overlay: 0px 4px 8px #0A0A0A14, 0px 8px 24px #0A0A0A1F;
   /** Highest elevation, for layers that block the page: dialogs and bottom sheets, always shown over the scrim. Nothing in the product sits above it. */
@@ -1490,7 +1600,7 @@
   /** Colour of the checkmark glyph inside the box — checked, while pressed. */
   --checkbox-icon-selected-pressed: #FFFFFF;
   /** Colour of the checkmark glyph inside the box — checked, when disabled. */
-  --checkbox-icon-selected-disabled: #FAFAFA;
+  --checkbox-icon-selected-disabled: #FFFFFF;
   /** Colour of the checkmark glyph inside the box — checked and in the error state, at rest. */
   --checkbox-icon-selected-error-default: #FFFFFF;
   /** Colour of the checkmark glyph inside the box — checked and in the error state, on hover. */
@@ -1498,7 +1608,7 @@
   /** Colour of the checkmark glyph inside the box — checked and in the error state, while pressed. */
   --checkbox-icon-selected-error-pressed: #FFFFFF;
   /** Colour of the checkmark glyph inside the box — checked and in the error state, when disabled. */
-  --checkbox-icon-selected-error-disabled: #FAFAFA;
+  --checkbox-icon-selected-error-disabled: #FFFFFF;
   /** Colour of the label text beside the checkbox. */
   --checkbox-label-default: #0A0A0A;
   /** Colour of the label text when the checkbox is disabled. */
