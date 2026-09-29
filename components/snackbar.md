@@ -136,8 +136,8 @@ Snackbar (component set · 637:3233) · Layout=Inline · item spacing gap-contro
 └─ Close (instance · Snackbar / Control · Type=Close) · Show close, hidden by default · exposed
 
 Snackbar · Layout=Stacked
-├─ Top row (frame · horizontal · item spacing gap-controls)
-│  ├─ Content (frame · horizontal · top-aligned · fill width · end padding content-padding-end)
+├─ Top row (frame · horizontal · top-aligned · item spacing gap-controls)
+│  ├─ Content (frame · horizontal · top-aligned · fill width · top padding content-padding-top-stacked · end padding content-padding-end)
 │  │  ├─ Leading icon
 │  │  └─ Text (Title, Message)
 │  └─ Close
@@ -170,7 +170,7 @@ The same in every Appearance and Intent.
 | Padding start | 16 | `snackbar/padding-x` |
 | Padding end, with a control at the edge | 8 | `snackbar/padding-end-control` |
 | Padding top and bottom, Inline | 8 | `snackbar/padding-y` |
-| Padding top, Stacked | 12 | `snackbar/padding-top-stacked` |
+| Padding top, Stacked | 8 to the close button, 12 to the icon and text | `snackbar/padding-y` + `snackbar/content-padding-top-stacked` (4) |
 | Padding bottom, Stacked | 8 | `snackbar/padding-end-control` |
 | Gap: icon to text | 12 | `snackbar/gap` |
 | Gap: text to first control | 12 | `snackbar/content-padding-end` (8) + `snackbar/gap-controls` (4) |
@@ -193,7 +193,7 @@ The same in every Appearance and Intent.
 | Focus ring | 2 px, 2 px outside, radius 12 | `snackbar/focus-ring-width`, `snackbar/focus-ring-offset`, `snackbar/focus-ring-radius` |
 | Screen margin | 16 mobile, 24 web | `snackbar/margin-mobile`, `snackbar/margin-desktop` |
 
-Inline padding is 8 so that 8 + 32 px action + 8 lands exactly on the 48 px min height. A one-line message without an action is also 48 tall, held by the min height, and each extra line adds 20 (two lines: 56). Stacked keeps 12 above the text because nothing tall sits beside it, and 8 below the action row because the 32 px button already carries its own inner space. The same reasoning applies to the end padding beside a control.
+Inline padding is 8 so that 8 + 32 px action + 8 lands exactly on the 48 px min height. A one-line message without an action is also 48 tall, held by the min height, and each extra line adds 20 (two lines: 56). Stacked puts the 32 px close button 8 from the top and 8 from the right, the same inset on both sides, so it sits optically in the corner; the icon and text drop a further 4 to start 12 from the top. Below the action row it keeps 8, because the 32 px button already carries its own inner space. The same reasoning applies to the end padding beside a control.
 
 ---
 
@@ -312,6 +312,6 @@ On the Inverse bar the icon is the only intent signal, and on Tinted the tint ad
 | `label-control-*` (action) | 18 |
 | `icon-control-*` (close) | 18 |
 | `focus-ring` (colour) | 1 |
-| dimensions (`min-height`, `padding-x`, `padding-y`, `padding-top-stacked`, `padding-end-control`, `gap`, `gap-text`, `gap-controls`, `content-padding-end`, `stacked-gap`, `icon-size`, `radius`, `border-width`, `control-height`, `control-padding-x`, `control-radius`, `close-size`, `close-icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `margin-mobile`, `margin-desktop`) | 24 |
+| dimensions (`min-height`, `padding-x`, `padding-y`, `padding-end-control`, `gap`, `gap-text`, `gap-controls`, `content-padding-end`, `content-padding-top-stacked`, `stacked-gap`, `icon-size`, `radius`, `border-width`, `control-height`, `control-padding-x`, `control-radius`, `close-size`, `close-icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `margin-mobile`, `margin-desktop`) | 24 |
 
 Platform names follow the standard pipeline: `snackbar/bg-control-inverse-hover` → `--snackbar-bg-control-inverse-hover` (CSS) → `CosmosTokens.snackbarBgControlInverseHover` (Swift / Kotlin) → `tokens.snackbarBgControlInverseHover` (TS).

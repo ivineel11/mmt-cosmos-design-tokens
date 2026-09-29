@@ -1122,6 +1122,7 @@ object CosmosTokens {
   val snackbarCloseIconSize = 20.dp
   val snackbarCloseSize = 32.dp
   val snackbarContentPaddingEnd = 8.dp
+  val snackbarContentPaddingTopStacked = 4.dp
   val snackbarControlHeight = 32.dp
   val snackbarControlPaddingX = 8.dp
   val snackbarControlRadius = 8.dp
@@ -1194,7 +1195,6 @@ object CosmosTokens {
   val snackbarMinHeight = 48.dp
   val snackbarMinTouchTarget = 48.dp
   val snackbarPaddingEndControl = 8.dp
-  val snackbarPaddingTopStacked = 12.dp
   val snackbarPaddingX = 16.dp
   val snackbarPaddingY = 8.dp
   val snackbarRadius = 12.dp

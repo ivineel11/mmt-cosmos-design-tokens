@@ -2197,10 +2197,8 @@
   --snackbar-min-height: 48px;
   /** Horizontal padding inside the snackbar before the leading icon or text, and after the text when there is no action or close button. */
   --snackbar-padding-x: 16px;
-  /** Vertical padding above and below the content in the inline layout. With the 32px action button this lands exactly on min-height, and the snackbar grows from there when the message wraps. Stacked uses padding-top-stacked above the text. */
+  /** Vertical padding above and below the content in the inline layout, and top padding of the stacked layout, where the close button sits this far from the top. With the 32px action button this lands exactly on min-height, and the snackbar grows from there when the message wraps. */
   --snackbar-padding-y: 8px;
-  /** Top padding of the stacked layout, above the text. Roomier than padding-y because no action button sits beside the text; the bottom padding is padding-end-control. */
-  --snackbar-padding-top-stacked: 12px;
   /** End padding when an action or close button sits at the trailing edge, and bottom padding of the stacked layout below the action row. Tighter than padding-x because the button carries its own padding. */
   --snackbar-padding-end-control: 8px;
   /** Horizontal gap between the leading icon and the text in both layouts. */
@@ -2211,6 +2209,8 @@
   --snackbar-gap-controls: 4px;
   /** End padding of the icon and text block in both layouts. Adds to gap-controls for 12px between the text and the first control, and to padding-end-control for 16px from the edge when no control sits beside the text. */
   --snackbar-content-padding-end: 8px;
+  /** Top padding of the icon and text block in the stacked layout. Adds to padding-y so the text starts 12px from the top while the close button sits 8px from the top and right, optically centred in the corner. */
+  --snackbar-content-padding-top-stacked: 4px;
   /** Vertical gap between the text block and the action row in the stacked layout, used when the action label is too long to sit inline. */
   --snackbar-stacked-gap: 8px;
   /** Size of the leading status icon, one step larger than the 20px text line so the status reads at a glance. Centred on the text block in the inline layout. */
