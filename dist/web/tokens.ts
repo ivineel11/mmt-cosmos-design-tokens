@@ -1532,7 +1532,7 @@ export default {
     "gap-text-trailing-compact": "16px",
     "gap-trailing-comfortable": "8px",
     "gap-trailing-compact": "4px",
-    "gap-text": "2px",
+    "gap-text": "0px",
     "leading-icon-size-comfortable": "24px",
     "leading-icon-size-compact": "20px",
     "leading-container-size-comfortable": "40px",
