@@ -1010,7 +1010,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `tab/*` | 43 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
 | `list/*` | 60 | List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 24 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
 | `switch/*` | 51 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
-| `menu/*` | 64 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the slot-based panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`) | [`components/menu.md`](components/menu.md) |
+| `menu/*` | 64 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
