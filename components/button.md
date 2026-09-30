@@ -154,9 +154,7 @@ _Confidence: high._ _Reconciliation: 0 auto-fixed, 1 retried, 0 unresolved._
 
 > Size is the only dimension-affecting axis. Hierarchy, State and Intent leave every root measurement identical (crossVariant.axisDiffs / stateComparison agree byte-for-byte), so they are documented as targeted delta sections rather than as size-style column tables.
 >
-> Token system: every dimensional value except cornerRadius resolves through the button/* component token family (min-height-{lg,md,sm}, padding-y-*, padding-x-*, gap-sm, icon-size-{lg,md,sm}). All three variable collections (primitives, semantic, component) are single-mode, so there is no density, shape or spacing mode to add as columns — the Size variant axis is the only dimensional ramp.
->
-> Anomaly — cornerRadius is unbound. 12 / 12 / 8 across Large / Medium / Small is hardcoded while every neighbouring property is token-bound. Either the binding was missed or the radius is deliberately outside the token system; engineering should confirm before treating 12 and 8 as literals.
+> Token system: every dimensional value resolves through the button/* component token family (min-height-{lg,md,sm}, padding-y-*, padding-x-*, gap-sm, icon-size-{lg,md,sm}, radius-{lg,md}). All three variable collections (primitives, semantic, component) are single-mode, so there is no density, shape or spacing mode to add as columns — the Size variant axis is the only dimensional ramp.
 >
 > Anomaly — button/gap-sm is used at all three sizes. itemSpacing resolves to 4 at Large, Medium and Small, so the token does not differentiate despite its -sm suffix. Icon-to-label spacing therefore does not scale with the size ramp the way padding and icon size do.
 >
@@ -188,7 +186,7 @@ _Per-element typography for every text element in the component. Per-section typ
 
 ### Button sizes
 
-Dimensional properties of the button root across the Size axis. Size is the component's only dimension-affecting axis — Hierarchy, State and Intent leave every root measurement identical (see crossVariant.axisDiffs). Every value except cornerRadius is bound to a button/* component token.
+Dimensional properties of the button root across the Size axis. Size is the component's only dimension-affecting axis — Hierarchy, State and Intent leave every root measurement identical (see crossVariant.axisDiffs). Every value is bound to a button/* component token.
 
 | Spec | Large | Medium | Small | Notes |
 |---|---|---|---|---|
@@ -197,7 +195,7 @@ Dimensional properties of the button root across the Size axis. Size is the comp
 | ├ verticalPadding | button/padding-y-lg (12) | button/padding-y-md (8) | button/padding-y-sm (4) | Halves at each step down (12 -> 8 -> 4). At Large the padded content box lands exactly on the 48 minHeight; at Medium and Small the padded content box is shorter, so minHeight is what sets the rendered height. |
 | ├ horizontalPadding | button/padding-x-lg (20) | button/padding-x-md (16) | button/padding-x-sm (12) | Steps by 4 per size and stays well above the vertical padding at every size, keeping the label in a wider-than-tall pill rather than a square. |
 | ├ itemSpacing | button/gap-sm (4) | button/gap-sm (4) | button/gap-sm (4) | Gap between spinner, leading icon, label and trailing icon. Constant 4 at every size and bound to button/gap-sm even at Large — the -sm suffix implies a size ramp the token does not actually provide. |
-| ├ cornerRadius | 12 | 12 | 8 | The only hardcoded dimension in this section. Large and Medium share 12; Small drops to 8 so the corner stays proportional to its 32 height. |
+| ├ cornerRadius | button/radius-lg (12) | button/radius-md (8) | button/radius-md (8) | Medium and Small share 8; only Large rounds to 12. |
 | ├ widthMode | hug | hug | hug | Width follows label plus visible icons, never below button/min-width (86) at any size; long labels grow the button without bound. |
 | ├ minWidth | button/min-width (86) | button/min-width (86) | button/min-width (86) | One shared minimum at every size, so a stretched button keeps its width across Size changes. Short labels such as OK render at 86. |
 | ├ heightMode | fill | fill | fill | layoutSizingVertical is FILL, so rendered height comes from minHeight and the parent's cross-axis rather than from content. |
@@ -270,7 +268,7 @@ State is structural rather than visual-only: the Focus Ring rectangle is hidden 
 | ├ visibility | hidden | hidden | hidden | visible | hidden | Painted only under focus-visible. Pointer hover and press must not render it, and it stays hidden when disabled. |
 | ├ fixedWidth | 94 | 94 | 94 | 94 | 94 | Medium reference: 4 beyond each horizontal edge of the 86-wide default button (button/min-width). It tracks label growth, preserving the same 4 outset at any width. |
 | ├ fixedHeight | 48 | 48 | 48 | 48 | 48 | 4 above and below the 40 minHeight — the outset is uniform on all four sides. Large is 94x56 and Small 94x40 on the same rule, since every size shares the 86 button/min-width. |
-| ├ cornerRadius | 12 | 12 | 12 | 16 | 12 | Focus raises the radius to button radius + 4, keeping the ring concentric with the corner it surrounds. The same rule holds at Small, where the button radius is 8 and the focused ring is 12. |
+| ├ cornerRadius | 8 | 8 | 8 | 12 | 8 | Focus raises the radius to button radius + 4, keeping the ring concentric with the corner it surrounds. Small follows the same values; at Large the button radius is 12 and the focused ring is 16. |
 | ├ borderWidth | 2 | 2 | 2 | 2 | 2 | 2 ring stroke, constant across states and sizes. The stroke paint is bound in every state; visibility, not weight, is what gates the ring. |
 | └ borderAlign | inside | inside | inside | inside | inside | Inside alignment keeps the 2 stroke within the 94x48 ring box, so the painted ring sits 2 clear of the button edge rather than touching it. |
 
