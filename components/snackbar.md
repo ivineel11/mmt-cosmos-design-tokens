@@ -130,7 +130,7 @@ Snackbar (component set · 637:3233) · Layout=Inline · item spacing gap-contro
 ├─ Content (frame · horizontal · fill width · end padding content-padding-end)
 │  ├─ Leading icon (instance · Icon / info …) · a11y-hidden · Show icon
 │  └─ Text (frame · vertical · fill width)
-│     ├─ Title (text · body/medium/bold) · Show title, hidden by default
+│     ├─ Title (text · title/small/bold) · Show title, hidden by default
 │     └─ Message (text · body/medium/regular)
 ├─ Action (instance · Snackbar / Control · Type=Action) · Show action · exposed
 └─ Close (instance · Snackbar / Control · Type=Close) · Show close, hidden by default · exposed
@@ -178,7 +178,7 @@ The same in every Appearance and Intent.
 | Gap: action to close | 8 | `snackbar/gap-controls` |
 | Gap: text to action row, Stacked | 8 | `snackbar/stacked-gap` |
 | Leading icon | 24 | `snackbar/icon-size` |
-| Title type | 14 / 22 bold | `body/medium/bold` |
+| Title type | 14 / 22 bold | `title/small/bold` |
 | Message type | 14 / 22 regular | `body/medium/regular` |
 | Corner radius | 12 | `snackbar/radius` |
 | Border width, Tinted only | 1 | `snackbar/border-width` |
