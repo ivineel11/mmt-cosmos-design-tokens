@@ -130,7 +130,7 @@ Snackbar (component set · 637:3233) · Layout=Inline · item spacing gap-contro
 ├─ Content (frame · horizontal · fill width · end padding content-padding-end)
 │  ├─ Leading icon (instance · Icon / info …) · a11y-hidden · Show icon
 │  └─ Text (frame · vertical · fill width)
-│     ├─ Title (text · body/medium/bold) · Show title, hidden by default
+│     ├─ Title (text · title/small/bold) · Show title, hidden by default
 │     └─ Message (text · body/medium/regular)
 ├─ Action (instance · Snackbar / Control · Type=Action) · Show action · exposed
 └─ Close (instance · Snackbar / Control · Type=Close) · Show close, hidden by default · exposed
@@ -150,7 +150,7 @@ Snackbar / Control (component set · 636:3088)
    or Icon (instance · Icon / close)  — Type=Close
 ```
 
-Both layouts hug their content vertically: the snackbar never drops below `snackbar/min-height` (48), and it grows by 22 px for each extra message line and by 24 px for the title (its line plus `snackbar/gap-text`). Controls never share a wrapper frame. In Inline, Action and Close are direct children of the snackbar; in Stacked, Close sits beside Content in the top row. A hidden control therefore leaves no gap and the text fills the row. Two Figma booleans cannot hide a shared parent when both are off. In both layouts the spacing works out as follows:
+Both layouts hug their content vertically: the snackbar never drops below `snackbar/min-height` (48), and it grows by 22 px for each extra message line and by 22 px for the title (its line, with `snackbar/gap-text` at 0). Controls never share a wrapper frame. In Inline, Action and Close are direct children of the snackbar; in Stacked, Close sits beside Content in the top row. A hidden control therefore leaves no gap and the text fills the row. Two Figma booleans cannot hide a shared parent when both are off. In both layouts the spacing works out as follows:
 
 | Controls shown | Text to first control | Action to close | Text to edge |
 |---|---|---|---|
@@ -174,11 +174,11 @@ The same in every Appearance and Intent.
 | Padding bottom, Stacked | 8 | `snackbar/padding-y` |
 | Gap: icon to text | 12 | `snackbar/gap` |
 | Gap: text to first control | 12 | `snackbar/content-padding-end` (4) + `snackbar/gap-controls` (8) |
-| Gap: title to message | 2 | `snackbar/gap-text` |
+| Gap: title to message | 0 | `snackbar/gap-text` |
 | Gap: action to close | 8 | `snackbar/gap-controls` |
 | Gap: text to action row, Stacked | 8 | `snackbar/stacked-gap` |
 | Leading icon | 24 | `snackbar/icon-size` |
-| Title type | 14 / 22 bold | `body/medium/bold` |
+| Title type | 14 / 22 bold | `title/small/bold` |
 | Message type | 14 / 22 regular | `body/medium/regular` |
 | Corner radius | 12 | `snackbar/radius` |
 | Border width, Tinted only | 1 | `snackbar/border-width` |

@@ -20,11 +20,12 @@ And two densities:
 - **Comfortable** is the default, and the only density allowed on touch screens. A one-line text row is 50 tall, and never less than 48.
 - **Compact** is for pointer-first web lists, such as filter panels. A one-line row is 40 tall.
 
-The component is four Figma sets:
+The component is five Figma sets:
 
+- **List** is the container. It holds an optional section header, five rows and a **More rows** slot for extra rows, so no list needs detaching. Its Variant is Plain or Grouped.
 - **List / Item** is one row.
 - **List / Leading** is what goes at the start of a row: an icon, an icon in a neutral or brand circle, an avatar, a thumbnail, or a Checkbox or Radio.
-- **List / Trailing** is what goes at the end: a chevron, a meta value, a meta value with a chevron, a Badge, or a Secondary Button.
+- **List / Trailing** is what goes at the end: a chevron, a meta value, a meta value with a chevron, a Badge, a Secondary Button, or a Switch.
 - **List / Section header** names a group of rows.
 
 ### When to use something else
@@ -40,8 +41,17 @@ The component is four Figma sets:
 ### Composition
 
 - **Checkbox** (referenced: set `427:62`) and **Radio** (referenced: set `442:415`) are nested in List / Leading without their label or description, because the row title is the label. Comfortable uses Size Medium and Compact uses Size Small. Both are exposed, so Selection can be changed from the row.
-- **Badge** (referenced: set `683:2823`) is nested in List / Trailing as Text, Subtle, Brand. Comfortable uses Size Medium and Compact uses Size Small. Disabled rows hide it, the same rule as Tab: a disabled row cannot be acted on, so its count or label has nothing to lead to. It is exposed, and its Label, Intent and Emphasis overrides survive Density and Disabled switches.
-- **Button** (referenced: set `58:202`) is nested in List / Trailing as Secondary. Comfortable uses Size Medium (40 tall) and Compact uses Size Small (32 tall). Disabled rows switch it to State Disabled. It is exposed, and its Label override survives the switches.
+- **Badge** (referenced: set `683:2823`) is nested in List / Trailing as Text, Subtle, Brand. Comfortable uses Size Medium and Compact uses Size Small. Disabled rows hide it, the same rule as Tab: a disabled row cannot be acted on, so its count or label has nothing to lead to. It is exposed, so its Label, Intent and Emphasis can be changed from the row.
+- **Button** (referenced: set `58:202`) is nested in List / Trailing as Secondary. Comfortable uses Size Medium (40 tall) and Compact uses Size Small (32 tall). Disabled rows switch it to State Disabled. It is exposed, so its Label can be changed from the row.
+- **Switch** (referenced: set `731:172`) is nested in List / Trailing with Selection On and no icon. Comfortable uses Size Medium (48 × 28) and Compact uses Size Small (36 × 20). Disabled rows switch it to State Disabled. It is exposed, so Selection and Icon can be changed from the row.
+- **Set the row first, then the control.** Changing a row's Density, or moving its State to or from Disabled, resets any change made to the Checkbox, Radio, Badge, Button or Switch inside it. Selection, Intent, Emphasis, Label and icon toggles all go back to their defaults. Lines, Hover, Pressed and Focus changes are safe. See Known gaps.
+- **List** (`797:4533`) holds, in order: Section header, then a Rows frame with Item 1 to Item 5 and the More rows slot.
+  - **Container-level control.** The Section header and every Item have a Show toggle, and each is an exposed nested instance. With the List selected, you can hide a row and edit its title, lines, leading and trailing without drilling in. Items 4 and 5 start hidden, and Item 3 has its divider off because it is the last row shown.
+  - **More than five rows.** Turn on Show more rows, then insert rows into the More rows slot, below Item 5. Its preferred instances are List / Item and List / Section header. Inserted rows stretch to the list width, and any other layer is flagged as not allowed.
+  - **Figma limits.** Figma cannot expose, or bind a toggle to, anything inside a slot. So rows in More rows are edited by selecting them, and removed by deleting them. An inserted row arrives at its default variant (Comfortable, one line), so set its Density to match the list.
+  - **Plain and Grouped.** Plain has no fill, and belongs on the white `bg` page. In Grouped, the Rows frame becomes the white `list/bg-grouped` card with `list/grouped-radius`, and the section header sits above it on the grey page. Switching between them keeps every row edit, toggle and slot row.
+  - **One Grouped List per card.** A second group is a second List instance, `list/grouped-gap` below the first. Insert section headers into More rows only in Plain lists, because in Grouped they would land inside the card.
+  - **No density of its own.** The container adds no padding or gap, so the rows set the density. That is why List needs no Density variant, unlike the Menu panels.
 - **Icon / plus** (`55:11`) is the placeholder glyph in the leading slot, and **Icon / chevron-right** (`55:5`) is the trailing chevron. The examples use **Icon / flight** (`685:31`), **Icon / bell** (`685:28`), **Icon / info** (`635:120`), **Icon / check-circle** (`635:123`) and **Icon / person** (`713:26`, added for this component: Material Symbols Rounded `person`, weight 300, grade 0, optical size 24).
 - The avatar and thumbnail use the beach aerial sample photo that Chip uses. Replace it with the real image.
 - _Decorative children: 2 (Divider, Focus ring). They are documented under Structure._
@@ -71,25 +81,30 @@ The component is four Figma sets:
 | `thirdLine` | string | (string) | – | Needs `supportingText`. Use it rarely, such as for a hotel perk. |
 | `leading` | enum | none \| icon \| iconContainer \| avatar \| thumbnail \| checkbox \| radio | `none` | Keep one leading type per list so the text column lines up. |
 | `leadingTone` | enum | neutral \| brand | `neutral` | For `iconContainer` only. Use brand for at most one row in a list, to call it out. |
-| `trailing` | enum | none \| chevron \| meta \| metaChevron \| badge \| button | `none` | See Behaviour for which trailing goes with which row action. |
+| `trailing` | enum | none \| chevron \| meta \| metaChevron \| badge \| button \| switch | `none` | See Behaviour for which trailing goes with which row action. |
 | `meta` | string | (string) | – | Short value, such as `DEL`, `₹4,520` or `4`. One line. |
 | `onPress` | callback | () => void | – | Makes the row interactive. Leave it unset on rows with a trailing Button. |
 | `href` | string | (url) | – | Renders the row as a link. Pair it with `chevron`. |
-| `selected` | boolean | true \| false | `false` | For `checkbox` and `radio` rows. |
+| `selected` | boolean | true \| false | `false` | For `checkbox`, `radio` and `switch` rows. |
 | `disabled` | boolean | true \| false | `false` | |
 
 ### Figma-only properties
 
 | Set | Figma property | Type | Default | Notes |
 |---|---|---|---|---|
+| List | `Variant` | VARIANT | Plain | Plain, Grouped. Maps to `variant`. |
+| List | `Show section header`, `Show item 1` to `Show item 5` | BOOLEAN | `true` for the header and Items 1 to 3, `false` for Items 4 and 5 | |
+| List | `Section header`, `Item 1` to `Item 5` | Nested instance | List / Section header, List / Item | Exposed. Turn `Show divider` off on the last row shown. |
+| List | `Show more rows` | BOOLEAN | `false` | Shows the More rows slot. |
+| List | `More rows` | SLOT | Empty | Extra rows past five. Preferred instances: the List / Item and List / Section header sets. Only those are allowed. Inserted rows stretch to full width. |
 | Item | `Density` | VARIANT | Comfortable | Comfortable, Compact |
 | Item | `Lines` | VARIANT | One | One, Two, Three. Three top-aligns the leading and trailing slots. |
 | Item | `State` | VARIANT | Default | Default, Hover, Pressed, Focus, Disabled |
 | Item | `Title`, `Supporting text`, `Third line` | TEXT | Placeholder copy | |
 | Item | `Show leading`, `Show trailing`, `Show divider` | BOOLEAN | `true` | Turn `Show divider` off on the last row. |
-| Item | `Leading`, `Trailing` | Nested instance | Icon / Chevron | Exposed. Set their Type there. Keep their Density and Disabled equal to the row. |
+| Item | `Leading`, `Trailing` | Nested instance | Icon / Chevron | Exposed. Set their Type there. Keep their Density and Disabled equal to the row. Changes to a control inside them reset when the row Density or Disabled changes. |
 | Leading | `Type` × `Density` × `Disabled` | VARIANT | Icon, Comfortable, False | 28 variants |
-| Trailing | `Type` × `Density` × `Disabled` | VARIANT | Chevron, Comfortable, False | 20 variants. `Meta` TEXT property. Density sets the Badge and Button size, and Disabled hides the Badge. |
+| Trailing | `Type` × `Density` × `Disabled` | VARIANT | Chevron, Comfortable, False | 24 variants. `Meta` TEXT property. Density sets the Badge, Button and Switch size. Disabled hides the Badge and disables the Button and Switch. |
 | Section header | `Density` | VARIANT | Comfortable | `Label` TEXT property. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `List examples` frame (`714:198`).
@@ -103,14 +118,17 @@ Every variant ships placeholder copy only. Realistic copy lives in the `List exa
 | 3 | Plain, compact, header "Airlines", checkbox rows with prices, no dividers | The airline filter on web, 280 wide. |
 | 4 | Plain, comfortable, three-line rows with a thumbnail and a price | Hotel results. |
 | 5 | Comfortable, two lines, icon in a neutral circle, trailing Button "Add" | A static saved traveller row. Only the button is interactive. |
+| 6 | Comfortable, two lines, trailing Switch on: "Trip updates on WhatsApp" / "Booking confirmations and gate changes" | A settings row. The whole row toggles the switch. |
+| 7 | List, Grouped, header "Notifications", three rows without leading and with a trailing Switch: "Trip updates on WhatsApp" on, "Price drop alerts" off, "Offers and deals" off | Built from one List instance. Item 3 has no divider. |
 
 ---
 
 ## Behaviour
 
-- **One action per row.** A row is either a link or button as a whole, a selection control, or static with one trailing Button. Never nest two targets that do different things.
+- **One action per row.** A row is either a link or button as a whole, a selection control, a setting with a trailing Switch, or static with one trailing Button. Never nest two targets that do different things.
   - *Navigation* rows open another screen and show a chevron (`chevron` or `metaChevron`). The whole row is the target.
   - *Selection* rows lead with a Checkbox or Radio, and the whole row toggles it, because the row is the label.
+  - *Setting* rows end with a Switch, and the whole row toggles it, because the row is the label. The change applies at once. Do not add a chevron or a second control.
   - *Static* rows with a trailing Button take no hover or pressed fill. Only the Button is interactive.
   - *Display* rows, such as booking details, have no action and no chevron.
 - **Line limits.** Title wraps to at most two lines, supporting text to at most two, the third line to one, and the meta value to one. Truncate with an ellipsis after that. Meta values never shrink the title below half the row width.
@@ -119,7 +137,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `List exa
 - **Canvas.** A plain list has no background and belongs on the white `bg` page. On the grey `bg-secondary` page, use the grouped variant so the rows sit on white; hover and pressed fills do not show on grey.
 - **Grouped corners.** The card clips its rows, so the first and last rows take the card radius for their hover and pressed fills.
 - **Density.** Do not mix densities in one list. Compact rows and their 16 px checkboxes are too small to touch, so Compact is for pointer-first web layouts only.
-- **Disabled rows** keep their place and dim their title, text, icons and controls. Leading images stay unchanged, as on Chip. A trailing Badge is hidden, and a trailing Button switches to its disabled state.
+- **Disabled rows** keep their place and dim their title, text, icons and controls. Leading images stay unchanged, as on Chip. A trailing Badge is hidden, and a trailing Button or Switch switches to its disabled state. A disabled Switch keeps its value.
 - **Long lists** virtualise in code (`LazyColumn`, `List`, windowed rendering on web). The tokens do not change.
 
 ### Motion (not tokenised yet)
@@ -133,6 +151,12 @@ Hover and pressed fills change without a transition on touch, and in 100 ms line
 ### Anatomy
 
 ```text
+List (component set · 797:4533) · vertical, no gap
+├─ Section header (instance · List / Section header) · Show section header · exposed
+└─ Rows (frame · vertical · fills the width) · Grouped: list/bg-grouped fill, list/grouped-radius, clips
+   ├─ Item 1 … Item 5 (instance · List / Item) · Show item 1 … 5 · exposed
+   └─ More rows (slot · vertical · fills the width) · Show more rows (off) · List / Item and List / Section header only
+
 List / Item (component set · 710:474) · gap between Leading slot and Main
 ├─ Leading slot (frame · padding-y top and bottom) · Show leading
 │  └─ Leading (instance · List / Leading) · exposed
@@ -157,7 +181,8 @@ List / Trailing (component set · 709:2983)
 ├─ Meta · text
 ├─ Meta and chevron · text, then chevron, gap-trailing
 ├─ Badge · Badge slot (frame, hidden when Disabled) holding the Badge nested instance · exposed
-└─ Button · nested instance · exposed
+├─ Button · nested instance · exposed
+└─ Switch · nested instance, Selection On · exposed
 
 List / Section header (component set · 710:479)
 └─ Label (text)
@@ -177,7 +202,7 @@ The divider sits inside Main, so it starts at the text column whatever the leadi
 | Gap between leading and text | 16 | 12 | `list/gap-comfortable`, `list/gap-compact` |
 | Gap between text and trailing | 20 | 16 | `list/gap-text-trailing-comfortable`, `list/gap-text-trailing-compact` |
 | Gap inside the trailing slot | 8 | 4 | `list/gap-trailing-comfortable`, `list/gap-trailing-compact` |
-| Gap between title, supporting text and third line | 2 | 2 | `list/gap-text` |
+| Gap between title, supporting text and third line | 0 | 0 | `list/gap-text` |
 | Leading icon | 24 | 20 | `list/leading-icon-size-comfortable`, `list/leading-icon-size-compact` |
 | Leading circle | 40 | 32 | `list/leading-container-size-comfortable`, `list/leading-container-size-compact` |
 | Icon in the circle | 24 | 20 | `list/leading-container-icon-size-comfortable`, `list/leading-container-icon-size-compact` |
@@ -185,6 +210,7 @@ The divider sits inside Main, so it starts at the text column whatever the leadi
 | Checkbox and Radio | Medium, 20 | Small, 16 | the Checkbox and Radio tokens |
 | Trailing Badge | Medium, 24 tall | Small, 16 tall | the Badge tokens |
 | Trailing Button | Medium, 40 tall | Small, 32 tall | the Button tokens |
+| Trailing Switch | Medium, 48 × 28 | Small, 36 × 20 | the Switch tokens |
 | Chevron | 20 | 16 | `list/chevron-size-comfortable`, `list/chevron-size-compact` |
 | Title type | 16 / 26 regular | 14 / 22 regular | `body/large/regular`, `body/medium/regular` |
 | Supporting, third line and meta type | 14 / 22 regular | 12 / 18 regular | `body/medium/regular`, `body/small/regular` |
@@ -202,12 +228,12 @@ Row heights with an icon or no leading element:
 | Lines | Comfortable | Compact |
 |---|---|---|
 | One | 12 + 26 + 12 = 50 | 8 + 22 + 8 = 38, raised to the 40 minimum |
-| Two | 12 + 26 + 2 + 22 + 12 = 74 | 8 + 22 + 2 + 18 + 8 = 58 |
-| Three | 12 + 26 + 2 + 22 + 2 + 22 + 12 = 98 | 8 + 22 + 2 + 18 + 2 + 18 + 8 = 78 |
+| Two | 12 + 26 + 22 + 12 = 72 | 8 + 22 + 18 + 8 = 56 |
+| Three | 12 + 26 + 22 + 22 + 12 = 94 | 8 + 22 + 18 + 18 + 8 = 74 |
 
 The text-to-trailing gap is wider than the leading-to-text gap, so a meta value or chevron reads as separate from the title rather than as its last word.
 
-A leading circle, avatar or thumbnail makes a one-line Comfortable row 12 + 40 + 12 = 64 tall, and so does a trailing Button. In Compact, a trailing Button makes a one-line row 8 + 32 + 8 = 48 tall.
+A leading circle, avatar or thumbnail makes a one-line Comfortable row 12 + 40 + 12 = 64 tall, and so does a trailing Button. In Compact, a trailing Button makes a one-line row 8 + 32 + 8 = 48 tall. A trailing Switch is shorter than the text line, so it never changes the row height.
 
 ---
 
@@ -261,6 +287,7 @@ This component adds no semantic roles.
 | List | `ul` with `li` per row, or `role="list"`. A section header is a heading (`h2`–`h4`) or labels the list with `aria-labelledby` | A `List` or `LazyVStack`; section headers use `Section` headers, which VoiceOver reads as headings | `LazyColumn`; section headers use `Modifier.semantics { heading() }` |
 | Navigation row | One `a` (or `button`) wrapping the whole row content. The chevron is `aria-hidden` | One element: `.accessibilityElement(children: .combine)` and the button trait. VoiceOver reads "My trips, button" | `Modifier.clickable` on the row with `mergeDescendants`; TalkBack reads "My trips, double tap to activate" |
 | Selection row | A native `input type="checkbox"` or `radio`, with the row as its `label`. Single-select lists use `role="radiogroup"` with arrow-key movement | The row is one element with the toggle trait, value "Selected" or "Not selected" | `Modifier.toggleable(role = Role.Checkbox)` or `selectable(role = Role.RadioButton)` on the row, `selectableGroup()` on the list |
+| Setting row with Switch | A native `input type="checkbox" role="switch"`, with the row as its `label` | The row is one element with the toggle trait, value "On" or "Off" | `Modifier.toggleable(role = Role.Switch)` on the row, with the Switch `onCheckedChange = null` |
 | Static row with Button | The row is plain text; the Button has its own name, such as "Add Rahul Verma" | The row text is one element and the Button another | The same: two focus stops |
 | Meta | Read after the title: "New Delhi, India, Indira Gandhi International Airport, DEL" | Part of the combined label | Part of the merged content |
 | Badge | Appended to the row name: "Notifications, 3 new" | `accessibilityValue("3 new")` | Add to `stateDescription` |
@@ -270,7 +297,7 @@ This component adds no semantic roles.
 
 **Keyboard (web).** Tab reaches each interactive row in order, and Enter or Space activates it. Single-select lists are one tab stop, with arrow keys moving the selection. The focus ring shows on `:focus-visible`.
 
-**Touch target.** A Comfortable row is at least 48 tall and full width, so the whole row meets the 48 × 48 floor even though the Checkbox or Radio inside is 20. Compact rows are 40 tall and are not for touch.
+**Touch target.** A Comfortable row is at least 48 tall and full width, so the whole row meets the 48 × 48 floor even though the Checkbox or Radio inside is 20 and the Switch is 28 tall. Compact rows are 40 tall and are not for touch.
 
 ---
 
@@ -289,6 +316,10 @@ This component adds no semantic roles.
 - **No motion tokens.** The transitions above are documented, not tokenised.
 - **`list/focus-ring-inset` is not bound in Figma.** As on Chip, Snackbar and Tab, the ring position is geometry. The ring binds its width, radius and colour.
 - **Nested Checkbox and Radio sizes are experimental** (issue #39). List rows reuse them as they are.
+- **Nested control overrides reset on Density and Disabled.** Figma keeps an override on a nested instance only while the instance that holds it stays on the same variant. The Checkbox and Radio sit inside List / Leading, and the Badge, Button and Switch inside List / Trailing. A row Density or Disabled change swaps Leading and Trailing to another variant, so changes to the control inside are lost. The Type set on Leading or Trailing survives, because it sits directly on the row. Moving the controls directly into List / Item would fix this. That was considered on 2026-09-30 and not adopted.
+- **The More rows slot does not enforce density.** Figma lists preferred instances by component set, and a set allows every variant, so a Comfortable row in a Compact list is not flagged. Check the density of inserted rows.
+- **Slot rows have no List-level controls.** Figma does not allow exposed instances or property toggles inside a slot. Rows added through More rows are edited by selecting them.
+- **The last-row divider is manual.** Showing Item 4 or 5, or adding rows to More rows, does not move the missing divider. Turn `Show divider` on and off by hand so only the last row shown has none.
 - **No page margin token.** The 16 px outer margin of a grouped list on the grey page follows the screen layout, not the list.
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
