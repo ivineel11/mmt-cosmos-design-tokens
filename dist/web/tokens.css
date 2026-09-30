@@ -2768,8 +2768,10 @@
   --slider-tick-size-md: 4px;
   /** Diameter of a step mark on the Small track. */
   --slider-tick-size-sm: 2px;
-  /** White thumb in every enabled state; hover and press change its shadow and halo, not its fill. Use thumb-disabled when the slider is disabled. */
+  /** White thumb at rest, on focus and while held. Hover turns it thumb-hover grey; press changes its shadow and halo, or its size, not its fill. Use thumb-disabled when the slider is disabled. */
   --slider-thumb-default: #FFFFFF;
+  /** Light grey thumb under the pointer. Web only. The thumb goes back to thumb-default white while held and when the pointer leaves. */
+  --slider-thumb-hover: #F5F5F5;
   /** Elevation of the white thumb at rest and on focus. Carries the separation from the grey track, where white alone is 1.48:1. Use thumb-shadow-raised under the pointer and while held. A disabled thumb drops it. */
   --slider-thumb-shadow: 0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F;
   /** Stronger elevation of the white thumb under the pointer and while held or dragged. Use thumb-shadow at rest. */

@@ -1326,6 +1326,7 @@ public enum CosmosTokens {
     public static let sliderTextDisabled = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
     public static let sliderThumbDefault = Color(red: 1, green: 1, blue: 1)
     public static let sliderThumbDisabled = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
+    public static let sliderThumbHover = Color(red: 0.960784, green: 0.960784, blue: 0.960784)
     public static let sliderThumbShadow1Blur = CGFloat(2)
     public static let sliderThumbShadow1Color = Color(.sRGB, red: 0.039216, green: 0.039216, blue: 0.039216, opacity: 0.078431)
     public static let sliderThumbShadow1OffsetX = CGFloat(0)

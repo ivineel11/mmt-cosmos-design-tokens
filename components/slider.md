@@ -156,7 +156,7 @@ Slider (component set · 811:1622)
 Slider / Thumb (component set · 809:83)
 ├─ Halo (circle, 40 or 28, centred) · Hover and Pressed only · decorative
 ├─ Focus ring (circle, 2 outside the thumb) · Focus only · decorative
-└─ Thumb (circle, 24 or 16, white; 32 or 20 in Pressed grow) · shadow.card, or shadow.raised on Hover, Pressed and Pressed grow · no shadow when Disabled
+└─ Thumb (circle, 24 or 16, white, light grey on Hover; 32 or 20 in Pressed grow) · shadow.card, or shadow.raised on Hover, Pressed and Pressed grow · no shadow when Disabled
 
 .Slider / Position (component set · 821:664 · internal)
 └─ Spacer (transparent rectangle, 0% to 100% of the travel wide) · the variant hugs it, so swapping Value resizes the bar
@@ -217,11 +217,11 @@ Token names follow `slider/{part}-{active|inactive}-{state}`. Focus uses the Def
 
 | Element | Default, Focus | Hover | Pressed | Pressed grow (under test) | Disabled |
 |---|---|---|---|---|---|
-| Thumb | `thumb-default` → `bg-fill` #FFFFFF | same | same | same, at `thumb-size-pressed` | `thumb-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
+| Thumb | `thumb-default` → `bg-fill` #FFFFFF | `thumb-hover` → `bg-fill-hover` #F5F5F5 | `thumb-default` #FFFFFF | `thumb-default` #FFFFFF, at `thumb-size-pressed` | `thumb-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
 | Shadow | `thumb-shadow` → `shadow.card` | `thumb-shadow-raised` → `shadow.raised` | same as Hover | same as Hover | none |
 | Halo | – | `halo-hover` | `halo-pressed` | none | – |
 
-The white thumb keeps its fill in every enabled state. Hover and press show through the halo and the stronger shadow instead.
+The thumb is white at rest, on focus and while held. Under the pointer it turns light grey, with the halo and the stronger shadow; a press shows through the halo or the bigger thumb and the stronger shadow, not the fill.
 
 This component adds no semantic roles.
 
@@ -238,6 +238,7 @@ This component adds no semantic roles.
 | Inactive track #D4D4D4 on the white canvas | 1.48:1 | – | Below 3:1 by choice, as on Switch. The active track and the thumb carry the value |
 | Thumb #FFFFFF on the active track | 5.11:1 | 3:1 | Pass |
 | Thumb #FFFFFF on the inactive track / on the canvas | 1.48 / 1:1 | 3:1 | **Below.** The shadow carries the edge. See Known gaps |
+| Hover thumb #F5F5F5 on the active track / on the inactive track | 4.69 / 1.35:1 | 3:1 | Pass on the active track; below on the inactive track, where the halo and raised shadow carry it (web only) |
 | Tick #737373 on the inactive track / #FFFFFF on the active track | 3.19 / 5.11:1 | 3:1 | Pass |
 | Focus ring #0681FF on the canvas | 3.75:1 | 3:1 | Pass. Where it crosses the track it is 2.53:1 on grey and 1.36:1 on brand, but most of the ring sits on the canvas |
 | Label and value #0A0A0A / limits #525252 on white | 19.79 / 7.81:1 | 4.5:1 (1.4.3) | Pass |
@@ -287,13 +288,13 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 
 ## Token reference
 
-42 tokens under `component.slider` in `tokens/tokens.json`. 40 are mirrored 1:1 as `slider/*` in the Figma `component` collection. The Figma file has no shadow variables, so `thumb-shadow` and `thumb-shadow-raised` are the `shadow/card` and `shadow/raised` effect styles on the thumb there.
+43 tokens under `component.slider` in `tokens/tokens.json`. 41 are mirrored 1:1 as `slider/*` in the Figma `component` collection. The Figma file has no shadow variables, so `thumb-shadow` and `thumb-shadow-raised` are the `shadow/card` and `shadow/raised` effect styles on the thumb there.
 
 | Group | Count |
 |---|---|
 | Track: `track-inactive`, `track-inactive-disabled`, `track-active`, `track-active-disabled`, `track-height-{md,sm}` | 6 |
 | Ticks: `tick-active`, `tick-inactive`, `tick-active-disabled`, `tick-inactive-disabled`, `tick-size-{md,sm}` | 6 |
-| Thumb: `thumb-default`, `thumb-shadow`, `thumb-shadow-raised`, `thumb-disabled`, `thumb-size-{md,sm}`, `thumb-size-pressed-{md,sm}` (grow press, under test), `halo-hover`, `halo-pressed`, `halo-size-{md,sm}` | 12 |
+| Thumb: `thumb-default`, `thumb-hover`, `thumb-shadow`, `thumb-shadow-raised`, `thumb-disabled`, `thumb-size-{md,sm}`, `thumb-size-pressed-{md,sm}` (grow press, under test), `halo-hover`, `halo-pressed`, `halo-size-{md,sm}` | 13 |
 | Focus and shape: `focus-ring`, `focus-ring-width`, `focus-ring-offset`, `radius`, `min-touch-target-{md,sm}` | 6 |
 | Text: `label-text`, `value-text`, `limit-text`, `text-disabled`, `header-gap` | 5 |
 | Tooltip: `tooltip-bg`, `tooltip-text`, `tooltip-padding-x`, `tooltip-padding-y`, `tooltip-radius`, `tooltip-gap`, `tooltip-caret-width` | 7 |

@@ -1329,6 +1329,7 @@ object CosmosTokens {
   val sliderTextDisabled = Color(0xFFA1A1A1)
   val sliderThumbDefault = Color(0xFFFFFFFF)
   val sliderThumbDisabled = Color(0xFFA1A1A1)
+  val sliderThumbHover = Color(0xFFF5F5F5)
   val sliderThumbShadow1Blur = 2.dp
   val sliderThumbShadow1Color = Color(0x140A0A0A)
   val sliderThumbShadow1OffsetX = 0.dp

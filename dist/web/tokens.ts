@@ -1673,6 +1673,7 @@ export default {
     "tick-size-md": "4px",
     "tick-size-sm": "2px",
     "thumb-default": "#FFFFFF",
+    "thumb-hover": "#F5F5F5",
     "thumb-shadow": "0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F",
     "thumb-shadow-raised": "0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14",
     "thumb-disabled": "#A1A1A1",
