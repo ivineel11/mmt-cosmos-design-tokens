@@ -2780,9 +2780,13 @@
   --slider-thumb-size-md: 24px;
   /** Visual thumb diameter of the Small slider. The hit area is min-touch-target-sm, not this. */
   --slider-thumb-size-sm: 16px;
+  /** Grow press, under test against the halo press. Thumb diameter of a Medium slider while held or dragged, with no halo. It returns to thumb-size-md on release. */
+  --slider-thumb-size-pressed-md: 32px;
+  /** Grow press, under test against the halo press. Thumb diameter of a Small slider while held or dragged, with no halo. It returns to thumb-size-sm on release. */
+  --slider-thumb-size-pressed-sm: 20px;
   /** Soft circle behind a thumb under the pointer, drawn under the track. Web only. Use halo-pressed while the thumb is held. */
   --slider-halo-hover: #EDF8FF;
-  /** Soft circle behind a thumb while it is held or dragged, drawn under the track, so the touch point stays visible around a finger. Use halo-hover for the pointer. */
+  /** Soft circle behind a thumb while it is held or dragged, drawn under the track, so the touch point stays visible around a finger. Halo press only; the Grow press enlarges the thumb to thumb-size-pressed instead. Use halo-hover for the pointer. */
   --slider-halo-pressed: #D6EFFF;
   /** Diameter of the hover and pressed halo around a Medium thumb. */
   --slider-halo-size-md: 40px;

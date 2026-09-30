@@ -1678,6 +1678,8 @@ export default {
     "thumb-disabled": "#A1A1A1",
     "thumb-size-md": "24px",
     "thumb-size-sm": "16px",
+    "thumb-size-pressed-md": "32px",
+    "thumb-size-pressed-sm": "20px",
     "halo-hover": "#EDF8FF",
     "halo-pressed": "#D6EFFF",
     "halo-size-md": "40px",

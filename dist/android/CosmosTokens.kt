@@ -1346,6 +1346,8 @@ object CosmosTokens {
   val sliderThumbShadowRaised2OffsetX = 0.dp
   val sliderThumbShadowRaised2OffsetY = 4.dp
   val sliderThumbSizeMd = 24.dp
+  val sliderThumbSizePressedMd = 32.dp
+  val sliderThumbSizePressedSm = 20.dp
   val sliderThumbSizeSm = 16.dp
   val sliderTickActive = Color(0xFFFFFFFF)
   val sliderTickActiveDisabled = Color(0xFFFFFFFF)

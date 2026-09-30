@@ -1343,6 +1343,8 @@ public enum CosmosTokens {
     public static let sliderThumbShadowRaised2OffsetX = CGFloat(0)
     public static let sliderThumbShadowRaised2OffsetY = CGFloat(4)
     public static let sliderThumbSizeMd = CGFloat(24)
+    public static let sliderThumbSizePressedMd = CGFloat(32)
+    public static let sliderThumbSizePressedSm = CGFloat(20)
     public static let sliderThumbSizeSm = CGFloat(16)
     public static let sliderTickActive = Color(red: 1, green: 1, blue: 1)
     public static let sliderTickActiveDisabled = Color(red: 1, green: 1, blue: 1)

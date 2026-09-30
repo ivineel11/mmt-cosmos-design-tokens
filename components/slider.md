@@ -6,6 +6,8 @@
 <!-- Figma: https://www.figma.com/design/byPBTSedTYOO0AYwmIlncH/?node-id=811-1622 -->
 <!-- Authored at: 2026-09-30 -->
 
+> **Two press styles are under test.** `Pressed` shows a brand halo around the thumb. `Pressed grow` enlarges the thumb instead, from 24 to 32 (16 to 20 on Small), with no halo, and shrinks it back on release. Both are built side by side. Once one is chosen, delete the other State value and rename the survivor `Pressed`. If Grow wins, also delete `halo-pressed`; if Halo wins, delete `thumb-size-pressed-md` and `thumb-size-pressed-sm`.
+
 ## Overview
 
 A slider picks a value, or a range of values, by dragging a white, raised thumb along a track. It is for choices where the rough position matters more than the exact number: the price per night filter on hotel results, the departure time filter on flight results, the distance from the city centre, or a minimum guest rating. It works on mobile and web.
@@ -24,7 +26,7 @@ Four variant axes drive Slider:
 - **Type**: Single (one thumb) or Range (two thumbs).
 - **Steps**: Continuous or Discrete. Discrete snaps to steps and shows a tick mark at each one.
 - **Size**: Medium or Small. Small is for dense web layouts such as a filter side panel and is not for touch.
-- **State**: Default, Hover, Pressed, Focus and Disabled. In Range, Hover, Pressed and Focus are shown on the maximum thumb.
+- **State**: Default, Hover, Pressed, Pressed grow, Focus and Disabled. Pressed grow is under test beside Pressed. In Range, Hover, the two pressed states and Focus are shown on the maximum thumb.
 
 ### When to use something else
 
@@ -47,7 +49,7 @@ Four variant axes drive Slider:
 
 ## API
 
-> `State` is design-only except `Disabled`. `Hover`, `Pressed` and `Focus` exist so a mock can show them; in code they come from the pointer, touch and focus state of the platform.
+> `State` is design-only except `Disabled`. `Hover`, `Pressed`, `Pressed grow` and `Focus` exist so a mock can show them; in code they come from the pointer, touch and focus state of the platform.
 
 | Property | Type | Values | Default | Notes |
 |---|---|---|---|---|
@@ -90,6 +92,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Slider e
 | 2 | Range, Discrete, Medium, label "Departure time", steps of 6 hours, value 06:00 – 18:00, limits 00:00 and 24:00 | Flight results filter sheet. |
 | 3 | Range, Continuous, Medium, Pressed, header hidden, tooltip "₹8,000" on the maximum thumb | The price filter being dragged on web. |
 | 3b | The same with the tooltip `Caret` off | The caret-less tooltip. |
+| 3c | The same in `Pressed grow` | The grow press, for comparison with 3. |
 | 4 | Single, Continuous, Medium, label "Distance from centre", value "Up to 6 km", limits 0 km and 10 km | Hotel results filter sheet. |
 | 5 | Single, Discrete, Small, label "Guest rating", steps 1 to 5, value "4+", limits 1 and 5 | A web filter side panel. |
 
@@ -98,6 +101,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Slider e
 ## Behaviour
 
 - **Drag.** Pressing a thumb and dragging moves it with the pointer or finger, clamped to the track. The track and the header value update as it moves.
+- **Press feedback (under test).** With the halo press, a held thumb shows `halo-pressed` behind it. With the grow press, the held thumb grows to `thumb-size-pressed` (32 on Medium, 20 on Small) and shows no halo. Either way the thumb returns to its default look as soon as the finger or pointer lifts. The hit area stays 48 × 48, and the thumb centre does not move.
 - **Tap the track.** A tap moves the nearest thumb to that point, then it behaves like a drag until release. In a range, a tap between the thumbs moves the nearer one.
 - **Hit area.** Each thumb takes touches in a 48 × 48 area (Medium) or 24 × 24 (Small, web only), whatever its visual size. The whole track row is also tappable.
 - **Steps.** A Discrete slider snaps to the nearest step while dragging. On iOS each new step plays a selection haptic (`UISelectionFeedbackGenerator.selectionChanged()`); on Android use `HapticFeedbackConstants.SEGMENT_TICK` (`CLOCK_TICK` before API 34).
@@ -113,6 +117,8 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Slider e
 
 - **Tap the track:** the thumb moves to the tapped point with a spring of about 200 ms and no overshoot. Under a drag it follows the finger directly, with no easing.
 - **Halo and tooltip:** fade and scale in from 0.8 over 100 ms, and out over 100 ms on release.
+- **Grow press:** the thumb scales from 1 to 1.33 (24 to 32) about its centre with a spring of about 150 ms and no overshoot on press, and back to 1 on release. Animate a scale transform, not the layout size, so the track and neighbours never move. SwiftUI `.scaleEffect` with `.spring(response: 0.15, dampingFraction: 1)`; Compose `graphicsLayer { scaleX; scaleY }` with `spring(dampingRatio = 1f)`; CSS `transform: scale(1.333)` with a 150 ms ease-out.
+- **Reduce Motion (grow press):** the thumb changes size without animating.
 - **Reduce Motion:** the thumb jumps and the halo and tooltip appear without scaling.
 
 ---
@@ -150,7 +156,7 @@ Slider (component set · 811:1622)
 Slider / Thumb (component set · 809:83)
 ├─ Halo (circle, 40 or 28, centred) · Hover and Pressed only · decorative
 ├─ Focus ring (circle, 2 outside the thumb) · Focus only · decorative
-└─ Thumb (circle, 24 or 16, white) · shadow.card, or shadow.raised on Hover and Pressed · no shadow when Disabled
+└─ Thumb (circle, 24 or 16, white; 32 or 20 in Pressed grow) · shadow.card, or shadow.raised on Hover, Pressed and Pressed grow · no shadow when Disabled
 
 .Slider / Position (component set · 821:664 · internal)
 └─ Spacer (transparent rectangle, 0% to 100% of the travel wide) · the variant hugs it, so swapping Value resizes the bar
@@ -169,6 +175,7 @@ In code the halo is drawn under the track, so the track shows through it. The Fi
 |---|---|---|---|
 | Track height | 8 | 4 | `slider/track-height-md`, `track-height-sm` |
 | Thumb diameter | 24 | 16 | `slider/thumb-size-md`, `thumb-size-sm` |
+| Thumb diameter while held, grow press (under test) | 32 | 20 | `slider/thumb-size-pressed-md`, `thumb-size-pressed-sm` |
 | Halo diameter | 40 | 28 | `slider/halo-size-md`, `halo-size-sm` |
 | Tick diameter | 4 | 2 | `slider/tick-size-md`, `tick-size-sm` |
 | Track row height and thumb hit area | 48 | 24 | `slider/min-touch-target-md`, `min-touch-target-sm` |
@@ -180,7 +187,7 @@ In code the halo is drawn under the track, so the track shows through it. The Fi
 | Tooltip caret | 8 × 4 | 8 × 4 | `slider/tooltip-caret-width` |
 | Gap: thumb top to caret tip | 8 | 8 | `slider/tooltip-gap` |
 | Gap: thumb top to bubble, caret off | 12 | 12 | `slider/tooltip-gap` plus the caret height |
-| Tooltip space, only with Show tooltip | 24 | 32 | tooltip height plus `slider/tooltip-gap`, less the space between the track row top and the thumb |
+| Tooltip space, only with Show tooltip | 24 (28 in Pressed grow) | 32 (34 in Pressed grow) | tooltip height plus `slider/tooltip-gap`, less the space between the track row top and the thumb |
 | Label and value type | 14 / 20 | 12 / 16 | `label/medium/*`, `label/small/*` |
 | Limit and tooltip type | 12 / 16 | 12 / 16 | `label/small/regular`, `label/small/bold` |
 
@@ -208,10 +215,11 @@ Token names follow `slider/{part}-{active|inactive}-{state}`. Focus uses the Def
 
 ### Thumb
 
-| Element | Default, Focus | Hover | Pressed | Disabled |
-|---|---|---|---|---|
-| Thumb | `thumb-default` → `bg-fill` #FFFFFF | same | same | `thumb-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
-| Shadow | `thumb-shadow` → `shadow.card` | `thumb-shadow-raised` → `shadow.raised` | same as Hover | none |
+| Element | Default, Focus | Hover | Pressed | Pressed grow (under test) | Disabled |
+|---|---|---|---|---|---|
+| Thumb | `thumb-default` → `bg-fill` #FFFFFF | same | same | same, at `thumb-size-pressed` | `thumb-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
+| Shadow | `thumb-shadow` → `shadow.card` | `thumb-shadow-raised` → `shadow.raised` | same as Hover | same as Hover | none |
+| Halo | – | `halo-hover` | `halo-pressed` | none | – |
 
 The white thumb keeps its fill in every enabled state. Hover and press show through the halo and the stronger shadow instead.
 
@@ -271,6 +279,7 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 - **`focus-ring-offset` and `tooltip-gap` are not bound in Figma.** They are geometry: the ring and tooltip are placed at those distances. The focus ring size (thumb plus 8) and the active track length are not bound either, because they follow the value.
 - **Thumb positions come in 5% steps and assume the default width.** Figma has no number property and does not allow resizing layers inside an instance, so positions are presets on the exposed .Slider / Position spacers. They are sized for the 320 Medium and 280 Small widths; on a resized slider, the grey ticks stretch but the thumbs keep their pixel positions. For another width or an exact value, detach the instance.
 - **Min thumb and Max thumb are not linked.** Figma cannot stop Min thumb going past Max thumb; keep Min at or below Max.
+- **Two press styles live side by side** until one is chosen: `Pressed` (halo) and `Pressed grow`. Only one is meant to ship. The State dropdown lists Pressed grow last, because Figma keeps the original option order.
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
 
@@ -278,13 +287,13 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 
 ## Token reference
 
-40 tokens under `component.slider` in `tokens/tokens.json`. 38 are mirrored 1:1 as `slider/*` in the Figma `component` collection. The Figma file has no shadow variables, so `thumb-shadow` and `thumb-shadow-raised` are the `shadow/card` and `shadow/raised` effect styles on the thumb there.
+42 tokens under `component.slider` in `tokens/tokens.json`. 40 are mirrored 1:1 as `slider/*` in the Figma `component` collection. The Figma file has no shadow variables, so `thumb-shadow` and `thumb-shadow-raised` are the `shadow/card` and `shadow/raised` effect styles on the thumb there.
 
 | Group | Count |
 |---|---|
 | Track: `track-inactive`, `track-inactive-disabled`, `track-active`, `track-active-disabled`, `track-height-{md,sm}` | 6 |
 | Ticks: `tick-active`, `tick-inactive`, `tick-active-disabled`, `tick-inactive-disabled`, `tick-size-{md,sm}` | 6 |
-| Thumb: `thumb-default`, `thumb-shadow`, `thumb-shadow-raised`, `thumb-disabled`, `thumb-size-{md,sm}`, `halo-hover`, `halo-pressed`, `halo-size-{md,sm}` | 10 |
+| Thumb: `thumb-default`, `thumb-shadow`, `thumb-shadow-raised`, `thumb-disabled`, `thumb-size-{md,sm}`, `thumb-size-pressed-{md,sm}` (grow press, under test), `halo-hover`, `halo-pressed`, `halo-size-{md,sm}` | 12 |
 | Focus and shape: `focus-ring`, `focus-ring-width`, `focus-ring-offset`, `radius`, `min-touch-target-{md,sm}` | 6 |
 | Text: `label-text`, `value-text`, `limit-text`, `text-disabled`, `header-gap` | 5 |
 | Tooltip: `tooltip-bg`, `tooltip-text`, `tooltip-padding-x`, `tooltip-padding-y`, `tooltip-radius`, `tooltip-gap`, `tooltip-caret-width` | 7 |

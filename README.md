@@ -475,9 +475,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 278 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 813 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 40 `slider/*` + 64 `menu/*`) · **1572 values on web** · **1642 on iOS and Android** · **0 gradients**
+**Totals:** 278 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 815 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 42 `slider/*` + 64 `menu/*`) · **1574 values on web** · **1644 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1464 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 10 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, and `slider/thumb-shadow-raised`, which aliases `shadow.raised`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1466 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 10 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, and `slider/thumb-shadow-raised`, which aliases `shadow.raised`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (278)
 
@@ -995,7 +995,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (813)
+### Component tokens (815)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -1011,7 +1011,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `list/*` | 60 | List (`797:4533`, 2 variants, with a More rows slot), List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 24 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
 | `switch/*` | 51 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
 | `segmented-control/*` | 47 | Segmented control (`765:186`, 48 variants) and Segmented control / Segment (`764:131`, 96 variants). Three thumb styles (`neutral-*`, `brand-*`, `tinted-*`) and two shapes (Rounded, `pill-radius`) are under test; the losing options will be deleted | [`components/segmented-control.md`](components/segmented-control.md) |
-| `slider/*` | 40 | Slider (`811:1622`, 40 variants), Slider / Thumb (`809:83`, 10 variants) and Slider / Tooltip (`812:568`, 2 variants), with the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. | [`components/slider.md`](components/slider.md) |
+| `slider/*` | 42 | Slider (`811:1622`, 48 variants), Slider / Thumb (`809:83`, 12 variants) and Slider / Tooltip (`812:568`, 2 variants), with the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. A Pressed grow state (the thumb enlarges instead of showing a halo) is under test beside Pressed | [`components/slider.md`](components/slider.md) |
 | `menu/*` | 64 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
