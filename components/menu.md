@@ -51,7 +51,7 @@ The component is three Figma sets and two panel components:
 - **Menu / Item** carries all its trailing parts as plain layers toggled by boolean properties, not as a nested Trailing set. Changing a row State, Intent or Density therefore keeps every text and toggle override. That avoids the List gap where nested overrides reset.
 - **Menu / Comfortable** (`781:3973`) and **Menu / Compact** (`781:4046`) hold, in order: Section header, Item 1 to Item 5, the More items slot, Divider and Destructive item.
   - **Menu-level control.** Every fixed part has a Show toggle, and each is an exposed nested instance. With the Menu selected, the panel shows every row, so you can hide it, swap its Intent or State, and edit its Label, icon, meta, check and chevron without drilling in. Items 4 and 5 start hidden.
-  - **More than five rows.** Turn on Show more items, then insert rows, section headers or dividers into the More items slot. They sit between Item 5 and the divider. The slot accepts only its own density: the 11 Menu / Item variants, the Section header and the Divider at that density. Inserted parts stretch to the panel width, and a part of the other density, or any other layer, is flagged as not allowed.
+  - **More than five rows.** Turn on Show more items, then insert rows, section headers or dividers into the More items slot. They sit between Item 5 and the divider. Its preferred instances are Menu / Item, Menu / Section header and Menu / Divider. Inserted parts stretch to the panel width, and any other layer is flagged as not allowed. An inserted part arrives at its default variant (Comfortable), so set it to Compact in a Compact menu.
   - **Figma limits.** Figma cannot expose, or bind a toggle to, anything inside a slot. So rows in More items are edited by selecting them, and removed by deleting them.
   - **Two panels, not a Density variant.** Slot content belongs to the instance, so switching a panel variant would change the padding but leave slot rows at the old density.
   - Set a row's State before its text and toggles.
@@ -115,7 +115,7 @@ The component is three Figma sets and two panel components:
 | Menu / Comfortable, Menu / Compact | `Show item 4`, `Show item 5` | BOOLEAN | `false` | Spare fixed rows. |
 | Menu / Comfortable, Menu / Compact | Section header, Item 1 to Item 5, Divider, Destructive item | Nested instance | – | Exposed, so their properties show when the Menu is selected. |
 | Menu / Comfortable, Menu / Compact | `Show more items` | BOOLEAN | `false` | Shows the More items slot. |
-| Menu / Comfortable, Menu / Compact | `More items` | SLOT | Empty | Extra rows past five. Preferred values: the Menu / Item, Section header and Divider variants of the same density only. Inserted parts stretch to full width. |
+| Menu / Comfortable, Menu / Compact | `More items` | SLOT | Empty | Extra rows past five. Preferred instances: the Menu / Item, Menu / Section header and Menu / Divider sets. Only those are allowed. Inserted parts stretch to full width. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Menu examples` frame (`782:96`).
 
@@ -169,7 +169,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Menu exa
 Menu / Comfortable (component · 781:3973), Menu / Compact (component · 781:4046) · vertical · padding · border · radius-{density} · shadow/overlay · min-width to max-width
 ├─ Section header (instance · Menu / Section header) · exposed · Show section header
 ├─ Item 1 … Item 5 (instances · Menu / Item) · exposed · Show item 1 … Show item 5 (4 and 5 off)
-├─ More items (slot · vertical · fills the width) · Show more items (off) · same-density Menu parts only
+├─ More items (slot · vertical · fills the width) · Show more items (off) · Menu parts only
 ├─ Divider (instance · Menu / Divider) · exposed · Show divider
 └─ Destructive item (instance · Menu / Item, Intent=Destructive) · exposed · Show destructive item
 
@@ -339,8 +339,9 @@ Destructive meaning is carried by the label text ("Cancel booking"), not by the 
 - **No component shadow token.** A component shadow needs the linter change in PR #63 (Segmented control), which had not merged when this was built. The panel uses the semantic `shadow.overlay` directly: in code, and as the `shadow/overlay` effect style in Figma. Add a menu shadow token that aliases `shadow.overlay` once #63 is on main.
 - **No motion tokens.** The transitions above are documented, not tokenised.
 - **The panel does not hug text in Figma.** Rows fill the panel, so a new Menu starts 258 wide (250 in Compact), not at the width of its longest label. Resize it between 200 and 320.
+- **The More items slot does not enforce density.** Figma lists preferred instances by component set, and a set allows every variant, so a Comfortable row in a Compact menu is not flagged. Check the density of inserted rows.
 - **Slot rows have no Menu-level controls.** Figma does not allow exposed instances or property toggles inside a slot. Rows added through More items are edited by selecting them.
-- **Density is chosen by component, not switched.** Moving a menu between densities means swapping Menu / Comfortable for Menu / Compact and switching its rows. The More items slot flags any row left at the wrong density.
+- **Density is chosen by component, not switched.** Moving a menu between densities means swapping Menu / Comfortable for Menu / Compact and switching its rows. Rows in More items must be switched by hand, and nothing flags a row left at the wrong density.
 - **Open shows no chevron by default.** Figma booleans share one default across a set, so the Open variant cannot switch its chevron on by itself. Turn on Show chevron on submenu rows.
 - **Only one trailing part at a time is enforced by convention.** Figma booleans cannot express "one of". Show meta, chevron or check, not two.
 - **No dark mode.** All variable collections are single-mode.
