@@ -874,9 +874,14 @@
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --line-height-12: 12px;
   --line-height-16: 16px;
+  --line-height-18: 18px;
   --line-height-20: 20px;
+  --line-height-22: 22px;
   --line-height-24: 24px;
+  --line-height-26: 26px;
+  /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --line-height-28: 28px;
+  --line-height-30: 30px;
   --line-height-32: 32px;
   --line-height-36: 36px;
   --line-height-40: 40px;
@@ -1044,133 +1049,133 @@
   --title-large-regular-font-family: Lato;
   --title-large-regular-font-weight: 400;
   --title-large-regular-font-size: 22px;
-  --title-large-regular-line-height: 28px;
+  --title-large-regular-line-height: 30px;
   /** Largest title — card, sheet and dialog titles. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-large-bold-font-family: Lato;
   --title-large-bold-font-weight: 700;
   --title-large-bold-font-size: 22px;
-  --title-large-bold-line-height: 28px;
+  --title-large-bold-line-height: 30px;
   /** Largest title — card, sheet and dialog titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-large-black-font-family: Lato;
   --title-large-black-font-weight: 900;
   --title-large-black-font-size: 22px;
-  --title-large-black-line-height: 28px;
+  --title-large-black-line-height: 30px;
   /** Title for sub-sections and list-group headers. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-medium-regular-font-family: Lato;
   --title-medium-regular-font-weight: 400;
   --title-medium-regular-font-size: 18px;
-  --title-medium-regular-line-height: 24px;
+  --title-medium-regular-line-height: 26px;
   /** Title for sub-sections and list-group headers. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-medium-bold-font-family: Lato;
   --title-medium-bold-font-weight: 700;
   --title-medium-bold-font-size: 18px;
-  --title-medium-bold-line-height: 24px;
+  --title-medium-bold-line-height: 26px;
   /** Title for sub-sections and list-group headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-medium-black-font-family: Lato;
   --title-medium-black-font-weight: 900;
   --title-medium-black-font-size: 18px;
-  --title-medium-black-line-height: 24px;
+  --title-medium-black-line-height: 26px;
   /** Smallest title — compact card headers and table column groups. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-regular-font-family: Lato;
   --title-small-regular-font-weight: 400;
   --title-small-regular-font-size: 14px;
-  --title-small-regular-line-height: 20px;
+  --title-small-regular-line-height: 22px;
   /** Smallest title — compact card headers and table column groups. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-bold-font-family: Lato;
   --title-small-bold-font-weight: 700;
   --title-small-bold-font-size: 14px;
-  --title-small-bold-line-height: 20px;
+  --title-small-bold-line-height: 22px;
   /** Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-black-font-family: Lato;
   --title-small-black-font-weight: 900;
   --title-small-black-font-size: 14px;
-  --title-small-black-line-height: 20px;
-  /** Body text for spacious reading layouts — article and detail copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --title-small-black-line-height: 22px;
+  /** Body text for spacious reading layouts — article and detail copy. Regular weight, the default. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-large-regular-font-family: Lato;
   --body-large-regular-font-weight: 400;
   --body-large-regular-font-size: 16px;
-  --body-large-regular-line-height: 24px;
-  /** Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-large-regular-line-height: 26px;
+  /** Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-large-bold-font-family: Lato;
   --body-large-bold-font-weight: 700;
   --body-large-bold-font-size: 16px;
-  --body-large-bold-line-height: 24px;
-  /** Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-large-bold-line-height: 26px;
+  /** Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-large-black-font-family: Lato;
   --body-large-black-font-weight: 900;
   --body-large-black-font-size: 16px;
-  --body-large-black-line-height: 24px;
-  /** Default body text — the running copy most content uses. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-large-black-line-height: 26px;
+  /** Default body text — the running copy most content uses. Regular weight, the default. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-medium-regular-font-family: Lato;
   --body-medium-regular-font-weight: 400;
   --body-medium-regular-font-size: 14px;
-  --body-medium-regular-line-height: 20px;
-  /** Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-medium-regular-line-height: 22px;
+  /** Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-medium-bold-font-family: Lato;
   --body-medium-bold-font-weight: 700;
   --body-medium-bold-font-size: 14px;
-  --body-medium-bold-line-height: 20px;
-  /** Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-medium-bold-line-height: 22px;
+  /** Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-medium-black-font-family: Lato;
   --body-medium-black-font-weight: 900;
   --body-medium-black-font-size: 14px;
-  --body-medium-black-line-height: 20px;
-  /** Smallest body text — captions, helper text and legal copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-medium-black-line-height: 22px;
+  /** Smallest body text — captions, helper text and legal copy. Regular weight, the default. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-small-regular-font-family: Lato;
   --body-small-regular-font-weight: 400;
   --body-small-regular-font-size: 12px;
-  --body-small-regular-line-height: 16px;
-  /** Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-small-regular-line-height: 18px;
+  /** Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-small-bold-font-family: Lato;
   --body-small-bold-font-weight: 700;
   --body-small-bold-font-size: 12px;
-  --body-small-bold-line-height: 16px;
-  /** Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  --body-small-bold-line-height: 18px;
+  /** Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control. */
   --body-small-black-font-family: Lato;
   --body-small-black-font-weight: 900;
   --body-small-black-font-size: 12px;
-  --body-small-black-line-height: 16px;
-  /** Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  --body-small-black-line-height: 18px;
+  /** Label for large controls — large buttons and inputs. Regular weight, the default. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-large-regular-font-family: Lato;
   --label-large-regular-font-weight: 400;
   --label-large-regular-font-size: 16px;
   --label-large-regular-line-height: 24px;
-  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-large-bold-font-family: Lato;
   --label-large-bold-font-weight: 700;
   --label-large-bold-font-size: 16px;
   --label-large-bold-line-height: 24px;
-  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-large-black-font-family: Lato;
   --label-large-black-font-weight: 900;
   --label-large-black-font-size: 16px;
   --label-large-black-line-height: 24px;
-  /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-medium-regular-font-family: Lato;
   --label-medium-regular-font-weight: 400;
   --label-medium-regular-font-size: 14px;
   --label-medium-regular-line-height: 20px;
-  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-medium-bold-font-family: Lato;
   --label-medium-bold-font-weight: 700;
   --label-medium-bold-font-size: 14px;
   --label-medium-bold-line-height: 20px;
-  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-medium-black-font-family: Lato;
   --label-medium-black-font-weight: 900;
   --label-medium-black-font-size: 14px;
   --label-medium-black-line-height: 20px;
-  /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-small-regular-font-family: Lato;
   --label-small-regular-font-weight: 400;
   --label-small-regular-font-size: 12px;
   --label-small-regular-line-height: 16px;
-  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-small-bold-font-family: Lato;
   --label-small-bold-font-weight: 700;
   --label-small-bold-font-size: 12px;
   --label-small-bold-line-height: 16px;
-  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads. */
   --label-small-black-font-family: Lato;
   --label-small-black-font-weight: 900;
   --label-small-black-font-size: 12px;

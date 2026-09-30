@@ -475,11 +475,11 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 272 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 662 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*`) · **1415 values on web** · **1464 on iOS and Android** · **0 gradients**
+**Totals:** 276 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 662 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*`) · **1419 values on web** · **1468 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1307 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1311 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (272)
+### Primitive tokens (276)
 
 #### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
 
@@ -552,15 +552,19 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 
 > `fontSize.9` and `fontSize.10` are defined but not referenced by any semantic typography token.
 
-#### Line height — 15 tokens
+#### Line height — 19 tokens
 
 | Token | Value |
 |-------|-------|
 | `lineHeight.12` | 12px |
 | `lineHeight.16` | 16px |
+| `lineHeight.18` | 18px |
 | `lineHeight.20` | 20px |
+| `lineHeight.22` | 22px |
 | `lineHeight.24` | 24px |
+| `lineHeight.26` | 26px |
 | `lineHeight.28` | 28px |
+| `lineHeight.30` | 30px |
 | `lineHeight.32` | 32px |
 | `lineHeight.36` | 36px |
 | `lineHeight.40` | 40px |
@@ -893,12 +897,12 @@ Flat shape `{group}.{size}.{weight}` · font family Lato · no letter spacing.
 | headline | large | 32px | 40px | regular, bold, black |
 | headline | medium | 28px | 36px | regular, bold, black |
 | headline | small | 24px | 32px | regular, bold, black |
-| title | large | 22px | 28px | regular, bold, black |
-| title | medium | 18px | 24px | regular, bold, black |
-| title | small | 14px | 20px | regular, bold, black |
-| body | large | 16px | 24px | regular, bold, black |
-| body | medium | 14px | 20px | regular, bold, black |
-| body | small | 12px | 16px | regular, bold, black |
+| title | large | 22px | 30px | regular, bold, black |
+| title | medium | 18px | 26px | regular, bold, black |
+| title | small | 14px | 22px | regular, bold, black |
+| body | large | 16px | 26px | regular, bold, black |
+| body | medium | 14px | 22px | regular, bold, black |
+| body | small | 12px | 18px | regular, bold, black |
 | label | large | 16px | 24px | regular, bold, black |
 | label | medium | 14px | 20px | regular, bold, black |
 | label | small | 12px | 16px | regular, bold, black |
@@ -1329,24 +1333,24 @@ Full token list with resolved primitive references (generated from `tokens/token
 - `headline.small.regular` → fontFamily.lato · fontWeight.regular · 24px · 32px
 - `headline.small.bold` → fontFamily.lato · fontWeight.bold · 24px · 32px
 - `headline.small.black` → fontFamily.lato · fontWeight.black · 24px · 32px
-- `title.large.regular` → fontFamily.lato · fontWeight.regular · 22px · 28px
-- `title.large.bold` → fontFamily.lato · fontWeight.bold · 22px · 28px
-- `title.large.black` → fontFamily.lato · fontWeight.black · 22px · 28px
-- `title.medium.regular` → fontFamily.lato · fontWeight.regular · 18px · 24px
-- `title.medium.bold` → fontFamily.lato · fontWeight.bold · 18px · 24px
-- `title.medium.black` → fontFamily.lato · fontWeight.black · 18px · 24px
-- `title.small.regular` → fontFamily.lato · fontWeight.regular · 14px · 20px
-- `title.small.bold` → fontFamily.lato · fontWeight.bold · 14px · 20px
-- `title.small.black` → fontFamily.lato · fontWeight.black · 14px · 20px
-- `body.large.regular` → fontFamily.lato · fontWeight.regular · 16px · 24px
-- `body.large.bold` → fontFamily.lato · fontWeight.bold · 16px · 24px
-- `body.large.black` → fontFamily.lato · fontWeight.black · 16px · 24px
-- `body.medium.regular` → fontFamily.lato · fontWeight.regular · 14px · 20px
-- `body.medium.bold` → fontFamily.lato · fontWeight.bold · 14px · 20px
-- `body.medium.black` → fontFamily.lato · fontWeight.black · 14px · 20px
-- `body.small.regular` → fontFamily.lato · fontWeight.regular · 12px · 16px
-- `body.small.bold` → fontFamily.lato · fontWeight.bold · 12px · 16px
-- `body.small.black` → fontFamily.lato · fontWeight.black · 12px · 16px
+- `title.large.regular` → fontFamily.lato · fontWeight.regular · 22px · 30px
+- `title.large.bold` → fontFamily.lato · fontWeight.bold · 22px · 30px
+- `title.large.black` → fontFamily.lato · fontWeight.black · 22px · 30px
+- `title.medium.regular` → fontFamily.lato · fontWeight.regular · 18px · 26px
+- `title.medium.bold` → fontFamily.lato · fontWeight.bold · 18px · 26px
+- `title.medium.black` → fontFamily.lato · fontWeight.black · 18px · 26px
+- `title.small.regular` → fontFamily.lato · fontWeight.regular · 14px · 22px
+- `title.small.bold` → fontFamily.lato · fontWeight.bold · 14px · 22px
+- `title.small.black` → fontFamily.lato · fontWeight.black · 14px · 22px
+- `body.large.regular` → fontFamily.lato · fontWeight.regular · 16px · 26px
+- `body.large.bold` → fontFamily.lato · fontWeight.bold · 16px · 26px
+- `body.large.black` → fontFamily.lato · fontWeight.black · 16px · 26px
+- `body.medium.regular` → fontFamily.lato · fontWeight.regular · 14px · 22px
+- `body.medium.bold` → fontFamily.lato · fontWeight.bold · 14px · 22px
+- `body.medium.black` → fontFamily.lato · fontWeight.black · 14px · 22px
+- `body.small.regular` → fontFamily.lato · fontWeight.regular · 12px · 18px
+- `body.small.bold` → fontFamily.lato · fontWeight.bold · 12px · 18px
+- `body.small.black` → fontFamily.lato · fontWeight.black · 12px · 18px
 - `label.large.regular` → fontFamily.lato · fontWeight.regular · 16px · 24px
 - `label.large.bold` → fontFamily.lato · fontWeight.bold · 16px · 24px
 - `label.large.black` → fontFamily.lato · fontWeight.black · 16px · 24px

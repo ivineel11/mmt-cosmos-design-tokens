@@ -130,7 +130,7 @@ The root is a vertical auto-layout stack with `counterAxisAlignItems = CENTER`, 
 | Leading image radius, Square | 4 | 4 | `chip/image-radius-square` (shared) |
 | Leading icon or image to text gap | 4 | 4 | `chip/vertical-gap-*` |
 | Label type | 12 / 16 bold | 14 / 20 bold | `label/{small,medium}/bold` |
-| Secondary type | 12 / 16 regular | 12 / 16 regular | `body/small/regular` |
+| Secondary type | 12 / 18 regular | 12 / 18 regular | `body/small/regular` |
 | Label to secondary gap | 2 | 2 | `chip/vertical-gap-text` |
 | Label trailing icon | 12 | 16 | `chip/vertical-label-trailing-icon-size-*` |
 | Secondary trailing icon | 12 | 12 | `chip/vertical-secondary-trailing-icon-size-*` |

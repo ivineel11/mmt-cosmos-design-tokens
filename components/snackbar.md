@@ -150,14 +150,14 @@ Snackbar / Control (component set · 636:3088)
    or Icon (instance · Icon / close)  — Type=Close
 ```
 
-Both layouts hug their content vertically: the snackbar never drops below `snackbar/min-height` (48), and it grows by 20 px for each extra message line and by 22 px for the title (its line plus `snackbar/gap-text`). Controls never share a wrapper frame. In Inline, Action and Close are direct children of the snackbar; in Stacked, Close sits beside Content in the top row. A hidden control therefore leaves no gap and the text fills the row. Two Figma booleans cannot hide a shared parent when both are off. In both layouts the spacing works out as follows:
+Both layouts hug their content vertically: the snackbar never drops below `snackbar/min-height` (48), and it grows by 22 px for each extra message line and by 24 px for the title (its line plus `snackbar/gap-text`). Controls never share a wrapper frame. In Inline, Action and Close are direct children of the snackbar; in Stacked, Close sits beside Content in the top row. A hidden control therefore leaves no gap and the text fills the row. Two Figma booleans cannot hide a shared parent when both are off. In both layouts the spacing works out as follows:
 
 | Controls shown | Text to first control | Action to close | Text to edge |
 |---|---|---|---|
 | None beside the text | – | – | 16 (`content-padding-end` 4 + `padding-end-control` 12) |
 | Action and/or close (Inline), or close (Stacked) | 12 (`content-padding-end` 4 + `gap-controls` 8) | 8 (Inline) | – |
 
-Items are centred on the cross axis, so the 24 px icon and the controls sit mid-height beside a message of any length. In Stacked, the content row is top-aligned: the 24 px icon starts level with the first text line and overhangs its 20 px line box by 4 px below.
+Items are centred on the cross axis, so the 24 px icon and the controls sit mid-height beside a message of any length. In Stacked, the content row is top-aligned: the 24 px icon starts level with the first text line and overhangs its 22 px line box by 2 px below.
 
 ### Dimensions
 
@@ -178,8 +178,8 @@ The same in every Appearance and Intent.
 | Gap: action to close | 8 | `snackbar/gap-controls` |
 | Gap: text to action row, Stacked | 8 | `snackbar/stacked-gap` |
 | Leading icon | 24 | `snackbar/icon-size` |
-| Title type | 14 / 20 bold | `body/medium/bold` |
-| Message type | 14 / 20 regular | `body/medium/regular` |
+| Title type | 14 / 22 bold | `body/medium/bold` |
+| Message type | 14 / 22 regular | `body/medium/regular` |
 | Corner radius | 12 | `snackbar/radius` |
 | Border width, Tinted only | 1 | `snackbar/border-width` |
 | Shadow | 0 1 2 and 0 2 6, neutral 950 | `shadow.card` (effect style `shadow/card`) |
@@ -193,7 +193,7 @@ The same in every Appearance and Intent.
 | Focus ring | 2 px, 2 px outside, radius 12 | `snackbar/focus-ring-width`, `snackbar/focus-ring-offset`, `snackbar/focus-ring-radius` |
 | Screen margin | 16 mobile, 24 web | `snackbar/margin-mobile`, `snackbar/margin-desktop` |
 
-Inline padding is 8 so that 8 + 32 px action + 8 lands exactly on the 48 px min height. A one-line message without an action is also 48 tall, held by the min height, and each extra line adds 20 (two lines: 56). Every variant keeps 12 on the right, where the action or close button meets the edge; the text block adds 4 of its own, so with no control beside it the text still ends 16 from the edge, matching the left. Stacked puts the 32 px close button 8 from the top and 12 from the right; the icon and text drop a further 4 to start 12 from the top. Below the action row it keeps 8, because the 32 px button already carries its own inner space.
+Inline padding is 8 so that 8 + 32 px action + 8 lands exactly on the 48 px min height. A one-line message without an action is also 48 tall, held by the min height, and each extra line adds 22 (two lines: 60). Every variant keeps 12 on the right, where the action or close button meets the edge; the text block adds 4 of its own, so with no control beside it the text still ends 16 from the edge, matching the left. Stacked puts the 32 px close button 8 from the top and 12 from the right; the icon and text drop a further 4 to start 12 from the top. Below the action row it keeps 8, because the 32 px button already carries its own inner space.
 
 ---
 
