@@ -2686,6 +2686,22 @@
   --segmented-control-brand-label-selected-default: #FFFFFF;
   /** Brand thumb style, under test against the Neutral thumb. Optional leading icon on the brand thumb in every enabled state. Matches brand-label-selected-default. */
   --segmented-control-brand-icon-selected-default: #FFFFFF;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb under the selected segment at rest and on keyboard focus. The tint barely separates from the track, so tinted-thumb-border-default draws its edge. */
+  --segmented-control-tinted-thumb-default: #EDF8FF;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb while it is held, before a tap lands or while it is dragged. */
+  --segmented-control-tinted-thumb-pressed: #C2E8FF;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Outline of the tinted thumb at rest and on keyboard focus. Drawn inside the thumb so it does not change size, and it carries the selection against the track. */
+  --segmented-control-tinted-thumb-border-default: #0067E8;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Outline of the tinted thumb while it is held. */
+  --segmented-control-tinted-thumb-border-pressed: #0857C5;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Label on the tinted thumb at rest and on keyboard focus. For the pressed thumb use tinted-label-selected-pressed, because this colour falls below AA on the pressed tint. */
+  --segmented-control-tinted-label-selected-default: #0067E8;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Label on the tinted thumb while it is held. One step darker than tinted-label-selected-default so it keeps AA on the pressed tint. */
+  --segmented-control-tinted-label-selected-pressed: #0D4C9B;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Optional leading icon on the tinted thumb at rest and on keyboard focus. Matches tinted-label-selected-default. */
+  --segmented-control-tinted-icon-selected-default: #0067E8;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Optional leading icon on the tinted thumb while it is held. Matches tinted-label-selected-pressed. */
+  --segmented-control-tinted-icon-selected-pressed: #0D4C9B;
   /** Height of the Medium track, for form-level choices such as trip type. Segments fill it minus track-padding. The hit area grows to min-touch-target. */
   --segmented-control-height-md: 40px;
   /** Height of the Small track, for compact filters inside cards. Segments fill it minus track-padding. The hit area grows to min-touch-target. */
@@ -2700,6 +2716,8 @@
   --segmented-control-thumb-radius-md: 8px;
   /** Corner radius of the Small thumb and the pressed fill of a Small segment. The focus ring uses track-radius-sm. */
   --segmented-control-thumb-radius-sm: 4px;
+  /** Pill shape, under test against the rounded corners of track-radius-md and track-radius-sm. Corner radius of the track, the thumb, the pressed fill and the focus ring at both sizes, so every edge is a full semicircle. */
+  --segmented-control-pill-radius: 999px;
   /** Minimum left and right padding inside a Medium segment. Segments share the track width equally, and a label that does not fit truncates. */
   --segmented-control-segment-padding-x-md: 16px;
   /** Minimum left and right padding inside a Small segment. Segments share the track width equally, and a label that does not fit truncates. */
@@ -2714,4 +2732,6 @@
   --segmented-control-focus-ring-width: 2px;
   /** Gap between the focused segment and its focus ring. With focus-ring-width it fills track-padding exactly, so the ring sits on the track and stays visible around either thumb. */
   --segmented-control-focus-ring-offset: 2px;
+  /** Tinted thumb style, under test against the Neutral and Brand thumbs. Width of the outline of the tinted thumb, drawn inside it. */
+  --segmented-control-tinted-thumb-border-width: 1px;
 }

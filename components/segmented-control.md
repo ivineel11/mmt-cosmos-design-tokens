@@ -6,7 +6,12 @@
 <!-- Figma: https://www.figma.com/design/byPBTSedTYOO0AYwmIlncH/?node-id=765-186 -->
 <!-- Authored at: 2026-09-30 -->
 
-> **Two thumb styles are under test.** The Neutral thumb (white, raised) and the Brand thumb (solid brand) are built side by side so they can be tried in real screens. Once one is chosen, the other style's `neutral-*` or `brand-*` tokens, its Figma variants and the `Style` axis are deleted, and the survivor's prefix is dropped.
+> **Three thumb styles and two shapes are under test.** The styles are Neutral (white and raised), Brand (solid brand) and Tinted (brand tint with a brand outline). The shapes are Rounded (12 and 8 px corners) and Pill (fully rounded). They are built side by side so they can be tried in real screens.
+>
+> Once a style and a shape are chosen:
+> - the other styles' `neutral-*`, `brand-*` or `tinted-*` tokens are deleted, with their Figma variants and the `Style` axis
+> - the losing shape's radius tokens and variants are deleted, with the `Shape` axis
+> - the survivor's prefix is dropped
 
 ## Overview
 
@@ -19,9 +24,10 @@ There are two sets:
 - **Segmented control** is the whole control: the track holding 2 to 5 segments.
 - **Segmented control / Segment** is one option inside it: a label with an optional leading icon.
 
-Four variant axes drive Segment:
+Five variant axes drive Segment:
 
-- **Style**: Neutral or Brand. This is the style under test, and the axis will be removed.
+- **Style**: Neutral, Brand or Tinted. Under test; the axis will be removed.
+- **Shape**: Rounded or Pill. Under test; the axis will be removed.
 - **Selected**: False or True. It is separate from State, so a selected segment can still show pressed and focus.
 - **State**: Default, Pressed, Focus and Disabled. There is no Hover, because the control is for touch platforms.
 - **Size**: Medium or Small.
@@ -72,7 +78,8 @@ Four variant axes drive Segment:
 | Segment | `Label` | TEXT | `"Label"` | Placeholder copy, the same in every variant. |
 | Segment | `Show icon` | BOOLEAN | `false` | Shows the leading icon slot. |
 | Segment | `Icon` | INSTANCE_SWAP | `Icon / plus` | The same default in every variant. |
-| Segmented control | `Style` | VARIANT | Neutral | Under test; will be removed. Each variant nests the matching Segment style. |
+| Both | `Style` | VARIANT | Neutral | Neutral, Brand or Tinted. Under test; will be removed. Each control variant nests the matching Segment style. |
+| Both | `Shape` | VARIANT | Rounded | Rounded or Pill. Under test; will be removed. Each control variant nests the matching Segment shape. |
 | Segmented control | `Segments` | VARIANT | 3 | 2, 3, 4 or 5. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Segmented control examples` frame (`767:149`).
@@ -85,7 +92,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Segmente
 | 2 | Medium, items Regular, Student, Armed forces; value Regular | Special fares under the search form. |
 | 3 | Small, items List (icon), Map (icon); value List | A results view switch inside a header card. |
 
-Each example is shown in both thumb styles so they can be compared.
+Each example is shown in all three thumb styles and both shapes, so they can be compared.
 
 ---
 
@@ -117,14 +124,14 @@ Each example is shown in both thumb styles so they can be compared.
 
 ```text
 Segmented control (component set · 765:186)
-└─ Track (auto layout, horizontal · padding 4 · radius 12 / 8)
+└─ Track (auto layout, horizontal · padding 4 · radius 12 / 8, or full on Pill)
    └─ Segment × 2–5 (instances · fill width)
 
 Segmented control / Segment (component set · 764:131)
-├─ Thumb (fill of the segment frame when Selected=True) · radius 8 / 4 · Neutral adds shadow.card
+├─ Thumb (fill of the segment frame when Selected=True) · radius 8 / 4, or full on Pill · Neutral adds shadow.card · Tinted adds a 1 px brand stroke inside
 ├─ Icon (instance · Icon / plus · 16 × 16) · a11y-hidden · Show icon · swap: Icon
 ├─ Label (text · label/medium/bold or label/small/bold) · truncates
-└─ Focus ring (rectangle) · decorative · absolute, 4 px outside the segment on every side, 2 px stroke inside it, track radius · State=Focus only
+└─ Focus ring (rectangle) · decorative · absolute, 4 px outside the segment on every side, 2 px stroke inside it, track radius (full on Pill) · State=Focus only
 ```
 
 In Figma each selected segment paints its own thumb, so a mock can show any selection. In code the thumb is **one layer** under all the segments, sized to one segment and moved between them. That is what makes the slide and the drag possible. The label weight stays bold in every state, so selection never changes a label's width.
@@ -142,18 +149,20 @@ In Figma each selected segment paints its own thumb, so a mock can show any sele
 | Icon | 16 | 16 | `segmented-control/icon-size` |
 | Gap: icon to label | 4 | 4 | `segmented-control/gap-icon` |
 | Label type | 14 / 20 bold | 12 / 16 bold | `label/medium/bold`, `label/small/bold` |
+| Pill shape: track, thumb, pressed fill and focus ring radius | full | full | `segmented-control/pill-radius` |
+| Tinted thumb outline, drawn inside | 1 | 1 | `segmented-control/tinted-thumb-border-width` |
 | Hit area height | 48 | 48 | `segmented-control/min-touch-target` |
 | Focus ring | 2 thick, 2 outside the segment, radius 12 | 2 thick, 2 outside, radius 8 | `segmented-control/focus-ring-width`, `focus-ring-offset`, `track-radius-md`, `track-radius-sm` |
 
-The track radius is the thumb radius plus the 4 px padding, so the corners are concentric at both sizes.
+On the Rounded shape the track radius is the thumb radius plus the 4 px padding, so the corners are concentric at both sizes. On the Pill shape every radius is full, and full semicircles are always concentric.
 
-The focus ring sits **outside** the segment: a 2 px gap, then the 2 px ring, which together fill the 4 px track padding exactly. Drawn inside, the #0681FF ring would be 1.36:1 against the Brand thumb and practically invisible. Outside, it always sits on the grey track, uses the track radius so it is concentric with the thumb, and reads the same around either style. Between segments it overlaps the neighbour by 4 px, which only reaches the neighbour's padding, never its label. Neither track reaches 48, so extend the hit area 4 px (Medium) or 8 px (Small) above and below the track, without drawing it.
+The focus ring sits **outside** the segment: a 2 px gap, then the 2 px ring, which together fill the 4 px track padding exactly. Drawn inside, the #0681FF ring would be 1.36:1 against the Brand thumb and practically invisible. Outside, it always sits on the grey track, uses the track radius so it is concentric with the thumb, and reads the same around every style. Between segments it overlaps the neighbour by 4 px, which only reaches the neighbour's padding, never its label. Neither track reaches 48, so extend the hit area 4 px (Medium) or 8 px (Small) above and below the track, without drawing it.
 
 ---
 
 ## Color
 
-Token names follow `segmented-control/{property}-{selected|unselected}-{state}`. Shared tokens apply to both styles; `neutral-*` and `brand-*` tokens apply to one style only. Focus uses the Default colours plus the ring. A selected segment keeps its label and icon colour while pressed; only the thumb darkens.
+Token names follow `segmented-control/{property}-{selected|unselected}-{state}`. Shared tokens apply to every style; `neutral-*`, `brand-*` and `tinted-*` tokens apply to one style only. Focus uses the Default colours plus the ring. On Neutral and Brand a selected segment keeps its label and icon colour while pressed, and only the thumb darkens. Tinted also darkens the label, icon and outline, because `text-brand` falls to 3.96:1 on the pressed tint.
 
 ### Shared
 
@@ -184,7 +193,18 @@ Token names follow `segmented-control/{property}-{selected|unselected}-{state}`.
 | Label | `brand-label-selected-default` → `text-brand-on-bg-fill` #FFFFFF | same |
 | Icon | `brand-icon-selected-default` → `icon-brand-on-bg-fill` #FFFFFF | same |
 
-Both styles share one disabled look, following the Button primary disabled treatment, so a disabled control reads the same whichever style ships.
+All three styles share one disabled look, with no shadow and no outline, following the Button primary disabled treatment, so a disabled control reads the same whichever style ships.
+
+### Tinted thumb (under test)
+
+The same treatment as a selected Chip.
+
+| Element | Default, Focus | Pressed |
+|---|---|---|
+| Thumb | `tinted-thumb-default` → `bg-surface-brand` #EDF8FF | `tinted-thumb-pressed` → `bg-surface-brand-pressed-strong` #C2E8FF |
+| Thumb outline, 1 px inside | `tinted-thumb-border-default` → `border-brand` #0067E8 | `tinted-thumb-border-pressed` → `border-brand-pressed` #0857C5 |
+| Label | `tinted-label-selected-default` → `text-brand` #0067E8 | `tinted-label-selected-pressed` → `text-brand-on-bg-surface-pressed` #0D4C9B |
+| Icon | `tinted-icon-selected-default` → `icon-brand` #0067E8 | `tinted-icon-selected-pressed` → `icon-brand-on-bg-surface-pressed` #0D4C9B |
 
 This component adds no semantic roles.
 
@@ -200,14 +220,16 @@ This component adds no semantic roles.
 | Pressed labels #0A0A0A on #E5E5E5 | 15.71:1 | 4.5:1 | Pass |
 | Neutral selected label #0A0A0A on the white thumb | 19.79:1 | 4.5:1 | Pass |
 | Brand selected label #FFFFFF on #0067E8 / on pressed #0D4C9B | 5.11 / 8.31:1 | 4.5:1 | Pass |
+| Tinted selected label #0067E8 on #EDF8FF / pressed #0D4C9B on #C2E8FF | 4.74 / 6.44:1 | 4.5:1 | Pass. `text-brand` on the pressed tint would be 3.96:1, hence the pressed label token |
 | Brand thumb #0067E8 against the track | 4.69:1 | 3:1 (1.4.11) | Pass |
+| Tinted thumb outline #0067E8 against the track | 4.69:1 | 3:1 | Pass. The tint itself is 1.01:1, so the outline carries the thumb edge |
 | Neutral thumb #FFFFFF against the track | 1.09:1 | 3:1 | **Below.** The shadow and the darker label carry it. See Known gaps |
 | Focus ring #0681FF on the track | 3.44:1 | 3:1 | Pass. The ring sits outside the segment, so it never lands on the Brand thumb, where it would be 1.36:1 |
 | Disabled label #A1A1A1 on #F5F5F5 / on #E5E5E5 | 2.36 / 2.05:1 | – | Exempt (1.4.3 excludes inactive controls) |
 
 ### Selection is never colour alone
 
-The selected segment has a thumb behind it, a shape that the others lack. With the Neutral thumb the shape is carried mostly by its shadow and the label change from #525252 to #0A0A0A. With the Brand thumb the shape itself passes 3:1.
+The selected segment has a thumb behind it, a shape that the others lack. With the Neutral thumb the shape is carried mostly by its shadow and the label change from #525252 to #0A0A0A. With the Brand thumb the shape itself passes 3:1. With the Tinted thumb the brand outline passes 3:1, and the label also turns brand blue.
 
 ### Semantics
 
@@ -242,7 +264,9 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 - **No motion tokens.** The slide, press scale and haptics are documented above, not tokenised.
 - **`focus-ring-offset` is not bound in Figma.** As on Tab and Chip, the ring position is geometry: the Focus ring rectangle sits 4 px outside the segment with stretch constraints. It binds its width, radius and colour.
 - **Figma cannot show the slide.** Each selected Segment paints its own thumb, so the drag interaction exists only in code and in prototypes.
-- **Two styles live side by side** until one is chosen. The `neutral-*` and `brand-*` tokens are not both meant to ship.
+- **Three styles and two shapes live side by side** until one of each is chosen. Only one of the `neutral-*`, `brand-*` and `tinted-*` groups is meant to ship, and either `pill-radius` or the Rounded `track-radius-*` and `thumb-radius-*`.
+- **The Tinted fill is 1.01:1 against the track.** The 1 px brand outline draws the edge.
+- **The Segment Grid Legend uses four-line row labels** (Style, Shape, Selected, Size), one more than the page checklist allows. This is temporary, until the Style and Shape axes are removed.
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
 
@@ -250,7 +274,7 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 
 ## Token reference
 
-34 tokens under `component.segmented-control` in `tokens/tokens.json`. 33 are mirrored 1:1 as `segmented-control/*` in the Figma `component` collection. The Figma file has no shadow variables, so `neutral-thumb-shadow` is the `shadow/card` effect style on the thumb there:
+44 tokens under `component.segmented-control` in `tokens/tokens.json`. 43 are mirrored 1:1 as `segmented-control/*` in the Figma `component` collection. The Figma file has no shadow variables, so `neutral-thumb-shadow` is the `shadow/card` effect style on the thumb there:
 
 | Group | Count |
 |---|---|
@@ -259,6 +283,7 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 | `icon-unselected-{default,pressed}`, `icon-disabled` | 3 |
 | Neutral: `neutral-thumb-{default,pressed}`, `neutral-thumb-shadow`, `neutral-label-selected-default`, `neutral-icon-selected-default` | 5 |
 | Brand: `brand-thumb-{default,pressed}`, `brand-label-selected-default`, `brand-icon-selected-default` | 4 |
-| dimensions (`height-md`, `height-sm`, `track-padding`, `track-radius-md`, `track-radius-sm`, `thumb-radius-md`, `thumb-radius-sm`, `segment-padding-x-md`, `segment-padding-x-sm`, `gap-icon`, `icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`) | 14 |
+| Tinted: `tinted-thumb-{default,pressed}`, `tinted-thumb-border-{default,pressed}`, `tinted-label-selected-{default,pressed}`, `tinted-icon-selected-{default,pressed}`, `tinted-thumb-border-width` | 9 |
+| dimensions (`height-md`, `height-sm`, `track-padding`, `track-radius-md`, `track-radius-sm`, `thumb-radius-md`, `thumb-radius-sm`, `segment-padding-x-md`, `segment-padding-x-sm`, `gap-icon`, `icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`, and Pill shape `pill-radius`) | 15 |
 
 Platform names follow the standard pipeline: `segmented-control/brand-thumb-pressed` → `--segmented-control-brand-thumb-pressed` (CSS) → `CosmosTokens.segmentedControlBrandThumbPressed` (Swift / Kotlin) → `tokens["segmented-control"]["brand-thumb-pressed"]` (TS).
