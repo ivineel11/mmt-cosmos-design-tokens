@@ -2674,10 +2674,14 @@
   --segmented-control-neutral-thumb-pressed: #E5E5E5;
   /** Neutral thumb style, under test against the Brand thumb. Elevation of the white thumb in every enabled state. Carries most of the separation from the track. A disabled thumb drops it. */
   --segmented-control-neutral-thumb-shadow: 0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F;
-  /** Neutral thumb style, under test against the Brand thumb. Label of the selected segment in every enabled state, including pressed. For a disabled segment use label-disabled. */
-  --segmented-control-neutral-label-selected-default: #0A0A0A;
-  /** Neutral thumb style, under test against the Brand thumb. Optional leading icon of the selected segment in every enabled state. Matches neutral-label-selected-default. */
-  --segmented-control-neutral-icon-selected-default: #0A0A0A;
+  /** Neutral thumb style, under test against the Brand thumb. Brand label of the selected segment at rest and on keyboard focus. For the pressed thumb use neutral-label-selected-pressed, because this colour falls below AA on the pressed grey. For a disabled segment use label-disabled. */
+  --segmented-control-neutral-label-selected-default: #0067E8;
+  /** Neutral thumb style, under test against the Brand thumb. Brand label of the selected segment while the thumb is held. One step darker than neutral-label-selected-default so it keeps AA on the pressed grey. */
+  --segmented-control-neutral-label-selected-pressed: #0857C5;
+  /** Neutral thumb style, under test against the Brand thumb. Optional leading icon of the selected segment at rest and on keyboard focus. Matches neutral-label-selected-default. */
+  --segmented-control-neutral-icon-selected-default: #0067E8;
+  /** Neutral thumb style, under test against the Brand thumb. Optional leading icon of the selected segment while the thumb is held. Matches neutral-label-selected-pressed. */
+  --segmented-control-neutral-icon-selected-pressed: #0857C5;
   /** Brand thumb style, under test against the Neutral thumb. Solid brand thumb under the selected segment at rest and on keyboard focus. Drawn without a shadow. */
   --segmented-control-brand-thumb-default: #0067E8;
   /** Brand thumb style, under test against the Neutral thumb. Solid brand thumb while it is held, before a tap lands or while it is dragged. */

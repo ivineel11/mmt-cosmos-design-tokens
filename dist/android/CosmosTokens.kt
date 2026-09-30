@@ -1143,8 +1143,10 @@ object CosmosTokens {
   val segmentedControlLabelUnselectedDefault = Color(0xFF525252)
   val segmentedControlLabelUnselectedPressed = Color(0xFF0A0A0A)
   val segmentedControlMinTouchTarget = 48.dp
-  val segmentedControlNeutralIconSelectedDefault = Color(0xFF0A0A0A)
-  val segmentedControlNeutralLabelSelectedDefault = Color(0xFF0A0A0A)
+  val segmentedControlNeutralIconSelectedDefault = Color(0xFF0067E8)
+  val segmentedControlNeutralIconSelectedPressed = Color(0xFF0857C5)
+  val segmentedControlNeutralLabelSelectedDefault = Color(0xFF0067E8)
+  val segmentedControlNeutralLabelSelectedPressed = Color(0xFF0857C5)
   val segmentedControlNeutralThumbDefault = Color(0xFFFFFFFF)
   val segmentedControlNeutralThumbPressed = Color(0xFFE5E5E5)
   val segmentedControlNeutralThumbShadow1Blur = 2.dp

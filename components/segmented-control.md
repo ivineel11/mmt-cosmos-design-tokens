@@ -162,7 +162,7 @@ The focus ring sits **outside** the segment: a 2 px gap, then the 2 px ring, whi
 
 ## Color
 
-Token names follow `segmented-control/{property}-{selected|unselected}-{state}`. Shared tokens apply to every style; `neutral-*`, `brand-*` and `tinted-*` tokens apply to one style only. Focus uses the Default colours plus the ring. On Neutral and Brand a selected segment keeps its label and icon colour while pressed, and only the thumb darkens. Tinted also darkens the label, icon and outline, because `text-brand` falls to 3.96:1 on the pressed tint.
+Token names follow `segmented-control/{property}-{selected|unselected}-{state}`. Shared tokens apply to every style; `neutral-*`, `brand-*` and `tinted-*` tokens apply to one style only. Focus uses the Default colours plus the ring. On Brand a selected segment keeps its label and icon colour while pressed, and only the thumb darkens. Neutral and Tinted also darken the brand label and icon one step, because `text-brand` falls below AA on their pressed thumbs: 4.06:1 on the Neutral grey #E5E5E5 and 3.96:1 on the pressed tint. Tinted darkens its outline too.
 
 ### Shared
 
@@ -182,8 +182,8 @@ Token names follow `segmented-control/{property}-{selected|unselected}-{state}`.
 |---|---|---|
 | Thumb | `neutral-thumb-default` → `bg-fill` #FFFFFF | `neutral-thumb-pressed` → `bg-fill-pressed-strong` #E5E5E5 |
 | Thumb shadow | `neutral-thumb-shadow` → `shadow.card` | same |
-| Label | `neutral-label-selected-default` → `text-primary` #0A0A0A | same |
-| Icon | `neutral-icon-selected-default` → `icon` #0A0A0A | same |
+| Label | `neutral-label-selected-default` → `text-brand` #0067E8 | `neutral-label-selected-pressed` → `text-brand-pressed` #0857C5 |
+| Icon | `neutral-icon-selected-default` → `icon-brand` #0067E8 | `neutral-icon-selected-pressed` → `icon-brand-pressed` #0857C5 |
 
 ### Brand thumb (under test)
 
@@ -217,8 +217,8 @@ This component adds no semantic roles.
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
 | Unselected label #525252 on the track #F5F5F5 | 7.16:1 | 4.5:1 (1.4.3) | Pass |
-| Pressed labels #0A0A0A on #E5E5E5 | 15.71:1 | 4.5:1 | Pass |
-| Neutral selected label #0A0A0A on the white thumb | 19.79:1 | 4.5:1 | Pass |
+| Unselected pressed label #0A0A0A on #E5E5E5 | 15.71:1 | 4.5:1 | Pass |
+| Neutral selected label #0067E8 on the white thumb / pressed #0857C5 on #E5E5E5 | 5.11 / 5.24:1 | 4.5:1 | Pass. `text-brand` on the pressed grey would be 4.06:1, hence the pressed label token |
 | Brand selected label #FFFFFF on #0067E8 / on pressed #0D4C9B | 5.11 / 8.31:1 | 4.5:1 | Pass |
 | Tinted selected label #0067E8 on #EDF8FF / pressed #0D4C9B on #C2E8FF | 4.74 / 6.44:1 | 4.5:1 | Pass. `text-brand` on the pressed tint would be 3.96:1, hence the pressed label token |
 | Brand thumb #0067E8 against the track | 4.69:1 | 3:1 (1.4.11) | Pass |
@@ -229,7 +229,7 @@ This component adds no semantic roles.
 
 ### Selection is never colour alone
 
-The selected segment has a thumb behind it, a shape that the others lack. With the Neutral thumb the shape is carried mostly by its shadow and the label change from #525252 to #0A0A0A. With the Brand thumb the shape itself passes 3:1. With the Tinted thumb the brand outline passes 3:1, and the label also turns brand blue.
+The selected segment has a thumb behind it, a shape that the others lack. With the Neutral thumb the shape is carried mostly by its shadow and the label change from grey #525252 to brand #0067E8. With the Brand thumb the shape itself passes 3:1. With the Tinted thumb the brand outline passes 3:1, and the label also turns brand blue.
 
 ### Semantics
 
@@ -259,7 +259,7 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 
 ## Known gaps
 
-- **Neutral thumb contrast.** The white thumb is 1.09:1 against the track, below 3:1. The same is true of the system iOS control. The shadow and the darker label carry the selection. This is one of the things the style test should weigh.
+- **Neutral thumb contrast.** The white thumb is 1.09:1 against the track, below 3:1. The same is true of the system iOS control. The shadow and the brand label carry the selection. This is one of the things the style test should weigh.
 - **The track disappears on the grey page.** The track and `bg-secondary` are both #F5F5F5. Place the control on white, or inside a white card.
 - **No motion tokens.** The slide, press scale and haptics are documented above, not tokenised.
 - **`focus-ring-offset` is not bound in Figma.** As on Tab and Chip, the ring position is geometry: the Focus ring rectangle sits 4 px outside the segment with stretch constraints. It binds its width, radius and colour.
@@ -274,14 +274,14 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 
 ## Token reference
 
-44 tokens under `component.segmented-control` in `tokens/tokens.json`. 43 are mirrored 1:1 as `segmented-control/*` in the Figma `component` collection. The Figma file has no shadow variables, so `neutral-thumb-shadow` is the `shadow/card` effect style on the thumb there:
+46 tokens under `component.segmented-control` in `tokens/tokens.json`. 45 are mirrored 1:1 as `segmented-control/*` in the Figma `component` collection. The Figma file has no shadow variables, so `neutral-thumb-shadow` is the `shadow/card` effect style on the thumb there:
 
 | Group | Count |
 |---|---|
 | `track`, `bg-unselected-{default,pressed}`, `thumb-disabled`, `focus-ring` | 5 |
 | `label-unselected-{default,pressed}`, `label-disabled` | 3 |
 | `icon-unselected-{default,pressed}`, `icon-disabled` | 3 |
-| Neutral: `neutral-thumb-{default,pressed}`, `neutral-thumb-shadow`, `neutral-label-selected-default`, `neutral-icon-selected-default` | 5 |
+| Neutral: `neutral-thumb-{default,pressed}`, `neutral-thumb-shadow`, `neutral-label-selected-{default,pressed}`, `neutral-icon-selected-{default,pressed}` | 7 |
 | Brand: `brand-thumb-{default,pressed}`, `brand-label-selected-default`, `brand-icon-selected-default` | 4 |
 | Tinted: `tinted-thumb-{default,pressed}`, `tinted-thumb-border-{default,pressed}`, `tinted-label-selected-{default,pressed}`, `tinted-icon-selected-{default,pressed}`, `tinted-thumb-border-width` | 9 |
 | dimensions (`height-md`, `height-sm`, `track-padding`, `track-radius-md`, `track-radius-sm`, `thumb-radius-md`, `thumb-radius-sm`, `segment-padding-x-md`, `segment-padding-x-sm`, `gap-icon`, `icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`, and Pill shape `pill-radius`) | 15 |
