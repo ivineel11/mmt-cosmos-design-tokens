@@ -24,7 +24,7 @@ The component is four Figma sets:
 
 - **List / Item** is one row.
 - **List / Leading** is what goes at the start of a row: an icon, an icon in a neutral or brand circle, an avatar, a thumbnail, or a Checkbox or Radio.
-- **List / Trailing** is what goes at the end: a chevron, a meta value, a meta value with a chevron, a Badge, or a small Secondary Button.
+- **List / Trailing** is what goes at the end: a chevron, a meta value, a meta value with a chevron, a Badge, or a Secondary Button.
 - **List / Section header** names a group of rows.
 
 ### When to use something else
@@ -40,8 +40,8 @@ The component is four Figma sets:
 ### Composition
 
 - **Checkbox** (referenced: set `427:62`) and **Radio** (referenced: set `442:415`) are nested in List / Leading without their label or description, because the row title is the label. Comfortable uses Size Medium and Compact uses Size Small. Both are exposed, so Selection can be changed from the row.
-- **Badge** (referenced: set `683:2823`) is nested in List / Trailing as Text, Subtle, Brand, Small. Disabled rows switch it to Subtle Neutral. It is exposed.
-- **Button** (referenced: set `58:202`) is nested in List / Trailing as Secondary, Small. Disabled rows switch it to State Disabled. It is exposed.
+- **Badge** (referenced: set `683:2823`) is nested in List / Trailing as Text, Subtle, Brand. Comfortable uses Size Medium and Compact uses Size Small. Disabled rows hide it, the same rule as Tab: a disabled row cannot be acted on, so its count or label has nothing to lead to. It is exposed, and its Label, Intent and Emphasis overrides survive Density and Disabled switches.
+- **Button** (referenced: set `58:202`) is nested in List / Trailing as Secondary. Comfortable uses Size Medium (40 tall) and Compact uses Size Small (32 tall). Disabled rows switch it to State Disabled. It is exposed, and its Label override survives the switches.
 - **Icon / plus** (`55:11`) is the placeholder glyph in the leading slot, and **Icon / chevron-right** (`55:5`) is the trailing chevron. The examples use **Icon / flight** (`685:31`), **Icon / bell** (`685:28`), **Icon / info** (`635:120`), **Icon / check-circle** (`635:123`) and **Icon / person** (`713:26`, added for this component: Material Symbols Rounded `person`, weight 300, grade 0, optical size 24).
 - The avatar and thumbnail use the beach aerial sample photo that Chip uses. Replace it with the real image.
 - _Decorative children: 2 (Divider, Focus ring). They are documented under Structure._
@@ -89,7 +89,7 @@ The component is four Figma sets:
 | Item | `Show leading`, `Show trailing`, `Show divider` | BOOLEAN | `true` | Turn `Show divider` off on the last row. |
 | Item | `Leading`, `Trailing` | Nested instance | Icon / Chevron | Exposed. Set their Type there. Keep their Density and Disabled equal to the row. |
 | Leading | `Type` × `Density` × `Disabled` | VARIANT | Icon, Comfortable, False | 28 variants |
-| Trailing | `Type` × `Density` × `Disabled` | VARIANT | Chevron, Comfortable, False | 20 variants. `Meta` TEXT property. |
+| Trailing | `Type` × `Density` × `Disabled` | VARIANT | Chevron, Comfortable, False | 20 variants. `Meta` TEXT property. Density sets the Badge and Button size, and Disabled hides the Badge. |
 | Section header | `Density` | VARIANT | Comfortable | `Label` TEXT property. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `List examples` frame (`714:198`).
@@ -119,7 +119,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `List exa
 - **Canvas.** A plain list has no background and belongs on the white `bg` page. On the grey `bg-secondary` page, use the grouped variant so the rows sit on white; hover and pressed fills do not show on grey.
 - **Grouped corners.** The card clips its rows, so the first and last rows take the card radius for their hover and pressed fills.
 - **Density.** Do not mix densities in one list. Compact rows and their 16 px checkboxes are too small to touch, so Compact is for pointer-first web layouts only.
-- **Disabled rows** keep their place and dim their title, text, icons and controls. Leading images stay unchanged, as on Chip.
+- **Disabled rows** keep their place and dim their title, text, icons and controls. Leading images stay unchanged, as on Chip. A trailing Badge is hidden, and a trailing Button switches to its disabled state.
 - **Long lists** virtualise in code (`LazyColumn`, `List`, windowed rendering on web). The tokens do not change.
 
 ### Motion (not tokenised yet)
@@ -181,6 +181,8 @@ The divider sits inside Main, so it starts at the text column whatever the leadi
 | Icon in the circle | 24 | 20 | `list/leading-container-icon-size-comfortable`, `list/leading-container-icon-size-compact` |
 | Avatar and thumbnail | 40 | 32 | `list/leading-image-size-comfortable`, `list/leading-image-size-compact` |
 | Checkbox and Radio | Medium, 20 | Small, 16 | the Checkbox and Radio tokens |
+| Trailing Badge | Medium, 24 tall | Small, 16 tall | the Badge tokens |
+| Trailing Button | Medium, 40 tall | Small, 32 tall | the Button tokens |
 | Chevron | 20 | 16 | `list/chevron-size-comfortable`, `list/chevron-size-compact` |
 | Title type | 16 / 24 regular | 14 / 20 regular | `body/large/regular`, `body/medium/regular` |
 | Supporting, third line and meta type | 14 / 20 regular | 12 / 16 regular | `body/medium/regular`, `body/small/regular` |
@@ -203,7 +205,7 @@ Row heights with an icon or no leading element:
 
 The text-to-trailing gap is wider than the leading-to-text gap, so a meta value or chevron reads as separate from the title rather than as its last word.
 
-A leading circle, avatar or thumbnail makes a one-line Comfortable row 12 + 40 + 12 = 64 tall.
+A leading circle, avatar or thumbnail makes a one-line Comfortable row 12 + 40 + 12 = 64 tall, and so does a trailing Button. In Compact, a trailing Button makes a one-line row 8 + 32 + 8 = 48 tall.
 
 ---
 
