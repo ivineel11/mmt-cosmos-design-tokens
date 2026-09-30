@@ -2656,8 +2656,10 @@
   --menu-border: #E5E5E5;
   /** Width of the hairline around the menu panel. Use divider-width for the lines between groups. */
   --menu-border-width: 1px;
-  /** Corner radius of the menu panel. Rows inside use item-radius, which is smaller so the row highlight nests inside the panel corner. */
-  --menu-radius: 12px;
+  /** Corner radius of the Comfortable menu panel. Rows inside use item-radius-comfortable, which is smaller so the row highlight nests inside the panel corner. Compact panels use radius-compact. */
+  --menu-radius-comfortable: 16px;
+  /** Corner radius of the Compact menu panel. Rows inside use item-radius-compact, which is smaller so the row highlight nests inside the panel corner. Comfortable panels use radius-comfortable. */
+  --menu-radius-compact: 12px;
   /** Space between the Comfortable menu panel edge and its rows, on all four sides, so the rounded row highlight sits inset from the panel edge. */
   --menu-padding-comfortable: 8px;
   /** Space between the Compact menu panel edge and its rows, on all four sides. Compact is for pointer-first web menus only. */
@@ -2684,8 +2686,10 @@
   --menu-item-bg-destructive-hover: #FFE2E2;
   /** Fill of a destructive menu row while it is pressed or tapped. Neutral rows use item-bg-pressed. */
   --menu-item-bg-destructive-pressed: #FFC9C9;
-  /** Corner radius of the row highlight and of the focus ring. The panel uses radius, which is larger so the row nests inside it. */
-  --menu-item-radius: 8px;
+  /** Corner radius of a Comfortable row highlight and of its focus ring. The panel uses radius-comfortable, which is larger so the row nests inside it. */
+  --menu-item-radius-comfortable: 12px;
+  /** Corner radius of a Compact row highlight and of its focus ring. The panel uses radius-compact, which is larger so the row nests inside it. */
+  --menu-item-radius-compact: 8px;
   /** Label of a neutral menu row at rest and in every interactive state, and of a selected row, where the check carries selection. Destructive rows use label-destructive-default. */
   --menu-label-default: #0A0A0A;
   /** Label of a disabled menu row, neutral or destructive. Disabled rows stay in the menu so the user learns the action exists. */
@@ -2728,7 +2732,7 @@
   --menu-divider: #E5E5E5;
   /** Width of the hairline between groups of menu rows. */
   --menu-divider-width: 1px;
-  /** Ring drawn inside the edge of the menu row that holds keyboard focus, on top of item-bg-focus. It follows item-radius. */
+  /** Ring drawn inside the edge of the menu row that holds keyboard focus, on top of item-bg-focus. It follows item-radius-comfortable or item-radius-compact. */
   --menu-focus-ring: #0681FF;
   /** Width of the keyboard focus ring on a menu row. */
   --menu-focus-ring-width: 2px;

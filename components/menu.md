@@ -34,7 +34,7 @@ The component is four Figma sets:
 - **Menu / Item** is one row.
 - **Menu / Section header** names a group of rows.
 - **Menu / Divider** separates groups.
-- **Menu** is the panel that holds them. It has a white surface, a hairline border, the overlay shadow and 12 radius.
+- **Menu** is the panel that holds them. It has a white surface, a hairline border, the overlay shadow and rounded corners: 16 in Comfortable and 12 in Compact.
 
 ### When to use something else
 
@@ -49,7 +49,11 @@ The component is four Figma sets:
 ### Composition
 
 - **Menu / Item** carries all its trailing parts as plain layers toggled by boolean properties, not as a nested Trailing set. Changing a row State, Intent or Density therefore keeps every text and toggle override. That avoids the List gap where nested overrides reset.
-- **Menu** holds instances of Menu / Section header, five Menu / Item rows (the last two hidden as spares), Menu / Divider and a destructive Menu / Item. Show, hide and override them per use. Set a row's State before its text and toggles.
+- **Menu** holds instances of Menu / Section header, five Menu / Item rows (Items 4 and 5 hidden as spares), Menu / Divider and a destructive Menu / Item.
+  - Each part has a Show toggle on the Menu itself, so rows, the header and the divider can be shown or hidden from the inspector with the Menu selected.
+  - All eight parts are exposed nested instances. Their Label, icon, meta, check, chevron and State appear in the same inspector, so you never have to drill into a row.
+  - A Density change on the Menu keeps every row label and toggle; the rows follow the new density.
+  - Set a row's State before its text and toggles.
 - **Icon / plus** (`55:11`) is the placeholder leading glyph. **Icon / chevron-right** (`55:5`) is the submenu chevron and **Icon / check** (`55:14`) the selection check.
 - Six glyphs were added for this component, all Material Symbols Rounded, weight 300, grade 0, optical size 24:
   - **Icon / share** (`780:28`)
@@ -106,7 +110,10 @@ The component is four Figma sets:
 | Item | `Leading icon` | INSTANCE_SWAP | Icon / plus | Preferred values include the six glyphs above. |
 | Section header | `Density` | VARIANT | Comfortable | `Label` TEXT property. |
 | Divider | `Density` | VARIANT | Comfortable | |
-| Menu | `Density` | VARIANT | Comfortable | Holds the parts listed under Composition. |
+| Menu | `Density` | VARIANT | Comfortable | Comfortable, Compact. 2 variants. |
+| Menu | `Show section header`, `Show item 1`, `Show item 2`, `Show item 3`, `Show divider`, `Show destructive item` | BOOLEAN | `true` | Show or hide each part from the Menu. |
+| Menu | `Show item 4`, `Show item 5` | BOOLEAN | `false` | Spare rows. |
+| Menu | Section header, Item 1 to Item 5, Divider, Destructive item | Nested instance | – | Exposed, so their properties show when the Menu is selected. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Menu examples` frame (`782:96`).
 
@@ -157,13 +164,13 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Menu exa
 ### Anatomy
 
 ```text
-Menu (component set · 781:4119) · vertical · padding · border · radius · shadow/overlay · min-width to max-width
-├─ Section header (instance · Menu / Section header) · optional
-├─ Item 1 … Item 5 (instances · Menu / Item) · Items 4 and 5 hidden as spares
-├─ Divider (instance · Menu / Divider)
-└─ Destructive item (instance · Menu / Item, Intent=Destructive)
+Menu (component set · 781:4119) · vertical · padding · border · radius-{density} · shadow/overlay · min-width to max-width
+├─ Section header (instance · Menu / Section header) · exposed · Show section header
+├─ Item 1 … Item 5 (instances · Menu / Item) · exposed · Show item 1 … Show item 5 (4 and 5 off)
+├─ Divider (instance · Menu / Divider) · exposed · Show divider
+└─ Destructive item (instance · Menu / Item, Intent=Destructive) · exposed · Show destructive item
 
-Menu / Item (component set · 781:231) · horizontal · padding-x, padding-y · gap · min-height · item-radius
+Menu / Item (component set · 781:231) · horizontal · padding-x, padding-y · gap · min-height · item-radius-{density}
 ├─ Leading icon (instance · Icon / plus) · leading-icon-size · Show leading icon, Leading icon swap
 ├─ Main (frame · fills the width · gap-text-trailing)
 │  ├─ Text (frame · vertical · gap-text)
@@ -189,13 +196,13 @@ The rows are inset from the panel edge by `menu/padding-comfortable` or `menu/pa
 |---|---|---|---|
 | Panel padding, every side | 8 | 4 | `menu/padding-comfortable`, `menu/padding-compact` |
 | Panel width | 200 to 320 | 200 to 320 | `menu/min-width`, `menu/max-width` |
-| Panel radius | 12 | 12 | `menu/radius` |
+| Panel radius | 16 | 12 | `menu/radius-comfortable`, `menu/radius-compact` |
 | Panel border | 1 | 1 | `menu/border-width` |
 | Space between trigger and panel, and panel and submenu | 4 | 4 | `menu/offset` |
 | Row min height, one line | 48 | 36 | `menu/item-min-height-comfortable`, `menu/item-min-height-compact` |
 | Row padding left and right | 12 | 8 | `menu/item-padding-x-comfortable`, `menu/item-padding-x-compact` |
 | Row padding top and bottom | 12 | 8 | `menu/item-padding-y-comfortable`, `menu/item-padding-y-compact` |
-| Row radius | 8 | 8 | `menu/item-radius` |
+| Row radius | 12 | 8 | `menu/item-radius-comfortable`, `menu/item-radius-compact` |
 | Gap between leading icon and text | 12 | 8 | `menu/gap-comfortable`, `menu/gap-compact` |
 | Gap between text and trailing part | 16 | 12 | `menu/gap-text-trailing-comfortable`, `menu/gap-text-trailing-compact` |
 | Gap between label and supporting text | 2 | 2 | `menu/gap-text` |
@@ -207,7 +214,7 @@ The rows are inset from the panel edge by `menu/padding-comfortable` or `menu/pa
 | Section header type | 12 / 16 bold | 12 / 16 bold | `label/small/bold` |
 | Divider line | 1 | 1 | `menu/divider-width` |
 | Space above and below a divider | 8 | 4 | `menu/divider-spacing-comfortable`, `menu/divider-spacing-compact` |
-| Focus ring | 2, inside the row edge, radius 8 | same | `menu/focus-ring-width`, `menu/item-radius` |
+| Focus ring | 2, inside the row edge, radius 12 | 2, inside the row edge, radius 8 | `menu/focus-ring-width`, `menu/item-radius-comfortable`, `menu/item-radius-compact` |
 
 Row heights:
 
@@ -338,12 +345,12 @@ Destructive meaning is carried by the label text ("Cancel booking"), not by the 
 
 ## Token reference
 
-62 tokens under `component.menu` in `tokens/tokens.json`, mirrored 1:1 as `menu/*` in the Figma `component` collection (variables `777:4` to `777:65`):
+64 tokens under `component.menu` in `tokens/tokens.json`, mirrored 1:1 as `menu/*` in the Figma `component` collection (variables `777:4` to `777:65`, plus `785:290` and `785:291`):
 
 | Group | Count |
 |---|---|
-| Panel: `bg`, `border`, `border-width`, `radius`, `padding-{comfortable,compact}`, `offset`, `min-width`, `max-width` | 9 |
-| Row fills: `item-bg-{default,hover,pressed,focus,open,disabled}`, `item-bg-destructive-{hover,pressed}`, and `item-radius` | 9 |
+| Panel: `bg`, `border`, `border-width`, `radius-{comfortable,compact}`, `padding-{comfortable,compact}`, `offset`, `min-width`, `max-width` | 10 |
+| Row fills: `item-bg-{default,hover,pressed,focus,open,disabled}`, `item-bg-destructive-{hover,pressed}`, and `item-radius-{comfortable,compact}` | 10 |
 | Label: `label-{default,disabled}`, `label-destructive-{default,hover,pressed}` | 5 |
 | `supporting-text-*`, `meta-text-*` (`default`, `disabled`) | 4 |
 | Icons: `leading-icon-{default,disabled}`, `leading-icon-destructive-{default,hover,pressed}`, `chevron-*`, `check-*` | 9 |

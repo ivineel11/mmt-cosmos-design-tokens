@@ -1035,7 +1035,8 @@ object CosmosTokens {
   val menuItemPaddingXCompact = 8.dp
   val menuItemPaddingYComfortable = 12.dp
   val menuItemPaddingYCompact = 8.dp
-  val menuItemRadius = 8.dp
+  val menuItemRadiusComfortable = 12.dp
+  val menuItemRadiusCompact = 8.dp
   val menuLabelDefault = Color(0xFF0A0A0A)
   val menuLabelDestructiveDefault = Color(0xFFC10007)
   val menuLabelDestructiveHover = Color(0xFF9F0712)
@@ -1055,7 +1056,8 @@ object CosmosTokens {
   val menuOffset = 4.dp
   val menuPaddingComfortable = 8.dp
   val menuPaddingCompact = 4.dp
-  val menuRadius = 12.dp
+  val menuRadiusComfortable = 16.dp
+  val menuRadiusCompact = 12.dp
   val menuSectionHeaderPaddingBottomComfortable = 4.dp
   val menuSectionHeaderPaddingBottomCompact = 2.dp
   val menuSectionHeaderPaddingTopComfortable = 8.dp
