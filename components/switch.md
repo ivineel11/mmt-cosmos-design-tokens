@@ -10,7 +10,7 @@
 
 A switch turns one setting on or off, and the change takes effect straight away: trip updates on WhatsApp, price drop alerts, paying with the MMT wallet. There is no Save button behind a switch and no error state. If a choice only applies after the user submits a form, use a Checkbox instead.
 
-A switch has no label of its own. It always sits beside visible text that names the setting, usually as the trailing control of a list row, and that text is its accessible name.
+A switch has no label of its own. It always sits beside visible text that names the setting, usually as the trailing control of a list row, and that text is its accessible name. List / Trailing (`709:2983`) nests it as `Type=Switch`: Medium in Comfortable rows, Small in Compact rows, and State Disabled in disabled rows (see `components/list.md`).
 
 The Cosmos switch is the **Filled** style, set **Switch** (`731:172`). The off track is a solid light grey, the on track is brand, and the thumb is white in every state. It reads like the iOS switch.
 

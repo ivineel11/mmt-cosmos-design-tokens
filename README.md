@@ -1006,7 +1006,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `snackbar/*` | 114 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
 | `badge/*` | 42 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
 | `tab/*` | 43 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
-| `list/*` | 60 | List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 20 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
+| `list/*` | 60 | List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 24 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
 | `switch/*` | 51 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
