@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 829 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 262 semantic roles + 417 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 864 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 266 semantic roles + 448 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -475,9 +475,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 272 primitive tokens · 369 semantic tokens (262 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 611 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*`) · **1360 values on web** · **1409 on iOS and Android** · **0 gradients**
+**Totals:** 272 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 662 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*`) · **1415 values on web** · **1464 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1252 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1307 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (272)
 
@@ -692,9 +692,9 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (369)
+### Semantic tokens (373)
 
-#### Color — 262 tokens
+#### Color — 266 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -730,7 +730,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-warning-pressed` | Warning surface, pressed |
 | `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
 
-##### Background — fill (31)
+##### Background — fill (35)
 
 | Token | Role |
 |-------|------|
@@ -739,7 +739,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-pressed-subtle` | Default fill, pressed, light — the unselected chip |
 | `color.bg-fill-pressed-strong` | Default fill, pressed, strong — the chip remove button, and presses that must read on either canvas |
 | `color.bg-fill-disabled-strong` | Strong disabled fill |
-| `color.bg-fill-disabled-subtle` | Subtle disabled fill |
+| `color.bg-fill-disabled` | Middle disabled fill — the disabled thumb of the Outlined Switch backup |
+| `color.bg-fill-disabled-subtle` | Subtle disabled fill — disabled inputs and Switch tracks |
 | `color.bg-fill-secondary` | Secondary fill |
 | `color.bg-fill-secondary-hover` | Secondary fill, hovered |
 | `color.bg-fill-secondary-pressed` | Secondary fill, pressed |
@@ -765,6 +766,9 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-inverse` | Inverted (dark) fill — badges, toasts |
 | `color.bg-fill-inverse-hover` | Inverted fill, hovered |
 | `color.bg-fill-inverse-pressed` | Inverted fill, pressed |
+| `color.bg-fill-neutral-strong` | Solid grey fill — the off Switch track |
+| `color.bg-fill-neutral-strong-hover` | Solid grey fill, hovered |
+| `color.bg-fill-neutral-strong-pressed` | Solid grey fill, pressed |
 
 ##### Text (40)
 
@@ -985,7 +989,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (611)
+### Component tokens (662)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -999,6 +1003,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `badge/*` | 42 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
 | `tab/*` | 43 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
 | `list/*` | 60 | List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 20 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
+| `switch/*` | 51 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -1015,6 +1020,7 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `badge/bg-strong-warning` | `{color.bg-fill-warning-strong}` | `#C10007` |
 | `tab/label-selected-pressed` | `{color.text-brand-pressed}` | `#0857C5` |
 | `list/item-bg-pressed` | `{color.bg-fill-pressed-strong}` | `#E5E5E5` |
+| `switch/track-off-default` | `{color.bg-fill-neutral-strong}` | `#D4D4D4` |
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
@@ -1058,6 +1064,7 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-pressed-subtle` | `color.neutral.100` |
 | `bg-fill-pressed-strong` | `color.neutral.200` |
 | `bg-fill-disabled-strong` | `color.neutral.400` |
+| `bg-fill-disabled` | `color.neutral.300` |
 | `bg-fill-disabled-subtle` | `color.neutral.200` |
 | `bg-fill-secondary` | `color.neutral.100` |
 | `bg-fill-secondary-hover` | `color.neutral.200` |
@@ -1084,6 +1091,9 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-inverse` | `color.neutral.950` |
 | `bg-fill-inverse-hover` | `color.neutral.900` |
 | `bg-fill-inverse-pressed` | `color.neutral.800` |
+| `bg-fill-neutral-strong` | `color.neutral.300` |
+| `bg-fill-neutral-strong-hover` | `color.neutral.400` |
+| `bg-fill-neutral-strong-pressed` | `color.neutral.500` |
 | `text-primary` | `color.neutral.950` |
 | `text-secondary` | `color.neutral.600` |
 | `text-tertiary` | `color.neutral.500` |
@@ -1647,7 +1657,7 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ## Figma component pages
 
-Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`), Tab (`694:2811`, with Tab / Secondary `697:59`) and List (`710:474`, with List / Leading `709:119`, List / Trailing `709:2983` and List / Section header `710:479`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`), Tab (`694:2811`, with Tab / Secondary `697:59`), List (`710:474`, with List / Leading `709:119`, List / Trailing `709:2983` and List / Section header `710:479`) and Switch (`731:172`, with the hidden backup .Switch / Outlined `732:191`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
 
 ### 1. Page
 
