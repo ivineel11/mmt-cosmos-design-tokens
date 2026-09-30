@@ -22,7 +22,7 @@ There are three components on the Slider page (`809:2`):
 
 - **Slider** is the whole component: an optional header row, the track row and optional limit labels.
 - **Slider / Thumb** is one thumb, with its halo and focus ring.
-- **Slider / Tooltip** is the value bubble shown above a thumb while it is held or focused. It is a single component with a `Value` text property, the same at both sizes.
+- **Slider / Tooltip** is the value bubble shown above a thumb while it is held or focused. One variant axis, `Caret` (True or False), and a `Value` text property. It is the same at both sizes.
 
 Five variant axes drive Slider:
 
@@ -45,7 +45,7 @@ Five variant axes drive Slider:
 ### Composition
 
 - **Slider / Thumb** (`809:83`) is nested once in Single and twice in Range, and follows the slider's Style, Size and State. In Range the minimum thumb stays Default and the maximum thumb takes the State.
-- **Slider / Tooltip** (`809:4201`) is nested above the maximum thumb and shown through the `Show tooltip` property. Set its `Value` on the nested instance.
+- **Slider / Tooltip** (`812:568`) is nested above the maximum thumb and shown through the `Show tooltip` property. The nested instance is exposed, so its `Caret` and `Value` are set from the Slider panel.
 - _Decorative children: Halo and Focus ring, inside Slider / Thumb. They are documented under Structure._
 
 ---
@@ -66,6 +66,7 @@ Five variant axes drive Slider:
 | `showHeader` | boolean | true \| false | `true` | Hides the header row visually. The label stays the accessible name. |
 | `showLimits` | boolean | true \| false | `false` | Shows the formatted `min` and `max` under the ends of the track. |
 | `showTooltip` | boolean | true \| false | `true` on web, `false` on touch | Shows the value over a thumb while it is held or focused. |
+| `tooltipCaret` | boolean | true \| false | `true` | Draws the caret under the tooltip. Turn it off in dense layouts or where the caret would clash with nearby content; the bubble stays in the same place. |
 | `size` | enum | medium \| small | `medium` | Small only on web. |
 | `disabled` | boolean | true \| false | `false` | |
 | `onChange` | callback | `(value) => void` | – | Fires as the value changes during a drag. |
@@ -81,6 +82,7 @@ Five variant axes drive Slider:
 | `Show header` | BOOLEAN | `true` | Shows the header row. |
 | `Show limits` | BOOLEAN | `true` | Shows the limit labels. |
 | `Show tooltip` | BOOLEAN | `false` | Shows the tooltip above the maximum thumb. |
+| `Caret` (on the exposed Tooltip) | VARIANT | True | True draws the caret, False shows the bubble alone. |
 | `Style` | VARIANT | Neutral | Neutral or Brand. Under test; will be removed. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Slider examples` frame (`811:5778`).
@@ -92,6 +94,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Slider e
 | 1 | Range, Continuous, Medium, label "Price per night", value ₹2,000 – ₹8,000, limits ₹500 and ₹20,000+ | Hotel results filter sheet. |
 | 2 | Range, Discrete, Medium, label "Departure time", steps of 6 hours, value 06:00 – 18:00, limits 00:00 and 24:00 | Flight results filter sheet. |
 | 3 | Range, Continuous, Medium, Pressed, header hidden, tooltip "₹8,000" on the maximum thumb | The price filter being dragged on web. |
+| 3b | The same with the tooltip `Caret` off | The caret-less tooltip. |
 | 4 | Single, Continuous, Medium, label "Distance from centre", value "Up to 6 km", limits 0 km and 10 km | Hotel results filter sheet. |
 | 5 | Single, Discrete, Small, label "Guest rating", steps 1 to 5, value "4+", limits 1 and 5 | A web filter side panel. |
 
@@ -106,7 +109,7 @@ Each example is shown in both thumb styles, so they can be compared.
 - **Hit area.** Each thumb takes touches in a 48 × 48 area (Medium) or 24 × 24 (Small, web only), whatever its visual size. The whole track row is also tappable.
 - **Steps.** A Discrete slider snaps to the nearest step while dragging. On iOS each new step plays a selection haptic (`UISelectionFeedbackGenerator.selectionChanged()`); on Android use `HapticFeedbackConstants.SEGMENT_TICK` (`CLOCK_TICK` before API 34).
 - **Range thumbs never cross.** A thumb stops `minGap` away from the other one. When both sit at the same end, the thumb that can move in the drag direction takes the drag.
-- **Tooltip.** It shows while a thumb is held, dragged or keyboard-focused, and hides on release. On touch the header value is the main readout, because a finger covers the thumb. Near the ends of the track the tooltip shifts sideways to stay on screen, and only its caret stays over the thumb.
+- **Tooltip.** It shows while a thumb is held, dragged or keyboard-focused, and hides on release. With the caret off, the bubble keeps the same position, centred over the thumb. On touch the header value is the main readout, because a finger covers the thumb. Near the ends of the track the tooltip shifts sideways to stay on screen, and only its caret stays over the thumb.
 - **Keyboard (web, and hardware keyboards on mobile).** Arrow keys move one step (1% when Continuous). Page Up and Page Down move 10%. Home and End go to `min` and `max`. Each thumb of a range is its own tab stop.
 - **Scroll.** Inside a scrolling sheet, a drag that starts mostly vertical scrolls the sheet and does not move the thumb.
 - **Right-to-left.** The track mirrors, so `min` is on the right.
@@ -145,10 +148,10 @@ Slider / Thumb (component set · 809:83)
 ├─ Focus ring (circle, 2 outside the thumb) · Focus only · decorative
 └─ Thumb (circle, 24 or 16) · Neutral adds shadow.card, or shadow.raised on Hover and Pressed · Brand adds a 2 px white ring inside
 
-Slider / Tooltip (component · 809:4201)
+Slider / Tooltip (component set · 812:568 · Caret True or False)
 ├─ Bubble (auto layout, padding 4 × 8, radius 8)
 │  └─ Value (text · label/small/bold)
-└─ Caret (triangle, 8 wide and 4 tall, centred under the bubble)
+└─ Caret (triangle, 8 wide and 4 tall, centred under the bubble) · Caret=True only
 ```
 
 In code the halo is drawn under the track, so the track shows through it. The Figma thumb is one component placed on top of the track, so the halo there sits over the track at a light tint that keeps the track readable.
@@ -170,6 +173,7 @@ In code the halo is drawn under the track, so the track shows through it. The Fi
 | Tooltip radius | 8 | 8 | `slider/tooltip-radius` |
 | Tooltip caret | 8 × 4 | 8 × 4 | `slider/tooltip-caret-width` |
 | Gap: thumb top to caret tip | 8 | 8 | `slider/tooltip-gap` |
+| Gap: thumb top to bubble, caret off | 12 | 12 | `slider/tooltip-gap` plus the caret height |
 | Label and value type | 14 / 20 | 12 / 16 | `label/medium/*`, `label/small/*` |
 | Limit and tooltip type | 12 / 16 | 12 / 16 | `label/small/regular`, `label/small/bold` |
 
@@ -194,7 +198,7 @@ Token names follow `slider/{part}-{active|inactive}-{state}`. Shared tokens appl
 | Focus ring | Focus: `focus-ring` → `border-focus` #0681FF | – |
 | Label and value | `label-text`, `value-text` → `text-primary` #0A0A0A | `text-disabled` → `text-disabled` #A1A1A1 |
 | Min and max | `limit-text` → `text-secondary` #525252 | `text-disabled` #A1A1A1 |
-| Tooltip | `tooltip-bg` → `bg-fill-inverse` #0A0A0A, `tooltip-text` → `text-inverse` #FFFFFF | – |
+| Tooltip bubble and caret | `tooltip-bg` → `bg-fill-inverse` #0A0A0A, `tooltip-text` → `text-inverse` #FFFFFF | – |
 
 ### Neutral thumb (under test)
 

@@ -2820,7 +2820,7 @@
   --slider-text-disabled: #A1A1A1;
   /** Gap between the header row and the track row. The track row is already min-touch-target tall, so the visual gap to the track is larger than this. */
   --slider-header-gap: 4px;
-  /** Dark bubble and caret above a thumb that is held, dragged or focused, showing its value. Hidden at rest. */
+  /** Dark bubble, and its caret when shown, above a thumb that is held, dragged or focused, showing its value. Hidden at rest. */
   --slider-tooltip-bg: #0A0A0A;
   /** Value inside the tooltip. Use value-text for the header row readout. */
   --slider-tooltip-text: #FFFFFF;
@@ -2830,9 +2830,9 @@
   --slider-tooltip-padding-y: 4px;
   /** Corner radius of the tooltip bubble. Everything else in the slider uses radius. */
   --slider-tooltip-radius: 8px;
-  /** Gap between the top of the thumb and the tip of the tooltip caret, so the tooltip clears the halo. */
+  /** Gap between the top of the thumb and the tip of the tooltip caret, so the tooltip clears the halo. Without the caret the bubble stays in the same place, so it sits this gap plus the caret height above the thumb. */
   --slider-tooltip-gap: 8px;
-  /** Base width of the downward caret under the tooltip bubble. Its height is half this. */
+  /** Base width of the downward caret under the tooltip bubble, when the caret is shown. Its height is half this. */
   --slider-tooltip-caret-width: 8px;
   /** Fill of the menu panel, white on either canvas. The panel always carries a border and the overlay shadow, so it still separates from a white page. Rows inside take item-bg-* fills, never this one. */
   --menu-bg: #FFFFFF;
