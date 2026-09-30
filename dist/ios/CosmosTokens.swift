@@ -1123,6 +1123,7 @@ public enum CosmosTokens {
     public static let segmentedControlBgUnselectedDefault = Color(.sRGB, red: 1, green: 1, blue: 1, opacity: 0)
     public static let segmentedControlBgUnselectedPressed = Color(red: 0.898039, green: 0.898039, blue: 0.898039)
     public static let segmentedControlBrandIconSelectedDefault = Color(red: 1, green: 1, blue: 1)
+    public static let segmentedControlBrandIconSelectedPressed = Color(red: 1, green: 1, blue: 1)
     public static let segmentedControlBrandLabelSelectedDefault = Color(red: 1, green: 1, blue: 1)
     public static let segmentedControlBrandThumbDefault = Color(red: 0, green: 0.403922, blue: 0.909804)
     public static let segmentedControlBrandThumbPressed = Color(red: 0.05098, green: 0.298039, blue: 0.607843)

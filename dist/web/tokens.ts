@@ -1631,6 +1631,7 @@ export default {
     "brand-thumb-pressed": "#0D4C9B",
     "brand-label-selected-default": "#FFFFFF",
     "brand-icon-selected-default": "#FFFFFF",
+    "brand-icon-selected-pressed": "#FFFFFF",
     "tinted-thumb-default": "#EDF8FF",
     "tinted-thumb-pressed": "#C2E8FF",
     "tinted-thumb-border-default": "#0067E8",

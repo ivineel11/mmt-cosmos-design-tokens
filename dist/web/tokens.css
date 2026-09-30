@@ -2688,8 +2688,10 @@
   --segmented-control-brand-thumb-pressed: #0D4C9B;
   /** Brand thumb style, under test against the Neutral thumb. Label on the brand thumb in every enabled state, including pressed. During a drag a label switches to this colour only once the thumb centre enters its segment, so it never sits on the grey track. */
   --segmented-control-brand-label-selected-default: #FFFFFF;
-  /** Brand thumb style, under test against the Neutral thumb. Optional leading icon on the brand thumb in every enabled state. Matches brand-label-selected-default. */
+  /** Brand thumb style, under test against the Neutral thumb. Optional leading icon on the brand thumb at rest and on keyboard focus. For the pressed thumb use brand-icon-selected-pressed. */
   --segmented-control-brand-icon-selected-default: #FFFFFF;
+  /** Brand thumb style, under test against the Neutral thumb. Optional leading icon on the brand thumb while it is held, on the pressed brand fill. The same role as the default step, kept as its own token so every state binds its own icon, as in Button. */
+  --segmented-control-brand-icon-selected-pressed: #FFFFFF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb under the selected segment at rest and on keyboard focus. The tint barely separates from the track, so tinted-thumb-border-default draws its edge. */
   --segmented-control-tinted-thumb-default: #EDF8FF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb while it is held, before a tap lands or while it is dragged. */

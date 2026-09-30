@@ -162,7 +162,12 @@ The focus ring sits **outside** the segment: a 2 px gap, then the 2 px ring, whi
 
 ## Color
 
-Token names follow `segmented-control/{property}-{selected|unselected}-{state}`. Shared tokens apply to every style; `neutral-*`, `brand-*` and `tinted-*` tokens apply to one style only. Focus uses the Default colours plus the ring. On Brand a selected segment keeps its label and icon colour while pressed, and only the thumb darkens. Neutral and Tinted also darken the brand label and icon one step, because `text-brand` falls below AA on their pressed thumbs: 4.06:1 on the Neutral grey #E5E5E5 and 3.96:1 on the pressed tint. Tinted darkens its outline too.
+Token names follow `segmented-control/{property}-{selected|unselected}-{state}`. Shared tokens apply to every style; `neutral-*`, `brand-*` and `tinted-*` tokens apply to one style only. Focus uses the Default colours plus the ring. Like Button, every selected state binds its own icon token, and each aliases the icon role for the fill underneath it:
+- Brand uses `icon-brand-on-bg-fill` at rest and pressed, the Button primary pattern.
+- Tinted uses `icon-brand` then `icon-brand-on-bg-surface-pressed`, the Button tertiary pattern.
+- Neutral uses `icon-brand` then `icon-brand-pressed` on its grey pressed thumb.
+
+On Brand the label and icon keep their white while pressed, and only the thumb darkens. Neutral and Tinted also darken the brand label and icon one step, because `text-brand` falls below AA on their pressed thumbs: 4.06:1 on the Neutral grey #E5E5E5 and 3.96:1 on the pressed tint. Tinted darkens its outline too.
 
 ### Shared
 
@@ -191,7 +196,7 @@ Token names follow `segmented-control/{property}-{selected|unselected}-{state}`.
 |---|---|---|
 | Thumb | `brand-thumb-default` → `bg-fill-brand` #0067E8 | `brand-thumb-pressed` → `bg-fill-brand-pressed` #0D4C9B |
 | Label | `brand-label-selected-default` → `text-brand-on-bg-fill` #FFFFFF | same |
-| Icon | `brand-icon-selected-default` → `icon-brand-on-bg-fill` #FFFFFF | same |
+| Icon | `brand-icon-selected-default` → `icon-brand-on-bg-fill` #FFFFFF | `brand-icon-selected-pressed` → `icon-brand-on-bg-fill` #FFFFFF |
 
 All three styles share one disabled look, with no shadow and no outline, following the Button primary disabled treatment, so a disabled control reads the same whichever style ships.
 
@@ -274,7 +279,7 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 
 ## Token reference
 
-46 tokens under `component.segmented-control` in `tokens/tokens.json`. 45 are mirrored 1:1 as `segmented-control/*` in the Figma `component` collection. The Figma file has no shadow variables, so `neutral-thumb-shadow` is the `shadow/card` effect style on the thumb there:
+47 tokens under `component.segmented-control` in `tokens/tokens.json`. 46 are mirrored 1:1 as `segmented-control/*` in the Figma `component` collection. The Figma file has no shadow variables, so `neutral-thumb-shadow` is the `shadow/card` effect style on the thumb there:
 
 | Group | Count |
 |---|---|
@@ -282,7 +287,7 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 | `label-unselected-{default,pressed}`, `label-disabled` | 3 |
 | `icon-unselected-{default,pressed}`, `icon-disabled` | 3 |
 | Neutral: `neutral-thumb-{default,pressed}`, `neutral-thumb-shadow`, `neutral-label-selected-{default,pressed}`, `neutral-icon-selected-{default,pressed}` | 7 |
-| Brand: `brand-thumb-{default,pressed}`, `brand-label-selected-default`, `brand-icon-selected-default` | 4 |
+| Brand: `brand-thumb-{default,pressed}`, `brand-label-selected-default`, `brand-icon-selected-{default,pressed}` | 5 |
 | Tinted: `tinted-thumb-{default,pressed}`, `tinted-thumb-border-{default,pressed}`, `tinted-label-selected-{default,pressed}`, `tinted-icon-selected-{default,pressed}`, `tinted-thumb-border-width` | 9 |
 | dimensions (`height-md`, `height-sm`, `track-padding`, `track-radius-md`, `track-radius-sm`, `thumb-radius-md`, `thumb-radius-sm`, `segment-padding-x-md`, `segment-padding-x-sm`, `gap-icon`, `icon-size`, `min-touch-target`, `focus-ring-width`, `focus-ring-offset`, and Pill shape `pill-radius`) | 15 |
 
