@@ -2768,23 +2768,13 @@
   --slider-tick-size-md: 4px;
   /** Diameter of a step mark on the Small track. */
   --slider-tick-size-sm: 2px;
-  /** Neutral thumb style, under test against the Brand thumb. White thumb in every enabled state; hover and press change its shadow and halo, not its fill. Use thumb-disabled when the slider is disabled. */
-  --slider-neutral-thumb-default: #FFFFFF;
-  /** Neutral thumb style, under test against the Brand thumb. Elevation of the white thumb at rest and on focus. Carries the separation from the grey track, where white alone is 1.48:1. A disabled thumb drops it. */
-  --slider-neutral-thumb-shadow: 0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F;
-  /** Neutral thumb style, under test against the Brand thumb. Stronger elevation of the white thumb under the pointer and while held or dragged. Use neutral-thumb-shadow at rest. */
-  --slider-neutral-thumb-shadow-raised: 0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14;
-  /** Brand thumb style, under test against the Neutral thumb. Solid brand thumb at rest and on focus. Use thumb-disabled when the slider is disabled. */
-  --slider-brand-thumb-default: #0067E8;
-  /** Brand thumb style, under test against the Neutral thumb. Thumb under the pointer. Web only. */
-  --slider-brand-thumb-hover: #0857C5;
-  /** Brand thumb style, under test against the Neutral thumb. Thumb while held or dragged. */
-  --slider-brand-thumb-pressed: #0D4C9B;
-  /** Brand thumb style, under test against the Neutral thumb. White ring drawn inside the edge of the brand thumb so it separates from the brand active track it sits on. Also drawn on the disabled thumb. */
-  --slider-brand-thumb-ring: #FFFFFF;
-  /** Brand thumb style, under test against the Neutral thumb. Width of the white ring, drawn inside the thumb edge so the thumb keeps its size. */
-  --slider-brand-thumb-ring-width: 2px;
-  /** Thumb of a disabled slider in both styles. Matches track-active-disabled, and the Neutral thumb drops its shadow. */
+  /** White thumb in every enabled state; hover and press change its shadow and halo, not its fill. Use thumb-disabled when the slider is disabled. */
+  --slider-thumb-default: #FFFFFF;
+  /** Elevation of the white thumb at rest and on focus. Carries the separation from the grey track, where white alone is 1.48:1. Use thumb-shadow-raised under the pointer and while held. A disabled thumb drops it. */
+  --slider-thumb-shadow: 0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F;
+  /** Stronger elevation of the white thumb under the pointer and while held or dragged. Use thumb-shadow at rest. */
+  --slider-thumb-shadow-raised: 0px 2px 4px #0A0A0A14, 0px 4px 12px #0A0A0A14;
+  /** Grey thumb of a disabled slider, drawn without a shadow. Matches track-active-disabled. */
   --slider-thumb-disabled: #A1A1A1;
   /** Visual thumb diameter of the Medium slider. The hit area is min-touch-target-md, not this. */
   --slider-thumb-size-md: 24px;

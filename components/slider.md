@@ -6,15 +6,9 @@
 <!-- Figma: https://www.figma.com/design/byPBTSedTYOO0AYwmIlncH/?node-id=811-1622 -->
 <!-- Authored at: 2026-09-30 -->
 
-> **Two thumb styles are under test.** They are Neutral (a white, raised thumb) and Brand (a solid brand thumb with a white ring). They are built side by side so they can be tried in real screens.
->
-> Once a style is chosen:
-> - the other style's `neutral-*` or `brand-*` tokens are deleted, with their Figma variants and the `Style` axis
-> - the survivor's prefix is dropped
-
 ## Overview
 
-A slider picks a value, or a range of values, by dragging a thumb along a track. It is for choices where the rough position matters more than the exact number: the price per night filter on hotel results, the departure time filter on flight results, the distance from the city centre, or a minimum guest rating. It works on mobile and web.
+A slider picks a value, or a range of values, by dragging a white, raised thumb along a track. It is for choices where the rough position matters more than the exact number: the price per night filter on hotel results, the departure time filter on flight results, the distance from the city centre, or a minimum guest rating. It works on mobile and web.
 
 The value applies as the thumb moves, or on release when a new value is expensive to fetch. It never submits a form by itself.
 
@@ -25,11 +19,10 @@ There are three components on the Slider page (`809:2`), plus one internal helpe
 - **Slider / Tooltip** is the value bubble shown above a thumb while it is held or focused. One variant axis, `Caret` (True or False), and a `Value` text property. It is the same at both sizes.
 - **.Slider / Position** (internal, unpublished) is a transparent spacer that places a thumb. Size × Value = 42 variants, 0% to 100% in 5% steps.
 
-Five variant axes drive Slider:
+Four variant axes drive Slider:
 
 - **Type**: Single (one thumb) or Range (two thumbs).
 - **Steps**: Continuous or Discrete. Discrete snaps to steps and shows a tick mark at each one.
-- **Style**: Neutral or Brand. Under test; the axis will be removed.
 - **Size**: Medium or Small. Small is for dense web layouts such as a filter side panel and is not for touch.
 - **State**: Default, Hover, Pressed, Focus and Disabled. In Range, Hover, Pressed and Focus are shown on the maximum thumb.
 
@@ -45,7 +38,7 @@ Five variant axes drive Slider:
 
 ### Composition
 
-- **Slider / Thumb** (`809:83`) is nested once in Single and twice in Range, and follows the slider's Style, Size and State. In Range the minimum thumb stays Default and the maximum thumb takes the State.
+- **Slider / Thumb** (`809:83`) is nested once in Single and twice in Range, and follows the slider's Size and State. In Range the minimum thumb stays Default and the maximum thumb takes the State.
 - **Slider / Tooltip** (`812:568`) is nested above the maximum thumb and shown through the `Show tooltip` property. The nested instance is exposed, so its `Caret` and `Value` are set from the Slider panel.
 - **.Slider / Position** (`821:664`) is nested once in Single (`Thumb position`) and twice in Range (`Min thumb`, `Max thumb`). The nested instances are exposed, so a designer places the thumbs from the Slider panel. The spacer width sets the length of the bar the thumb rides on.
 - _Decorative children: Halo and Focus ring, inside Slider / Thumb. They are documented under Structure._
@@ -85,7 +78,6 @@ Five variant axes drive Slider:
 | `Show limits` | BOOLEAN | `true` | Shows the limit labels. |
 | `Show tooltip` | BOOLEAN | `false` | Shows the tooltip above the maximum thumb, and the Tooltip space that makes room for it, so the tooltip stays inside the component bounds and never covers the header. |
 | `Caret` (on the exposed Tooltip) | VARIANT | True | True draws the caret, False shows the bubble alone. |
-| `Style` | VARIANT | Neutral | Neutral or Brand. Under test; will be removed. |
 | `Thumb position` (Single), `Min thumb` and `Max thumb` (Range), on the exposed .Slider / Position | VARIANT | 60% (Single), 25% and 75% (Range); 75% on Discrete Single | 0% to 100% of the travel in 5% steps. Discrete sliders have 4 steps, so use 0, 25, 50, 75 or 100% to land on a tick. Keep Min thumb at or below Max thumb. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Slider examples` frame (`811:5778`).
@@ -100,8 +92,6 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Slider e
 | 3b | The same with the tooltip `Caret` off | The caret-less tooltip. |
 | 4 | Single, Continuous, Medium, label "Distance from centre", value "Up to 6 km", limits 0 km and 10 km | Hotel results filter sheet. |
 | 5 | Single, Discrete, Small, label "Guest rating", steps 1 to 5, value "4+", limits 1 and 5 | A web filter side panel. |
-
-Each example is shown in both thumb styles, so they can be compared.
 
 ---
 
@@ -160,7 +150,7 @@ Slider (component set · 811:1622)
 Slider / Thumb (component set · 809:83)
 ├─ Halo (circle, 40 or 28, centred) · Hover and Pressed only · decorative
 ├─ Focus ring (circle, 2 outside the thumb) · Focus only · decorative
-└─ Thumb (circle, 24 or 16) · Neutral adds shadow.card, or shadow.raised on Hover and Pressed · Brand adds a 2 px white ring inside
+└─ Thumb (circle, 24 or 16, white) · shadow.card, or shadow.raised on Hover and Pressed · no shadow when Disabled
 
 .Slider / Position (component set · 821:664 · internal)
 └─ Spacer (transparent rectangle, 0% to 100% of the travel wide) · the variant hugs it, so swapping Value resizes the bar
@@ -183,7 +173,6 @@ In code the halo is drawn under the track, so the track shows through it. The Fi
 | Tick diameter | 4 | 2 | `slider/tick-size-md`, `tick-size-sm` |
 | Track row height and thumb hit area | 48 | 24 | `slider/min-touch-target-md`, `min-touch-target-sm` |
 | Gap: header to track row | 4 | 4 | `slider/header-gap` |
-| Brand ring, inside the thumb | 2 | 2 | `slider/brand-thumb-ring-width` |
 | Focus ring | 2 thick, 2 outside the thumb | same | `slider/focus-ring-width`, `focus-ring-offset` |
 | Track, thumb, halo, tick and ring radius | full | full | `slider/radius` |
 | Tooltip padding | 4 × 8 | 4 × 8 | `slider/tooltip-padding-y`, `tooltip-padding-x` |
@@ -201,9 +190,9 @@ The Medium track row is 48 tall, so the visual gap from the header to the 8 px t
 
 ## Color
 
-Token names follow `slider/{part}-{active|inactive}-{state}`. Shared tokens apply to both styles; `neutral-*` and `brand-*` tokens apply to one style only. Focus uses the Default colours plus the ring.
+Token names follow `slider/{part}-{active|inactive}-{state}`. Focus uses the Default colours plus the ring.
 
-### Shared
+### Track, ticks, halo and text
 
 | Element | Default, Hover, Pressed, Focus | Disabled |
 |---|---|---|
@@ -211,28 +200,20 @@ Token names follow `slider/{part}-{active|inactive}-{state}`. Shared tokens appl
 | Active track | `track-active` → `bg-fill-brand` #0067E8 | `track-active-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
 | Tick on the active track | `tick-active` → `bg-fill` #FFFFFF | `tick-active-disabled` → `bg-fill` #FFFFFF |
 | Tick on the inactive track | `tick-inactive` → `bg-fill-neutral-strong-pressed` #737373 | `tick-inactive-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
-| Thumb, disabled | – | `thumb-disabled` → `bg-fill-disabled-strong` #A1A1A1, no shadow |
 | Halo | Hover: `halo-hover` → `bg-surface-brand` #EDF8FF · Pressed: `halo-pressed` → `bg-surface-brand-hover` #D6EFFF | – |
 | Focus ring | Focus: `focus-ring` → `border-focus` #0681FF | – |
 | Label and value | `label-text`, `value-text` → `text-primary` #0A0A0A | `text-disabled` → `text-disabled` #A1A1A1 |
 | Min and max | `limit-text` → `text-secondary` #525252 | `text-disabled` #A1A1A1 |
 | Tooltip bubble and caret | `tooltip-bg` → `bg-fill-inverse` #0A0A0A, `tooltip-text` → `text-inverse` #FFFFFF | – |
 
-### Neutral thumb (under test)
+### Thumb
 
-| Element | Default, Focus | Hover | Pressed |
-|---|---|---|---|
-| Thumb | `neutral-thumb-default` → `bg-fill` #FFFFFF | same | same |
-| Shadow | `neutral-thumb-shadow` → `shadow.card` | `neutral-thumb-shadow-raised` → `shadow.raised` | same as Hover |
+| Element | Default, Focus | Hover | Pressed | Disabled |
+|---|---|---|---|---|
+| Thumb | `thumb-default` → `bg-fill` #FFFFFF | same | same | `thumb-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
+| Shadow | `thumb-shadow` → `shadow.card` | `thumb-shadow-raised` → `shadow.raised` | same as Hover | none |
 
-### Brand thumb (under test)
-
-| Element | Default, Focus | Hover | Pressed |
-|---|---|---|---|
-| Thumb | `brand-thumb-default` → `bg-fill-brand` #0067E8 | `brand-thumb-hover` → `bg-fill-brand-hover` #0857C5 | `brand-thumb-pressed` → `bg-fill-brand-pressed` #0D4C9B |
-| Ring, 2 px inside | `brand-thumb-ring` → `bg-fill` #FFFFFF | same | same |
-
-Both styles share one disabled thumb, so a disabled slider reads the same whichever style ships. The disabled Brand thumb keeps its white ring.
+The white thumb keeps its fill in every enabled state. Hover and press show through the halo and the stronger shadow instead.
 
 This component adds no semantic roles.
 
@@ -247,10 +228,8 @@ This component adds no semantic roles.
 | Active track #0067E8 against the inactive track #D4D4D4 | 3.45:1 | 3:1 (1.4.11) | Pass. This edge shows the value |
 | Active track #0067E8 on the white canvas / on #F5F5F5 | 5.11 / 4.69:1 | 3:1 | Pass |
 | Inactive track #D4D4D4 on the white canvas | 1.48:1 | – | Below 3:1 by choice, as on Switch. The active track and the thumb carry the value |
-| Brand thumb #0067E8 on the canvas / on the inactive track | 5.11 / 3.45:1 | 3:1 | Pass. Hover #0857C5 and Pressed #0D4C9B are darker still |
-| Brand thumb against the active track | 1:1 | 3:1 | Pass through the white ring, which is 5.11:1 against both |
-| Neutral thumb #FFFFFF on the active track | 5.11:1 | 3:1 | Pass |
-| Neutral thumb #FFFFFF on the inactive track / on the canvas | 1.48 / 1:1 | 3:1 | **Below.** The shadow carries the edge. See Known gaps |
+| Thumb #FFFFFF on the active track | 5.11:1 | 3:1 | Pass |
+| Thumb #FFFFFF on the inactive track / on the canvas | 1.48 / 1:1 | 3:1 | **Below.** The shadow carries the edge. See Known gaps |
 | Tick #737373 on the inactive track / #FFFFFF on the active track | 3.19 / 5.11:1 | 3:1 | Pass |
 | Focus ring #0681FF on the canvas | 3.75:1 | 3:1 | Pass. Where it crosses the track it is 2.53:1 on grey and 1.36:1 on brand, but most of the ring sits on the canvas |
 | Label and value #0A0A0A / limits #525252 on white | 19.79 / 7.81:1 | 4.5:1 (1.4.3) | Pass |
@@ -277,7 +256,7 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 | | Web | Android | iOS |
 |---|---|---|---|
 | Base | A custom element with two `role="slider"` thumbs for Range, or a styled `<input type="range">` for Single | Material 3 `Slider` and `RangeSlider` with custom `thumb` and `track` slots | A custom SwiftUI view with a `DragGesture`. `Slider` cannot draw a range or restyle its thumb |
-| Shadow (Neutral) | `--slider-neutral-thumb-shadow` as one `box-shadow` | `sliderNeutralThumbShadow1*` and `2*`, drawn as two layers | The same two layers as two `.shadow` modifiers |
+| Thumb shadow | `--slider-thumb-shadow` and `--slider-thumb-shadow-raised`, each one `box-shadow` | `sliderThumbShadow1*` and `2*` (and `sliderThumbShadowRaised*`), drawn as two layers | The same two layers as two `.shadow` modifiers |
 
 ---
 
@@ -287,13 +266,11 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 - **No histogram.** A price distribution above the track is left for later.
 - **Linear scale only.** Wide price ranges usually need a non-linear scale so cheap prices are not crammed at one end. The consumer maps values for now.
 - **Horizontal only.** There is no vertical slider.
-- **Neutral thumb contrast.** The white thumb is 1.48:1 on the inactive track and 1:1 on the canvas, below 3:1. The shadow carries it, as on the system iOS slider. This is one of the things the style test should weigh.
+- **Thumb contrast.** The white thumb is 1.48:1 on the inactive track and 1:1 on the canvas, below 3:1. The shadow carries it, as on the system iOS slider. It passes against the active track (5.11:1), which the thumb always touches.
 - **No motion tokens.** The spring, fades and haptics are documented above, not tokenised.
 - **`focus-ring-offset` and `tooltip-gap` are not bound in Figma.** They are geometry: the ring and tooltip are placed at those distances. The focus ring size (thumb plus 8) and the active track length are not bound either, because they follow the value.
 - **Thumb positions come in 5% steps and assume the default width.** Figma has no number property and does not allow resizing layers inside an instance, so positions are presets on the exposed .Slider / Position spacers. They are sized for the 320 Medium and 280 Small widths; on a resized slider, the grey ticks stretch but the thumbs keep their pixel positions. For another width or an exact value, detach the instance.
 - **Min thumb and Max thumb are not linked.** Figma cannot stop Min thumb going past Max thumb; keep Min at or below Max.
-- **The Slider Grid Legend uses four-line row labels** (Type, Steps, Style, Size), one more than the page checklist allows. This is temporary, until the Style axis is removed.
-- **Two styles live side by side** until one is chosen. Only one of the `neutral-*` and `brand-*` groups is meant to ship.
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
 
@@ -301,17 +278,15 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 
 ## Token reference
 
-45 tokens under `component.slider` in `tokens/tokens.json`. 43 are mirrored 1:1 as `slider/*` in the Figma `component` collection. The Figma file has no shadow variables, so `neutral-thumb-shadow` and `neutral-thumb-shadow-raised` are the `shadow/card` and `shadow/raised` effect styles on the thumb there.
+40 tokens under `component.slider` in `tokens/tokens.json`. 38 are mirrored 1:1 as `slider/*` in the Figma `component` collection. The Figma file has no shadow variables, so `thumb-shadow` and `thumb-shadow-raised` are the `shadow/card` and `shadow/raised` effect styles on the thumb there.
 
 | Group | Count |
 |---|---|
 | Track: `track-inactive`, `track-inactive-disabled`, `track-active`, `track-active-disabled`, `track-height-{md,sm}` | 6 |
 | Ticks: `tick-active`, `tick-inactive`, `tick-active-disabled`, `tick-inactive-disabled`, `tick-size-{md,sm}` | 6 |
-| Neutral: `neutral-thumb-default`, `neutral-thumb-shadow`, `neutral-thumb-shadow-raised` | 3 |
-| Brand: `brand-thumb-{default,hover,pressed}`, `brand-thumb-ring`, `brand-thumb-ring-width` | 5 |
-| Thumb, shared: `thumb-disabled`, `thumb-size-{md,sm}`, `halo-hover`, `halo-pressed`, `halo-size-{md,sm}` | 7 |
+| Thumb: `thumb-default`, `thumb-shadow`, `thumb-shadow-raised`, `thumb-disabled`, `thumb-size-{md,sm}`, `halo-hover`, `halo-pressed`, `halo-size-{md,sm}` | 10 |
 | Focus and shape: `focus-ring`, `focus-ring-width`, `focus-ring-offset`, `radius`, `min-touch-target-{md,sm}` | 6 |
 | Text: `label-text`, `value-text`, `limit-text`, `text-disabled`, `header-gap` | 5 |
 | Tooltip: `tooltip-bg`, `tooltip-text`, `tooltip-padding-x`, `tooltip-padding-y`, `tooltip-radius`, `tooltip-gap`, `tooltip-caret-width` | 7 |
 
-Platform names follow the standard pipeline: `slider/brand-thumb-pressed` → `--slider-brand-thumb-pressed` (CSS) → `CosmosTokens.sliderBrandThumbPressed` (Swift / Kotlin) → `tokens.slider["brand-thumb-pressed"]` (TS).
+Platform names follow the standard pipeline: `slider/thumb-disabled` → `--slider-thumb-disabled` (CSS) → `CosmosTokens.sliderThumbDisabled` (Swift / Kotlin) → `tokens.slider["thumb-disabled"]` (TS).
