@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
+import { buildTokenModel } from "../lib/tokens.mjs";
+import { emittedPaths } from "../rules/tokens.mjs";
 import { fixture, lint, ofRule, realTokens } from "./helpers.mjs";
 
 const TOKENS_RULES = "tokens";
@@ -133,5 +135,16 @@ describe("--fix", () => {
     const root = fixture({ tokens: text });
     await lint(root, "tokens/format", { fix: true });
     assert.equal(readFileSync(join(root, "tokens/tokens.json"), "utf8"), text);
+  });
+});
+
+describe("emittedPaths", () => {
+  it("expands an aliased shadow into its target's layers on native, as the build does", () => {
+    const model = buildTokenModel(realTokens());
+    const card = model.byId.get("shadow.card");
+    const alias = { path: ["demo", "thumb-shadow"], type: "boxShadow", value: "{shadow.card}" };
+    assert.equal(emittedPaths(alias, "web", model).length, 1);
+    assert.equal(emittedPaths(alias, "native", model).length, emittedPaths(card, "native", model).length);
+    assert.equal(emittedPaths(alias, "native", model).length, 8);
   });
 });

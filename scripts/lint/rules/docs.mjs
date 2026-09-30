@@ -32,12 +32,12 @@ function tokenIndex(api) {
   const { model } = t;
   const cssToLeaf = new Map();
   for (const leaf of model.leaves) {
-    for (const parts of emittedPaths(leaf, "web")) {
+    for (const parts of emittedPaths(leaf, "web", model)) {
       if (parts.length === leaf.path.length) cssToLeaf.set(cssName(parts), leaf);
     }
   }
   const componentGroups = new Set(Object.keys(t.value.component ?? {}));
-  const cssVars = api.distCssVars() ?? new Set([...model.leaves.flatMap((l) => emittedPaths(l, "web").map(cssName))]);
+  const cssVars = api.distCssVars() ?? new Set([...model.leaves.flatMap((l) => emittedPaths(l, "web", model).map(cssName))]);
   const cssPrefixes = new Set([...cssVars].map((v) => v.slice(2).split("-")[0]));
 
   /** Resolve a doc spelling (`color.bg`, `bg`, `button/bg-x`, `--space-md`, `{x}`) to a leaf. */
@@ -308,8 +308,8 @@ function counts(t) {
     palettes,
     paletteSteps: palettes.reduce((n, p) => n + leavesIn(t.value.primitives.color[p]), 0),
     total: model.leaves.length,
-    emittedWeb: model.leaves.reduce((n, l) => n + emittedPaths(l, "web").length, 0),
-    emittedNative: model.leaves.reduce((n, l) => n + emittedPaths(l, "native").length, 0),
+    emittedWeb: model.leaves.reduce((n, l) => n + emittedPaths(l, "web", model).length, 0),
+    emittedNative: model.leaves.reduce((n, l) => n + emittedPaths(l, "native", model).length, 0),
     gradients: model.leaves.filter((l) => typeof l.value === "string" && /linear-gradient\(/.test(l.value)).length,
   };
 }
