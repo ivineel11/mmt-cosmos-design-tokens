@@ -20,8 +20,9 @@ And two densities:
 - **Comfortable** is the default, and the only density allowed on touch screens. A one-line text row is 50 tall, and never less than 48.
 - **Compact** is for pointer-first web lists, such as filter panels. A one-line row is 40 tall.
 
-The component is four Figma sets:
+The component is five Figma sets:
 
+- **List** is the container. It holds an optional section header, five rows and a **More rows** slot for extra rows, so no list needs detaching. Its Variant is Plain or Grouped.
 - **List / Item** is one row.
 - **List / Leading** is what goes at the start of a row: an icon, an icon in a neutral or brand circle, an avatar, a thumbnail, or a Checkbox or Radio.
 - **List / Trailing** is what goes at the end: a chevron, a meta value, a meta value with a chevron, a Badge, a Secondary Button, or a Switch.
@@ -44,6 +45,13 @@ The component is four Figma sets:
 - **Button** (referenced: set `58:202`) is nested in List / Trailing as Secondary. Comfortable uses Size Medium (40 tall) and Compact uses Size Small (32 tall). Disabled rows switch it to State Disabled. It is exposed, so its Label can be changed from the row.
 - **Switch** (referenced: set `731:172`) is nested in List / Trailing with Selection On and no icon. Comfortable uses Size Medium (48 × 28) and Compact uses Size Small (36 × 20). Disabled rows switch it to State Disabled. It is exposed, so Selection and Icon can be changed from the row.
 - **Set the row first, then the control.** Changing a row's Density, or moving its State to or from Disabled, resets any change made to the Checkbox, Radio, Badge, Button or Switch inside it. Selection, Intent, Emphasis, Label and icon toggles all go back to their defaults. Lines, Hover, Pressed and Focus changes are safe. See Known gaps.
+- **List** (`797:4533`) holds, in order: Section header, then a Rows frame with Item 1 to Item 5 and the More rows slot.
+  - **Container-level control.** The Section header and every Item have a Show toggle, and each is an exposed nested instance. With the List selected, you can hide a row and edit its title, lines, leading and trailing without drilling in. Items 4 and 5 start hidden, and Item 3 has its divider off because it is the last row shown.
+  - **More than five rows.** Turn on Show more rows, then insert rows into the More rows slot, below Item 5. Its preferred instances are List / Item and List / Section header. Inserted rows stretch to the list width, and any other layer is flagged as not allowed.
+  - **Figma limits.** Figma cannot expose, or bind a toggle to, anything inside a slot. So rows in More rows are edited by selecting them, and removed by deleting them. An inserted row arrives at its default variant (Comfortable, one line), so set its Density to match the list.
+  - **Plain and Grouped.** Plain has no fill, and belongs on the white `bg` page. In Grouped, the Rows frame becomes the white `list/bg-grouped` card with `list/grouped-radius`, and the section header sits above it on the grey page. Switching between them keeps every row edit, toggle and slot row.
+  - **One Grouped List per card.** A second group is a second List instance, `list/grouped-gap` below the first. Insert section headers into More rows only in Plain lists, because in Grouped they would land inside the card.
+  - **No density of its own.** The container adds no padding or gap, so the rows set the density. That is why List needs no Density variant, unlike the Menu panels.
 - **Icon / plus** (`55:11`) is the placeholder glyph in the leading slot, and **Icon / chevron-right** (`55:5`) is the trailing chevron. The examples use **Icon / flight** (`685:31`), **Icon / bell** (`685:28`), **Icon / info** (`635:120`), **Icon / check-circle** (`635:123`) and **Icon / person** (`713:26`, added for this component: Material Symbols Rounded `person`, weight 300, grade 0, optical size 24).
 - The avatar and thumbnail use the beach aerial sample photo that Chip uses. Replace it with the real image.
 - _Decorative children: 2 (Divider, Focus ring). They are documented under Structure._
@@ -84,6 +92,11 @@ The component is four Figma sets:
 
 | Set | Figma property | Type | Default | Notes |
 |---|---|---|---|---|
+| List | `Variant` | VARIANT | Plain | Plain, Grouped. Maps to `variant`. |
+| List | `Show section header`, `Show item 1` to `Show item 5` | BOOLEAN | `true` for the header and Items 1 to 3, `false` for Items 4 and 5 | |
+| List | `Section header`, `Item 1` to `Item 5` | Nested instance | List / Section header, List / Item | Exposed. Turn `Show divider` off on the last row shown. |
+| List | `Show more rows` | BOOLEAN | `false` | Shows the More rows slot. |
+| List | `More rows` | SLOT | Empty | Extra rows past five. Preferred instances: the List / Item and List / Section header sets. Only those are allowed. Inserted rows stretch to full width. |
 | Item | `Density` | VARIANT | Comfortable | Comfortable, Compact |
 | Item | `Lines` | VARIANT | One | One, Two, Three. Three top-aligns the leading and trailing slots. |
 | Item | `State` | VARIANT | Default | Default, Hover, Pressed, Focus, Disabled |
@@ -106,6 +119,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `List exa
 | 4 | Plain, comfortable, three-line rows with a thumbnail and a price | Hotel results. |
 | 5 | Comfortable, two lines, icon in a neutral circle, trailing Button "Add" | A static saved traveller row. Only the button is interactive. |
 | 6 | Comfortable, two lines, trailing Switch on: "Trip updates on WhatsApp" / "Booking confirmations and gate changes" | A settings row. The whole row toggles the switch. |
+| 7 | List, Grouped, header "Notifications", three rows without leading and with a trailing Switch: "Trip updates on WhatsApp" on, "Price drop alerts" off, "Offers and deals" off | Built from one List instance. Item 3 has no divider. |
 
 ---
 
@@ -137,6 +151,12 @@ Hover and pressed fills change without a transition on touch, and in 100 ms line
 ### Anatomy
 
 ```text
+List (component set · 797:4533) · vertical, no gap
+├─ Section header (instance · List / Section header) · Show section header · exposed
+└─ Rows (frame · vertical · fills the width) · Grouped: list/bg-grouped fill, list/grouped-radius, clips
+   ├─ Item 1 … Item 5 (instance · List / Item) · Show item 1 … 5 · exposed
+   └─ More rows (slot · vertical · fills the width) · Show more rows (off) · List / Item and List / Section header only
+
 List / Item (component set · 710:474) · gap between Leading slot and Main
 ├─ Leading slot (frame · padding-y top and bottom) · Show leading
 │  └─ Leading (instance · List / Leading) · exposed
@@ -297,6 +317,9 @@ This component adds no semantic roles.
 - **`list/focus-ring-inset` is not bound in Figma.** As on Chip, Snackbar and Tab, the ring position is geometry. The ring binds its width, radius and colour.
 - **Nested Checkbox and Radio sizes are experimental** (issue #39). List rows reuse them as they are.
 - **Nested control overrides reset on Density and Disabled.** Figma keeps an override on a nested instance only while the instance that holds it stays on the same variant. The Checkbox and Radio sit inside List / Leading, and the Badge, Button and Switch inside List / Trailing. A row Density or Disabled change swaps Leading and Trailing to another variant, so changes to the control inside are lost. The Type set on Leading or Trailing survives, because it sits directly on the row. Moving the controls directly into List / Item would fix this. That was considered on 2026-09-30 and not adopted.
+- **The More rows slot does not enforce density.** Figma lists preferred instances by component set, and a set allows every variant, so a Comfortable row in a Compact list is not flagged. Check the density of inserted rows.
+- **Slot rows have no List-level controls.** Figma does not allow exposed instances or property toggles inside a slot. Rows added through More rows are edited by selecting them.
+- **The last-row divider is manual.** Showing Item 4 or 5, or adding rows to More rows, does not move the missing divider. Turn `Show divider` on and off by hand so only the last row shown has none.
 - **No page margin token.** The 16 px outer margin of a grouped list on the grey page follows the screen layout, not the list.
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
