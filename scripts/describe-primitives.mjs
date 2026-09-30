@@ -65,6 +65,8 @@ const EXPLICIT = {
   "spacing.0": "Explicit zero. Use where a layout would otherwise apply a gap, so the intent reads as deliberate rather than omitted.",
   "spacing.10": "Off-ramp step that exists for a single consumer: radio/dot-size-md, which needs 10px where the semantic space scale jumps 8 to 12. Do not reach for it in layout — it is a gap-filler, not a scale step.",
   "spacing.86": "Off-ramp step that exists for a single consumer: button/min-width, the shared minimum width that lets a stretched button keep its width when its size changes. Do not reach for it in layout — it is a gap-filler, not a scale step.",
+  "spacing.200": "Off-ramp step that exists for a single consumer: menu/min-width, the narrowest a menu panel gets so a menu of short labels still reads as a list. Do not reach for it in layout — it is a gap-filler, not a scale step.",
+  "spacing.320": "Off-ramp step that exists for a single consumer: menu/max-width, the widest a menu panel gets before its labels wrap. Do not reach for it in layout — it is a gap-filler, not a scale step.",
   "spacing.-12": "Negative spacing for pulling an element outward — overlapping avatars, bleeding a child past the padding of its parent. The build renames this key to `minus12` so it cannot collide with `12` once camel/kebab-cased.",
   "spacing.-8": "Negative spacing for pulling an element outward. The build renames this key to `minus8` to avoid colliding with `8`.",
   "spacing.-4": "Negative spacing for pulling an element outward. The build renames this key to `minus4` to avoid colliding with `4`.",
