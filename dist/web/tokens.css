@@ -365,9 +365,11 @@
   --color-bg-fill-pressed-subtle: #F5F5F5;
   /** Strong pressed step of bg-fill — the chip remove button circle, and any neutral control whose press must read on either canvas. Darker than bg-secondary. Not a disabled colour; use bg-surface-disabled or bg-fill-disabled-subtle for that. */
   --color-bg-fill-pressed-strong: #E5E5E5;
-  /** Disabled fill for a control that stays visually solid when disabled — switch tracks, sliders, filled indicators. Use bg-fill-disabled-subtle for the lighter variant. */
+  /** Disabled fill for a control that stays visually solid when disabled — a selected checkbox, the tab indicator, sliders, filled indicators. Use bg-fill-disabled for the middle step and bg-fill-disabled-subtle for the lightest. */
   --color-bg-fill-disabled-strong: #A1A1A1;
-  /** Lighter disabled fill — disabled input fields and low-emphasis controls. Use bg-fill-disabled-strong when the disabled element still needs to read as solid. */
+  /** Middle disabled fill, between bg-fill-disabled-subtle and bg-fill-disabled-strong — the off thumb of a disabled Outlined switch, on its bg-surface-disabled track. For a disabled switch track use bg-fill-disabled-subtle. */
+  --color-bg-fill-disabled: #D4D4D4;
+  /** Lighter disabled fill — disabled input fields, disabled switch tracks and other low-emphasis controls. Use bg-fill-disabled or bg-fill-disabled-strong when the disabled element still needs to read as solid. */
   --color-bg-fill-disabled-subtle: #E5E5E5;
   /** Low-emphasis neutral fill — segmented control tracks, skeleton blocks. For its interactive states use bg-fill-secondary-hover and bg-fill-secondary-pressed. */
   --color-bg-fill-secondary: #F5F5F5;
@@ -419,6 +421,12 @@
   --color-bg-fill-inverse-hover: #171717;
   /** Pressed state for bg-fill-inverse — an action on a dark toast or a dark control. */
   --color-bg-fill-inverse-pressed: #262626;
+  /** Solid grey fill for a control part that is present but inactive — the off switch track and the off thumb of the Outlined switch. Below 3:1 against both canvases, an accepted gap for the switch, where the thumb position carries the value. Use bg-fill-secondary for a quiet grey container and bg-fill-disabled-subtle for a disabled switch track. */
+  --color-bg-fill-neutral-strong: #D4D4D4;
+  /** Hover step of bg-fill-neutral-strong — the off switch track under the pointer. */
+  --color-bg-fill-neutral-strong-hover: #A1A1A1;
+  /** Pressed step of bg-fill-neutral-strong — the off switch track while held. */
+  --color-bg-fill-neutral-strong-pressed: #737373;
   /** Default text colour — body copy, headings, and any content carrying the main message. */
   --color-text-primary: #0A0A0A;
   /** Supporting text at lower emphasis — descriptions, captions, secondary list lines. */
@@ -2531,4 +2539,106 @@
   --list-focus-ring-inset: 2px;
   /** Corner radius of the keyboard focus ring of a list row. */
   --list-focus-ring-radius: 8px;
+  /** Track of a switch that is on, at rest. Also used by the Outlined backup style. Use track-on-disabled when the switch is disabled. */
+  --switch-track-on-default: #0067E8;
+  /** Track of a switch that is on, under the pointer. Web only. */
+  --switch-track-on-hover: #0857C5;
+  /** Track of a switch that is on, while held. */
+  --switch-track-on-pressed: #0D4C9B;
+  /** Track of a disabled switch that is on. The same lightest grey as the disabled off track, so a disabled switch reads as disabled first and the thumb position shows its value. */
+  --switch-track-on-disabled: #E5E5E5;
+  /** Solid grey track of a switch that is off, at rest. Below 3:1 against the canvas by choice, so the thumb position carries the value. */
+  --switch-track-off-default: #D4D4D4;
+  /** Track of a switch that is off, under the pointer. Web only. */
+  --switch-track-off-hover: #A1A1A1;
+  /** Track of a switch that is off, while held. */
+  --switch-track-off-pressed: #737373;
+  /** Track of a disabled switch that is off. The same grey as track-on-disabled and lighter than the enabled off track; the thumb position shows the value. */
+  --switch-track-off-disabled: #E5E5E5;
+  /** Outlined backup style only, not for product use. White track of a switch that is off, at rest, drawn with outlined-border-off-default around it. */
+  --switch-outlined-track-off-default: #FFFFFF;
+  /** Outlined backup style only, not for product use. Track of a switch that is off, under the pointer. Web only. */
+  --switch-outlined-track-off-hover: #F5F5F5;
+  /** Outlined backup style only, not for product use. Track of a switch that is off, while held. */
+  --switch-outlined-track-off-pressed: #E5E5E5;
+  /** Outlined backup style only, not for product use. Track of a disabled switch that is off. */
+  --switch-outlined-track-off-disabled: #E5E5E5;
+  /** Outlined backup style only, not for product use. Outline of the off track. Meets 3:1 against both canvases. A switch that is on has no outline. */
+  --switch-outlined-border-off-default: #737373;
+  /** Outlined backup style only, not for product use. Outline of the off track when the switch is disabled. */
+  --switch-outlined-border-off-disabled: #D4D4D4;
+  /** White thumb, on every track and in every state including disabled. The Outlined backup style uses it only when the switch is on. */
+  --switch-thumb-default: #FFFFFF;
+  /** Outlined backup style only, not for product use. Grey thumb of a switch that is off, at rest. */
+  --switch-outlined-thumb-off-default: #D4D4D4;
+  /** Outlined backup style only, not for product use. Thumb of a switch that is off, under the pointer. Web only. */
+  --switch-outlined-thumb-off-hover: #A1A1A1;
+  /** Outlined backup style only, not for product use. Thumb of a switch that is off, while held. */
+  --switch-outlined-thumb-off-pressed: #737373;
+  /** Outlined backup style only, not for product use. Thumb of a disabled switch that is off. Lighter than outlined-thumb-off-default so it never reads as enabled. */
+  --switch-outlined-thumb-off-disabled: #D4D4D4;
+  /** Check glyph inside the white thumb of a switch that is on, at rest and on focus. Tracks track-on-default so glyph and track read as one colour. */
+  --switch-icon-on-default: #0067E8;
+  /** Check glyph of a switch that is on, under the pointer. Tracks track-on-hover. Web only. */
+  --switch-icon-on-hover: #0857C5;
+  /** Check glyph of a switch that is on, while held. Tracks track-on-pressed. */
+  --switch-icon-on-pressed: #0D4C9B;
+  /** Check glyph of a disabled switch that is on. */
+  --switch-icon-on-disabled: #A1A1A1;
+  /** Close glyph inside the white thumb of a switch that is off, at rest and on focus. Darker than the off track so it keeps 3:1 on the white thumb. */
+  --switch-icon-off-default: #737373;
+  /** Close glyph of a switch that is off, under the pointer. Steps darker with track-off-hover. Web only. */
+  --switch-icon-off-hover: #525252;
+  /** Close glyph of a switch that is off, while held. Stays darker than track-off-pressed. */
+  --switch-icon-off-pressed: #525252;
+  /** Close glyph of a disabled switch that is off. */
+  --switch-icon-off-disabled: #A1A1A1;
+  /** Outlined backup style only, not for product use. Check glyph inside the white thumb of a switch that is on, in every enabled state. Use outlined-icon-disabled when the switch is disabled. */
+  --switch-outlined-icon-on: #0067E8;
+  /** Outlined backup style only, not for product use. Close glyph inside the grey thumb of a switch that is off. */
+  --switch-outlined-icon-off: #FFFFFF;
+  /** Outlined backup style only, not for product use. Check glyph of a disabled switch that is on. When the switch is off, the glyph keeps outlined-icon-off, because the thumb there is grey. */
+  --switch-outlined-icon-disabled: #A1A1A1;
+  /** Keyboard focus ring drawn around the track, outside it, with focus-ring-offset between the two. */
+  --switch-focus-ring: #0681FF;
+  /** Track width of the Small switch. Small is for dense web layouts such as tables and filter panels; use Medium on touch. */
+  --switch-track-width-sm: 36px;
+  /** Track width of the Medium switch, the default on mobile and web. */
+  --switch-track-width-md: 48px;
+  /** Track height of the Small switch. */
+  --switch-track-height-sm: 20px;
+  /** Track height of the Medium switch. */
+  --switch-track-height-md: 28px;
+  /** Thumb diameter of the Small switch. In the Outlined style this is the on thumb, and the off thumb uses outlined-thumb-size-off-sm or outlined-thumb-size-off-icon-sm. */
+  --switch-thumb-size-sm: 16px;
+  /** Thumb diameter of the Medium switch. In the Outlined style this is the on thumb, and the off thumb uses outlined-thumb-size-off-md or outlined-thumb-size-off-icon-md. */
+  --switch-thumb-size-md: 24px;
+  /** Outlined backup style only, not for product use. Smaller thumb of an off Small switch without a glyph. It keeps the centre of the full thumb, so it grows in place when switched on. */
+  --switch-outlined-thumb-size-off-sm: 12px;
+  /** Outlined backup style only, not for product use. Smaller thumb of an off Medium switch without a glyph. It keeps the centre of the full thumb, so it grows in place when switched on. */
+  --switch-outlined-thumb-size-off-md: 16px;
+  /** Outlined backup style only, not for product use. Thumb of an off Small switch that shows the close glyph. Smaller than thumb-size-sm so it clears the outline; use outlined-thumb-size-off-sm when there is no glyph. */
+  --switch-outlined-thumb-size-off-icon-sm: 12px;
+  /** Outlined backup style only, not for product use. Thumb of an off Medium switch that shows the close glyph. Smaller than thumb-size-md so it clears the outline; use outlined-thumb-size-off-md when there is no glyph. */
+  --switch-outlined-thumb-size-off-icon-md: 20px;
+  /** Gap between the full-size thumb and the track edge at both sizes, on every side. The one exception is the start edge of an off Outlined switch, which uses outlined-thumb-inset-off-start. */
+  --switch-thumb-inset: 2px;
+  /** Outlined backup style only, not for product use. Gap between the thumb slot and the start edge of the track when the switch is off. Smaller than thumb-inset so the off thumb sits flush with the start edge, which balances it optically against the on state. */
+  --switch-outlined-thumb-inset-off-start: 0px;
+  /** Glyph size inside the Small thumb. */
+  --switch-icon-size-sm: 12px;
+  /** Glyph size inside the Medium thumb. */
+  --switch-icon-size-md: 16px;
+  /** Corner radius of the track, the thumb and the focus ring. Always a full pill or circle. */
+  --switch-radius: 999px;
+  /** Outlined backup style only, not for product use. Width of the off track outline, drawn inside the track so the switch does not change size. */
+  --switch-outlined-border-width: 2px;
+  /** Width of the keyboard focus ring. */
+  --switch-focus-ring-width: 2px;
+  /** Gap between the track edge and the focus ring. */
+  --switch-focus-ring-offset: 2px;
+  /** Minimum hit area of the Small switch on web, the WCAG 2.5.8 floor. Small is not for touch. */
+  --switch-min-touch-target-sm: 24px;
+  /** Minimum hit area of the Medium switch. Pad the track to this size on touch platforms, or make the whole row tappable. */
+  --switch-min-touch-target-md: 48px;
 }
