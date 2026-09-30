@@ -18,11 +18,12 @@ A slider picks a value, or a range of values, by dragging a thumb along a track.
 
 The value applies as the thumb moves, or on release when a new value is expensive to fetch. It never submits a form by itself.
 
-There are three components on the Slider page (`809:2`):
+There are three components on the Slider page (`809:2`), plus one internal helper:
 
 - **Slider** is the whole component: an optional header row, the track row and optional limit labels.
 - **Slider / Thumb** is one thumb, with its halo and focus ring.
 - **Slider / Tooltip** is the value bubble shown above a thumb while it is held or focused. One variant axis, `Caret` (True or False), and a `Value` text property. It is the same at both sizes.
+- **.Slider / Position** (internal, unpublished) is a transparent spacer that places a thumb. Size × Value = 42 variants, 0% to 100% in 5% steps.
 
 Five variant axes drive Slider:
 
@@ -46,6 +47,7 @@ Five variant axes drive Slider:
 
 - **Slider / Thumb** (`809:83`) is nested once in Single and twice in Range, and follows the slider's Style, Size and State. In Range the minimum thumb stays Default and the maximum thumb takes the State.
 - **Slider / Tooltip** (`812:568`) is nested above the maximum thumb and shown through the `Show tooltip` property. The nested instance is exposed, so its `Caret` and `Value` are set from the Slider panel.
+- **.Slider / Position** (`821:664`) is nested once in Single (`Thumb position`) and twice in Range (`Min thumb`, `Max thumb`). The nested instances are exposed, so a designer places the thumbs from the Slider panel. The spacer width sets the length of the bar the thumb rides on.
 - _Decorative children: Halo and Focus ring, inside Slider / Thumb. They are documented under Structure._
 
 ---
@@ -84,6 +86,7 @@ Five variant axes drive Slider:
 | `Show tooltip` | BOOLEAN | `false` | Shows the tooltip above the maximum thumb, and the Tooltip space that makes room for it, so the tooltip stays inside the component bounds and never covers the header. |
 | `Caret` (on the exposed Tooltip) | VARIANT | True | True draws the caret, False shows the bubble alone. |
 | `Style` | VARIANT | Neutral | Neutral or Brand. Under test; will be removed. |
+| `Thumb position` (Single), `Min thumb` and `Max thumb` (Range), on the exposed .Slider / Position | VARIANT | 60% (Single), 25% and 75% (Range); 75% on Discrete Single | 0% to 100% of the travel in 5% steps. Discrete sliders have 4 steps, so use 0, 25, 50, 75 or 100% to land on a tick. Keep Min thumb at or below Max thumb. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Slider examples` frame (`811:5778`).
 
@@ -137,10 +140,19 @@ Slider (component set · 811:1622)
 │  ├─ Tooltip space (empty, 24 or 32 tall, fill width) · Show tooltip
 │  ├─ Track row (48 or 24 tall, no clipping)
 │  │  ├─ Track inactive (full width, centred vertically) · radius full
-│  │  ├─ Track active (from the start or the minimum thumb to the thumb) · radius full
-│  │  ├─ Tick × steps + 1 (Discrete only) · circle
-│  │  ├─ Thumb × 1 or 2 (instances of Slider / Thumb)
-│  │  └─ Tooltip (instance of Slider / Tooltip, exposed, above the maximum thumb and rising into Tooltip space) · Show tooltip
+│  │  ├─ Ticks (Discrete only, grey, spread across the travel)
+│  │  ├─ Rail (Single) or Rail max (Range) (auto layout, padding-left = half a thumb)
+│  │  │  └─ Track active (auto layout, hugs its spacer)
+│  │  │     ├─ Thumb position or Max thumb (exposed .Slider / Position) · sets the bar length
+│  │  │     ├─ Fill (absolute, from the track start to the bar end, brand) · clips the white Ticks (Discrete)
+│  │  │     └─ Thumb or Thumb max (absolute, pinned to the bar end)
+│  │  │        ├─ Thumb (instance of Slider / Thumb)
+│  │  │        └─ Tooltip (exposed instance of Slider / Tooltip, rising into Tooltip space) · Show tooltip
+│  │  └─ Rail min (Range only, drawn on top)
+│  │     └─ Track before min (auto layout, hugs its spacer)
+│  │        ├─ Min thumb (exposed .Slider / Position)
+│  │        ├─ Fill (absolute, track-inactive grey) · hides the brand bar before the minimum thumb, with grey Ticks (Discrete)
+│  │        └─ Thumb min (instance of Slider / Thumb, pinned to the bar end)
 │  └─ Limits (auto layout, horizontal, space between) · Show limits
 │     ├─ Min (text · label/small/regular)
 │     └─ Max (text · label/small/regular)
@@ -149,6 +161,9 @@ Slider / Thumb (component set · 809:83)
 ├─ Halo (circle, 40 or 28, centred) · Hover and Pressed only · decorative
 ├─ Focus ring (circle, 2 outside the thumb) · Focus only · decorative
 └─ Thumb (circle, 24 or 16) · Neutral adds shadow.card, or shadow.raised on Hover and Pressed · Brand adds a 2 px white ring inside
+
+.Slider / Position (component set · 821:664 · internal)
+└─ Spacer (transparent rectangle, 0% to 100% of the travel wide) · the variant hugs it, so swapping Value resizes the bar
 
 Slider / Tooltip (component set · 812:568 · Caret True or False)
 ├─ Bubble (auto layout, padding 4 × 8, radius 8)
@@ -275,7 +290,8 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 - **Neutral thumb contrast.** The white thumb is 1.48:1 on the inactive track and 1:1 on the canvas, below 3:1. The shadow carries it, as on the system iOS slider. This is one of the things the style test should weigh.
 - **No motion tokens.** The spring, fades and haptics are documented above, not tokenised.
 - **`focus-ring-offset` and `tooltip-gap` are not bound in Figma.** They are geometry: the ring and tooltip are placed at those distances. The focus ring size (thumb plus 8) and the active track length are not bound either, because they follow the value.
-- **Fixed-width variants.** Medium variants are 320 wide and Small 280. The thumbs, ticks and active track use Scale constraints, so a resized instance keeps their proportions but also stretches the thumbs. Keep the default width, or move the thumbs by hand after resizing.
+- **Thumb positions come in 5% steps and assume the default width.** Figma has no number property and does not allow resizing layers inside an instance, so positions are presets on the exposed .Slider / Position spacers. They are sized for the 320 Medium and 280 Small widths; on a resized slider, the grey ticks stretch but the thumbs keep their pixel positions. For another width or an exact value, detach the instance.
+- **Min thumb and Max thumb are not linked.** Figma cannot stop Min thumb going past Max thumb; keep Min at or below Max.
 - **The Slider Grid Legend uses four-line row labels** (Type, Steps, Style, Size), one more than the page checklist allows. This is temporary, until the Style axis is removed.
 - **Two styles live side by side** until one is chosen. Only one of the `neutral-*` and `brand-*` groups is meant to ship.
 - **No dark mode.** All variable collections are single-mode.
