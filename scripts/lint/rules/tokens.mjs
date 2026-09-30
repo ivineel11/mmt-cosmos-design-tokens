@@ -81,13 +81,19 @@ export const camelName = (parts) =>
  * on iOS and Android (shadowCard1OffsetX). `platform` is "web", "native" or "all" (every
  * name any platform emits, for collision checks).
  */
-export function emittedPaths(leaf, platform = "all") {
+export function emittedPaths(leaf, platform = "all", model = null) {
   if (leaf.type === "typography" && isPlainObject(leaf.value)) {
     return Object.keys(leaf.value).map((member) => [...leaf.path, member]);
   }
-  if (leaf.type === "boxShadow" && Array.isArray(leaf.value)) {
+  // A shadow that aliases another (`{shadow.card}`) expands into its target's layers
+  // on native, exactly as the build does, so follow the alias when the model is given.
+  let shadow = leaf.value;
+  for (let hops = 0, id = aliasTarget(shadow); leaf.type === "boxShadow" && model && id && hops < 10; hops++, id = aliasTarget(shadow)) {
+    shadow = model.byId.get(id)?.value;
+  }
+  if (leaf.type === "boxShadow" && Array.isArray(shadow)) {
     const renamed = { x: "offsetX", y: "offsetY" };
-    const layers = leaf.value.flatMap((layer, i) =>
+    const layers = shadow.flatMap((layer, i) =>
       isPlainObject(layer) ? Object.keys(layer).map((m) => [...leaf.path, `${i + 1}`, renamed[m] ?? m]) : [],
     );
     if (platform === "web") return [leaf.path];
@@ -669,7 +675,7 @@ const namespaceCollision = {
     for (const [kind, fn] of [["CSS", cssName], ["camelCase", camelName]]) {
       const seen = new Map();
       for (const leaf of t.model.leaves) {
-        for (const parts of emittedPaths(leaf)) {
+        for (const parts of emittedPaths(leaf, "all", t.model)) {
           const name = fn(parts);
           const prior = seen.get(name);
           if (prior && prior !== leaf) {

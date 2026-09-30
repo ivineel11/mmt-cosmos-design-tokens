@@ -27,7 +27,7 @@ Two variant axes drive each set:
 | Situation | Use |
 |---|---|
 | The options filter one list rather than switch views | Chip (choice or filter) |
-| Two or three options change a setting in place, such as One way / Round trip | A segmented control |
+| Two or three options change a setting in place, such as One way / Round trip | [Segmented control](segmented-control.md) |
 | The destinations are separate screens of the app | Bottom navigation |
 | The steps must be done in order | A stepper |
 
