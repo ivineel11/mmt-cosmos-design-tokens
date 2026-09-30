@@ -150,7 +150,7 @@ Snackbar / Control (component set · 636:3088)
    or Icon (instance · Icon / close)  — Type=Close
 ```
 
-Both layouts hug their content vertically: the snackbar never drops below `snackbar/min-height` (48), and it grows by 22 px for each extra message line and by 24 px for the title (its line plus `snackbar/gap-text`). Controls never share a wrapper frame. In Inline, Action and Close are direct children of the snackbar; in Stacked, Close sits beside Content in the top row. A hidden control therefore leaves no gap and the text fills the row. Two Figma booleans cannot hide a shared parent when both are off. In both layouts the spacing works out as follows:
+Both layouts hug their content vertically: the snackbar never drops below `snackbar/min-height` (48), and it grows by 22 px for each extra message line and by 22 px for the title (its line, with `snackbar/gap-text` at 0). Controls never share a wrapper frame. In Inline, Action and Close are direct children of the snackbar; in Stacked, Close sits beside Content in the top row. A hidden control therefore leaves no gap and the text fills the row. Two Figma booleans cannot hide a shared parent when both are off. In both layouts the spacing works out as follows:
 
 | Controls shown | Text to first control | Action to close | Text to edge |
 |---|---|---|---|
@@ -174,7 +174,7 @@ The same in every Appearance and Intent.
 | Padding bottom, Stacked | 8 | `snackbar/padding-y` |
 | Gap: icon to text | 12 | `snackbar/gap` |
 | Gap: text to first control | 12 | `snackbar/content-padding-end` (4) + `snackbar/gap-controls` (8) |
-| Gap: title to message | 2 | `snackbar/gap-text` |
+| Gap: title to message | 0 | `snackbar/gap-text` |
 | Gap: action to close | 8 | `snackbar/gap-controls` |
 | Gap: text to action row, Stacked | 8 | `snackbar/stacked-gap` |
 | Leading icon | 24 | `snackbar/icon-size` |

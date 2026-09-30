@@ -2216,8 +2216,8 @@
   --snackbar-padding-end-control: 12px;
   /** Horizontal gap between the leading icon and the text in both layouts. */
   --snackbar-gap: 12px;
-  /** Vertical gap between the title and the message. Use none when there is no title. */
-  --snackbar-gap-text: 2px;
+  /** Vertical gap between the title and the message. Zero, so the two read as one block and the 22px line heights alone space them. For the gap between the text and the controls use gap-controls. */
+  --snackbar-gap-text: 0px;
   /** Gap before each visible control: between the text block and the first control, and between the action and close buttons in the inline layout; between the text block and the close button in the stacked layout. Hidden controls leave no gap, so the text fills the row. */
   --snackbar-gap-controls: 8px;
   /** End padding of the icon and text block in both layouts. Adds to gap-controls for 12px between the text and the first control, and to padding-end-control for 16px from the edge when no control sits beside the text. */

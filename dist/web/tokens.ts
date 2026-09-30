@@ -1384,7 +1384,7 @@ export default {
     "padding-y": "8px",
     "padding-end-control": "12px",
     gap: "12px",
-    "gap-text": "2px",
+    "gap-text": "0px",
     "gap-controls": "8px",
     "content-padding-end": "4px",
     "content-padding-top-stacked": "4px",

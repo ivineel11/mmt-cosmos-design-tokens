@@ -1242,7 +1242,7 @@ object CosmosTokens {
   val snackbarFocusRingWidth = 2.dp
   val snackbarGap = 12.dp
   val snackbarGapControls = 8.dp
-  val snackbarGapText = 2.dp
+  val snackbarGapText = 0.dp
   val snackbarIconControlInverseDefault = Color(0xFFA1A1A1)
   val snackbarIconControlInverseHover = Color(0xFFA1A1A1)
   val snackbarIconControlInversePressed = Color(0xFFA1A1A1)

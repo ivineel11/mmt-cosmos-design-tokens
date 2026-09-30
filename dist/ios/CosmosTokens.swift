@@ -1239,7 +1239,7 @@ public enum CosmosTokens {
     public static let snackbarFocusRingWidth = CGFloat(2)
     public static let snackbarGap = CGFloat(12)
     public static let snackbarGapControls = CGFloat(8)
-    public static let snackbarGapText = CGFloat(2)
+    public static let snackbarGapText = CGFloat(0)
     public static let snackbarIconControlInverseDefault = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
     public static let snackbarIconControlInverseHover = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
     public static let snackbarIconControlInversePressed = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
