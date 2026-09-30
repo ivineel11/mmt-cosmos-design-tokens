@@ -81,7 +81,7 @@ Five variant axes drive Slider:
 | `Min`, `Max` | TEXT | `"Min"`, `"Max"` | Placeholder copy for the limit labels. |
 | `Show header` | BOOLEAN | `true` | Shows the header row. |
 | `Show limits` | BOOLEAN | `true` | Shows the limit labels. |
-| `Show tooltip` | BOOLEAN | `false` | Shows the tooltip above the maximum thumb. |
+| `Show tooltip` | BOOLEAN | `false` | Shows the tooltip above the maximum thumb, and the Tooltip space that makes room for it, so the tooltip stays inside the component bounds and never covers the header. |
 | `Caret` (on the exposed Tooltip) | VARIANT | True | True draws the caret, False shows the bubble alone. |
 | `Style` | VARIANT | Neutral | Neutral or Brand. Under test; will be removed. |
 
@@ -133,15 +133,17 @@ Slider (component set · 811:1622)
 ├─ Header (auto layout, horizontal, space between) · Show header
 │  ├─ Label (text · label/medium/regular or label/small/regular)
 │  └─ Value (text · label/medium/bold or label/small/bold)
-├─ Track row (48 or 24 tall, no clipping)
-│  ├─ Track inactive (full width, centred vertically) · radius full
-│  ├─ Track active (from the start or the minimum thumb to the thumb) · radius full
-│  ├─ Tick × steps + 1 (Discrete only) · circle
-│  ├─ Thumb × 1 or 2 (instances of Slider / Thumb)
-│  └─ Tooltip (instance of Slider / Tooltip, above the maximum thumb) · Show tooltip
-└─ Limits (auto layout, horizontal, space between) · Show limits
-   ├─ Min (text · label/small/regular)
-   └─ Max (text · label/small/regular)
+├─ Body (auto layout, vertical, no gap)
+│  ├─ Tooltip space (empty, 24 or 32 tall, fill width) · Show tooltip
+│  ├─ Track row (48 or 24 tall, no clipping)
+│  │  ├─ Track inactive (full width, centred vertically) · radius full
+│  │  ├─ Track active (from the start or the minimum thumb to the thumb) · radius full
+│  │  ├─ Tick × steps + 1 (Discrete only) · circle
+│  │  ├─ Thumb × 1 or 2 (instances of Slider / Thumb)
+│  │  └─ Tooltip (instance of Slider / Tooltip, exposed, above the maximum thumb and rising into Tooltip space) · Show tooltip
+│  └─ Limits (auto layout, horizontal, space between) · Show limits
+│     ├─ Min (text · label/small/regular)
+│     └─ Max (text · label/small/regular)
 
 Slider / Thumb (component set · 809:83)
 ├─ Halo (circle, 40 or 28, centred) · Hover and Pressed only · decorative
@@ -174,6 +176,7 @@ In code the halo is drawn under the track, so the track shows through it. The Fi
 | Tooltip caret | 8 × 4 | 8 × 4 | `slider/tooltip-caret-width` |
 | Gap: thumb top to caret tip | 8 | 8 | `slider/tooltip-gap` |
 | Gap: thumb top to bubble, caret off | 12 | 12 | `slider/tooltip-gap` plus the caret height |
+| Tooltip space, only with Show tooltip | 24 | 32 | tooltip height plus `slider/tooltip-gap`, less the space between the track row top and the thumb |
 | Label and value type | 14 / 20 | 12 / 16 | `label/medium/*`, `label/small/*` |
 | Limit and tooltip type | 12 / 16 | 12 / 16 | `label/small/regular`, `label/small/bold` |
 
