@@ -926,6 +926,10 @@
   --spacing-64: 64px;
   /** Off-ramp step that exists for a single consumer: button/min-width, the shared minimum width that lets a stretched button keep its width when its size changes. Do not reach for it in layout — it is a gap-filler, not a scale step. */
   --spacing-86: 86px;
+  /** Off-ramp step that exists for a single consumer: menu/min-width, the narrowest a menu panel gets so a menu of short labels still reads as a list. Do not reach for it in layout — it is a gap-filler, not a scale step. */
+  --spacing-200: 200px;
+  /** Off-ramp step that exists for a single consumer: menu/max-width, the widest a menu panel gets before its labels wrap. Do not reach for it in layout — it is a gap-filler, not a scale step. */
+  --spacing-320: 320px;
   /** Negative spacing for pulling an element outward — overlapping avatars, bleeding a child past the padding of its parent. The build renames this key to `minus12` so it cannot collide with `12` once camel/kebab-cased. Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-minus12: -12px;
   /** Negative spacing for pulling an element outward. The build renames this key to `minus8` to avoid colliding with `8`. Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
@@ -2646,4 +2650,128 @@
   --switch-min-touch-target-sm: 24px;
   /** Minimum hit area of the Medium switch. Pad the track to this size on touch platforms, or make the whole row tappable. */
   --switch-min-touch-target-md: 48px;
+  /** Fill of the menu panel, white on either canvas. The panel always carries a border and the overlay shadow, so it still separates from a white page. Rows inside take item-bg-* fills, never this one. */
+  --menu-bg: #FFFFFF;
+  /** Hairline around the menu panel, so it reads as a separate layer on a white page where the shadow alone is faint. Use divider for the lines between groups inside the menu. */
+  --menu-border: #E5E5E5;
+  /** Width of the hairline around the menu panel. Use divider-width for the lines between groups. */
+  --menu-border-width: 1px;
+  /** Corner radius of the menu panel. Rows inside use item-radius, which is smaller so the row highlight nests inside the panel corner. */
+  --menu-radius: 12px;
+  /** Space between the Comfortable menu panel edge and its rows, on all four sides, so the rounded row highlight sits inset from the panel edge. */
+  --menu-padding-comfortable: 8px;
+  /** Space between the Compact menu panel edge and its rows, on all four sides. Compact is for pointer-first web menus only. */
+  --menu-padding-compact: 4px;
+  /** Gap between the trigger and the menu panel when it opens, and between a parent row and its submenu. */
+  --menu-offset: 4px;
+  /** Narrowest a menu panel gets, so a menu of short labels still reads as a list. The panel hugs its widest row between min-width and max-width. */
+  --menu-min-width: 200px;
+  /** Widest a menu panel gets. Longer labels wrap to a second line rather than widening the panel; if many labels wrap, the content wants a dialog or a sheet, not a menu. */
+  --menu-max-width: 320px;
+  /** Fill of a menu row at rest, so the panel shows through. Use item-bg-hover and item-bg-pressed for interaction. */
+  --menu-item-bg-default: #FFFFFF00;
+  /** Fill of a neutral menu row under the pointer, a neutral state layer. Destructive rows use item-bg-destructive-hover. Touch screens never show it. */
+  --menu-item-bg-hover: #F5F5F5;
+  /** Fill of a neutral menu row while it is pressed or tapped. Destructive rows use item-bg-destructive-pressed. */
+  --menu-item-bg-pressed: #E5E5E5;
+  /** Fill of a neutral menu row that holds keyboard focus. Arrow keys move this highlight, and focus-ring draws on top of it because the fill alone is too faint to find. Destructive rows use item-bg-destructive-hover. */
+  --menu-item-bg-focus: #F5F5F5;
+  /** Fill of a row whose submenu is open, so the user can see which row the submenu belongs to. Only rows with a chevron take it. */
+  --menu-item-bg-open: #F5F5F5;
+  /** Fill of a disabled menu row, the same as rest. A disabled row never takes a hover or pressed fill. */
+  --menu-item-bg-disabled: #FFFFFF00;
+  /** Fill of a destructive menu row, such as Delete or Cancel booking, under the pointer or keyboard focus. A red tint warns before the click. Neutral rows use item-bg-hover. */
+  --menu-item-bg-destructive-hover: #FFE2E2;
+  /** Fill of a destructive menu row while it is pressed or tapped. Neutral rows use item-bg-pressed. */
+  --menu-item-bg-destructive-pressed: #FFC9C9;
+  /** Corner radius of the row highlight and of the focus ring. The panel uses radius, which is larger so the row nests inside it. */
+  --menu-item-radius: 8px;
+  /** Label of a neutral menu row at rest and in every interactive state, and of a selected row, where the check carries selection. Destructive rows use label-destructive-default. */
+  --menu-label-default: #0A0A0A;
+  /** Label of a disabled menu row, neutral or destructive. Disabled rows stay in the menu so the user learns the action exists. */
+  --menu-label-disabled: #A1A1A1;
+  /** Label of a destructive menu row, such as Delete or Cancel booking, at rest. Use label-destructive-hover under the pointer or keyboard focus, and label-destructive-pressed while pressed. */
+  --menu-label-destructive-default: #C10007;
+  /** Label of a destructive menu row on the item-bg-destructive-hover tint, under the pointer or keyboard focus. It is a step darker so it keeps contrast. */
+  --menu-label-destructive-hover: #9F0712;
+  /** Label of a destructive menu row on the item-bg-destructive-pressed tint, a step darker again so it keeps contrast. */
+  --menu-label-destructive-pressed: #82181A;
+  /** Second line under a menu label, a short explanation of the action. Use meta-text-default for a value or shortcut at the end of the row. */
+  --menu-supporting-text-default: #525252;
+  /** Second line of a disabled menu row. */
+  --menu-supporting-text-disabled: #A1A1A1;
+  /** Trailing text at the end of a menu row: a keyboard shortcut on web, or a current value or count. Use supporting-text-default for a second line under the label. */
+  --menu-meta-text-default: #525252;
+  /** Trailing text of a disabled menu row. */
+  --menu-meta-text-disabled: #A1A1A1;
+  /** Leading icon of a neutral menu row in every interactive state. Destructive rows use leading-icon-destructive-default. */
+  --menu-leading-icon-default: #525252;
+  /** Leading icon of a disabled menu row, neutral or destructive. */
+  --menu-leading-icon-disabled: #A1A1A1;
+  /** Leading icon of a destructive menu row at rest. Use leading-icon-destructive-hover under the pointer or keyboard focus, and leading-icon-destructive-pressed while pressed. */
+  --menu-leading-icon-destructive-default: #C10007;
+  /** Leading icon of a destructive menu row on the item-bg-destructive-hover tint, under the pointer or keyboard focus. */
+  --menu-leading-icon-destructive-hover: #9F0712;
+  /** Leading icon of a destructive menu row on the item-bg-destructive-pressed tint. */
+  --menu-leading-icon-destructive-pressed: #82181A;
+  /** Trailing chevron that marks a row as opening a submenu. It is quieter than the leading icon because it signals structure, not the action. */
+  --menu-chevron-default: #737373;
+  /** Trailing chevron of a disabled submenu row. */
+  --menu-chevron-disabled: #A1A1A1;
+  /** Trailing check on the selected row of a single-select menu, such as Sort by. It is the only mark of selection, so the label stays label-default. */
+  --menu-check-default: #0067E8;
+  /** Trailing check on a selected row that is disabled. */
+  --menu-check-disabled: #A1A1A1;
+  /** Small header that names a group of menu rows. It is not interactive and never takes a fill. */
+  --menu-section-header-text: #525252;
+  /** Hairline between groups of menu rows, and above the destructive row. Use border for the outline of the panel. */
+  --menu-divider: #E5E5E5;
+  /** Width of the hairline between groups of menu rows. */
+  --menu-divider-width: 1px;
+  /** Ring drawn inside the edge of the menu row that holds keyboard focus, on top of item-bg-focus. It follows item-radius. */
+  --menu-focus-ring: #0681FF;
+  /** Width of the keyboard focus ring on a menu row. */
+  --menu-focus-ring-width: 2px;
+  /** Minimum height of a one-line Comfortable menu row, also its touch target. Comfortable is the default and the only density for touch screens. */
+  --menu-item-min-height-comfortable: 48px;
+  /** Minimum height of a one-line Compact menu row. Compact is for pointer-first web menus only, never touch screens. */
+  --menu-item-min-height-compact: 36px;
+  /** Space between the start and end of a Comfortable row highlight and its content. */
+  --menu-item-padding-x-comfortable: 12px;
+  /** Space between the start and end of a Compact row highlight and its content. */
+  --menu-item-padding-x-compact: 8px;
+  /** Space above and below the content of a Comfortable menu row. With a one-line label it makes the row exactly item-min-height-comfortable. */
+  --menu-item-padding-y-comfortable: 12px;
+  /** Space above and below the content of a Compact menu row. With a one-line label it makes the row exactly item-min-height-compact. */
+  --menu-item-padding-y-compact: 8px;
+  /** Space between the leading icon and the label in a Comfortable row. Use gap-text-trailing-comfortable before the trailing slot. */
+  --menu-gap-comfortable: 12px;
+  /** Space between the leading icon and the label in a Compact row. Use gap-text-trailing-compact before the trailing slot. */
+  --menu-gap-compact: 8px;
+  /** Minimum space between the text and the trailing meta, chevron or check in a Comfortable row. */
+  --menu-gap-text-trailing-comfortable: 16px;
+  /** Minimum space between the text and the trailing meta, chevron or check in a Compact row. */
+  --menu-gap-text-trailing-compact: 12px;
+  /** Space between the label and the supporting text line. Use gap-text-trailing-comfortable or gap-text-trailing-compact before the trailing slot. */
+  --menu-gap-text: 2px;
+  /** Size of the leading icon in a Comfortable menu row. Use trailing-icon-size-comfortable for the chevron and check. */
+  --menu-leading-icon-size-comfortable: 20px;
+  /** Size of the leading icon in a Compact menu row. Use trailing-icon-size-compact for the chevron and check. */
+  --menu-leading-icon-size-compact: 16px;
+  /** Size of the trailing chevron or check in a Comfortable menu row. */
+  --menu-trailing-icon-size-comfortable: 20px;
+  /** Size of the trailing chevron or check in a Compact menu row. */
+  --menu-trailing-icon-size-compact: 16px;
+  /** Space above a Comfortable section header, inside the group it names. Its sides use item-padding-x-comfortable so it lines up with the labels. */
+  --menu-section-header-padding-top-comfortable: 8px;
+  /** Space above a Compact section header. Its sides use item-padding-x-compact so it lines up with the labels. */
+  --menu-section-header-padding-top-compact: 4px;
+  /** Space between a Comfortable section header and the first row it names. */
+  --menu-section-header-padding-bottom-comfortable: 4px;
+  /** Space between a Compact section header and the first row it names. */
+  --menu-section-header-padding-bottom-compact: 2px;
+  /** Space above and below a divider in a Comfortable menu, so groups read as separate without a section header. */
+  --menu-divider-spacing-comfortable: 8px;
+  /** Space above and below a divider in a Compact menu. */
+  --menu-divider-spacing-compact: 4px;
 }
