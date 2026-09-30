@@ -40,9 +40,10 @@ The component is four Figma sets:
 ### Composition
 
 - **Checkbox** (referenced: set `427:62`) and **Radio** (referenced: set `442:415`) are nested in List / Leading without their label or description, because the row title is the label. Comfortable uses Size Medium and Compact uses Size Small. Both are exposed, so Selection can be changed from the row.
-- **Badge** (referenced: set `683:2823`) is nested in List / Trailing as Text, Subtle, Brand. Comfortable uses Size Medium and Compact uses Size Small. Disabled rows hide it, the same rule as Tab: a disabled row cannot be acted on, so its count or label has nothing to lead to. It is exposed, and its Label, Intent and Emphasis overrides survive Density and Disabled switches.
-- **Button** (referenced: set `58:202`) is nested in List / Trailing as Secondary. Comfortable uses Size Medium (40 tall) and Compact uses Size Small (32 tall). Disabled rows switch it to State Disabled. It is exposed, and its Label override survives the switches.
-- **Switch** (referenced: set `731:172`) is nested in List / Trailing with Selection On and no icon. Comfortable uses Size Medium (48 × 28) and Compact uses Size Small (36 × 20). Disabled rows switch it to State Disabled. It is exposed, so Selection and Icon can be changed from the row. Set the row Density and State first: changing either swaps the nested Switch and resets its Selection and Icon.
+- **Badge** (referenced: set `683:2823`) is nested in List / Trailing as Text, Subtle, Brand. Comfortable uses Size Medium and Compact uses Size Small. Disabled rows hide it, the same rule as Tab: a disabled row cannot be acted on, so its count or label has nothing to lead to. It is exposed, so its Label, Intent and Emphasis can be changed from the row.
+- **Button** (referenced: set `58:202`) is nested in List / Trailing as Secondary. Comfortable uses Size Medium (40 tall) and Compact uses Size Small (32 tall). Disabled rows switch it to State Disabled. It is exposed, so its Label can be changed from the row.
+- **Switch** (referenced: set `731:172`) is nested in List / Trailing with Selection On and no icon. Comfortable uses Size Medium (48 × 28) and Compact uses Size Small (36 × 20). Disabled rows switch it to State Disabled. It is exposed, so Selection and Icon can be changed from the row.
+- **Set the row first, then the control.** Changing a row's Density, or moving its State to or from Disabled, resets any change made to the Checkbox, Radio, Badge, Button or Switch inside it. Selection, Intent, Emphasis, Label and icon toggles all go back to their defaults. Lines, Hover, Pressed and Focus changes are safe. See Known gaps.
 - **Icon / plus** (`55:11`) is the placeholder glyph in the leading slot, and **Icon / chevron-right** (`55:5`) is the trailing chevron. The examples use **Icon / flight** (`685:31`), **Icon / bell** (`685:28`), **Icon / info** (`635:120`), **Icon / check-circle** (`635:123`) and **Icon / person** (`713:26`, added for this component: Material Symbols Rounded `person`, weight 300, grade 0, optical size 24).
 - The avatar and thumbnail use the beach aerial sample photo that Chip uses. Replace it with the real image.
 - _Decorative children: 2 (Divider, Focus ring). They are documented under Structure._
@@ -88,7 +89,7 @@ The component is four Figma sets:
 | Item | `State` | VARIANT | Default | Default, Hover, Pressed, Focus, Disabled |
 | Item | `Title`, `Supporting text`, `Third line` | TEXT | Placeholder copy | |
 | Item | `Show leading`, `Show trailing`, `Show divider` | BOOLEAN | `true` | Turn `Show divider` off on the last row. |
-| Item | `Leading`, `Trailing` | Nested instance | Icon / Chevron | Exposed. Set their Type there. Keep their Density and Disabled equal to the row. |
+| Item | `Leading`, `Trailing` | Nested instance | Icon / Chevron | Exposed. Set their Type there. Keep their Density and Disabled equal to the row. Changes to a control inside them reset when the row Density or Disabled changes. |
 | Leading | `Type` × `Density` × `Disabled` | VARIANT | Icon, Comfortable, False | 28 variants |
 | Trailing | `Type` × `Density` × `Disabled` | VARIANT | Chevron, Comfortable, False | 24 variants. `Meta` TEXT property. Density sets the Badge, Button and Switch size. Disabled hides the Badge and disables the Button and Switch. |
 | Section header | `Density` | VARIANT | Comfortable | `Label` TEXT property. |
@@ -295,6 +296,7 @@ This component adds no semantic roles.
 - **No motion tokens.** The transitions above are documented, not tokenised.
 - **`list/focus-ring-inset` is not bound in Figma.** As on Chip, Snackbar and Tab, the ring position is geometry. The ring binds its width, radius and colour.
 - **Nested Checkbox and Radio sizes are experimental** (issue #39). List rows reuse them as they are.
+- **Nested control overrides reset on Density and Disabled.** Figma keeps an override on a nested instance only while the instance that holds it stays on the same variant. The Checkbox and Radio sit inside List / Leading, and the Badge, Button and Switch inside List / Trailing. A row Density or Disabled change swaps Leading and Trailing to another variant, so changes to the control inside are lost. The Type set on Leading or Trailing survives, because it sits directly on the row. Moving the controls directly into List / Item would fix this. That was considered on 2026-09-30 and not adopted.
 - **No page margin token.** The 16 px outer margin of a grouped list on the grey page follows the screen layout, not the list.
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
