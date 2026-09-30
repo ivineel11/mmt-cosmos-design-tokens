@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 805 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 262 semantic roles + 393 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 829 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 262 semantic roles + 417 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -475,9 +475,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 272 primitive tokens · 369 semantic tokens (262 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 551 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*`) · **1300 values on web** · **1349 on iOS and Android** · **0 gradients**
+**Totals:** 272 primitive tokens · 369 semantic tokens (262 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 611 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*`) · **1360 values on web** · **1409 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1192 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1252 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (272)
 
@@ -985,7 +985,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (551)
+### Component tokens (611)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -998,6 +998,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `snackbar/*` | 114 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
 | `badge/*` | 42 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
 | `tab/*` | 43 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
+| `list/*` | 60 | List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 20 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -1013,6 +1014,7 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `snackbar/icon-inverse-success` | `{color.icon-success-inverse}` | `#05DF72` |
 | `badge/bg-strong-warning` | `{color.bg-fill-warning-strong}` | `#C10007` |
 | `tab/label-selected-pressed` | `{color.text-brand-pressed}` | `#0857C5` |
+| `list/item-bg-pressed` | `{color.bg-fill-pressed-strong}` | `#E5E5E5` |
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
@@ -1645,7 +1647,7 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ## Figma component pages
 
-Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`) and Tab (`694:2811`, with Tab / Secondary `697:59`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`), Tab (`694:2811`, with Tab / Secondary `697:59`) and List (`710:474`, with List / Leading `709:119`, List / Trailing `709:2983` and List / Section header `710:479`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
 
 ### 1. Page
 
@@ -1700,7 +1702,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
 
-`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants), `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants) `components/snackbar.md` the Snackbar component set (`637:3233`, 20 variants) with its Snackbar / Control sub-component (`636:3088`, 48 variants), `components/badge.md` the Badge component set (`683:2823`, 60 variants), and `components/tab.md` the Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) component sets. All seven are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants), `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants) `components/snackbar.md` the Snackbar component set (`637:3233`, 20 variants) with its Snackbar / Control sub-component (`636:3088`, 48 variants), `components/badge.md` the Badge component set (`683:2823`, 60 variants), `components/tab.md` the Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) component sets, and `components/list.md` the List / Item (`710:474`, 30 variants) component set with its List / Leading (`709:119`), List / Trailing (`709:2983`) and List / Section header (`710:479`) sub-components. All eight are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
 
 ### Pinned versions
 
