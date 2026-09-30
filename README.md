@@ -87,7 +87,7 @@ Those ratios are computed, not hand-written, so they go stale when a ramp moves.
 
 Descriptions map to the Description field on the corresponding Figma variable, so they round-trip through the Tokens Studio plugin. **A re-export that drops them is a regression** — check `git diff` before committing a fresh sync.
 
-Where a token and the Figma component disagree, the description says so rather than papering over it — `button/radius-*` is unbound in Figma, `button/gap-sm` is applied at every size despite its suffix, `button/min-height-md` and `-sm` sit below the WCAG 2.5.8 target, and `radio/state-layer-opacity-focus` is an accepted 1.4.11 deviation. Each points at the component spec in `components/` that records the anomaly.
+Where a token and the Figma component disagree, the description says so rather than papering over it — `button/gap-sm` is applied at every size despite its suffix, `button/min-height-md` and `-sm` sit below the WCAG 2.5.8 target, and `radio/state-layer-opacity-focus` is an accepted 1.4.11 deviation. Each points at the component spec in `components/` that records the anomaly.
 
 They reach `dist/web/tokens.css` as comments above each custom property; the other platforms currently drop them (see [Adding descriptions to other platforms](#adding-descriptions-to-other-platforms)).
 

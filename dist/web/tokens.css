@@ -1622,11 +1622,11 @@
   --button-padding-y-md: 8px;
   /** Vertical padding of the small button. The rendered height comes from min-height-sm rather than from this padding. */
   --button-padding-y-sm: 4px;
-  /** Button corner radius; matches the large and medium sizes by value, which share one radius. Unbound in Figma — see the cornerRadius anomaly in components/button.md. */
+  /** Corner radius of the large button. Also the focused ring radius at medium and small, which the spec defines as the button radius plus 4. Use radius-md for the medium and small button corners. */
   --button-radius-lg: 12px;
-  /** Button corner radius; matches the small size by value. Unbound in Figma — the component hardcodes its corner radius per size, so confirm the intended binding before relying on this (see the cornerRadius anomaly in components/button.md). */
+  /** Corner radius of the medium and small buttons, which share one radius. Use radius-lg for the large button corner. */
   --button-radius-md: 8px;
-  /** Not a button-box radius: it matches the focused ring at large and medium, which the spec defines as the button radius plus 4. Unbound in Figma like the other radius tokens — see components/button.md. */
+  /** Not a button-box radius: the focused ring radius at the large size, which the spec defines as the button radius plus 4. Use radius-lg for the focused ring at medium and small. */
   --button-radius-xl: 16px;
   /** Fill of the checkbox box — unchecked, at rest. */
   --checkbox-bg-unselected-default: #FFFFFF;
