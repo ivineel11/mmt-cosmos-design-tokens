@@ -948,7 +948,9 @@ object CosmosTokens {
   val listFocusRingWidth = 2.dp
   val listGapComfortable = 16.dp
   val listGapCompact = 12.dp
-  val listGapText = 0.dp
+  val listGapText = 2.dp
+  val listGapTextTrailingComfortable = 20.dp
+  val listGapTextTrailingCompact = 16.dp
   val listGapTrailingComfortable = 8.dp
   val listGapTrailingCompact = 4.dp
   val listGroupedGap = 24.dp

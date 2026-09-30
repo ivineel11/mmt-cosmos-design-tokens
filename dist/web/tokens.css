@@ -2471,16 +2471,20 @@
   --list-padding-y-comfortable: 12px;
   /** Space above and below the content of a Compact row. */
   --list-padding-y-compact: 8px;
-  /** Space between the leading slot, the text and the trailing slot of a Comfortable row. Use gap-trailing-comfortable inside the trailing slot. */
+  /** Space between the leading slot and the text of a Comfortable row. Use gap-text-trailing-comfortable before the trailing slot and gap-trailing-comfortable inside it. */
   --list-gap-comfortable: 16px;
-  /** Space between the leading slot, the text and the trailing slot of a Compact row. Use gap-trailing-compact inside the trailing slot. */
+  /** Space between the leading slot and the text of a Compact row. Use gap-text-trailing-compact before the trailing slot and gap-trailing-compact inside it. */
   --list-gap-compact: 12px;
+  /** Space between the text and the trailing slot of a Comfortable row. Wider than gap-comfortable so a meta value or chevron reads apart from the title. Use gap-comfortable between the leading slot and the text. */
+  --list-gap-text-trailing-comfortable: 20px;
+  /** Space between the text and the trailing slot of a Compact row. Wider than gap-compact so a meta value or chevron reads apart from the title. Use gap-compact between the leading slot and the text. */
+  --list-gap-text-trailing-compact: 16px;
   /** Space between items inside the trailing slot of a Comfortable row, such as a meta value and its chevron. */
   --list-gap-trailing-comfortable: 8px;
   /** Space between items inside the trailing slot of a Compact row, such as a meta value and its chevron. */
   --list-gap-trailing-compact: 4px;
-  /** Space between the title and the supporting lines of a row. None, because the line heights already separate them. */
-  --list-gap-text: 0px;
+  /** Space between the title, the supporting text and the third line of a row. Use gap-text-trailing-comfortable or gap-text-trailing-compact between the text and the trailing slot. */
+  --list-gap-text: 2px;
   /** Size of a bare leading icon in a Comfortable row. Icons inside a circle use leading-container-icon-size-comfortable. */
   --list-leading-icon-size-comfortable: 24px;
   /** Size of a bare leading icon in a Compact row. */

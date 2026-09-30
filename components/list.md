@@ -133,10 +133,10 @@ Hover and pressed fills change without a transition on touch, and in 100 ms line
 ### Anatomy
 
 ```text
-List / Item (component set · 710:474)
+List / Item (component set · 710:474) · gap between Leading slot and Main
 ├─ Leading slot (frame · padding-y top and bottom) · Show leading
 │  └─ Leading (instance · List / Leading) · exposed
-├─ Main (frame · fills the width · padding-y, padding-x on the right, gap)
+├─ Main (frame · fills the width · padding-y, padding-x on the right, gap-text-trailing)
 │  ├─ Text (frame · vertical · gap-text)
 │  │  ├─ Title (text)
 │  │  ├─ Supporting text (text) · Lines=Two and Three
@@ -172,9 +172,10 @@ The divider sits inside Main, so it starts at the text column whatever the leadi
 | Min height, one line | 48 | 40 | `list/min-height-comfortable`, `list/min-height-compact` |
 | Padding left and right | 16 | 16 | `list/padding-x-comfortable`, `list/padding-x-compact` |
 | Padding top and bottom | 12 | 8 | `list/padding-y-comfortable`, `list/padding-y-compact` |
-| Gap between leading, text and trailing | 16 | 12 | `list/gap-comfortable`, `list/gap-compact` |
+| Gap between leading and text | 16 | 12 | `list/gap-comfortable`, `list/gap-compact` |
+| Gap between text and trailing | 20 | 16 | `list/gap-text-trailing-comfortable`, `list/gap-text-trailing-compact` |
 | Gap inside the trailing slot | 8 | 4 | `list/gap-trailing-comfortable`, `list/gap-trailing-compact` |
-| Gap between text lines | 0 | 0 | `list/gap-text` |
+| Gap between title, supporting text and third line | 2 | 2 | `list/gap-text` |
 | Leading icon | 24 | 20 | `list/leading-icon-size-comfortable`, `list/leading-icon-size-compact` |
 | Leading circle | 40 | 32 | `list/leading-container-size-comfortable`, `list/leading-container-size-compact` |
 | Icon in the circle | 24 | 20 | `list/leading-container-icon-size-comfortable`, `list/leading-container-icon-size-compact` |
@@ -197,8 +198,10 @@ Row heights with an icon or no leading element:
 | Lines | Comfortable | Compact |
 |---|---|---|
 | One | 12 + 24 + 12 = 48 | 8 + 20 + 8 = 36, raised to the 40 minimum |
-| Two | 12 + 24 + 20 + 12 = 68 | 8 + 20 + 16 + 8 = 52 |
-| Three | 12 + 24 + 20 + 20 + 12 = 88 | 8 + 20 + 16 + 16 + 8 = 68 |
+| Two | 12 + 24 + 2 + 20 + 12 = 70 | 8 + 20 + 2 + 16 + 8 = 54 |
+| Three | 12 + 24 + 2 + 20 + 2 + 20 + 12 = 92 | 8 + 20 + 2 + 16 + 2 + 16 + 8 = 72 |
+
+The text-to-trailing gap is wider than the leading-to-text gap, so a meta value or chevron reads as separate from the title rather than as its last word.
 
 A leading circle, avatar or thumbnail makes a one-line Comfortable row 12 + 40 + 12 = 64 tall.
 
@@ -290,7 +293,7 @@ This component adds no semantic roles.
 
 ## Token reference
 
-58 tokens under `component.list` in `tokens/tokens.json`, mirrored 1:1 as `list/*` in the Figma `component` collection:
+60 tokens under `component.list` in `tokens/tokens.json`, mirrored 1:1 as `list/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
@@ -298,7 +301,7 @@ This component adds no semantic roles.
 | `title-*`, `supporting-text-*`, `meta-text-*` (`default`, `disabled`) | 6 |
 | `leading-icon-*`, `leading-container-bg-*`, `leading-container-icon-*`, `chevron-*` | 10 |
 | `divider`, `section-header-text`, `focus-ring` | 3 |
-| density pairs (`min-height`, `padding-x`, `padding-y`, `gap`, `gap-trailing`, `leading-icon-size`, `leading-container-size`, `leading-container-icon-size`, `leading-image-size`, `chevron-size`, `section-header-padding-top`, `section-header-padding-bottom`, each `-comfortable` and `-compact`) | 24 |
+| density pairs (`min-height`, `padding-x`, `padding-y`, `gap`, `gap-text-trailing`, `gap-trailing`, `leading-icon-size`, `leading-container-size`, `leading-container-icon-size`, `leading-image-size`, `chevron-size`, `section-header-padding-top`, `section-header-padding-bottom`, each `-comfortable` and `-compact`) | 26 |
 | shared dimensions (`gap-text`, `leading-container-radius`, `image-radius`, `image-radius-square`, `grouped-radius`, `grouped-gap`, `divider-width`, `focus-ring-width`, `focus-ring-inset`, `focus-ring-radius`) | 10 |
 
 Platform names follow the standard pipeline: `list/item-bg-pressed` → `--list-item-bg-pressed` (CSS) → `CosmosTokens.listItemBgPressed` (Swift / Kotlin) → `tokens.list["item-bg-pressed"]` (TS, the default export of `dist/web/tokens.ts`).

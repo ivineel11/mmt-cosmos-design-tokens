@@ -475,9 +475,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 272 primitive tokens · 369 semantic tokens (262 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 609 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 58 `list/*`) · **1358 values on web** · **1407 on iOS and Android** · **0 gradients**
+**Totals:** 272 primitive tokens · 369 semantic tokens (262 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 611 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*`) · **1360 values on web** · **1409 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1250 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1252 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 7 shadows into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (272)
 
@@ -985,7 +985,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (609)
+### Component tokens (611)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -998,7 +998,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `snackbar/*` | 114 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
 | `badge/*` | 42 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
 | `tab/*` | 43 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
-| `list/*` | 58 | List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 20 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
+| `list/*` | 60 | List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 20 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
