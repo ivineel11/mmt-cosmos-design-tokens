@@ -2500,8 +2500,8 @@
   --list-gap-trailing-comfortable: 8px;
   /** Space between items inside the trailing slot of a Compact row, such as a meta value and its chevron. */
   --list-gap-trailing-compact: 4px;
-  /** Space between the title, the supporting text and the third line of a row. Use gap-text-trailing-comfortable or gap-text-trailing-compact between the text and the trailing slot. */
-  --list-gap-text: 2px;
+  /** Space between the title, the supporting text and the third line of a row. Zero, so the lines read as one block and their line heights alone space them. Use gap-text-trailing-comfortable or gap-text-trailing-compact between the text and the trailing slot. */
+  --list-gap-text: 0px;
   /** Size of a bare leading icon in a Comfortable row. Icons inside a circle use leading-container-icon-size-comfortable. */
   --list-leading-icon-size-comfortable: 24px;
   /** Size of a bare leading icon in a Compact row. */

@@ -953,7 +953,7 @@ public enum CosmosTokens {
     public static let listFocusRingWidth = CGFloat(2)
     public static let listGapComfortable = CGFloat(16)
     public static let listGapCompact = CGFloat(12)
-    public static let listGapText = CGFloat(2)
+    public static let listGapText = CGFloat(0)
     public static let listGapTextTrailingComfortable = CGFloat(20)
     public static let listGapTextTrailingCompact = CGFloat(16)
     public static let listGapTrailingComfortable = CGFloat(8)
