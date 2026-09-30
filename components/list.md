@@ -156,12 +156,14 @@ List / Trailing (component set · 709:2983)
 ├─ Chevron · Icon / chevron-right
 ├─ Meta · text
 ├─ Meta and chevron · text, then chevron, gap-trailing
-├─ Badge · nested instance · exposed
+├─ Badge · Badge slot (frame, hidden when Disabled) holding the Badge nested instance · exposed
 └─ Button · nested instance · exposed
 
 List / Section header (component set · 710:479)
 └─ Label (text)
 ```
+
+Disabled hides the Badge slot rather than the Badge itself. A row that once had its Badge layer shown or hidden by hand keeps that visibility override, and it would win over the variant; nothing overrides the slot, so a disabled row always drops its badge.
 
 The divider sits inside Main, so it starts at the text column whatever the leading element is, and at the row padding when there is none. It is absolutely positioned, so hiding it never changes the row height. The focus ring is inside the row, because rows run edge to edge and the next row would cover an outer ring.
 
