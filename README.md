@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 982 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 266 semantic roles + 566 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1133 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 287 semantic roles + 696 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -230,13 +230,13 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (153 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (297 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
 - Source file follows W3C Design Tokens Community Group conventions (`value` + `type` pairs).
 - `$metadata.tokenSetOrder` enforces build order.
-- `$themes` is currently empty — **one light theme only**; no dark mode or multi-brand variants yet.
+- `$themes` is currently empty — **one light theme only**; no dark mode or multi-brand variants yet. Controls on dark sections use an Inverse surface instead (see 13. Inverse surface).
 
 ### 3. Semantic color taxonomy (Polaris-inspired)
 
@@ -407,6 +407,19 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 **Not included yet:** inset shadows for pressed wells.
 
+### 13. Inverse surface (controls on dark sections)
+
+Cosmos has one light theme, but products still place controls on dark sections: hero banners, offer cards on navy, dark tooltips and snackbars, and photos under a scrim. A light control fails there. Brand blue text (`#0067E8`) is 3.87:1 on `#0A0A0A` and 2.59:1 on navy, and a light grey disabled fill turns into a bright slab. Button therefore has an **Inverse** surface. Its `button/*-inverse-*` keys put the surface after the hierarchy, for example `button/label-secondary-inverse-destructive-hover`.
+
+- **Inverse, not dark mode.** A dark theme would be a mode on the semantic collection, and the `button/*` keys would follow it unchanged. Inverse is a surface inside the light theme, named by role, so it stays valid when a dark theme arrives and inverted surfaces flip to light.
+- **Steps on dark.**
+  - Labels sit at step 300 (`text-brand-inverse` `#83D4FF`, `text-warning-inverse` `#FFA2A2`).
+  - Icons and outlines sit one step deeper, at 400, like the existing inverse status icons.
+  - Hover and pressed get lighter by one step each, mirroring light, where they get darker.
+- **Translucent tints.** Hover, pressed and the Tertiary fill must work on near-black, on navy and on photos. They are a colour (`bg-surface-brand-inverse`, `bg-surface-warning-inverse`) rendered at a `button/bg-opacity-*` token (10, 15 or 20%). This is the same split as a scrim or Radio's state layer, never an alpha hex. Disabled stays solid (`bg-surface-inverse-disabled`).
+- **Primary keeps its fill.** The brand and destructive fills are shared with light, so Primary is the same button on every surface. Its hover and pressed fills get darker, and the pressed fill is only 2.38:1 against `#0A0A0A`. The white label keeps it readable at 5.12:1 or more.
+- **Contrast is linted on the dark canvas.** `tokens/contrast` checks an `-inverse` key against `bg-surface-inverse`, blending a tint over it at its `bg-opacity-*` value first.
+
 ---
 
 ## Best Practices
@@ -475,9 +488,9 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 279 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 885 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 69 `tooltip/*`) · **1645 values on web** · **1729 on iOS and Android** · **0 gradients**
+**Totals:** 279 primitive tokens · 394 semantic tokens (287 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1029 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 69 `tooltip/*`) · **1810 values on web** · **1894 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1537 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1702 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (279)
 
@@ -699,13 +712,13 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (373)
+### Semantic tokens (394)
 
-#### Color — 266 tokens
+#### Color — 287 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — canvas and surface (27)
+##### Background — canvas and surface (30)
 
 | Token | Role |
 |-------|------|
@@ -736,6 +749,9 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-warning-hover` | Warning surface, hovered |
 | `color.bg-surface-warning-pressed` | Warning surface, pressed |
 | `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
+| `color.bg-surface-inverse-disabled` | Disabled control fill on dark backgrounds — inverse Button |
+| `color.bg-surface-brand-inverse` | Brand tint on dark backgrounds, always at an opacity token — inverse Button |
+| `color.bg-surface-warning-inverse` | Destructive tint on dark backgrounds, always at an opacity token — inverse Button |
 
 ##### Background — fill (35)
 
@@ -777,7 +793,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-neutral-strong-hover` | Solid grey fill, hovered |
 | `color.bg-fill-neutral-strong-pressed` | Solid grey fill, pressed |
 
-##### Text (40)
+##### Text (46)
 
 | Token | Role |
 |-------|------|
@@ -799,6 +815,9 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-brand-on-bg-fill` | Text on brand fill |
 | `color.text-brand-on-bg-surface-hover` | Text on a hovered brand surface |
 | `color.text-brand-on-bg-surface-pressed` | Text on a pressed brand surface |
+| `color.text-brand-inverse` | Brand text on dark backgrounds — inverse Button labels |
+| `color.text-brand-inverse-hover` | Brand text on dark backgrounds, hovered |
+| `color.text-brand-inverse-pressed` | Brand text on dark backgrounds, pressed |
 | `color.text-info` | Info status text |
 | `color.text-info-on-bg-fill-strong` | Text on strong info fill |
 | `color.text-info-on-bg-fill-subtle` | Text on subtle info fill |
@@ -821,8 +840,11 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-warning-on-bg-fill-subtle` | Text on subtle warning fill |
 | `color.text-warning-on-bg-surface-hover` | Text on a hovered warning surface |
 | `color.text-warning-on-bg-surface-pressed` | Text on a pressed warning surface |
+| `color.text-warning-inverse` | Destructive text on dark backgrounds — inverse Button labels |
+| `color.text-warning-inverse-hover` | Destructive text on dark backgrounds, hovered |
+| `color.text-warning-inverse-pressed` | Destructive text on dark backgrounds, pressed |
 
-##### Border (19)
+##### Border (26)
 
 | Token | Role |
 |-------|------|
@@ -844,9 +866,16 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.border-warning-strong` | Strong warning border — destructive outline |
 | `color.border-warning-strong-hover` | Strong warning border, hovered |
 | `color.border-warning-strong-pressed` | Strong warning border, pressed |
+| `color.border-brand-inverse` | Brand outline on dark backgrounds — inverse Button outline and focus ring |
+| `color.border-brand-inverse-hover` | Brand outline on dark backgrounds, hovered |
+| `color.border-brand-inverse-pressed` | Brand outline on dark backgrounds, pressed |
+| `color.border-warning-inverse` | Destructive outline on dark backgrounds |
+| `color.border-warning-inverse-hover` | Destructive outline on dark backgrounds, hovered |
+| `color.border-warning-inverse-pressed` | Destructive outline on dark backgrounds, pressed |
 | `color.border-inverse` | Divider or outline on dark backgrounds |
+| `color.border-inverse-disabled` | Disabled control outline on dark backgrounds |
 
-##### Icon (34)
+##### Icon (39)
 
 | Token | Role |
 |-------|------|
@@ -860,6 +889,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-success-inverse` | Success status icon on dark backgrounds — inverse Snackbar |
 | `color.icon-caution-inverse` | Caution status icon on dark backgrounds — inverse Snackbar |
 | `color.icon-warning-inverse` | Warning or error status icon on dark backgrounds — inverse Snackbar |
+| `color.icon-warning-inverse-hover` | Destructive icon on dark backgrounds, hovered |
+| `color.icon-warning-inverse-pressed` | Destructive icon on dark backgrounds, pressed |
 | `color.icon-secondary` | Secondary icon |
 | `color.icon-tertiary` | Tertiary icon |
 | `color.icon-brand` | Brand icon |
@@ -868,6 +899,9 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-brand-on-bg-fill` | Icon on brand fill |
 | `color.icon-brand-on-bg-surface-hover` | Icon on a hovered brand surface |
 | `color.icon-brand-on-bg-surface-pressed` | Icon on a pressed brand surface |
+| `color.icon-brand-inverse` | Brand icon on dark backgrounds — inverse Button glyphs |
+| `color.icon-brand-inverse-hover` | Brand icon on dark backgrounds, hovered |
+| `color.icon-brand-inverse-pressed` | Brand icon on dark backgrounds, pressed |
 | `color.icon-success` | Success icon |
 | `color.icon-success-on-bg-fill-strong` | Icon on strong success fill |
 | `color.icon-success-on-bg-fill-subtle` | Icon on subtle success fill |
@@ -996,13 +1030,13 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (885)
+### Component tokens (1029)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
 | Group | Tokens | Figma component set | Spec |
 |-------|--------|---------------------|------|
-| `button/*` | 153 | Button (`58:202`, 120 variants) | [`components/button.md`](components/button.md) |
+| `button/*` | 297 | Button (`58:202`, 240 variants: Hierarchy x State x Size x Intent x Surface, with the Inverse surface for dark sections) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 | `chip/*` | 77 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
@@ -1016,12 +1050,13 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `menu/*` | 64 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
 | `tooltip/*` | 69 | Tooltip (`881:362`, 96 variants: Type x Surface x Side x Caret, with Dark, Light and the Info surface under test) and Tooltip / Control (`876:95`, 36 variants) for the primary and secondary text actions and the close button | [`components/tooltip.md`](components/tooltip.md) |
 
-Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
+Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp. Button adds a surface after the variant for its Inverse surface (`{property}-{hierarchy}-inverse-{intent}-{state}`):
 
 | Token | Alias | Resolves to |
 |-------|-------|-------------|
 | `button/bg-primary-default` | `{color.bg-fill-brand}` | `#0067E8` |
 | `button/bg-primary-destructive-hover` | `{color.bg-fill-warning-strong-hover}` | `#E7000B` |
+| `button/label-secondary-inverse-hover` | `{color.text-brand-inverse-hover}` | `#C2E8FF` |
 | `checkbox/bg-selected-default` | `{color.bg-fill-brand}` | `#0067E8` |
 | `checkbox/border-unselected-default` | `{color.border-strong}` | `#737373` |
 | `checkbox/control-size-md` | `{space.lg}` | `20px` |
@@ -1073,6 +1108,9 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-warning-hover` | `color.red.100` |
 | `bg-surface-warning-pressed` | `color.red.200` |
 | `bg-surface-inverse` | `color.neutral.950` |
+| `bg-surface-inverse-disabled` | `color.neutral.800` |
+| `bg-surface-brand-inverse` | `color.brand.400` |
+| `bg-surface-warning-inverse` | `color.red.400` |
 | `bg-fill` | `color.neutral.0` |
 | `bg-fill-hover` | `color.neutral.100` |
 | `bg-fill-pressed-subtle` | `color.neutral.100` |
@@ -1126,6 +1164,9 @@ Add a component group only when a component has enough variant × state combinat
 | `text-brand-on-bg-fill` | `color.neutral.0` |
 | `text-brand-on-bg-surface-hover` | `color.brand.800` |
 | `text-brand-on-bg-surface-pressed` | `color.brand.900` |
+| `text-brand-inverse` | `color.brand.300` |
+| `text-brand-inverse-hover` | `color.brand.200` |
+| `text-brand-inverse-pressed` | `color.brand.100` |
 | `text-info` | `color.brand.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
 | `text-info-on-bg-fill-subtle` | `color.brand.700` |
@@ -1148,6 +1189,9 @@ Add a component group only when a component has enough variant × state combinat
 | `text-warning-on-bg-fill-subtle` | `color.red.700` |
 | `text-warning-on-bg-surface-hover` | `color.red.800` |
 | `text-warning-on-bg-surface-pressed` | `color.red.900` |
+| `text-warning-inverse` | `color.red.300` |
+| `text-warning-inverse-hover` | `color.red.200` |
+| `text-warning-inverse-pressed` | `color.red.100` |
 | `border` | `color.neutral.300` |
 | `border-hover` | `color.neutral.400` |
 | `border-secondary` | `color.neutral.200` |
@@ -1166,7 +1210,14 @@ Add a component group only when a component has enough variant × state combinat
 | `border-warning-strong` | `color.red.700` |
 | `border-warning-strong-hover` | `color.red.600` |
 | `border-warning-strong-pressed` | `color.red.800` |
+| `border-brand-inverse` | `color.brand.400` |
+| `border-brand-inverse-hover` | `color.brand.300` |
+| `border-brand-inverse-pressed` | `color.brand.200` |
+| `border-warning-inverse` | `color.red.400` |
+| `border-warning-inverse-hover` | `color.red.300` |
+| `border-warning-inverse-pressed` | `color.red.200` |
 | `border-inverse` | `color.neutral.800` |
+| `border-inverse-disabled` | `color.neutral.600` |
 | `icon` | `color.neutral.950` |
 | `icon-disabled` | `color.neutral.400` |
 | `icon-on-bg-fill-disabled-strong` | `color.neutral.0` |
@@ -1177,6 +1228,8 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-success-inverse` | `color.green.400` |
 | `icon-caution-inverse` | `color.yellow.400` |
 | `icon-warning-inverse` | `color.red.400` |
+| `icon-warning-inverse-hover` | `color.red.300` |
+| `icon-warning-inverse-pressed` | `color.red.200` |
 | `icon-secondary` | `color.neutral.600` |
 | `icon-tertiary` | `color.neutral.500` |
 | `icon-brand` | `color.brand.700` |
@@ -1185,6 +1238,9 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-brand-on-bg-fill` | `color.neutral.0` |
 | `icon-brand-on-bg-surface-hover` | `color.brand.800` |
 | `icon-brand-on-bg-surface-pressed` | `color.brand.900` |
+| `icon-brand-inverse` | `color.brand.400` |
+| `icon-brand-inverse-hover` | `color.brand.300` |
+| `icon-brand-inverse-pressed` | `color.brand.200` |
 | `icon-success` | `color.green.700` |
 | `icon-success-on-bg-fill-strong` | `color.neutral.0` |
 | `icon-success-on-bg-fill-subtle` | `color.green.700` |
@@ -1638,7 +1694,7 @@ npm run test:lint                    # the linter's own tests
 
 | Category | What it catches |
 |----------|-----------------|
-| `tokens/*` | Anything in `tokens/tokens.json` that breaks the conventions above: duplicate keys a bad merge left behind, a tier referencing the wrong tier (or a component skipping a semantic alias that exists), raw values above the primitive tier, dangling or circular references, values the platform transforms cannot parse, opacity outside 0–1 or out of step with its mirror, disabled expressed as opacity, a control filled with a canvas colour, typography composites with the wrong weight or missing metrics, shadows with more than two layers, a spread or an off-scale primitive, t-shirt scales that do not grow, palettes that do not darken, names outside the role taxonomy, flat-namespace collisions, on-fill text and component labels below WCAG AA, missing or Figma-unsafe descriptions (apostrophes become `&#39;`), stale computed primitive descriptions, and non-canonical formatting |
+| `tokens/*` | Anything in `tokens/tokens.json` that breaks the conventions above: duplicate keys a bad merge left behind, a tier referencing the wrong tier (or a component skipping a semantic alias that exists), raw values above the primitive tier, dangling or circular references, values the platform transforms cannot parse, opacity outside 0–1 or out of step with its mirror, disabled expressed as opacity, a control filled with a canvas colour, typography composites with the wrong weight or missing metrics, shadows with more than two layers, a spread or an off-scale primitive, t-shirt scales that do not grow, palettes that do not darken, names outside the role taxonomy, flat-namespace collisions, on-fill text and component labels below WCAG AA (inverse labels on the dark canvas, tints blended at their opacity), missing or Figma-unsafe descriptions (apostrophes become `&#39;`), stale computed primitive descriptions, and non-canonical formatting |
 | `dist/*` | `dist/` differs from a fresh build of the current tokens — stale, hand-edited, or carrying files the build does not produce |
 | `docs-site/*` | The site's derived CSS names drift from the build, it uses a `var(--…)` that no longer exists, or it fails to type-check |
 | `docs/*` | Markdown that has drifted from the tokens: broken links and anchors, references to tokens that do not exist, wrong values, aliases, hexes and counts in the README's tables, a semantic colour missing from the inventory, a component group without a spec |

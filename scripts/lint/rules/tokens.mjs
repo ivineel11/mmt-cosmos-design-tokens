@@ -3,7 +3,7 @@
  * the build or Figma relies on) and cites it, so a failure explains itself.
  */
 import { writeFileSync } from "node:fs";
-import { contrast, formatRatio, HEX, isFullyTransparent, luminance } from "../../lib/color.mjs";
+import { composite, contrast, formatRatio, HEX, isFullyTransparent, luminance } from "../../lib/color.mjs";
 import { opacityProblems } from "../../lib/opacity.mjs";
 import { describePrimitives } from "../../describe-primitives.mjs";
 import { TOKENS_FILE } from "../lib/context.mjs";
@@ -704,7 +704,7 @@ const COMPONENT_FOREGROUNDS = {
 
 const contrastRule = {
   id: "tokens/contrast",
-  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. Disabled states are exempt (WCAG 1.4.3).",
+  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3).",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -715,17 +715,23 @@ const contrastRule = {
     };
     const canvases = ["color.bg", "color.bg-secondary"].filter((id) => hex(id));
 
+    // A component key with an -inverse surface segment sits on the dark canvas instead.
+    const inverseCanvases = ["color.bg-surface-inverse"].filter((id) => hex(id));
+
+    /** bgIds are token ids, or { id, over, alpha } for a tint laid over a canvas at an opacity. */
     const check = (fgLeaf, bgIds, threshold, criterion) => {
       const fg = hex(fgLeaf.id);
       if (!fg) return;
-      for (const bgId of bgIds) {
-        const bg = hex(bgId);
+      for (const entry of bgIds) {
+        const tint = typeof entry === "object" ? entry : null;
+        const bgId = tint ? `${tint.id} at ${Math.round(tint.alpha * 100)}% over ${tint.over}` : entry;
+        const bg = tint ? hex(tint.id) && hex(tint.over) && composite(hex(tint.id), tint.alpha, hex(tint.over)) : hex(entry);
         if (!bg) continue;
         const ratio = contrast(fg, bg);
         if (ratio < threshold) {
           api.report({
             ...at(fgLeaf),
-            subject: `${fgLeaf.id} on ${bgId}`,
+            subject: `${fgLeaf.id} on ${tint ? tint.id : bgId}`,
             message: `${label(fgLeaf)} (${fg}) on ${bgId} (${bg}) is ${formatRatio(ratio)}, below the ${threshold}:1 WCAG ${criterion} minimum.`,
           });
         }
@@ -760,7 +766,18 @@ const contrastRule = {
       if (prop === "icon" || prop === "dot") candidates.push(`bg-${suffix.replace(/^(un)?selected-/, "")}`);
       const bgKey = candidates.find((c) => model.byId.has(`${group}.${c}`));
       const bgHex = bgKey && hex(`${group}.${bgKey}`);
-      const bgIds = bgKey && bgHex && !isFullyTransparent(bgHex) ? [`${group}.${bgKey}`] : canvases;
+      const inverse = /(^|-)inverse(-|$)/.test(suffix) && inverseCanvases.length > 0;
+      const opacityId = bgKey && `${group}.${bgKey.replace(/^bg-/, "bg-opacity-")}`;
+      const alpha = opacityId && model.byId.has(opacityId) ? Number(model.resolve(opacityId).value) : null;
+      let bgIds;
+      if (bgKey && bgHex && !isFullyTransparent(bgHex) && alpha !== null && Number.isFinite(alpha)) {
+        // A translucent tint: what the viewer sees is the tint blended over the canvas beneath.
+        bgIds = (inverse ? inverseCanvases : canvases).map((over) => ({ id: `${group}.${bgKey}`, over, alpha }));
+      } else if (bgKey && bgHex && !isFullyTransparent(bgHex)) {
+        bgIds = [`${group}.${bgKey}`];
+      } else {
+        bgIds = inverse ? inverseCanvases : canvases;
+      }
       check(leaf, bgIds, ...COMPONENT_FOREGROUNDS[prop]);
     }
   },

@@ -28,3 +28,10 @@ export const isFullyTransparent = (hex) => HEX.test(hex) && parseHex(hex).a === 
 
 // Floor rather than round, so a reported ratio never overstates the contrast.
 export const formatRatio = (r) => `${(Math.floor(r * 100) / 100).toFixed(2)}:1`;
+
+/** Lay `fg` at `alpha` (0–1) over the solid `bg`, returning the blended #RRGGBB a viewer sees. */
+export function composite(fg, alpha, bg) {
+  const [f, b] = [parseHex(fg), parseHex(bg)];
+  const mix = (x, y) => Math.round(alpha * x + (1 - alpha) * y).toString(16).padStart(2, "0").toUpperCase();
+  return `#${mix(f.r, b.r)}${mix(f.g, b.g)}${mix(f.b, b.b)}`;
+}
