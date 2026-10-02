@@ -41,7 +41,7 @@ Four variant axes drive Slider:
 ### Composition
 
 - **Slider / Thumb** (`809:83`) is nested once in Single and twice in Range, and follows the slider's Size and State. In Range the minimum thumb stays Default and the maximum thumb takes the State.
-- **Slider / Tooltip** (`812:568`) is nested above the maximum thumb and shown through the `Show tooltip` property. The nested instance is exposed, so its `Caret` and `Value` are set from the Slider panel.
+- **Slider / Tooltip** (`870:538`) is nested above the maximum thumb and shown through the `Show tooltip` property. The nested instance is exposed, so its `Caret` and `Value` are set from the Slider panel.
 - **.Slider / Position** (`821:664`) is nested once in Single (`Thumb position`) and twice in Range (`Min thumb`, `Max thumb`). The nested instances are exposed, so a designer places the thumbs from the Slider panel. The spacer width sets the length of the bar the thumb rides on.
 - _Decorative children: Halo and Focus ring, inside Slider / Thumb. They are documented under Structure._
 
@@ -161,7 +161,7 @@ Slider / Thumb (component set · 809:83)
 .Slider / Position (component set · 821:664 · internal)
 └─ Spacer (transparent rectangle, 0% to 100% of the travel wide) · the variant hugs it, so swapping Value resizes the bar
 
-Slider / Tooltip (component set · 812:568 · Caret True or False)
+Slider / Tooltip (component set · 870:538 · Caret True or False)
 ├─ Bubble (auto layout, padding 4 × 8, radius 8)
 │  └─ Value (text · label/small/bold)
 └─ Caret (triangle, 8 wide and 4 tall, centred under the bubble) · Caret=True only
