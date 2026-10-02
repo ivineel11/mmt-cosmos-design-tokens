@@ -9,7 +9,7 @@
 
 Button is the design system's primary action control: a single-stop, self-sizing horizontal row that pairs a required text label with two independent glyph slots and an optional busy spinner. Four variant axes drive it — `hierarchy` sets visual priority, `intent` switches the whole ramp to a destructive palette, `size` scales every box metric in lockstep (min-height 48/40/32, padding, icon size and type ramp), and the Figma State axis decomposes into a single persistent `isDisabled` prop plus four platform-owned runtime conditions. `leadingIcon` and `trailingIcon` each carry their own visibility toggle and their own glyph reference, so a consumer can set either, both, or neither; geometry comes entirely from the single-mode `button/*` component variable collection, so there are no density or shape modes to wire, and focus is rendered by a dedicated ring rectangle outside the auto-layout flow rather than as a border. Accessibly it is one merged focus stop on all three platforms — the label supplies the name, both icons and the ring are presentational, and `isDisabled` takes precedence over `isLoading` so an inert control never reports progress.
 
-**Variant axes.** 4 axes across 120 variants — **Hierarchy** (Primary, Secondary, Tertiary, Text; default `Primary`); **State** (Default, Hover, Pressed, Focus, Disabled; default `Default`); **Size** (Medium, Large, Small; default `Medium`); **Intent** (Default, Destructive; default `Default`).
+**Variant axes.** 5 axes across 240 variants — **Hierarchy** (Primary, Secondary, Tertiary, Text; default `Primary`); **State** (Default, Hover, Pressed, Focus, Disabled; default `Default`); **Size** (Medium, Large, Small; default `Medium`); **Intent** (Default, Destructive; default `Default`); **Surface** (Default, Inverse; default `Default`). Surface was added by hand after extraction; see Color → Inverse surface.
 
 ### Composition
 
@@ -66,6 +66,7 @@ _Confidence: high._
 | `leadingIcon` | instance | (instance) | `none` | Glyph rendered before the label; `none` hides the leading slot. Instance of Icon — see ./icon-plus.md, the design source's default glyph. Independent of trailingIcon. |
 | `trailingIcon` | instance | (instance) | `none` | Glyph rendered after the label; `none` hides the trailing slot. Instance of Icon — see ./icon-chevron-right.md, the design source's default glyph. Independent of leadingIcon. |
 | `isLoading` | boolean | true \| false | `false` | Renders a busy spinner at the start of the content row and exposes aria-busy=true. Additive — the label and both icon slots keep rendering. |
+| `surface` | enum | default \| inverse | `default` | The background the button sits on. `inverse` is for dark sections: banners, navy cards, dark tooltips and snackbars, and photos under a scrim. It swaps every colour to the `button/*-inverse-*` tokens and leaves size and shape unchanged. See Color → Inverse surface. |
 | `isDisabled` | boolean | true \| false | `false` | Applies the disabled treatment and makes the control non-interactive; exposes aria-disabled=true. Suppresses the isLoading busy announcement. |
 
 ### Example 1 — Primary action
@@ -375,6 +376,116 @@ _Confidence: high._
 | Label | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-disabled) (#A1A1A1) | Button text label fill |
 | Trailing icon fill | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-hover) (#9F0712) | var(--button-icon-text-destructive-pressed) (#82181A) | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
 | Loading spinner fill | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-hover) (#9F0712) | var(--button-icon-text-destructive-pressed) (#82181A) | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-disabled) (#A1A1A1) | Loading spinner (Icon / spinner) |
+
+### Inverse surface
+
+<!-- Hand-written, not generated: added with the Inverse surface (feat/button-inverse-surface). Re-run create-component-md after the Figma Surface axis is extracted to regenerate it. -->
+
+`surface=inverse` puts the button on a dark section: a hero banner, an offer card on navy, a dark tooltip or snackbar, or a photo under a scrim. Every element binds a `button/*-inverse-*` token. The surface comes after the hierarchy in the key: `button/{part}-{hierarchy}-inverse[-destructive]-{state}`.
+
+- **Primary** keeps the light fills (`#0067E8`, destructive `#C10007`), so it is the same button on every surface. Only disabled changes, to a solid `#262626` fill with a `#737373` label.
+- **Secondary, Tertiary and Text** use light brand blue. Labels sit at step 300 (`#83D4FF`, destructive `#FFA2A2`). Icons and outlines sit one step deeper, at 400 (`#48BBFF`, `#FF6467`). Hover and pressed get one step lighter each, the mirror of light, where they get darker.
+- **Translucent fills.** The Tertiary fill and the hover and pressed fills of Secondary and Text are a tint colour rendered at `button/bg-opacity-*`, so they work on near-black, navy and photos alike.
+  - CSS: `color-mix(in srgb, var(--button-bg-tertiary-inverse-default) calc(var(--button-bg-opacity-tertiary-inverse-default) * 100%), transparent)`
+  - SwiftUI: `.opacity()` on the fill
+  - Compose: `.copy(alpha = …)`
+  - Figma: a `Tint` layer whose layer opacity binds the variable.
+
+  A fill with no `bg-opacity-*` companion is solid or transparent.
+- **Focus ring** is `button/focus-ring-inverse` (`#48BBFF`) or `button/focus-ring-inverse-destructive` (`#FF6467`). The light ring (`#0067E8`) drops to 2.59:1 on navy.
+
+**Contrast** (each pair on `#0A0A0A`, then on navy `#0E2F5D`, tints blended at their opacity):
+
+| Pair | Worst case | Ratio | Minimum |
+|---|---|---|---|
+| Brand label on its fill | Tertiary at rest, `#83D4FF` on the 10% tint | 10.59 / 6.69:1 | 4.5:1 |
+| Destructive label on its fill | Tertiary at rest, `#FFA2A2` on the 10% tint | 9.35 / 6.31:1 | 4.5:1 |
+| Icons | Destructive Tertiary at rest, `#FF6467` on the 10% tint | 6.21 / 4.19:1 | 3:1 |
+| Outline and focus ring | `#48BBFF` / `#FF6467` on the surface | 9.27 / 6.21:1, 6.85 / 4.59:1 | 3:1 |
+| Primary label | `#FFFFFF` on `#0067E8` | 5.12:1 | 4.5:1 |
+| Primary fill against the surface | Pressed `#0D4C9B` on `#0A0A0A` | 2.38:1 | Known gap, see below |
+
+**Known gap.** Primary hover and pressed reuse the light fills, which get darker, so the pressed fill is only 2.38:1 against near-black. The white label keeps the button readable (5.12:1 or more), and the fill is a momentary state. This was accepted so Primary stays one button on every surface.
+
+#### Primary / Inverse / Default
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-primary-inverse-default` (#0067E8) | `button/bg-primary-inverse-hover` (#0857C5) | `button/bg-primary-inverse-pressed` (#0D4C9B) | `button/bg-primary-inverse-default` (#0067E8) | `button/bg-primary-inverse-disabled` (#262626) |
+| Container stroke | `button/border-primary-inverse-default` (transparent) | `button/border-primary-inverse-hover` (transparent) | `button/border-primary-inverse-pressed` (transparent) | `button/border-primary-inverse-default` (transparent) | `button/border-primary-inverse-disabled` (transparent) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
+| Label | `button/label-primary-inverse-default` (#FFFFFF) | `button/label-primary-inverse-hover` (#FFFFFF) | `button/label-primary-inverse-pressed` (#FFFFFF) | `button/label-primary-inverse-default` (#FFFFFF) | `button/label-primary-inverse-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-primary-inverse-default` (#FFFFFF) | `button/icon-primary-inverse-hover` (#FFFFFF) | `button/icon-primary-inverse-pressed` (#FFFFFF) | `button/icon-primary-inverse-default` (#FFFFFF) | `button/icon-primary-inverse-disabled` (#737373) |
+
+#### Primary / Inverse / Destructive
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-primary-inverse-destructive-default` (#C10007) | `button/bg-primary-inverse-destructive-hover` (#E7000B) | `button/bg-primary-inverse-destructive-pressed` (#9F0712) | `button/bg-primary-inverse-destructive-default` (#C10007) | `button/bg-primary-inverse-destructive-disabled` (#262626) |
+| Container stroke | `button/border-primary-inverse-destructive-default` (transparent) | `button/border-primary-inverse-destructive-hover` (transparent) | `button/border-primary-inverse-destructive-pressed` (transparent) | `button/border-primary-inverse-destructive-default` (transparent) | `button/border-primary-inverse-destructive-disabled` (transparent) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse-destructive` (#FF6467) | – |
+| Label | `button/label-primary-inverse-destructive-default` (#FFFFFF) | `button/label-primary-inverse-destructive-hover` (#FFFFFF) | `button/label-primary-inverse-destructive-pressed` (#FFFFFF) | `button/label-primary-inverse-destructive-default` (#FFFFFF) | `button/label-primary-inverse-destructive-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-primary-inverse-destructive-default` (#FFFFFF) | `button/icon-primary-inverse-destructive-hover` (#FFFFFF) | `button/icon-primary-inverse-destructive-pressed` (#FFFFFF) | `button/icon-primary-inverse-destructive-default` (#FFFFFF) | `button/icon-primary-inverse-destructive-disabled` (#737373) |
+
+#### Secondary / Inverse / Default
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-secondary-inverse-default` (transparent) | `button/bg-secondary-inverse-hover` (#48BBFF at 15%) | `button/bg-secondary-inverse-pressed` (#48BBFF at 20%) | `button/bg-secondary-inverse-default` (transparent) | `button/bg-secondary-inverse-disabled` (transparent) |
+| Container stroke | `button/border-secondary-inverse-default` (#48BBFF) | `button/border-secondary-inverse-hover` (#83D4FF) | `button/border-secondary-inverse-pressed` (#C2E8FF) | `button/border-secondary-inverse-default` (#48BBFF) | `button/border-secondary-inverse-disabled` (#525252) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
+| Label | `button/label-secondary-inverse-default` (#83D4FF) | `button/label-secondary-inverse-hover` (#C2E8FF) | `button/label-secondary-inverse-pressed` (#D6EFFF) | `button/label-secondary-inverse-default` (#83D4FF) | `button/label-secondary-inverse-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-secondary-inverse-default` (#48BBFF) | `button/icon-secondary-inverse-hover` (#83D4FF) | `button/icon-secondary-inverse-pressed` (#C2E8FF) | `button/icon-secondary-inverse-default` (#48BBFF) | `button/icon-secondary-inverse-disabled` (#737373) |
+
+#### Secondary / Inverse / Destructive
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-secondary-inverse-destructive-default` (transparent) | `button/bg-secondary-inverse-destructive-hover` (#FF6467 at 15%) | `button/bg-secondary-inverse-destructive-pressed` (#FF6467 at 20%) | `button/bg-secondary-inverse-destructive-default` (transparent) | `button/bg-secondary-inverse-destructive-disabled` (transparent) |
+| Container stroke | `button/border-secondary-inverse-destructive-default` (#FF6467) | `button/border-secondary-inverse-destructive-hover` (#FFA2A2) | `button/border-secondary-inverse-destructive-pressed` (#FFC9C9) | `button/border-secondary-inverse-destructive-default` (#FF6467) | `button/border-secondary-inverse-destructive-disabled` (#525252) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse-destructive` (#FF6467) | – |
+| Label | `button/label-secondary-inverse-destructive-default` (#FFA2A2) | `button/label-secondary-inverse-destructive-hover` (#FFC9C9) | `button/label-secondary-inverse-destructive-pressed` (#FFE2E2) | `button/label-secondary-inverse-destructive-default` (#FFA2A2) | `button/label-secondary-inverse-destructive-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-secondary-inverse-destructive-default` (#FF6467) | `button/icon-secondary-inverse-destructive-hover` (#FFA2A2) | `button/icon-secondary-inverse-destructive-pressed` (#FFC9C9) | `button/icon-secondary-inverse-destructive-default` (#FF6467) | `button/icon-secondary-inverse-destructive-disabled` (#737373) |
+
+#### Tertiary / Inverse / Default
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-tertiary-inverse-default` (#48BBFF at 10%) | `button/bg-tertiary-inverse-hover` (#48BBFF at 15%) | `button/bg-tertiary-inverse-pressed` (#48BBFF at 20%) | `button/bg-tertiary-inverse-default` (#48BBFF at 10%) | `button/bg-tertiary-inverse-disabled` (#262626) |
+| Container stroke | `button/border-tertiary-inverse-default` (transparent) | `button/border-tertiary-inverse-hover` (transparent) | `button/border-tertiary-inverse-pressed` (transparent) | `button/border-tertiary-inverse-default` (transparent) | `button/border-tertiary-inverse-disabled` (transparent) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
+| Label | `button/label-tertiary-inverse-default` (#83D4FF) | `button/label-tertiary-inverse-hover` (#C2E8FF) | `button/label-tertiary-inverse-pressed` (#D6EFFF) | `button/label-tertiary-inverse-default` (#83D4FF) | `button/label-tertiary-inverse-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-tertiary-inverse-default` (#48BBFF) | `button/icon-tertiary-inverse-hover` (#83D4FF) | `button/icon-tertiary-inverse-pressed` (#C2E8FF) | `button/icon-tertiary-inverse-default` (#48BBFF) | `button/icon-tertiary-inverse-disabled` (#737373) |
+
+#### Tertiary / Inverse / Destructive
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-tertiary-inverse-destructive-default` (#FF6467 at 10%) | `button/bg-tertiary-inverse-destructive-hover` (#FF6467 at 15%) | `button/bg-tertiary-inverse-destructive-pressed` (#FF6467 at 20%) | `button/bg-tertiary-inverse-destructive-default` (#FF6467 at 10%) | `button/bg-tertiary-inverse-destructive-disabled` (#262626) |
+| Container stroke | `button/border-tertiary-inverse-destructive-default` (transparent) | `button/border-tertiary-inverse-destructive-hover` (transparent) | `button/border-tertiary-inverse-destructive-pressed` (transparent) | `button/border-tertiary-inverse-destructive-default` (transparent) | `button/border-tertiary-inverse-destructive-disabled` (transparent) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse-destructive` (#FF6467) | – |
+| Label | `button/label-tertiary-inverse-destructive-default` (#FFA2A2) | `button/label-tertiary-inverse-destructive-hover` (#FFC9C9) | `button/label-tertiary-inverse-destructive-pressed` (#FFE2E2) | `button/label-tertiary-inverse-destructive-default` (#FFA2A2) | `button/label-tertiary-inverse-destructive-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-tertiary-inverse-destructive-default` (#FF6467) | `button/icon-tertiary-inverse-destructive-hover` (#FFA2A2) | `button/icon-tertiary-inverse-destructive-pressed` (#FFC9C9) | `button/icon-tertiary-inverse-destructive-default` (#FF6467) | `button/icon-tertiary-inverse-destructive-disabled` (#737373) |
+
+#### Text / Inverse / Default
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-text-inverse-default` (transparent) | `button/bg-text-inverse-hover` (#48BBFF at 10%) | `button/bg-text-inverse-pressed` (#48BBFF at 15%) | `button/bg-text-inverse-default` (transparent) | `button/bg-text-inverse-disabled` (transparent) |
+| Container stroke | `button/border-text-inverse-default` (transparent) | `button/border-text-inverse-hover` (transparent) | `button/border-text-inverse-pressed` (transparent) | `button/border-text-inverse-default` (transparent) | `button/border-text-inverse-disabled` (transparent) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
+| Label | `button/label-text-inverse-default` (#83D4FF) | `button/label-text-inverse-hover` (#C2E8FF) | `button/label-text-inverse-pressed` (#D6EFFF) | `button/label-text-inverse-default` (#83D4FF) | `button/label-text-inverse-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-text-inverse-default` (#48BBFF) | `button/icon-text-inverse-hover` (#83D4FF) | `button/icon-text-inverse-pressed` (#C2E8FF) | `button/icon-text-inverse-default` (#48BBFF) | `button/icon-text-inverse-disabled` (#737373) |
+
+#### Text / Inverse / Destructive
+
+| Element | rest | hovered | pressed | focus-visible | isDisabled === true |
+|---|---|---|---|---|---|
+| Container fill | `button/bg-text-inverse-destructive-default` (transparent) | `button/bg-text-inverse-destructive-hover` (#FF6467 at 10%) | `button/bg-text-inverse-destructive-pressed` (#FF6467 at 15%) | `button/bg-text-inverse-destructive-default` (transparent) | `button/bg-text-inverse-destructive-disabled` (transparent) |
+| Container stroke | `button/border-text-inverse-destructive-default` (transparent) | `button/border-text-inverse-destructive-hover` (transparent) | `button/border-text-inverse-destructive-pressed` (transparent) | `button/border-text-inverse-destructive-default` (transparent) | `button/border-text-inverse-destructive-disabled` (transparent) |
+| Focus ring stroke | – | – | – | `button/focus-ring-inverse-destructive` (#FF6467) | – |
+| Label | `button/label-text-inverse-destructive-default` (#FFA2A2) | `button/label-text-inverse-destructive-hover` (#FFC9C9) | `button/label-text-inverse-destructive-pressed` (#FFE2E2) | `button/label-text-inverse-destructive-default` (#FFA2A2) | `button/label-text-inverse-destructive-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-text-inverse-destructive-default` (#FF6467) | `button/icon-text-inverse-destructive-hover` (#FFA2A2) | `button/icon-text-inverse-destructive-pressed` (#FFC9C9) | `button/icon-text-inverse-destructive-default` (#FF6467) | `button/icon-text-inverse-destructive-disabled` (#737373) |
 
 ---
 
