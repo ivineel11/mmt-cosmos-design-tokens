@@ -2998,31 +2998,45 @@
   --tooltip-media-bg-light: #F5F5F5;
   /** Placeholder fill of the optional Rich media area on Info, white against the tint, shown until the image loads and behind transparent illustrations. */
   --tooltip-media-bg-info: #FFFFFF;
-  /** Label of the secondary text action, such as Skip, on a Dark Rich tooltip, in every state. Grey so it stays behind the primary Button; the fill, not the label, shows hover and press. */
-  --tooltip-control-label-dark: #A1A1A1;
-  /** Label of the secondary text action, such as Skip, on a Light Rich tooltip, in every state. Grey so it stays behind the primary Button; the fill, not the label, shows hover and press. */
-  --tooltip-control-label-light: #525252;
-  /** Label of the secondary text action, such as Skip, on an Info Rich tooltip, in every state. Grey, as on the other surfaces, so it stays behind the primary Button; the fill, not the label, shows hover and press. */
-  --tooltip-control-label-info: #525252;
+  /** Label of the secondary text action, such as Skip, on a Dark Rich tooltip, in every state. Grey so it stays behind the primary text action; the fill, not the label, shows hover and press. */
+  --tooltip-secondary-label-dark: #A1A1A1;
+  /** Label of the secondary text action, such as Skip, on a Light Rich tooltip, in every state. Grey so it stays behind the primary text action; the fill, not the label, shows hover and press. */
+  --tooltip-secondary-label-light: #525252;
+  /** Label of the secondary text action, such as Skip, on an Info Rich tooltip, in every state. Grey so it stays behind the primary text action; the fill, not the label, shows hover and press. */
+  --tooltip-secondary-label-info: #525252;
+  /** Label of the primary text action, such as Next or Got it, on a Dark Rich tooltip, in every state. A light brand blue, so it reads as the main action on near black where the brand blue fails; the fill, not the label, shows hover and press. Use secondary-label-dark for Skip. */
+  --tooltip-primary-label-dark: #83D4FF;
+  /** Label of the primary text action, such as Next or Got it, on a Light Rich tooltip, at rest and on focus. Brand blue, so it reads as the main action beside the grey Skip. Use primary-label-light-hover and primary-label-light-pressed as the fill changes. */
+  --tooltip-primary-label-light: #0067E8;
+  /** Label of the primary text action on a Light Rich tooltip under the pointer. Darkens with the control-bg-light-hover fill so it keeps AA contrast. Web only. */
+  --tooltip-primary-label-light-hover: #0857C5;
+  /** Label of the primary text action on a Light Rich tooltip while pressed. Darkens with the control-bg-light-pressed fill so it keeps AA contrast. */
+  --tooltip-primary-label-light-pressed: #0D4C9B;
+  /** Label of the primary text action, such as Next or Got it, on an Info Rich tooltip, at rest and on focus. Info blue, so it reads as the main action beside the grey Skip. Use primary-label-info-hover and primary-label-info-pressed as the fill changes. */
+  --tooltip-primary-label-info: #0067E8;
+  /** Label of the primary text action on an Info Rich tooltip under the pointer. Darkens with the control-bg-info-hover fill, where info blue would drop below AA. Web only. */
+  --tooltip-primary-label-info-hover: #0857C5;
+  /** Label of the primary text action on an Info Rich tooltip while pressed. Darkens with the control-bg-info-pressed fill, where info blue would drop below AA. */
+  --tooltip-primary-label-info-pressed: #0D4C9B;
   /** Close glyph of a Dark Rich tooltip, in every state. Dimmer than the title so dismissing stays secondary. Use icon-dark for the leading icon. */
   --tooltip-close-icon-dark: #A1A1A1;
   /** Close glyph of a Light Rich tooltip, in every state. Dimmer than the title so dismissing stays secondary. Use icon-light for the leading icon. */
   --tooltip-close-icon-light: #525252;
   /** Close glyph of an Info Rich tooltip, in every state. Grey, dimmer than the title, so dismissing stays secondary. Use icon-info for the leading icon. */
   --tooltip-close-icon-info: #525252;
-  /** Fill of the secondary text action and the close button on a Dark Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-dark-pressed while pressed. */
+  /** Fill of the primary and secondary text actions and the close button on a Dark Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-dark-pressed while pressed. */
   --tooltip-control-bg-dark-hover: #171717;
-  /** Fill of the secondary text action and the close button on a Dark Rich tooltip while pressed, on touch and web. Use control-bg-dark-hover under the pointer. */
+  /** Fill of the primary and secondary text actions and the close button on a Dark Rich tooltip while pressed, on touch and web. Use control-bg-dark-hover under the pointer. */
   --tooltip-control-bg-dark-pressed: #262626;
-  /** Fill of the secondary text action and the close button on a Light Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-light-pressed while pressed. */
+  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-light-pressed while pressed. */
   --tooltip-control-bg-light-hover: #FAFAFA;
-  /** Fill of the secondary text action and the close button on a Light Rich tooltip while pressed, on touch and web. Use control-bg-light-hover under the pointer. */
+  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip while pressed, on touch and web. Use control-bg-light-hover under the pointer. */
   --tooltip-control-bg-light-pressed: #F5F5F5;
-  /** Fill of the secondary text action and the close button on an Info Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-info-pressed while pressed. */
+  /** Fill of the primary and secondary text actions and the close button on an Info Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-info-pressed while pressed. */
   --tooltip-control-bg-info-hover: #D6EFFF;
-  /** Fill of the secondary text action and the close button on an Info Rich tooltip while pressed, on touch and web. Use control-bg-info-hover under the pointer. */
+  /** Fill of the primary and secondary text actions and the close button on an Info Rich tooltip while pressed, on touch and web. Use control-bg-info-hover under the pointer. */
   --tooltip-control-bg-info-pressed: #C2E8FF;
-  /** Keyboard focus ring around the secondary text action and the close button of a Rich tooltip, on every surface. Shown on focus-visible only. The primary action is a Button and uses its own ring. */
+  /** Keyboard focus ring around the primary and secondary text actions and the close button of a Rich tooltip, on every surface. Shown on focus-visible only. */
   --tooltip-focus-ring: #0681FF;
   /** Horizontal padding inside a Plain tooltip bubble. Rich tooltips use rich-padding-x. */
   --tooltip-padding-x: 12px;
@@ -3048,31 +3062,31 @@
   --tooltip-rich-gap-section: 12px;
   /** Vertical gap between the header (title and message) and the footer of a Rich tooltip, larger than rich-gap-section so the actions read as their own group. Hidden footers leave no gap. */
   --tooltip-rich-gap-footer: 16px;
-  /** Horizontal gap between the secondary text action and the primary Button in the Rich footer, and the least space between the step count and the actions. */
+  /** Horizontal gap between the secondary and primary text actions in the Rich footer, and the least space between the step count and the actions. */
   --tooltip-rich-gap-actions: 8px;
   /** Size of the optional leading icon of a Rich tooltip. Use close-icon-size for the close glyph. */
   --tooltip-icon-size: 20px;
   /** Corner radius of the optional Rich media area, smaller than rich-radius so it nests inside the bubble corner. */
   --tooltip-media-radius: 8px;
-  /** Visible height of the secondary text action, level with the small primary Button beside it. Expand the hit area to min-touch-target in code. */
+  /** Visible height of the primary and secondary text actions in the Rich footer. Expand the hit area to min-touch-target in code. */
   --tooltip-control-height: 32px;
-  /** Horizontal padding inside the secondary text action around its label. */
+  /** Horizontal padding inside the primary and secondary text actions around their label. */
   --tooltip-control-padding-x: 8px;
-  /** Corner radius of the hover and press fill of the secondary text action and the close button. */
+  /** Corner radius of the hover and press fill of the primary and secondary text actions and the close button. */
   --tooltip-control-radius: 8px;
   /** Visible width and height of the square close button of a Rich tooltip, small enough to sit beside the title. Expand the hit area to min-touch-target in code. */
   --tooltip-close-size: 24px;
   /** Size of the close glyph inside the close button of a Rich tooltip. Use icon-size for the leading icon. */
   --tooltip-close-icon-size: 16px;
-  /** Minimum hit area of the trigger, the secondary text action and the close button, whatever their visible size. Meets the iOS 44pt and Android 48dp floors. */
+  /** Minimum hit area of the trigger, the primary and secondary text actions and the close button, whatever their visible size. Meets the iOS 44pt and Android 48dp floors. */
   --tooltip-min-touch-target: 48px;
-  /** Stroke width of the focus ring around the secondary text action and the close button. */
+  /** Stroke width of the focus ring around the text actions and the close button. */
   --tooltip-focus-ring-width: 2px;
-  /** Gap between a focused secondary text action or close button and its focus ring. */
+  /** Gap between a focused text action or close button and its focus ring. */
   --tooltip-focus-ring-offset: 2px;
   /** Corner radius of the focus ring, one step rounder than control-radius so the ring stays concentric across the offset. */
   --tooltip-focus-ring-radius: 12px;
-  /** Width of the hairline around a Light tooltip and its caret. Dark tooltips have no border. */
+  /** Width of the hairline around a Light or Info tooltip and its caret. Dark tooltips have no border. */
   --tooltip-border-width: 1px;
   /** Base width of the caret that points from the bubble to its trigger, on every side. Its height is half this. Caret None draws no caret but keeps the space. */
   --tooltip-caret-width: 12px;
