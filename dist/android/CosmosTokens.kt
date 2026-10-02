@@ -1678,9 +1678,6 @@ object CosmosTokens {
   val tooltipControlBgLightHover = Color(0xFFFAFAFA)
   val tooltipControlBgLightPressed = Color(0xFFF5F5F5)
   val tooltipControlHeight = 32.dp
-  val tooltipControlLabelDark = Color(0xFFA1A1A1)
-  val tooltipControlLabelInfo = Color(0xFF525252)
-  val tooltipControlLabelLight = Color(0xFF525252)
   val tooltipControlPaddingX = 8.dp
   val tooltipControlRadius = 8.dp
   val tooltipDescriptionDark = Color(0xFFA1A1A1)
@@ -1706,6 +1703,13 @@ object CosmosTokens {
   val tooltipOffset = 4.dp
   val tooltipPaddingX = 12.dp
   val tooltipPaddingY = 8.dp
+  val tooltipPrimaryLabelDark = Color(0xFF83D4FF)
+  val tooltipPrimaryLabelInfo = Color(0xFF0067E8)
+  val tooltipPrimaryLabelInfoHover = Color(0xFF0857C5)
+  val tooltipPrimaryLabelInfoPressed = Color(0xFF0D4C9B)
+  val tooltipPrimaryLabelLight = Color(0xFF0067E8)
+  val tooltipPrimaryLabelLightHover = Color(0xFF0857C5)
+  val tooltipPrimaryLabelLightPressed = Color(0xFF0D4C9B)
   val tooltipRadius = 8.dp
   val tooltipRichGapActions = 8.dp
   val tooltipRichGapFooter = 16.dp
@@ -1717,6 +1721,9 @@ object CosmosTokens {
   val tooltipRichPaddingY = 12.dp
   val tooltipRichRadius = 12.dp
   val tooltipScreenMargin = 16.dp
+  val tooltipSecondaryLabelDark = Color(0xFFA1A1A1)
+  val tooltipSecondaryLabelInfo = Color(0xFF525252)
+  val tooltipSecondaryLabelLight = Color(0xFF525252)
   val tooltipShadowInfo1Blur = 8.dp
   val tooltipShadowInfo1Color = Color(0x140A0A0A)
   val tooltipShadowInfo1OffsetX = 0.dp

@@ -13,7 +13,7 @@ A tooltip is a small bubble that explains the thing it points at. One design and
 There are two types:
 
 - **Plain** is one short label, up to two lines, with nothing to tap inside. It explains an icon or a control and goes away by itself.
-- **Rich** can hold media, a leading icon, a title, a message, a close button and a footer with a step count, a secondary text action (such as Skip) and a primary Button (such as Next or Got it). Because it holds things to tap, it stays open until it is dismissed. Several Rich tooltips in a row make an onboarding tour.
+- **Rich** can hold media, a leading icon, a title, a message, a close button and a footer with a step count, a quiet secondary text action (such as Skip) and a primary text action (such as Next or Got it). Because it holds things to tap, it stays open until it is dismissed. Several Rich tooltips in a row make an onboarding tour.
 
 Each type comes in three surfaces:
 
@@ -37,8 +37,9 @@ The bubble sits on any **Side** of its trigger, with the **Caret** at the Start,
 ### Composition
 
 - **Tooltip** (`881:362`) is the bubble with its caret. Four variant axes: Type, Surface, Side and Caret, 96 variants.
-- **Tooltip / Control** (`876:95`, constitutive) is the secondary text action and the close button of a Rich tooltip. Type (Action, Close) x Surface x State, 24 variants. Both are nested in every Rich variant, on the matching surface, and exposed.
-- **Button** (`58:202`, referenced: Primary, Small, Default intent) is the primary action, nested in every Rich variant and exposed. Its colours and sizes come from `button/*`; see [Button](button.md).
+- **Tooltip / Control** (`876:95`, constitutive) holds the two text actions and the close button of a Rich tooltip. Type (Primary, Secondary, Close) x Surface x State, 36 variants. All three are nested in every Rich variant, on the matching surface, and exposed.
+
+The footer uses text actions, not the Cosmos Button. A tooltip floats over a screen that already has its own primary action, so a filled button would compete with it, and the Button has no style that passes on the Dark surface. This follows the Material 3 rich tooltip and Apple TipKit, which also use text actions.
 - **Icon / auto-awesome** (`876:28`, referenced) is the default leading icon, swappable through the `Icon` property. **Icon / close** (`55:17`) is the close glyph.
 
 ---
@@ -77,7 +78,7 @@ Only one tooltip is open at a time; opening another closes the first. A tooltip 
 | `media` | image | (image) | none | Rich only. Optional image or illustration across the top, 2:1. |
 | `step` | `{ current, total }` | – | none | Rich only. Shows "1 of 3" in the footer for an onboarding tour. |
 | `secondaryAction` | `{ label, onAction }` | – | none | Rich only. A quiet text action, such as Skip. |
-| `primaryAction` | `{ label, onAction }` | – | none | Rich only. A Button (Primary, Small), such as Next, Done or Got it. Never "OK" or "Close"; use `showClose` instead. |
+| `primaryAction` | `{ label, onAction }` | – | none | Rich only. A blue text action, such as Next, Done or Got it. Never "OK" or "Close"; use `showClose` instead. |
 | `showClose` | boolean | true \| false | `true` | Rich only. Hide it only when an action already dismisses, such as Got it. A Rich tooltip always has at least one way to close. |
 | `open`, `onOpenChange` | boolean, callback | – | – | Controlled open state, for onboarding steps. |
 | `delay` | number | ms | `300` | Web hover delay for Plain. Focus opens with no delay. |
@@ -100,7 +101,7 @@ Only one tooltip is open at a time; opening another closes the first. A tooltip 
 | `Show step`, `Show secondary action`, `Show primary action` | BOOLEAN | `true` | Rich only, inside the footer. |
 | `Close`, `Secondary action`, `Primary action` | Nested instance | exposed | Set their `State` and `Label` from the Tooltip panel. |
 
-Tooltip / Control has `Type` (Action, Close), `Surface` (Dark, Light, Info), `State` (Default, Hover, Pressed, Focus) and a `Label` text property. State is design-only: in code it comes from `:hover`, `:active` and `:focus-visible` on web and from the press state on mobile.
+Tooltip / Control has `Type` (Primary, Secondary, Close), `Surface` (Dark, Light, Info), `State` (Default, Hover, Pressed, Focus) and a `Label` text property. State is design-only: in code it comes from `:hover`, `:active` and `:focus-visible` on web and from the press state on mobile.
 
 Every variant ships placeholder copy. Realistic copy lives in the `Tooltip examples` frame (`885:330`).
 
@@ -110,7 +111,7 @@ Every variant ships placeholder copy. Realistic copy lives in the `Tooltip examp
 |---|---|---|
 | 1 | Plain, Dark, Bottom, Center, "Cancel up to 24 hrs before check-in for a full refund" | iOS hotel card, on the info icon beside "Free cancellation". Wraps to two lines at 240. `885:331` |
 | 2 | Rich, Dark, Bottom, Start, icon, title "New: Filter by airline", message "Pick the airlines you prefer and we will show their flights first.", step "1 of 3", Skip, Next, no close | Android flight results, the first step of a tour under the Airlines chip. `885:345` |
-| 3 | Plain, Light, Top, Start, "Includes GST and the hotel service fee" | iOS room selection, on the info icon beside the price in the sticky bar. Light keeps it quiet beside the brand Button. `885:401` |
+| 3 | Plain, Light, Top, Start, "Includes GST and the hotel service fee" | iOS room selection, on the info icon beside the price in the sticky bar. Light keeps it quiet beside the page's brand Button. `885:401` |
 | 4 | Plain, Dark, Top, Center, "Charged per traveller for booking online" | Web fare summary, on hover of the info icon. `885:430` |
 | 5 | Rich, Light, Right, Center, media, title "Zero cancellation", message, Got it, close | Web flight add-ons, beside the add-on card. `885:447` |
 | 6 | Rich, Info, Bottom, End, Icon / info, title "Fill this in with one tap", message "Pick a traveller you have booked with before and we will add their details for you.", no footer, close | iOS traveller details, under the saved-travellers icon. `891:5964` |
@@ -159,16 +160,16 @@ Tooltip (component set · 881:362 · Type x Surface x Side x Caret = 96 variants
 │        │  └─ Close (exposed instance · Tooltip / Control, Close) · Show close
 │        └─ Footer (horizontal, gap 8, centred, right-aligned) · Show footer
 │           ├─ Step (text · label/small/regular, 12 / 16 · fills) · Show step
-│           ├─ Secondary action (exposed instance · Tooltip / Control, Action) · Show secondary action
-│           └─ Primary action (exposed instance · Button, Primary, Small) · Show primary action
+│           ├─ Secondary action (exposed instance · Tooltip / Control, Secondary) · Show secondary action
+│           └─ Primary action (exposed instance · Tooltip / Control, Primary) · Show primary action
 └─ Caret row (Top and Bottom) or Caret column (Left and Right) · 7 deep, overlapping the bubble by 1
    └─ Caret (12 x 7, or 7 x 12) · inset caret-inset at Start or End · absent with Caret None
       ├─ Fill (vector in the bubble colour; its 1 px base strip covers the bubble border under the caret)
       └─ Edge (Light and Info · one open stroke, border-light, border-width, mitred: it runs 1 px along the bubble border on each side, then round the caret, so the outline never breaks)
 
-Tooltip / Control (component set · 876:95 · Type x Surface x State = 24 variants)
+Tooltip / Control (component set · 876:95 · Type x Surface x State = 36 variants)
 ├─ Focus Ring (absolute, 4 outside the control, radius 12) · Focus only
-└─ Action: Label (text · label/small/bold, 12 / 16) · 32 tall · padding 0 x 8 · radius 8
+└─ Primary or Secondary: Label (text · label/small/bold, 12 / 16) · 32 tall · padding 0 x 8 · radius 8
    or Close: Icon (instance · Icon / close · 16) · 24 x 24 · radius 8
 ```
 
@@ -186,12 +187,11 @@ The caret row comes after the bubble for Top and Left, and before it for Bottom 
 | Gap: header to footer | – | 16 | `tooltip/rich-gap-footer` |
 | Gap: icon to text, text to close | – | 8 | `tooltip/rich-gap-inline` |
 | Gap: title to message | – | 2 | `tooltip/rich-gap-text` |
-| Gap: step, Skip, primary Button | – | 8 | `tooltip/rich-gap-actions` |
+| Gap: step, secondary and primary actions | – | 8 | `tooltip/rich-gap-actions` |
 | Leading icon | – | 20 | `tooltip/icon-size` |
 | Media | – | full width, 2:1 (296 x 148 at 320), radius 8 | `tooltip/media-radius` |
-| Secondary action | – | 32 tall, padding 8, radius 8 | `tooltip/control-height`, `control-padding-x`, `control-radius` |
+| Primary and secondary actions | – | 32 tall, padding 8, radius 8 | `tooltip/control-height`, `control-padding-x`, `control-radius` |
 | Close button and glyph | – | 24, glyph 16, radius 8 | `tooltip/close-size`, `close-icon-size`, `control-radius` |
-| Primary action | – | Button Small, 32 tall | `button/min-height-sm` and the rest of `button/*` |
 | Caret | 12 x 6 visible | 12 x 6 visible | `tooltip/caret-width` (height is half). Figma draws it 7 deep and overlaps the bubble by 1 so no seam shows |
 | Caret inset at Start and End | 12 | 12 | `tooltip/caret-inset`, from the bubble edge to the near side of the caret |
 | Gap: trigger to caret tip | 4 | 4 | `tooltip/offset` |
@@ -216,14 +216,14 @@ Token names follow `tooltip/{part}-{surface}[-{state}]`, with `dark`, `light` or
 | Rich message and step | `description-dark` → `text-inverse-secondary` #A1A1A1 | `description-light` → `text-secondary` #525252 | `description-info` → `text-secondary` #525252 |
 | Leading icon | `icon-dark` → `icon-inverse` #FFFFFF | `icon-light` → `icon` #0A0A0A | `icon-info` → `icon-info` #0067E8 |
 | Media placeholder | `media-bg-dark` → `bg-fill-inverse-pressed` #262626 | `media-bg-light` → `bg-surface` #F5F5F5 | `media-bg-info` → `bg-surface-secondary` #FFFFFF |
-| Secondary action label | `control-label-dark` → `text-inverse-secondary` #A1A1A1 | `control-label-light` → `text-secondary` #525252 | `control-label-info` → `text-secondary` #525252 |
+| Primary action label | `primary-label-dark` → `text-link-inverse` #83D4FF, every state | `primary-label-light` → `text-brand` #0067E8; Hover `-hover` → `text-brand-on-bg-surface-hover` #0857C5; Pressed `-pressed` → `text-brand-on-bg-surface-pressed` #0D4C9B | `primary-label-info` → `text-info` #0067E8; Hover `-hover` → `text-info-on-bg-surface-hover` #0857C5; Pressed `-pressed` → `text-info-on-bg-surface-pressed` #0D4C9B |
+| Secondary action label | `secondary-label-dark` → `text-inverse-secondary` #A1A1A1 | `secondary-label-light` → `text-secondary` #525252 | `secondary-label-info` → `text-secondary` #525252 |
 | Close glyph | `close-icon-dark` → `icon-inverse-secondary` #A1A1A1 | `close-icon-light` → `icon-secondary` #525252 | `close-icon-info` → `icon-secondary` #525252 |
-| Secondary action and close, Hover | `control-bg-dark-hover` → `bg-fill-inverse-hover` #171717 | `control-bg-light-hover` → `bg-surface-secondary-hover` #FAFAFA | `control-bg-info-hover` → `bg-surface-info-hover` #D6EFFF |
-| Secondary action and close, Pressed | `control-bg-dark-pressed` → `bg-fill-inverse-pressed` #262626 | `control-bg-light-pressed` → `bg-surface-secondary-pressed` #F5F5F5 | `control-bg-info-pressed` → `bg-surface-info-pressed` #C2E8FF |
+| Text actions and close, Hover | `control-bg-dark-hover` → `bg-fill-inverse-hover` #171717 | `control-bg-light-hover` → `bg-surface-secondary-hover` #FAFAFA | `control-bg-info-hover` → `bg-surface-info-hover` #D6EFFF |
+| Text actions and close, Pressed | `control-bg-dark-pressed` → `bg-fill-inverse-pressed` #262626 | `control-bg-light-pressed` → `bg-surface-secondary-pressed` #F5F5F5 | `control-bg-info-pressed` → `bg-surface-info-pressed` #C2E8FF |
 | Focus ring | `focus-ring` → `border-focus` #0681FF | same | same |
-| Primary action | Button, Primary: `button/bg-primary-*`, `button/label-primary-*` | same | same |
 
-At rest and on focus the secondary action and close button have no fill; only hover and press add one. The message keeps the description colour with or without a title.
+At rest and on focus the text actions and close button have no fill; only hover and press add one. On Light and Info the primary label darkens with the fill, because the brand and info blues drop below 4.5:1 on the tinted Info fills (4.30 and 3.97:1); on Dark the light blue passes on every fill, so it stays the same. The message keeps the description colour with or without a title.
 
 This component adds no semantic roles.
 
@@ -239,8 +239,8 @@ This component adds no semantic roles.
 | Dark: message, step and Skip #A1A1A1 on #0A0A0A | 7.66:1 | 4.5:1 | Pass |
 | Dark: Skip on Hover #171717 / Pressed #262626 | 6.94 / 5.86:1 | 4.5:1 | Pass |
 | Dark: close glyph #A1A1A1 on #0A0A0A / #171717 / #262626 | 7.66 / 6.94 / 5.86:1 | 3:1 (1.4.11) | Pass |
-| Dark: primary Button fill #0067E8 on #0A0A0A | 3.87:1 | 3:1 | Pass |
-| Primary Button label #FFFFFF on #0067E8 | 5.12:1 | 4.5:1 | Pass |
+| Dark: primary action #83D4FF on #0A0A0A / Hover #171717 / Pressed #262626 | 12.09 / 10.95 / 9.24:1 | 4.5:1 | Pass |
+| Light: primary action #0067E8 on #FFFFFF / Hover #0857C5 on #FAFAFA / Pressed #0D4C9B on #F5F5F5 | 5.12 / 6.33 / 7.63:1 | 4.5:1 | Pass |
 | Dark bubble #0A0A0A on a white or grey page | 19.80 / 18.16:1 | 3:1 | Pass |
 | Light: label and title #0A0A0A on #FFFFFF | 19.80:1 | 4.5:1 | Pass |
 | Light: message, step and Skip #525252 on #FFFFFF | 7.81:1 | 4.5:1 | Pass |
@@ -250,7 +250,7 @@ This component adds no semantic roles.
 | Info: message, step and Skip #525252 on #EDF8FF | 7.25:1 | 4.5:1 | Pass |
 | Info: Skip and close on Hover #D6EFFF / Pressed #C2E8FF | 6.57 / 6.06:1 | 4.5:1 | Pass |
 | Info: leading icon #0067E8 on #EDF8FF | 4.74:1 | 3:1 | Pass |
-| Info: primary Button fill #0067E8 / Hover #0857C5 / Pressed #0D4C9B on #EDF8FF | 4.74 / 6.12 / 7.71:1 | 3:1 | Pass |
+| Info: primary action #0067E8 on #EDF8FF / Hover #0857C5 on #D6EFFF / Pressed #0D4C9B on #C2E8FF | 4.74 / 5.55 / 6.45:1 | 4.5:1 | Pass |
 | Info: bubble #EDF8FF on a white / grey page | 1.08 / 1.01:1 | – | The tint alone does not separate; the border and the overlay shadow carry the edge |
 | Info: border #83D4FF on white / grey / the tint | 1.64 / 1.50 / 1.52:1 | – | Decorative, with the shadow, as on Light |
 | Focus ring #0681FF on #0A0A0A / #FFFFFF / #EDF8FF | 5.27 / 3.76 / 3.48:1 | 3:1 | Pass |
@@ -305,7 +305,6 @@ A Plain tooltip never holds a link or a button, because a pointer or screen read
 
 ## Known gaps
 
-- **Primary Button pressed on Dark.** The pressed fill #0D4C9B sits at 2.38:1 against the near-black bubble, and hover #0857C5 at 3.00:1. Both are momentary states, and the white label stays readable on the fill, so the action never becomes unidentifiable. An inverse Button style would fix it system-wide; it is not in Cosmos yet.
 - **Hover is web-only.** The Tooltip / Control Hover variants apply to web.
 - **Literal geometry in Figma.** Everything else binds to a variable. Three values do not: the -1 gap that tucks the caret under the bubble edge, the 7 px drawn depth of the caret row (6 visible plus the 1 px overlap), and the focus ring position (4 outside the control, which is `focus-ring-offset` plus `focus-ring-width`).
 - **Rich width in Figma.** Rich is drawn at a fixed 320; in code it hugs its content up to 320.
@@ -313,21 +312,21 @@ A Plain tooltip never holds a link or a button, because a pointer or screen read
 - **Caret border on Light and Info.** Figma draws the caret over the bubble border, and a mitred Edge stroke rejoins the two so the outline is continuous. Its corner points sit at fractional positions worked out for a 1 px border and a 12 x 6 caret; if `border-width` or `caret-width` changes, redraw the Edge. In code, draw the bubble and caret as one path.
 - **No motion tokens.** Durations and easing are documented above, not tokenised.
 - **No dark theme.** All variable collections are single-mode. In a future dark theme the Light and Info surfaces are the ones to adapt.
-- **Info under test.** Info is a trial surface beside Dark and Light. If it is dropped, delete the 11 `*-info` tokens, the Info variants of both sets and the Info example.
+- **Info under test.** Info is a trial surface beside Dark and Light. If it is dropped, delete the `*-info` tokens (14 with the primary action labels), the Info variants of both sets and the Info example.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
 
 ---
 
 ## Token reference
 
-62 tokens under `component.tooltip` in `tokens/tokens.json`. 60 are mirrored 1:1 as `tooltip/*` in the Figma `component` collection. The Figma file has no shadow variables, so `shadow-light` and `shadow-info` are the `shadow/overlay` effect style on the Light and Info variants there.
+69 tokens under `component.tooltip` in `tokens/tokens.json`. 67 are mirrored 1:1 as `tooltip/*` in the Figma `component` collection. The Figma file has no shadow variables, so `shadow-light` and `shadow-info` are the `shadow/overlay` effect style on the Light and Info variants there.
 
 | Group | Count |
 |---|---|
 | Surface: `bg-dark`, `bg-light`, `bg-info`, `border-light`, `border-info`, `border-width`, `shadow-light`, `shadow-info` | 8 |
 | Text: `label-dark`, `label-light`, `label-info`, `description-dark`, `description-light`, `description-info` | 6 |
 | Rich parts: `icon-dark`, `icon-light`, `icon-info`, `icon-size`, `media-bg-dark`, `media-bg-light`, `media-bg-info`, `media-radius` | 8 |
-| Controls: `control-label-dark`, `control-label-light`, `control-label-info`, `close-icon-dark`, `close-icon-light`, `close-icon-info`, `control-bg-dark-hover`, `control-bg-dark-pressed`, `control-bg-light-hover`, `control-bg-light-pressed`, `control-bg-info-hover`, `control-bg-info-pressed`, `control-height`, `control-padding-x`, `control-radius`, `close-size`, `close-icon-size` | 17 |
+| Controls: `primary-label-dark`, `primary-label-light`, `primary-label-light-hover`, `primary-label-light-pressed`, `primary-label-info`, `primary-label-info-hover`, `primary-label-info-pressed`, `secondary-label-dark`, `secondary-label-light`, `secondary-label-info`, `close-icon-dark`, `close-icon-light`, `close-icon-info`, `control-bg-dark-hover`, `control-bg-dark-pressed`, `control-bg-light-hover`, `control-bg-light-pressed`, `control-bg-info-hover`, `control-bg-info-pressed`, `control-height`, `control-padding-x`, `control-radius`, `close-size`, `close-icon-size` | 24 |
 | Focus and touch: `focus-ring`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `min-touch-target` | 5 |
 | Plain layout: `padding-x`, `padding-y`, `radius`, `max-width` | 4 |
 | Rich layout: `rich-padding-x`, `rich-padding-y`, `rich-radius`, `rich-max-width`, `rich-gap-text`, `rich-gap-inline`, `rich-gap-section`, `rich-gap-footer`, `rich-gap-actions` | 9 |
