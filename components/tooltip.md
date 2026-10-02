@@ -146,22 +146,23 @@ In every scene the caret tip sits exactly `offset` (4) from its trigger, and the
 Tooltip (component set · 881:362 · Type x Surface x Side x Caret = 64 variants)
 ├─ Bubble (auto layout)
 │  ├─ Plain: Label (text · body/small/regular, 12 / 18 · fills and wraps) · padding 8 x 12 · radius 8 · hugs up to max width 240
-│  └─ Rich: vertical, gap 12 · padding 12 x 16 · radius 12 · 320 wide
+│  └─ Rich: vertical, gap 12 · padding 12 · radius 12 · 320 wide
 │     ├─ Media (2:1, radius 8, media-bg fill) · Show media
-│     ├─ Header (horizontal, gap 8, top-aligned)
-│     │  ├─ Icon (instance · 20) · Show icon · Icon swap
-│     │  ├─ Text (vertical, gap 2, fills)
-│     │  │  ├─ Title (text · title/small/bold, 14 / 22) · Show title
-│     │  │  └─ Message (text · body/small/regular, 12 / 18)
-│     │  └─ Close (exposed instance · Tooltip / Control, Close) · Show close
-│     └─ Footer (horizontal, gap 8, centred, right-aligned) · Show footer
-│        ├─ Step (text · label/small/regular, 12 / 16 · fills) · Show step
-│        ├─ Secondary action (exposed instance · Tooltip / Control, Action) · Show secondary action
-│        └─ Primary action (exposed instance · Button, Primary, Small) · Show primary action
+│     └─ Body (vertical, gap 16, fills)
+│        ├─ Header (horizontal, gap 8, top-aligned)
+│        │  ├─ Icon (instance · 20) · Show icon · Icon swap
+│        │  ├─ Text (vertical, gap 2, fills)
+│        │  │  ├─ Title (text · title/small/bold, 14 / 22) · Show title
+│        │  │  └─ Message (text · body/small/regular, 12 / 18)
+│        │  └─ Close (exposed instance · Tooltip / Control, Close) · Show close
+│        └─ Footer (horizontal, gap 8, centred, right-aligned) · Show footer
+│           ├─ Step (text · label/small/regular, 12 / 16 · fills) · Show step
+│           ├─ Secondary action (exposed instance · Tooltip / Control, Action) · Show secondary action
+│           └─ Primary action (exposed instance · Button, Primary, Small) · Show primary action
 └─ Caret row (Top and Bottom) or Caret column (Left and Right) · 7 deep, overlapping the bubble by 1
    └─ Caret (12 x 7, or 7 x 12) · inset caret-inset at Start or End · absent with Caret None
-      ├─ Fill (vector in the bubble colour; its 1 px base strip covers the bubble border)
-      └─ Edge (Light only · open stroke on the two outer sides, border-light, border-width)
+      ├─ Fill (vector in the bubble colour; its 1 px base strip covers the bubble border under the caret)
+      └─ Edge (Light only · one open stroke, border-light, border-width, mitred: it runs 1 px along the bubble border on each side, then round the caret, so the outline never breaks)
 
 Tooltip / Control (component set · 876:95 · Type x Surface x State = 16 variants)
 ├─ Focus Ring (absolute, 4 outside the control, radius 12) · Focus only
@@ -175,16 +176,17 @@ The caret row comes after the bubble for Top and Left, and before it for Bottom 
 
 | Property | Plain | Rich | Token |
 |---|---|---|---|
-| Padding (top and bottom x sides) | 8 x 12 | 12 x 16 | `tooltip/padding-y`, `padding-x`, `rich-padding-y`, `rich-padding-x` |
+| Padding (top and bottom x sides) | 8 x 12 | 12 x 12 | `tooltip/padding-y`, `padding-x`, `rich-padding-y`, `rich-padding-x` |
 | Corner radius | 8 | 12 | `tooltip/radius`, `rich-radius` |
 | Maximum width | 240 | 320 | `tooltip/max-width`, `rich-max-width`. Figma draws Rich at a fixed 320, because wrapping text needs a width; in code it hugs up to 320 |
-| Height, one line, no caret | 34 | 110 with title, message and footer | 18 line plus padding |
-| Gap: media, header, footer | – | 12 | `tooltip/rich-gap-section` |
+| Height, one line, no caret | 34 | 114 with title, message and footer | 18 line plus padding |
+| Gap: media to header | – | 12 | `tooltip/rich-gap-section` |
+| Gap: header to footer | – | 16 | `tooltip/rich-gap-footer` |
 | Gap: icon to text, text to close | – | 8 | `tooltip/rich-gap-inline` |
 | Gap: title to message | – | 2 | `tooltip/rich-gap-text` |
 | Gap: step, Skip, primary Button | – | 8 | `tooltip/rich-gap-actions` |
 | Leading icon | – | 20 | `tooltip/icon-size` |
-| Media | – | full width, 2:1 (288 x 144 at 320), radius 8 | `tooltip/media-radius` |
+| Media | – | full width, 2:1 (296 x 148 at 320), radius 8 | `tooltip/media-radius` |
 | Secondary action | – | 32 tall, padding 8, radius 8 | `tooltip/control-height`, `control-padding-x`, `control-radius` |
 | Close button and glyph | – | 24, glyph 16, radius 8 | `tooltip/close-size`, `close-icon-size`, `control-radius` |
 | Primary action | – | Button Small, 32 tall | `button/min-height-sm` and the rest of `button/*` |
@@ -287,6 +289,7 @@ A Plain tooltip never holds a link or a button, because a pointer or screen read
   border-radius: var(--tooltip-rich-radius);
   max-width: var(--tooltip-rich-max-width);
 }
+.tooltip[data-type="rich"] .tooltip__body { display: flex; flex-direction: column; gap: var(--tooltip-rich-gap-footer); }
 ```
 
 ---
@@ -298,7 +301,7 @@ A Plain tooltip never holds a link or a button, because a pointer or screen read
 - **Literal geometry in Figma.** Everything else binds to a variable. Three values do not: the -1 gap that tucks the caret under the bubble edge, the 7 px drawn depth of the caret row (6 visible plus the 1 px overlap), and the focus ring position (4 outside the control, which is `focus-ring-offset` plus `focus-ring-width`).
 - **Rich width in Figma.** Rich is drawn at a fixed 320; in code it hugs its content up to 320.
 - **Media is a placeholder.** The Media frame carries `media-bg-*`; replace its fill with an image in a mock.
-- **Caret border on Light.** Figma draws the caret over the bubble border. In code, draw the bubble and caret as one path so the border is continuous.
+- **Caret border on Light.** Figma draws the caret over the bubble border, and a mitred Edge stroke rejoins the two so the outline is continuous. Its corner points sit at fractional positions worked out for a 1 px border and a 12 x 6 caret; if `border-width` or `caret-width` changes, redraw the Edge. In code, draw the bubble and caret as one path.
 - **No motion tokens.** Durations and easing are documented above, not tokenised.
 - **No dark theme.** All variable collections are single-mode. In a future dark theme the Light surface is the one to adapt.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
@@ -307,7 +310,7 @@ A Plain tooltip never holds a link or a button, because a pointer or screen read
 
 ## Token reference
 
-50 tokens under `component.tooltip` in `tokens/tokens.json`. 49 are mirrored 1:1 as `tooltip/*` in the Figma `component` collection. The Figma file has no shadow variables, so `shadow-light` is the `shadow/overlay` effect style on the Light variants there.
+51 tokens under `component.tooltip` in `tokens/tokens.json`. 50 are mirrored 1:1 as `tooltip/*` in the Figma `component` collection. The Figma file has no shadow variables, so `shadow-light` is the `shadow/overlay` effect style on the Light variants there.
 
 | Group | Count |
 |---|---|
@@ -317,7 +320,7 @@ A Plain tooltip never holds a link or a button, because a pointer or screen read
 | Controls: `control-label-dark`, `control-label-light`, `close-icon-dark`, `close-icon-light`, `control-bg-dark-hover`, `control-bg-dark-pressed`, `control-bg-light-hover`, `control-bg-light-pressed`, `control-height`, `control-padding-x`, `control-radius`, `close-size`, `close-icon-size` | 13 |
 | Focus and touch: `focus-ring`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `min-touch-target` | 5 |
 | Plain layout: `padding-x`, `padding-y`, `radius`, `max-width` | 4 |
-| Rich layout: `rich-padding-x`, `rich-padding-y`, `rich-radius`, `rich-max-width`, `rich-gap-text`, `rich-gap-inline`, `rich-gap-section`, `rich-gap-actions` | 8 |
+| Rich layout: `rich-padding-x`, `rich-padding-y`, `rich-radius`, `rich-max-width`, `rich-gap-text`, `rich-gap-inline`, `rich-gap-section`, `rich-gap-footer`, `rich-gap-actions` | 9 |
 | Caret and position: `caret-width`, `caret-inset`, `offset`, `screen-margin`, `viewport-margin` | 5 |
 
 `max-width` aliases the primitive `spacing.240` and `rich-max-width` aliases `spacing.320`, because no `space.*` step reaches those widths.

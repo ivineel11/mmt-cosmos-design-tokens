@@ -3010,8 +3010,8 @@
   --tooltip-radius: 8px;
   /** Widest a Plain tooltip gets before its text wraps. Plain copy should fit in two lines; anything longer belongs in a Rich tooltip. */
   --tooltip-max-width: 240px;
-  /** Left and right padding inside a Rich tooltip bubble. Plain tooltips use padding-x. */
-  --tooltip-rich-padding-x: 16px;
+  /** Left and right padding inside a Rich tooltip bubble, the same as rich-padding-y so the content sits evenly inside. Plain tooltips use padding-x. */
+  --tooltip-rich-padding-x: 12px;
   /** Top and bottom padding inside a Rich tooltip bubble. Plain tooltips use padding-y. */
   --tooltip-rich-padding-y: 12px;
   /** Corner radius of a Rich tooltip bubble, larger to suit the larger bubble. Plain tooltips use radius. */
@@ -3022,8 +3022,10 @@
   --tooltip-rich-gap-text: 2px;
   /** Horizontal gap in the Rich header row: between the leading icon and the text, and between the text and the close button. Hidden parts leave no gap. */
   --tooltip-rich-gap-inline: 8px;
-  /** Vertical gap between the stacked sections of a Rich tooltip: media, header row and footer row. Hidden sections leave no gap. */
+  /** Vertical gap between the media and the content below it in a Rich tooltip. Use rich-gap-footer between the header and the footer. Hidden sections leave no gap. */
   --tooltip-rich-gap-section: 12px;
+  /** Vertical gap between the header (title and message) and the footer of a Rich tooltip, larger than rich-gap-section so the actions read as their own group. Hidden footers leave no gap. */
+  --tooltip-rich-gap-footer: 16px;
   /** Horizontal gap between the secondary text action and the primary Button in the Rich footer, and the least space between the step count and the actions. */
   --tooltip-rich-gap-actions: 8px;
   /** Size of the optional leading icon of a Rich tooltip. Use close-icon-size for the close glyph. */

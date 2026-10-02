@@ -1698,11 +1698,12 @@ object CosmosTokens {
   val tooltipPaddingY = 8.dp
   val tooltipRadius = 8.dp
   val tooltipRichGapActions = 8.dp
+  val tooltipRichGapFooter = 16.dp
   val tooltipRichGapInline = 8.dp
   val tooltipRichGapSection = 12.dp
   val tooltipRichGapText = 2.dp
   val tooltipRichMaxWidth = 320.dp
-  val tooltipRichPaddingX = 16.dp
+  val tooltipRichPaddingX = 12.dp
   val tooltipRichPaddingY = 12.dp
   val tooltipRichRadius = 12.dp
   val tooltipScreenMargin = 16.dp
