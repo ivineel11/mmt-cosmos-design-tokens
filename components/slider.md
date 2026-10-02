@@ -14,11 +14,10 @@ A slider picks a value, or a range of values, by dragging a white, raised thumb 
 
 The value applies as the thumb moves, or on release when a new value is expensive to fetch. It never submits a form by itself.
 
-There are three components on the Slider page (`809:2`), plus one internal helper:
+There are two components on the Slider page (`809:2`), plus one internal helper:
 
 - **Slider** is the whole component: an optional header row, the track row and optional limit labels.
 - **Slider / Thumb** is one thumb, with its halo and focus ring.
-- **Slider / Tooltip** is the value bubble shown above a thumb while it is held or focused. One variant axis, `Caret` (True or False), and a `Value` text property. It is the same at both sizes.
 - **.Slider / Position** (internal, unpublished) is a transparent spacer that places a thumb. Size × Value = 42 variants, 0% to 100% in 5% steps.
 
 Four variant axes drive Slider:
@@ -41,7 +40,7 @@ Four variant axes drive Slider:
 ### Composition
 
 - **Slider / Thumb** (`809:83`) is nested once in Single and twice in Range, and follows the slider's Size and State. In Range the minimum thumb stays Default and the maximum thumb takes the State.
-- **Slider / Tooltip** (`812:568`) is nested above the maximum thumb and shown through the `Show tooltip` property. The nested instance is exposed, so its `Caret` and `Value` are set from the Slider panel.
+- **[Tooltip](tooltip.md)** (`854:516`, Plain, Dark, Top Center) is nested above the maximum thumb as the value bubble and shown through the `Show tooltip` property. It is the same at both sizes. The instance rebinds its bubble, text, padding, radius and caret to the `slider/tooltip-*` variables and uses `label/small/bold` for the number, so the Slider keeps its own tokens. The nested instance is exposed, so its `Placement` and `Label` are set from the Slider panel. It replaces the earlier Slider / Tooltip component.
 - **.Slider / Position** (`821:664`) is nested once in Single (`Thumb position`) and twice in Range (`Min thumb`, `Max thumb`). The nested instances are exposed, so a designer places the thumbs from the Slider panel. The spacer width sets the length of the bar the thumb rides on.
 - _Decorative children: Halo and Focus ring, inside Slider / Thumb. They are documented under Structure._
 
@@ -79,7 +78,8 @@ Four variant axes drive Slider:
 | `Show header` | BOOLEAN | `true` | Shows the header row. |
 | `Show limits` | BOOLEAN | `true` | Shows the limit labels. |
 | `Show tooltip` | BOOLEAN | `false` | Shows the tooltip above the maximum thumb, and the Tooltip space that makes room for it, so the tooltip stays inside the component bounds and never covers the header. |
-| `Caret` (on the exposed Tooltip) | VARIANT | True | True draws the caret, False shows the bubble alone. |
+| `Placement` (on the exposed Tooltip) | VARIANT | Top Center | Top Center draws the caret, None shows the bubble alone. Leave the other placements alone; they are for standalone tooltips. |
+| `Label` (on the exposed Tooltip) | TEXT | `"Value"` | The number in the bubble. |
 | `Thumb position` (Single), `Min thumb` and `Max thumb` (Range), on the exposed .Slider / Position | VARIANT | 60% (Single), 25% and 75% (Range); 75% on Discrete Single | 0% to 100% of the travel in 5% steps. Discrete sliders have 4 steps, so use 0, 25, 50, 75 or 100% to land on a tick. Keep Min thumb at or below Max thumb. |
 
 Every variant ships placeholder copy only. Realistic copy lives in the `Slider examples` frame (`811:5778`).
@@ -91,7 +91,7 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Slider e
 | 1 | Range, Continuous, Medium, label "Price per night", value ₹2,000 – ₹8,000, limits ₹500 and ₹20,000+ | Hotel results filter sheet. |
 | 2 | Range, Discrete, Medium, label "Departure time", steps of 6 hours, value 06:00 – 18:00, limits 00:00 and 24:00 | Flight results filter sheet. |
 | 3 | Range, Continuous, Medium, Pressed, header hidden, tooltip "₹8,000" on the maximum thumb | The price filter being dragged on web. |
-| 3b | The same with the tooltip `Caret` off | The caret-less tooltip. |
+| 3b | The same with the tooltip `Placement` set to None | The caret-less tooltip. |
 | 3c | The same in `Pressed grow` | The grow press, for comparison with 3. |
 | 4 | Single, Continuous, Medium, label "Distance from centre", value "Up to 6 km", limits 0 km and 10 km | Hotel results filter sheet. |
 | 5 | Single, Discrete, Small, label "Guest rating", steps 1 to 5, value "4+", limits 1 and 5 | A web filter side panel. |
@@ -133,7 +133,7 @@ Slider (component set · 811:1622)
 │  ├─ Label (text · label/medium/regular or label/small/regular)
 │  └─ Value (text · label/medium/bold or label/small/bold)
 ├─ Body (auto layout, vertical, no gap)
-│  ├─ Tooltip space (empty, 24 or 32 tall, fill width) · Show tooltip
+│  ├─ Tooltip space (empty, 32 or 40 tall, fill width) · Show tooltip
 │  ├─ Track row (48 or 24 tall, no clipping)
 │  │  ├─ Track inactive (full width, centred vertically) · radius full
 │  │  ├─ Ticks (Discrete only, grey, spread across the travel)
@@ -143,7 +143,7 @@ Slider (component set · 811:1622)
 │  │  │     ├─ Fill (absolute, from the track start to the bar end, brand) · clips the white Ticks (Discrete)
 │  │  │     └─ Thumb or Thumb max (absolute, pinned to the bar end)
 │  │  │        ├─ Thumb (instance of Slider / Thumb)
-│  │  │        └─ Tooltip (exposed instance of Slider / Tooltip, rising into Tooltip space) · Show tooltip
+│  │  │        └─ Tooltip (exposed instance of Tooltip, rising into Tooltip space) · Show tooltip
 │  │  └─ Rail min (Range only, drawn on top)
 │  │     └─ Track before min (auto layout, hugs its spacer)
 │  │        ├─ Min thumb (exposed .Slider / Position)
@@ -161,10 +161,10 @@ Slider / Thumb (component set · 809:83)
 .Slider / Position (component set · 821:664 · internal)
 └─ Spacer (transparent rectangle, 0% to 100% of the travel wide) · the variant hugs it, so swapping Value resizes the bar
 
-Slider / Tooltip (component set · 812:568 · Caret True or False)
-├─ Bubble (auto layout, padding 4 × 8, radius 8)
-│  └─ Value (text · label/small/bold)
-└─ Caret (triangle, 8 wide and 4 tall, centred under the bubble) · Caret=True only
+Tooltip (nested instance of Tooltip · 854:516 · Plain, Dark, Top Center or None)
+├─ Bubble (auto layout, padding 8 × 12, radius 8) · slider/tooltip-bg, tooltip-padding-*, tooltip-radius
+│  └─ Label (text · label/small/bold) · slider/tooltip-text
+└─ Caret (triangle, 8 wide and 4 tall, centred under the bubble) · slider/tooltip-caret-width · not in None
 ```
 
 In code the halo is drawn under the track, so the track shows through it. The Figma thumb is one component placed on top of the track, so the halo there sits over the track at a light tint that keeps the track readable.
@@ -182,12 +182,13 @@ In code the halo is drawn under the track, so the track shows through it. The Fi
 | Gap: header to track row | 4 | 4 | `slider/header-gap` |
 | Focus ring | 2 thick, 2 outside the thumb | same | `slider/focus-ring-width`, `focus-ring-offset` |
 | Track, thumb, halo, tick and ring radius | full | full | `slider/radius` |
-| Tooltip padding | 4 × 8 | 4 × 8 | `slider/tooltip-padding-y`, `tooltip-padding-x` |
+| Tooltip padding | 8 × 12 | 8 × 12 | `slider/tooltip-padding-y`, `tooltip-padding-x`, matching `tooltip/padding-y` and `padding-x` |
+| Tooltip height, with caret | 36 | 36 | 16 line plus padding, plus the 4 caret |
 | Tooltip radius | 8 | 8 | `slider/tooltip-radius` |
 | Tooltip caret | 8 × 4 | 8 × 4 | `slider/tooltip-caret-width` |
 | Gap: thumb top to caret tip | 8 | 8 | `slider/tooltip-gap` |
 | Gap: thumb top to bubble, caret off | 12 | 12 | `slider/tooltip-gap` plus the caret height |
-| Tooltip space, only with Show tooltip | 24 (28 in Pressed grow) | 32 (34 in Pressed grow) | tooltip height plus `slider/tooltip-gap`, less the space between the track row top and the thumb |
+| Tooltip space, only with Show tooltip | 32 (36 in Pressed grow) | 40 (42 in Pressed grow) | tooltip height plus `slider/tooltip-gap`, less the space between the track row top and the thumb |
 | Label and value type | 14 / 20 | 12 / 16 | `label/medium/*`, `label/small/*` |
 | Limit and tooltip type | 12 / 16 | 12 / 16 | `label/small/regular`, `label/small/bold` |
 

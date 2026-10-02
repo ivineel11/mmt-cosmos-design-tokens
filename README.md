@@ -80,7 +80,7 @@ Component-token descriptions name the part of the anatomy and the state combinat
 Primitive descriptions work differently. A numeric step like `spacing.16` is its own definition and stays undescribed; 44 such steps are left bare on purpose. What does get described:
 
 - **Every colour** carries which of the two text roles is safe on top of it and at what ratio — `"Safe text on top: text-inverse at 5.11:1 (passes AA); text-primary fails at 3.75:1."` Every swatch in the system has exactly one AA-safe text colour, except `violet.500`, which has none.
-- **The steps the name under-specifies** — `spacing.10`, `spacing.86`, `spacing.200` and `spacing.320` and their single consumers (Radio dot, Button minimum width, Menu width range), the negative steps and their `minusN` build rename, the `borderRadius.999` pill sentinel, the three-weight ramp.
+- **The steps the name under-specifies** — `spacing.10`, `spacing.86`, `spacing.200`, `spacing.240` and `spacing.320` and their consumers (Radio dot, Button minimum width, Menu width range, Tooltip maximum widths), the negative steps and their `minusN` build rename, the `borderRadius.999` pill sentinel, the three-weight ramp.
 - **Anything nothing references**, flagged as raw scale rather than supported system.
 
 Those ratios are computed, not hand-written, so they go stale when a ramp moves. Regenerate them with `node scripts/describe-primitives.mjs` and commit the result.
@@ -214,7 +214,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 945 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 266 semantic roles + 529 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 961 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 266 semantic roles + 545 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -475,11 +475,11 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ## Token Inventory
 
-**Totals:** 278 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 816 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*`) · **1575 values on web** · **1645 on iOS and Android** · **0 gradients**
+**Totals:** 279 primitive tokens · 373 semantic tokens (266 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 857 component tokens (153 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 41 `tooltip/*`) · **1617 values on web** · **1694 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1467 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 10 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, and `slider/thumb-shadow-raised`, which aliases `shadow.raised`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1509 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 11 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light`, which aliases `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (278)
+### Primitive tokens (279)
 
 #### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
 
@@ -576,7 +576,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 | `lineHeight.80` | 80px |
 | `lineHeight.92` | 92px |
 
-#### Spacing — 26 tokens
+#### Spacing — 27 tokens
 
 | Token | Value | Output name |
 |-------|-------|-------------|
@@ -601,6 +601,7 @@ Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checke
 | `spacing.64` | 64px | `--spacing-64` / `spacing64` |
 | `spacing.86` | 86px | `--spacing-86` / `spacing86` |
 | `spacing.200` | 200px | `--spacing-200` / `spacing200` |
+| `spacing.240` | 240px | `--spacing-240` / `spacing240` |
 | `spacing.320` | 320px | `--spacing-320` / `spacing320` |
 | `spacing.-2` | -2px | `--spacing-minus2` / `spacingMinus2` |
 | `spacing.-4` | -4px | `--spacing-minus4` / `spacingMinus4` |
@@ -995,7 +996,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (816)
+### Component tokens (857)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -1011,8 +1012,9 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `list/*` | 60 | List (`797:4533`, 2 variants, with a More rows slot), List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 24 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
 | `switch/*` | 51 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
 | `segmented-control/*` | 47 | Segmented control (`765:186`, 48 variants) and Segmented control / Segment (`764:131`, 96 variants). Three thumb styles (`neutral-*`, `brand-*`, `tinted-*`) and two shapes (Rounded, `pill-radius`) are under test; the losing options will be deleted | [`components/segmented-control.md`](components/segmented-control.md) |
-| `slider/*` | 43 | Slider (`811:1622`, 48 variants), Slider / Thumb (`809:83`, 12 variants) and Slider / Tooltip (`812:568`, 2 variants), with the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. A Pressed grow state (the thumb enlarges instead of showing a halo) is under test beside Pressed | [`components/slider.md`](components/slider.md) |
+| `slider/*` | 43 | Slider (`811:1622`, 48 variants) and Slider / Thumb (`809:83`, 12 variants), with a nested Tooltip instance as the value bubble and the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. A Pressed grow state (the thumb enlarges instead of showing a halo) is under test beside Pressed | [`components/slider.md`](components/slider.md) |
 | `menu/*` | 64 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
+| `tooltip/*` | 41 | Tooltip (`854:516`, 52 variants: Type x Surface x Placement) and Tooltip / Close (`853:29`, 8 variants). Built for web, iOS and Android. Its Plain Dark bubble is nested in the Slider, which rebinds it to its own `slider/tooltip-*` variables at the same values | [`components/tooltip.md`](components/tooltip.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp:
 
@@ -1033,6 +1035,7 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `segmented-control/brand-thumb-default` | `{color.bg-fill-brand}` | `#0067E8` |
 | `slider/tick-inactive` | `{color.bg-fill-neutral-strong-pressed}` | `#737373` |
 | `menu/item-bg-destructive-hover` | `{color.bg-surface-warning-hover}` | `#FFE2E2` |
+| `tooltip/description-dark` | `{color.text-inverse-secondary}` | `#A1A1A1` |
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
@@ -1669,7 +1672,7 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ## Figma component pages
 
-Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`), Tab (`694:2811`, with Tab / Secondary `697:59`), List (`797:4533`, with List / Item `710:474`, List / Leading `709:119`, List / Trailing `709:2983` and List / Section header `710:479`) Switch (`731:172`, with the hidden backup .Switch / Outlined `732:191`), Segmented control (`765:186`, with Segmented control / Segment `764:131`), Slider (`811:1622`, with Slider / Thumb `809:83` and Slider / Tooltip `812:568`) and Menu (`781:231`, with Menu / Section header `781:3971`, Menu / Divider `781:3972` and the panels Menu / Comfortable `781:3973` and Menu / Compact `781:4046`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`), Tab (`694:2811`, with Tab / Secondary `697:59`), List (`797:4533`, with List / Item `710:474`, List / Leading `709:119`, List / Trailing `709:2983` and List / Section header `710:479`) Switch (`731:172`, with the hidden backup .Switch / Outlined `732:191`), Segmented control (`765:186`, with Segmented control / Segment `764:131`), Slider (`811:1622`, with Slider / Thumb `809:83`), Menu (`781:231`, with Menu / Section header `781:3971`, Menu / Divider `781:3972` and the panels Menu / Comfortable `781:3973` and Menu / Compact `781:4046`) and Tooltip (`854:516`, with Tooltip / Close `853:29`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
 
 ### 1. Page
 
@@ -1724,7 +1727,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` is the first one, generated from the Button component set (`58:202`, 120 variants).
 
-`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants), `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants) `components/snackbar.md` the Snackbar component set (`637:3233`, 20 variants) with its Snackbar / Control sub-component (`636:3088`, 48 variants), `components/badge.md` the Badge component set (`683:2823`, 60 variants), `components/tab.md` the Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) component sets, `components/list.md` the List container (`797:4533`, 2 variants) and the List / Item (`710:474`, 30 variants) component set with its List / Leading (`709:119`), List / Trailing (`709:2983`) and List / Section header (`710:479`) sub-components, and `components/menu.md` the Menu / Item (`781:231`, 22 variants) component set with its Menu / Section header (`781:3971`), Menu / Divider (`781:3972`) sets and the Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`) panel components. All nine are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
+`components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants), `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants) `components/snackbar.md` the Snackbar component set (`637:3233`, 20 variants) with its Snackbar / Control sub-component (`636:3088`, 48 variants), `components/badge.md` the Badge component set (`683:2823`, 60 variants), `components/tab.md` the Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) component sets, `components/list.md` the List container (`797:4533`, 2 variants) and the List / Item (`710:474`, 30 variants) component set with its List / Leading (`709:119`), List / Trailing (`709:2983`) and List / Section header (`710:479`) sub-components, `components/menu.md` the Menu / Item (`781:231`, 22 variants) component set with its Menu / Section header (`781:3971`), Menu / Divider (`781:3972`) sets and the Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`) panel components, and `components/tooltip.md` the Tooltip component set (`854:516`, 52 variants) with its Tooltip / Close sub-component (`853:29`, 8 variants). All ten are **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
 
 ### Pinned versions
 

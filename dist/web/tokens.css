@@ -928,7 +928,9 @@
   --spacing-86: 86px;
   /** Off-ramp step that exists for a single consumer: menu/min-width, the narrowest a menu panel gets so a menu of short labels still reads as a list. Do not reach for it in layout — it is a gap-filler, not a scale step. */
   --spacing-200: 200px;
-  /** Off-ramp step that exists for a single consumer: menu/max-width, the widest a menu panel gets before its labels wrap. Do not reach for it in layout — it is a gap-filler, not a scale step. */
+  /** Off-ramp step that exists for a single consumer: tooltip/max-width, the widest a Plain tooltip gets before its text wraps. Do not reach for it in layout — it is a gap-filler, not a scale step. */
+  --spacing-240: 240px;
+  /** Off-ramp step that exists for two consumers: menu/max-width, the widest a menu panel gets before its labels wrap, and tooltip/rich-max-width, the widest a Rich tooltip gets. Do not reach for it in layout — it is a gap-filler, not a scale step. */
   --spacing-320: 320px;
   /** Negative spacing for pulling an element outward — overlapping avatars, bleeding a child past the padding of its parent. The build renames this key to `minus12` so it cannot collide with `12` once camel/kebab-cased. Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-minus12: -12px;
@@ -2820,10 +2822,10 @@
   --slider-tooltip-bg: #0A0A0A;
   /** Value inside the tooltip. Use value-text for the header row readout. */
   --slider-tooltip-text: #FFFFFF;
-  /** Horizontal padding inside the tooltip bubble. */
-  --slider-tooltip-padding-x: 8px;
-  /** Vertical padding inside the tooltip bubble. */
-  --slider-tooltip-padding-y: 4px;
+  /** Horizontal padding inside the slider tooltip bubble, matching tooltip/padding-x. */
+  --slider-tooltip-padding-x: 12px;
+  /** Vertical padding inside the slider tooltip bubble, matching tooltip/padding-y. */
+  --slider-tooltip-padding-y: 8px;
   /** Corner radius of the tooltip bubble. Everything else in the slider uses radius. */
   --slider-tooltip-radius: 8px;
   /** Gap between the top of the thumb and the tip of the tooltip caret, so the tooltip clears the halo. Without the caret the bubble stays in the same place, so it sits this gap plus the caret height above the thumb. */
@@ -2958,4 +2960,86 @@
   --menu-divider-spacing-comfortable: 8px;
   /** Space above and below a divider in a Compact menu. */
   --menu-divider-spacing-compact: 4px;
+  /** Fill of a Dark tooltip bubble and its caret, for Plain and Rich. No border and no shadow, since near black already stands apart from the page. Use bg-light over dark imagery or dark sections. */
+  --tooltip-bg-dark: #0A0A0A;
+  /** Fill of a Light tooltip bubble and its caret, for Plain and Rich. Always paired with border-light and shadow-light so the white bubble separates from a white page. Use bg-dark by default. */
+  --tooltip-bg-light: #FFFFFF;
+  /** Hairline around a Light tooltip bubble, drawn along the caret edges too, so the bubble reads as its own layer where the shadow alone is faint. Dark tooltips have no border. */
+  --tooltip-border-light: #E5E5E5;
+  /** Plain tooltip text and the Rich title on a Dark tooltip. Use description-dark for the Rich message and link-dark for the action. */
+  --tooltip-label-dark: #FFFFFF;
+  /** Plain tooltip text and the Rich title on a Light tooltip. Use description-light for the Rich message and link-light for the action. */
+  --tooltip-label-light: #0A0A0A;
+  /** Message text of a Rich tooltip on Dark, with or without a title, quieter than the title. Use label-dark for Plain text and the Rich title. */
+  --tooltip-description-dark: #A1A1A1;
+  /** Message text of a Rich tooltip on Light, with or without a title, quieter than the title. Use label-light for Plain text and the Rich title. */
+  --tooltip-description-light: #525252;
+  /** Action link of a Rich tooltip on Dark, such as Got it or Learn more. Underlined on hover and press, so it needs no hover colour. Plain tooltips never hold a link. */
+  --tooltip-link-dark: #83D4FF;
+  /** Action link of a Rich tooltip on Light, such as Got it or Learn more. Underlined on hover and press, so it needs no hover colour. Plain tooltips never hold a link. */
+  --tooltip-link-light: #0067E8;
+  /** Close glyph of a Rich tooltip on Dark, in every state. Dimmer than the text so dismissing stays secondary to the message. */
+  --tooltip-icon-dark: #A1A1A1;
+  /** Close glyph of a Rich tooltip on Light, in every state. Dimmer than the text so dismissing stays secondary to the message. */
+  --tooltip-icon-light: #525252;
+  /** Fill of the close button on a Dark Rich tooltip under the pointer. Web only. At rest and on focus the button has no fill. Use close-bg-dark-pressed while pressed. */
+  --tooltip-close-bg-dark-hover: #171717;
+  /** Fill of the close button on a Dark Rich tooltip while pressed, on touch and on web. Use close-bg-dark-hover under the pointer. */
+  --tooltip-close-bg-dark-pressed: #262626;
+  /** Fill of the close button on a Light Rich tooltip under the pointer. Web only. At rest and on focus the button has no fill. Use close-bg-light-pressed while pressed. */
+  --tooltip-close-bg-light-hover: #FAFAFA;
+  /** Fill of the close button on a Light Rich tooltip while pressed, on touch and on web. Use close-bg-light-hover under the pointer. */
+  --tooltip-close-bg-light-pressed: #F5F5F5;
+  /** Keyboard focus ring around the close button and the action link of a Rich tooltip, on both surfaces. Shown for keyboards on web and hardware keyboards on mobile, never on tap. */
+  --tooltip-focus-ring: #0681FF;
+  /** Elevation of a Light tooltip, the same as menus and popovers. Dark tooltips have no shadow; their contrast with the page carries the separation. */
+  --tooltip-shadow-light: 0px 4px 8px #0A0A0A14, 0px 8px 24px #0A0A0A1F;
+  /** Horizontal padding inside a Plain tooltip bubble. Rich tooltips use rich-padding-x. */
+  --tooltip-padding-x: 12px;
+  /** Vertical padding inside a Plain tooltip bubble. Rich tooltips use rich-padding-y. */
+  --tooltip-padding-y: 8px;
+  /** Corner radius of a Plain tooltip bubble. Rich tooltips use rich-radius, which is larger for the larger bubble. */
+  --tooltip-radius: 8px;
+  /** Widest a Plain tooltip gets before its text wraps, about 36 characters of small body text. Plain copy should fit in two lines; anything longer belongs in a Rich tooltip or a bottom sheet. */
+  --tooltip-max-width: 240px;
+  /** Horizontal padding inside a Rich tooltip bubble. With a close button the right padding is padding-end-close instead. Plain tooltips use padding-x. */
+  --tooltip-rich-padding-x: 16px;
+  /** Top and bottom padding inside a Rich tooltip bubble. Plain tooltips use padding-y. */
+  --tooltip-rich-padding-y: 12px;
+  /** Right padding of a Rich tooltip that shows a close button, so the button sits close to the corner. Without the button the right padding is rich-padding-x. */
+  --tooltip-padding-end-close: 8px;
+  /** Corner radius of a Rich tooltip bubble. Plain tooltips use radius. */
+  --tooltip-rich-radius: 12px;
+  /** Widest a Rich tooltip gets before its text wraps. Keep Rich copy to a title and about three lines of body; longer content belongs in a bottom sheet or dialog. */
+  --tooltip-rich-max-width: 320px;
+  /** Vertical gap between the title and the body of a Rich tooltip. */
+  --tooltip-rich-gap-text: 2px;
+  /** Vertical gap between the body text and the action link of a Rich tooltip. */
+  --tooltip-rich-gap-action: 8px;
+  /** Horizontal gap between the text block of a Rich tooltip and its close button. */
+  --tooltip-rich-gap-close: 8px;
+  /** Width of the hairline around a Light tooltip and its caret. Dark tooltips have no border. */
+  --tooltip-border-width: 1px;
+  /** Base width of the caret that points from the bubble to its trigger, on every side. Its height is half this. The Placement None variant has no caret. */
+  --tooltip-caret-width: 8px;
+  /** Distance from the bubble corner to the near edge of the caret for Start and End placements, so the caret clears the rounded corner. Center placements centre the caret instead. */
+  --tooltip-caret-inset: 12px;
+  /** Gap between the trigger and the tip of the caret. Without a caret the bubble keeps this gap plus the caret height, so it does not jump when the caret is hidden. */
+  --tooltip-offset: 4px;
+  /** Visible width and height of the square close button of a Rich tooltip. Expand the hit area to min-touch-target in code. */
+  --tooltip-close-size: 24px;
+  /** Size of the close glyph inside the close button of a Rich tooltip. */
+  --tooltip-close-icon-size: 16px;
+  /** Corner radius of the close button fill on hover and press, so it nests inside the rich-radius corner. */
+  --tooltip-close-radius: 4px;
+  /** Minimum hit area of the trigger and of the close button and action link of a Rich tooltip, independent of their visible size. Meets the iOS 44pt and Android 48dp floors. */
+  --tooltip-min-touch-target: 48px;
+  /** Stroke width of the keyboard focus ring around the close button and action link of a Rich tooltip. */
+  --tooltip-focus-ring-width: 2px;
+  /** Gap between a focused close button or action link and its focus ring. */
+  --tooltip-focus-ring-offset: 2px;
+  /** Smallest gap between a tooltip and the safe area edge on iOS and Android. Near an edge the bubble shifts inward and only the caret stays over the trigger. Use viewport-margin on web. */
+  --tooltip-screen-margin: 16px;
+  /** Smallest gap between a tooltip and the viewport edge on web. Near an edge the bubble shifts inward or flips side, and the caret stays over the trigger. Use screen-margin on iOS and Android. */
+  --tooltip-viewport-margin: 8px;
 }
