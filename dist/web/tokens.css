@@ -956,12 +956,10 @@
   --spacing-32: 32px;
   --spacing-36: 36px;
   --spacing-40: 40px;
-  /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-44: 44px;
   --spacing-48: 48px;
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-52: 52px;
-  /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-56: 56px;
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-60: 60px;
@@ -3428,4 +3426,168 @@
   --tooltip-screen-margin: 16px;
   /** Smallest gap between a tooltip and the viewport edge on web. Near an edge the bubble flips or shifts inward and the caret stays over the trigger. Use screen-margin on iOS and Android. */
   --tooltip-viewport-margin: 8px;
+  /** Fill of a Default top app bar, white on either canvas. On the white page it blends in until content scrolls under it, when the divider appears. For a dark bar use bg-inverse; over a hero photo use bg-media. */
+  --top-app-bar-bg-default: #FFFFFF;
+  /** Fill of an Inverse top app bar, for dark promo and premium sections. Pair with title-inverse and the -inverse action tokens. For the everyday white bar use bg-default. */
+  --top-app-bar-bg-inverse: #0A0A0A;
+  /** Fill of a Media top app bar at rest, transparent so the hero photo shows through. Its actions carry their own white circles. Once content scrolls under it the bar takes the Default look, bg-default plus the divider. */
+  --top-app-bar-bg-media: #FFFFFF00;
+  /** Fill of an iOS Glass top app bar at rest. Transparent, because in iOS 27 the actions float in glass capsules. Once content scrolls under it the bar shows the hard scroll edge: bg-default plus the divider. */
+  --top-app-bar-bg-glass: #FFFFFF00;
+  /** Hairline under a Default, Media or Glass top app bar once content scrolls under it. Hidden at the top of the page. For an Inverse bar use divider-inverse. */
+  --top-app-bar-divider-default: #E5E5E5;
+  /** Hairline under an Inverse top app bar once content scrolls under it. For a white bar use divider-default. */
+  --top-app-bar-divider-inverse: #262626;
+  /** Thickness of the scrolled-state divider under the bar. */
+  --top-app-bar-divider-width: 1px;
+  /** Colour of the title on a white bar, in Small and Large, and on a Glass bar. Media bars show no title at rest. For a dark bar use title-inverse. */
+  --top-app-bar-title-default: #0A0A0A;
+  /** Colour of the title on an Inverse bar, in Small and Large. For a white bar use title-default. */
+  --top-app-bar-title-inverse: #FFFFFF;
+  /** Colour of the optional one-line subtitle under the title on a white or Glass bar, such as a date and traveller count. Quieter than the title. For a dark bar use subtitle-inverse. */
+  --top-app-bar-subtitle-default: #525252;
+  /** Colour of the optional subtitle on an Inverse bar. For a white bar use subtitle-default. */
+  --top-app-bar-subtitle-inverse: #A1A1A1;
+  /** State layer behind an icon or text action on a white or Glass bar while pressed. Transparent at rest. On a dark bar use bg-inverse-pressed; on a Media bar the circle darkens with bg-media-pressed. */
+  --top-app-bar-bg-pressed: #E5E5E5;
+  /** Colour of an action icon on a white or Glass bar, at rest: back arrow, share, shortlist, more. Neutral, so brand blue stays for text actions and the iOS back label. */
+  --top-app-bar-icon-default: #0A0A0A;
+  /** Colour of an action icon on a white or Glass bar while pressed. The state layer bg-pressed carries the feedback. */
+  --top-app-bar-icon-pressed: #0A0A0A;
+  /** Colour of a disabled action icon on a white, Glass or Media bar. */
+  --top-app-bar-icon-disabled: #A1A1A1;
+  /** White state layer behind an action on an Inverse bar while pressed, laid over the dark fill at bg-opacity-inverse-pressed. Never a pre-blended grey, so it works on any dark section. */
+  --top-app-bar-bg-inverse-pressed: #FFFFFF;
+  /** Opacity at which bg-inverse-pressed is laid over the dark bar. The shared pressed state layer role; retune it there, not here. */
+  --top-app-bar-bg-opacity-inverse-pressed: 0.1;
+  /** Colour of an action icon on an Inverse bar at rest. For a white bar use icon-default. */
+  --top-app-bar-icon-inverse-default: #FFFFFF;
+  /** Colour of an action icon on an Inverse bar while pressed. The white state layer carries the feedback. */
+  --top-app-bar-icon-inverse-pressed: #FFFFFF;
+  /** Colour of a disabled action icon on an Inverse bar. */
+  --top-app-bar-icon-inverse-disabled: #737373;
+  /** Fill of the white circle or pill behind each action on a Media bar, so it reads on any photo. Only Media bars draw it; white, Glass and Inverse bars keep actions transparent. */
+  --top-app-bar-bg-media-default: #FFFFFF;
+  /** Fill of the Media action circle or pill while pressed. */
+  --top-app-bar-bg-media-pressed: #F5F5F5;
+  /** Fill of a disabled Media action circle or pill. Stays white so the circle still separates the dimmed icon from the photo. */
+  --top-app-bar-bg-media-disabled: #FFFFFF;
+  /** Colour of an action icon inside its white circle on a Media bar, at rest. */
+  --top-app-bar-icon-media-default: #0A0A0A;
+  /** Colour of an action icon inside its white circle on a Media bar while pressed. The circle darkens to bg-media-pressed. */
+  --top-app-bar-icon-media-pressed: #0A0A0A;
+  /** Diameter of the white circle behind a Media action, and the height of the pill behind a Media text action. The touch target around it stays ios-target-size or android-target-size. */
+  --top-app-bar-media-circle-size: 36px;
+  /** Corner radius of the Media action circle and pill. */
+  --top-app-bar-media-circle-radius: 999px;
+  /** Elevation of the Media action circle, a light lift that separates it from bright photos. White, Glass and Inverse actions have no shadow. */
+  --top-app-bar-media-circle-shadow: 0px 1px 2px #0A0A0A0A, 0px 2px 8px #0A0A0A0A;
+  /** Left and right padding inside the white pill behind a Media text action. */
+  --top-app-bar-media-pill-padding-x: 12px;
+  /** State layer behind a text action such as Done or Edit on a white or Glass bar while pressed. Transparent at rest. */
+  --top-app-bar-bg-text-pressed: #E5E5E5;
+  /** Colour of a text action such as Done or Edit on a white, Glass or Media bar, at rest. Brand blue marks it as the main action of the screen. When a text action shows, the bar holds at most two icon actions. */
+  --top-app-bar-label-text-default: #0067E8;
+  /** Colour of a text action on a white, Glass or Media bar while pressed, one step darker so it holds AA on the pressed layer. */
+  --top-app-bar-label-text-pressed: #0857C5;
+  /** Colour of a disabled text action on a white, Glass or Media bar, for example Done before a form is valid. */
+  --top-app-bar-label-text-disabled: #A1A1A1;
+  /** White state layer behind a text action on an Inverse bar while pressed, laid over the dark fill at bg-opacity-text-inverse-pressed. */
+  --top-app-bar-bg-text-inverse-pressed: #FFFFFF;
+  /** Opacity at which bg-text-inverse-pressed is laid over the dark bar, the shared pressed state layer role. */
+  --top-app-bar-bg-opacity-text-inverse-pressed: 0.1;
+  /** Colour of a text action on an Inverse bar at rest, the light brand blue used by Button Inverse. */
+  --top-app-bar-label-text-inverse-default: #83D4FF;
+  /** Colour of a text action on an Inverse bar while pressed, one step lighter. */
+  --top-app-bar-label-text-inverse-pressed: #D6EFFF;
+  /** Colour of a disabled text action on an Inverse bar. */
+  --top-app-bar-label-text-inverse-disabled: #737373;
+  /** Colour of the chevron in the iOS Classic back button, at rest. It matches label-back, following the iOS tint convention. Android and iOS Glass use a neutral back icon, icon-default. */
+  --top-app-bar-icon-back-default: #0067E8;
+  /** Colour of the iOS Classic back chevron while pressed, darkening with its label. */
+  --top-app-bar-icon-back-pressed: #0857C5;
+  /** Colour of a disabled iOS Classic back chevron. */
+  --top-app-bar-icon-back-disabled: #A1A1A1;
+  /** Colour of the previous screen name beside the iOS Classic back chevron, such as Flights. Drop the label when it would crowd the title. */
+  --top-app-bar-label-back-default: #0067E8;
+  /** Colour of the iOS Classic back label while pressed. */
+  --top-app-bar-label-back-pressed: #0857C5;
+  /** Colour of a disabled iOS Classic back label. */
+  --top-app-bar-label-back-disabled: #A1A1A1;
+  /** Colour of the iOS Classic back chevron on an Inverse bar at rest, the light brand blue. */
+  --top-app-bar-icon-back-inverse-default: #48BBFF;
+  /** Colour of the iOS Classic back chevron on an Inverse bar while pressed. */
+  --top-app-bar-icon-back-inverse-pressed: #C2E8FF;
+  /** Colour of a disabled iOS Classic back chevron on an Inverse bar. */
+  --top-app-bar-icon-back-inverse-disabled: #737373;
+  /** Colour of the iOS Classic back label on an Inverse bar at rest. */
+  --top-app-bar-label-back-inverse-default: #83D4FF;
+  /** Colour of the iOS Classic back label on an Inverse bar while pressed. */
+  --top-app-bar-label-back-inverse-pressed: #D6EFFF;
+  /** Colour of a disabled iOS Classic back label on an Inverse bar. */
+  --top-app-bar-label-back-inverse-disabled: #737373;
+  /** Gap between the iOS Classic back chevron and its label. */
+  --top-app-bar-back-gap: 2px;
+  /** Fill of an iOS Glass capsule on a white, Glass or Media bar, laid at capsule-bg-opacity. Figma adds a background blur that tokens cannot hold; SwiftUI draws the real glass. On a dark bar use capsule-bg-inverse. */
+  --top-app-bar-capsule-bg: #FFFFFF;
+  /** Opacity of capsule-bg, so the content behind shows faintly through the glass. iOS 27 lets people tune this with the transparency slider, so treat it as the default look only. */
+  --top-app-bar-capsule-bg-opacity: 0.75;
+  /** Fill of an iOS Glass capsule on an Inverse bar, laid at capsule-bg-opacity-inverse. */
+  --top-app-bar-capsule-bg-inverse: #0A0A0A;
+  /** Opacity of capsule-bg-inverse on a dark section. */
+  --top-app-bar-capsule-bg-opacity-inverse: 0.75;
+  /** Hairline edge around an iOS Glass capsule, standing in for the defined iOS 27 glass edge. On a dark bar use capsule-border-inverse. */
+  --top-app-bar-capsule-border: #E5E5E5;
+  /** Hairline edge around an iOS Glass capsule on an Inverse bar. */
+  --top-app-bar-capsule-border-inverse: #262626;
+  /** Thickness of the iOS Glass capsule edge. */
+  --top-app-bar-capsule-border-width: 1px;
+  /** Elevation of an iOS Glass capsule, a light lift off the content. Classic and Android actions have no shadow. */
+  --top-app-bar-capsule-shadow: 0px 1px 2px #0A0A0A0A, 0px 2px 8px #0A0A0A0A;
+  /** Height of an iOS Glass capsule, and the diameter of the round back button. Also its touch target. */
+  --top-app-bar-capsule-size: 44px;
+  /** Corner radius of an iOS Glass capsule, fully rounded. */
+  --top-app-bar-capsule-radius: 999px;
+  /** Left and right padding inside the iOS Glass capsule that groups the trailing icon actions. */
+  --top-app-bar-capsule-padding-x: 4px;
+  /** Left and right padding inside the iOS Glass capsule that holds a text action such as Done. */
+  --top-app-bar-capsule-text-padding-x: 16px;
+  /** Gap between two iOS Glass capsules in the trailing group, such as the icon group and a text action. */
+  --top-app-bar-capsule-gap: 8px;
+  /** Height of the Small iOS Classic bar, below the status bar. A Large bar adds its title row under it. */
+  --top-app-bar-ios-min-height: 44px;
+  /** Height of the Small iOS Glass bar, below the status bar: the 44 capsules plus room above and below. */
+  --top-app-bar-glass-min-height: 56px;
+  /** Height of the Small Android bar, below the status bar. A Large bar adds its title row under it. */
+  --top-app-bar-android-min-height: 64px;
+  /** Left and right padding of an iOS Classic bar. Icon targets sit at the edge of it, so glyphs land 18 from the screen edge. */
+  --top-app-bar-ios-padding-x: 8px;
+  /** Left and right padding of an iOS Glass bar, so capsules float clear of the screen edge. */
+  --top-app-bar-glass-padding-x: 16px;
+  /** Left and right padding of an Android bar. Icon targets sit at the edge of it, so glyphs land 16 from the screen edge. */
+  --top-app-bar-android-padding-x: 4px;
+  /** Width and height of the touch target of an iOS Classic action. For Glass use capsule-size. */
+  --top-app-bar-ios-target-size: 44px;
+  /** Width and height of the touch target of an Android action. */
+  --top-app-bar-android-target-size: 48px;
+  /** Width and height of every action icon in the bar, on every platform. */
+  --top-app-bar-icon-size: 24px;
+  /** Left and right padding inside an iOS Classic text action or back button, so their text lands 16 from the screen edge. */
+  --top-app-bar-ios-text-padding-x: 8px;
+  /** Left and right padding inside an Android text action, so its text lands 16 from the screen edge. */
+  --top-app-bar-android-text-padding-x: 12px;
+  /** Smallest gap between the title and the leading or trailing actions. On Android it also sets where a start-aligned title begins after the back icon. */
+  --top-app-bar-gap-title: 4px;
+  /** Corner radius of the pressed state layer behind an iOS Classic or Android action: a circle for an icon, a pill for text. */
+  --top-app-bar-action-radius: 999px;
+  /** Left and right padding of the Large title row on every platform. */
+  --top-app-bar-large-title-padding-x: 16px;
+  /** Space above the iOS Large title, between the bar row and the headline. */
+  --top-app-bar-ios-large-title-padding-top: 4px;
+  /** Space below the iOS Large title. With the headline it makes the 52 title row. */
+  --top-app-bar-ios-large-title-padding-bottom: 8px;
+  /** Space below the Android Large title. With the headline it makes the 56 title row. */
+  --top-app-bar-android-large-title-padding-bottom: 20px;
+  /** Gap between the Large title and its subtitle. Small bars stack the two lines with no gap. */
+  --top-app-bar-large-title-gap-subtitle: 4px;
 }
