@@ -7,3 +7,6 @@ out
 
 # uSpec staging and per-specialist caches
 .uspec-cache
+
+# Local secrets, such as FIGMA_ACCESS_TOKEN for Code Connect
+.env
