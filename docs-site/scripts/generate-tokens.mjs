@@ -308,12 +308,24 @@ const flatten = (set, node, prefix = []) =>
     const parts = [...prefix, key];
     if (!isToken(raw)) return flatten(set, raw, parts);
     const token = { set, ...makeToken(parts, raw), description: raw.description ?? null };
+    // Swift and Kotlin expand composites into one member per property (typography) or
+    // per layer and property (shadows), so there is no single native symbol to name.
+    const native = (members) => {
+      const list = members.map((member) => `CosmosTokens.${camel(parts)}${member}`).join("\n");
+      token.names = { ...token.names, swift: `CosmosTokens.${camel(parts)}*`, kotlin: `CosmosTokens.${camel(parts)}*` };
+      token.copy = { ...token.copy, swift: list, kotlin: list };
+    };
     if (raw.type === "typography") {
       token.names = { ...token.names, css: `${cssVar(parts)}-*` };
       token.copy = {
         ...token.copy,
         css: COMPOSITE_PROPERTIES.map((p) => `${p}: var(${cssVar(parts)}-${p});`).join("\n"),
       };
+      native(["FontFamily", "FontWeight", "FontSize", "LineHeight"]);
+    }
+    // Resolved, so a component shadow that aliases a semantic one expands too.
+    if (raw.type === "boxShadow" && Array.isArray(token.value)) {
+      native(token.value.flatMap((_, i) => ["OffsetX", "OffsetY", "Blur", "Color"].map((p) => `${i + 1}${p}`)));
     }
     return [token];
   });
