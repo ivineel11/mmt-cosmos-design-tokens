@@ -1,5 +1,5 @@
 // url=https://www.figma.com/design/byPBTSedTYOO0AYwmIlncH/Cosmos?node-id=58-202
-// source=storybook/src/components/Button/Button.tsx
+// source=https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/storybook/src/components/Button/Button.tsx
 // component=Button
 import figma from "figma";
 
