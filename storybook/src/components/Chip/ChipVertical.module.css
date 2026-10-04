@@ -1,0 +1,57 @@
+/*
+ * Chip / Vertical: components/chip-vertical.md. Colours, states, focus and the hit area
+ * come from Chip's `.surface` and `.main`; this file holds the stacked layout only.
+ */
+
+.root {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--_gap);
+  vertical-align: middle;
+  text-align: center;
+}
+.root .stretch { width: 100%; }
+
+.root[data-size="small"] {
+  --_nudge: calc(var(--space-3xs) / 4);
+  padding: var(--chip-vertical-padding-y-sm) var(--chip-padding-x-sm);
+  border-radius: var(--chip-radius-sm);
+  --_gap: var(--chip-vertical-gap-sm);
+  --_glyph: var(--chip-vertical-icon-size-sm);
+  --_image: var(--chip-vertical-image-size-sm);
+  --_label-trailing: var(--chip-vertical-label-trailing-icon-size-sm);
+  --_secondary-trailing: var(--chip-vertical-secondary-trailing-icon-size-sm);
+  --_label-weight: var(--label-small-bold-font-weight);
+  --_label-size: var(--label-small-bold-font-size);
+  --_label-line: var(--label-small-bold-line-height);
+}
+.root[data-size="medium"] {
+  --_nudge: calc(var(--space-3xs) / -4);
+  padding: var(--chip-vertical-padding-y-md) var(--chip-padding-x-md);
+  border-radius: var(--chip-vertical-radius-md);
+  --_gap: var(--chip-vertical-gap-md);
+  --_glyph: var(--chip-vertical-icon-size-md);
+  --_image: var(--chip-vertical-image-size-md);
+  --_label-trailing: var(--chip-vertical-label-trailing-icon-size-md);
+  --_secondary-trailing: var(--chip-vertical-secondary-trailing-icon-size-md);
+  --_label-weight: var(--label-medium-bold-font-weight);
+  --_label-size: var(--label-medium-bold-font-size);
+  --_label-line: var(--label-medium-bold-line-height);
+}
+
+/* A selected vertical chip always draws its border: its leading slot cannot hold a check. */
+.root[data-selected="true"] { --_border-shown: var(--_border); }
+
+.text { display: grid; gap: var(--chip-vertical-gap-text); justify-items: center; }
+.row { display: inline-flex; align-items: center; gap: var(--chip-vertical-gap-trailing); }
+/* Half-pixel optical shift: see Chip.module.css. */
+.label { position: relative; top: var(--_nudge, 0); font-weight: var(--_label-weight); font-size: var(--_label-size); line-height: var(--_label-line); }
+.secondary {
+  font-weight: var(--body-small-regular-font-weight);
+  font-size: var(--body-small-regular-font-size);
+  line-height: var(--body-small-regular-line-height);
+}
+
+.image { flex: none; width: var(--_image); height: var(--_image); object-fit: cover; border-radius: var(--chip-image-radius); }
+.image[data-shape="square"] { border-radius: var(--chip-image-radius-square); }

@@ -1,0 +1,37 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./SegmentedControl.stories";
+
+<Meta of={Stories} />
+
+# Segmented control
+
+Switches between two to five options in place, on mobile, such as One way / Round trip / Multi-city. Exactly one segment is selected and the change applies straight away. Figma sets `765:186` and `764:131`. Full spec: [components/segmented-control.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/segmented-control.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Tap and slide
+
+Tap a segment and the thumb slides to it. Or press the thumb and drag it: it follows the pointer, the label under it turns to its selected colour, and on release it snaps to the nearest enabled segment. `onChange` fires once, on release. A mostly vertical drag cancels, so the page can still scroll. The thumb scales to 0.95 while pressed.
+
+<Canvas of={Stories.Segments} />
+<Canvas of={Stories.Small} />
+
+## Under test: thumb style and shape
+
+Three thumb styles (neutral, brand, tinted) and two shapes (rounded, pill) are being compared. Only one of each will ship.
+
+<Canvas of={Stories.UnderTestStyles} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- `role="radiogroup"` named by `aria-label`, with `role="radio"` segments. Arrow keys move and select.
+- Dragging is never the only way: keyboard and screen reader users select segments directly.
+- The focus ring sits outside the segment, on the track, so it shows on every thumb style.
+- **Known gap:** the neutral white thumb is 1.09:1 against the track; its shadow and the brand label carry the selection.
+
+<ArgTypes of={Stories} />

@@ -1,0 +1,38 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Slider.stories";
+
+<Meta of={Stories} />
+
+# Slider
+
+Picks a value, or a range, by dragging a white, raised thumb along a track: price per night, departure time, distance from the centre. Pass a number for a single slider or a `[min, max]` pair for a range. Figma set `811:1622`. Full spec: [components/slider.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/slider.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Types
+
+Continuous moves freely; Discrete snaps to `step` and can show a tick at each step (12 steps or fewer). Range thumbs never cross and stay `minGap` apart. Hover, press and focus a thumb to see its states; the tooltip shows while a thumb is held or keyboard-focused.
+
+<Canvas of={Stories.Types} />
+<Canvas of={Stories.Small} />
+
+## Under test: press style
+
+The halo press shows a tint behind the held thumb; the grow press scales the thumb from 24 to 32 (16 to 20 on Small) with no halo. Only one will ship.
+
+<Canvas of={Stories.UnderTestPress} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- Each thumb is a `role="slider"` with `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and `aria-valuetext` from `formatValue`. Range thumbs are named "Minimum …" and "Maximum …".
+- Keyboard: arrows move one step (1% when continuous), Page Up and Page Down move 10%, Home and End go to the ends.
+- The header value, limits and tooltip are hidden from assistive tech; the slider value already says it.
+- Each thumb takes pointer input in a 48 × 48 area (24 × 24 on Small).
+- **Known gap:** the white thumb is 1.48:1 on the inactive track; the shadow carries its edge.
+
+<ArgTypes of={Stories} />

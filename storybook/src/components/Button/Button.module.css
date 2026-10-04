@@ -57,6 +57,7 @@
   font-size: var(--label-medium-bold-font-size);
   line-height: var(--label-medium-bold-line-height);
   --_icon-size: var(--button-icon-size-md);
+  --_nudge: calc(var(--space-3xs) / -4);
 }
 .root[data-size="small"] {
   min-height: var(--button-min-height-sm);
@@ -66,7 +67,16 @@
   font-size: var(--label-small-bold-font-size);
   line-height: var(--label-small-bold-line-height);
   --_icon-size: var(--button-icon-size-sm);
+  --_nudge: calc(var(--space-3xs) / 4);
 }
+
+/*
+ * Optical centring on the web: browsers round Lato's ascent and descent to whole pixels,
+ * which draws 12px text half a pixel above where Figma draws it and 14px text half a
+ * pixel below (16px matches). Labels shift by half a pixel, a quarter of space-3xs, to
+ * land on the Figma glyph bounds.
+ */
+.label { position: relative; top: var(--_nudge, 0); }
 
 /* Glyphs take the icon token for the current state, not the label colour. */
 .icon { color: var(--_icon-default); }

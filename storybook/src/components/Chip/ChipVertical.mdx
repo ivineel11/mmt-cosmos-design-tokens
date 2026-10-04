@@ -1,0 +1,32 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./ChipVertical.stories";
+
+<Meta of={Stories} />
+
+# Chip / Vertical
+
+The stacked sibling of Chip: a leading icon or image on top, then the label and an optional secondary line, all centred. Use it to choose among a few visual options where the icon or image carries meaning, such as trip type, cabin class or airline. Figma set `592:327`. Full spec: [components/chip-vertical.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/chip-vertical.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Leading slot
+
+`leading` is a single choice of icon, image or none, so a chip can never show both.
+
+<Canvas of={Stories.Leading} />
+<Canvas of={Stories.Small} />
+
+## Border
+
+Like Chip, the border is chosen by canvas. Unlike Chip, **a selected vertical chip always draws its border**: its leading slot holds the content icon, so the border is the non-colour cue for selection.
+
+<Canvas of={Stories.Borderless} />
+
+## Examples
+
+Set chips to fill the row (`fullWidth`) for equal widths. Most vertical chips are single choice in a `radiogroup`.
+
+<Canvas of={Stories.Examples} />
+
+<ArgTypes of={Stories} />

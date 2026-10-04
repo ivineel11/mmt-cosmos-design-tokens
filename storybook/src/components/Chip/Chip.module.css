@@ -1,0 +1,187 @@
+/*
+ * Chip: components/chip.md. Every value is a chip/* or semantic token.
+ *
+ * Structure: the root draws the chip; inside it, `.main` is the chip's button (label,
+ * leading and trailing content) and `.remove` is the separate remove button. `.main`
+ * stretches an invisible hit area over the whole chip, so the chip reacts as one
+ * control while the remove button keeps its own focus stop.
+ *
+ * `.surface` holds the colour and state rules. Chip / Vertical reuses it.
+ */
+
+.surface {
+  --_bg: var(--chip-bg-unselected-default);
+  --_border: var(--chip-border-unselected-default);
+  --_label: var(--chip-label-unselected-default);
+  --_secondary: var(--chip-secondary-text-default);
+  --_icon: var(--chip-icon-unselected-default);
+  --_remove-bg-hover: var(--chip-remove-bg-unselected-hover);
+  --_remove-bg-pressed: var(--chip-remove-bg-unselected-pressed);
+
+  position: relative;
+  box-sizing: border-box;
+  background: var(--_bg);
+  /* The border is a layer, as in Figma: an inside stroke that never changes the size. */
+  box-shadow: inset 0 0 0 var(--chip-border-width) var(--_border-shown, transparent);
+  color: var(--_label);
+  font-family: var(--label-medium-bold-font-family), system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+.surface[data-bordered="true"] { --_border-shown: var(--_border); }
+
+.surface:has(.main:hover) { --_bg: var(--chip-bg-unselected-hover); --_border: var(--chip-border-unselected-hover); }
+.surface:has(.main:active) { --_bg: var(--chip-bg-unselected-pressed); --_border: var(--chip-border-unselected-pressed); }
+
+.surface[data-selected="true"] {
+  --_bg: var(--chip-bg-selected-default);
+  --_border: var(--chip-border-selected-default);
+  --_label: var(--chip-label-selected-default);
+  --_icon: var(--chip-icon-selected-default);
+  --_remove-bg-hover: var(--chip-remove-bg-selected-hover);
+  --_remove-bg-pressed: var(--chip-remove-bg-selected-pressed);
+}
+.surface[data-selected="true"]:has(.main:hover) { --_bg: var(--chip-bg-selected-hover); --_border: var(--chip-border-selected-hover); --_label: var(--chip-label-selected-hover); }
+.surface[data-selected="true"]:has(.main:active) { --_bg: var(--chip-bg-selected-pressed); --_border: var(--chip-border-selected-pressed); --_label: var(--chip-label-selected-pressed); }
+
+/* Disabled collapses to the neutral ramp, selected or not. */
+.surface[data-disabled="true"] {
+  --_bg: var(--chip-bg-unselected-disabled);
+  --_border: var(--chip-border-unselected-disabled);
+  --_label: var(--chip-label-disabled);
+  --_secondary: var(--chip-secondary-text-disabled);
+  --_icon: var(--chip-icon-disabled);
+}
+
+/* The chip's button: transparent, with a hit area stretched over the whole chip. */
+.main {
+  display: inline-flex;
+  align-items: inherit;
+  flex-direction: inherit;
+  gap: inherit;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+.main::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: max(100%, var(--chip-min-touch-target));
+  transform: translateY(-50%);
+}
+.main:disabled { cursor: not-allowed; }
+.main:focus { outline: none; }
+
+/* Focus ring around the whole chip, offset outside it. Radius follows the chip. */
+.surface:has(.main:focus-visible) {
+  outline: var(--chip-focus-ring-width) solid var(--chip-focus-ring);
+  outline-offset: var(--chip-focus-ring-offset);
+}
+
+.icon { color: var(--_icon); flex: none; }
+.secondary { color: var(--_secondary); }
+
+/* ---------------------------------------------------------------- Chip */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--chip-gap);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.root[data-size="small"] {
+  --_nudge: calc(var(--space-3xs) / 4);
+  min-height: var(--chip-min-height-sm);
+  padding: var(--chip-padding-y-sm) var(--chip-padding-x-sm);
+  border-radius: var(--chip-radius-sm);
+  --_glyph: var(--chip-icon-size-sm);
+  --_image: var(--chip-image-size-sm);
+  --_label-weight: var(--label-small-bold-font-weight);
+  --_label-size: var(--label-small-bold-font-size);
+  --_label-line: var(--label-small-bold-line-height);
+  --_secondary-weight: var(--body-small-regular-font-weight);
+  --_secondary-size: var(--body-small-regular-font-size);
+  --_secondary-line: var(--body-small-regular-line-height);
+}
+.root[data-size="medium"] {
+  --_nudge: calc(var(--space-3xs) / -4);
+  min-height: var(--chip-min-height-md);
+  padding: var(--chip-padding-y-md) var(--chip-padding-x-md);
+  border-radius: var(--chip-radius-md);
+  --_glyph: var(--chip-icon-size-md);
+  --_image: var(--chip-image-size-md);
+  --_label-weight: var(--label-medium-bold-font-weight);
+  --_label-size: var(--label-medium-bold-font-size);
+  --_label-line: var(--label-medium-bold-line-height);
+  --_secondary-weight: var(--body-small-regular-font-weight);
+  --_secondary-size: var(--body-small-regular-font-size);
+  --_secondary-line: var(--body-small-regular-line-height);
+}
+.root[data-size="large"] {
+  min-height: var(--chip-min-height-lg);
+  padding: var(--chip-padding-y-lg) var(--chip-padding-x-lg);
+  border-radius: var(--chip-radius-lg);
+  --_glyph: var(--chip-icon-size-lg);
+  --_image: var(--chip-image-size-lg);
+  --_label-weight: var(--label-large-bold-font-weight);
+  --_label-size: var(--label-large-bold-font-size);
+  --_label-line: var(--label-large-bold-line-height);
+  --_secondary-weight: var(--body-medium-regular-font-weight);
+  --_secondary-size: var(--body-medium-regular-font-size);
+  --_secondary-line: var(--body-medium-regular-line-height);
+}
+
+.text { display: grid; gap: var(--chip-gap-text); text-align: start; }
+/*
+ * Optical centring on the web: browsers round Lato's ascent and descent to whole pixels,
+ * which draws 12px text half a pixel above where Figma draws it and 14px text half a
+ * pixel below (16px matches). Labels shift by half a pixel, a quarter of space-3xs, to
+ * land on the Figma glyph bounds.
+ */
+.label { position: relative; top: var(--_nudge, 0); font-weight: var(--_label-weight); font-size: var(--_label-size); line-height: var(--_label-line); }
+.secondary { font-weight: var(--_secondary-weight); font-size: var(--_secondary-size); line-height: var(--_secondary-line); }
+
+.image { flex: none; width: var(--_image); height: var(--_image); object-fit: cover; border-radius: var(--chip-image-radius); }
+.image[data-shape="square"] { border-radius: var(--chip-image-radius-square); }
+
+/* Remove: a circle the size of the glyph, filled only while it is hovered or pressed. */
+.remove {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--_glyph);
+  height: var(--_glyph);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--chip-image-radius);
+  background: transparent;
+  color: var(--_icon);
+  cursor: pointer;
+}
+.remove::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--chip-remove-min-touch-target));
+  height: max(100%, var(--chip-remove-min-touch-target));
+  transform: translate(-50%, -50%);
+}
+.remove:hover:not(:disabled) { background: var(--_remove-bg-hover); }
+.remove:active:not(:disabled) { background: var(--_remove-bg-pressed); }
+.remove:disabled { cursor: not-allowed; }
+.remove:focus { outline: none; }
+.remove:focus-visible { outline: var(--chip-focus-ring-width) solid var(--chip-focus-ring); outline-offset: var(--chip-focus-ring-offset); }

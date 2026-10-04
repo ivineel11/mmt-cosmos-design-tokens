@@ -1,0 +1,40 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Chip.stories";
+
+<Meta of={Stories} />
+
+# Chip
+
+A compact control for filtering, choosing and tagging: a label with an optional secondary line, an optional leading icon **or** image, and a trailing slot that is either a decorative icon or a separate remove button. Figma set `559:2943`. Full spec: [components/chip.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/chip.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Selection and border
+
+The border is a layer, not a variant: choose it by canvas. Turn it on for white pages and cards, and off on the grey `bg-secondary` canvas, where the white chip already stands off the page. The label stays bold when selected, so a row of chips never jumps.
+
+<Canvas of={Stories.Selection} />
+
+On the grey canvas without a border, a selected chip differs from the others only by its label colour, which is not enough on its own. **A borderless selected filter chip must show a check** in the leading slot.
+
+<Canvas of={Stories.Borderless} />
+
+## Slots
+
+<Canvas of={Stories.Slots} />
+
+## Examples
+
+Filters toggle (`aria-pressed`). A date picker is a single choice: a `radiogroup` of radio chips with arrow-key navigation. A removable chip has two focus stops, the chip and its `Remove {label}` button.
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- `selectionRole` picks the semantics: `toggle` for filters, `radio` inside a `role="radiogroup"` for single choice, `none` for an action or a menu trigger (add `aria-haspopup`).
+- The secondary text joins the accessible name after the label. Icons are hidden; the leading image is decorative (`alt=""`).
+- The hit area reaches `chip/min-touch-target` (48) without changing the drawn chip, and the remove button reaches 24.
+- `disabled` wins: a disabled chip is not selectable and its remove button is inert.
+
+<ArgTypes of={Stories} />

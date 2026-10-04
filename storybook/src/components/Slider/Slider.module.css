@@ -1,0 +1,185 @@
+/*
+ * Slider: components/slider.md. Every value is a slider/* or semantic token. Two press
+ * styles are under test: halo (a tint behind the thumb) and grow (the thumb scales from
+ * thumb-size to thumb-size-pressed). Motion is not tokenised: 150ms grow, 100ms fades.
+ */
+
+.root {
+  --_track-h: var(--slider-track-height-md);
+  --_thumb: var(--slider-thumb-size-md);
+  --_thumb-pressed: var(--slider-thumb-size-pressed-md);
+  --_halo: var(--slider-halo-size-md);
+  --_tick: var(--slider-tick-size-md);
+  --_row: var(--slider-min-touch-target-md);
+  --_track-active: var(--slider-track-active);
+  --_track-inactive: var(--slider-track-inactive);
+  --_tick-active: var(--slider-tick-active);
+  --_tick-inactive: var(--slider-tick-inactive);
+  --_label-color: var(--slider-label-text);
+  --_value-color: var(--slider-value-text);
+  --_limit-color: var(--slider-limit-text);
+  --_label-weight: var(--label-medium-regular-font-weight);
+  --_label-size: var(--label-medium-regular-font-size);
+  --_label-line: var(--label-medium-regular-line-height);
+  --_value-weight: var(--label-medium-bold-font-weight);
+
+  display: grid;
+  gap: var(--slider-header-gap);
+  width: 100%;
+  font-family: var(--label-medium-regular-font-family), system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+.root[data-size="small"] {
+  --_track-h: var(--slider-track-height-sm);
+  --_thumb: var(--slider-thumb-size-sm);
+  --_thumb-pressed: var(--slider-thumb-size-pressed-sm);
+  --_halo: var(--slider-halo-size-sm);
+  --_tick: var(--slider-tick-size-sm);
+  --_row: var(--slider-min-touch-target-sm);
+  --_label-weight: var(--label-small-regular-font-weight);
+  --_label-size: var(--label-small-regular-font-size);
+  --_label-line: var(--label-small-regular-line-height);
+  --_value-weight: var(--label-small-bold-font-weight);
+}
+.root[data-disabled="true"] {
+  --_track-active: var(--slider-track-active-disabled);
+  --_track-inactive: var(--slider-track-inactive-disabled);
+  --_tick-active: var(--slider-tick-active-disabled);
+  --_tick-inactive: var(--slider-tick-inactive-disabled);
+  --_label-color: var(--slider-text-disabled);
+  --_value-color: var(--slider-text-disabled);
+  --_limit-color: var(--slider-text-disabled);
+}
+
+/*
+ * Optical centring on the web: browsers round Lato's ascent and descent to whole pixels,
+ * which draws 12px text half a pixel above where Figma draws it and 14px text half a
+ * pixel below (16px matches). Labels shift by half a pixel, a quarter of space-3xs, to
+ * land on the Figma glyph bounds.
+ */
+.root { --_nudge: calc(var(--space-3xs) / -4); }
+.root[data-size="small"] { --_nudge: calc(var(--space-3xs) / 4); }
+.label, .value { position: relative; top: var(--_nudge); }
+.limits > span, .tooltipText { position: relative; top: calc(var(--space-3xs) / 4); }
+
+.header { display: flex; justify-content: space-between; gap: var(--space-md); font-size: var(--_label-size); line-height: var(--_label-line); }
+.label { color: var(--_label-color); font-weight: var(--_label-weight); }
+.value { color: var(--_value-color); font-weight: var(--_value-weight); }
+
+/*
+ * Room above the row for the tooltip, only when it can show: the bubble, the caret and
+ * the gap, less the space between the row top and the thumb top.
+ */
+.body[data-tooltip="true"] {
+  padding-top: calc(2 * var(--slider-tooltip-padding-y) + var(--label-small-bold-line-height) + var(--slider-tooltip-gap) + var(--slider-tooltip-caret-width) / 2 - (var(--_row) - var(--_thumb)) / 2);
+}
+
+.row { position: relative; height: var(--_row); touch-action: pan-y; cursor: pointer; }
+.root[data-disabled="true"] .row { cursor: not-allowed; }
+
+/* The thumb centre travels between the ends inset by half a thumb. */
+.track, .fill {
+  position: absolute;
+  top: 50%;
+  height: var(--_track-h);
+  border-radius: var(--slider-radius);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.track { left: 0; right: 0; background: var(--_track-inactive); }
+.fill { background: var(--_track-active); }
+
+.tick {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: var(--_tick);
+  height: var(--_tick);
+  border-radius: var(--slider-radius);
+  background: var(--_tick-inactive);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.tick[data-active="true"] { background: var(--_tick-active); }
+
+.thumb, .halo {
+  position: absolute;
+  top: 50%;
+  border-radius: var(--slider-radius);
+  transform: translate(-50%, -50%);
+}
+/* The halo sits under the track, so the track shows through it. */
+.halo {
+  z-index: 0;
+  width: var(--_halo);
+  height: var(--_halo);
+  background: transparent;
+  scale: 0.8;
+  opacity: 0;
+  transition: opacity 100ms linear, scale 100ms linear;
+  pointer-events: none;
+}
+.halo[data-state="hover"] { background: var(--slider-halo-hover); opacity: 1; scale: 1; }
+.halo[data-state="pressed"] { background: var(--slider-halo-pressed); opacity: 1; scale: 1; }
+
+.thumb {
+  z-index: 2;
+  box-sizing: border-box;
+  width: var(--_thumb);
+  height: var(--_thumb);
+  background: var(--slider-thumb-default);
+  box-shadow: var(--slider-thumb-shadow);
+  transition: scale 150ms ease-out;
+  touch-action: none;
+}
+/* Hit area: at least the row height in both directions. */
+.thumb::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--_row);
+  height: var(--_row);
+  transform: translate(-50%, -50%);
+}
+.thumb[data-state="hover"] { background: var(--slider-thumb-hover); box-shadow: var(--slider-thumb-shadow-raised); }
+.thumb[data-state="pressed"] { box-shadow: var(--slider-thumb-shadow-raised); }
+.root[data-press="grow"] .thumb[data-state="pressed"] { scale: calc(var(--_thumb-pressed) / var(--_thumb)); }
+.root[data-disabled="true"] .thumb { background: var(--slider-thumb-disabled); box-shadow: none; }
+.thumb:focus { outline: none; }
+.thumb:focus-visible { outline: var(--slider-focus-ring-width) solid var(--slider-focus-ring); outline-offset: var(--slider-focus-ring-offset); }
+
+.tooltip {
+  position: absolute;
+  bottom: calc(50% + var(--_thumb) / 2 + var(--slider-tooltip-gap));
+  z-index: 3;
+  padding: var(--slider-tooltip-padding-y) var(--slider-tooltip-padding-x);
+  border-radius: var(--slider-tooltip-radius);
+  background: var(--slider-tooltip-bg);
+  color: var(--slider-tooltip-text);
+  font-weight: var(--label-small-bold-font-weight);
+  font-size: var(--label-small-bold-font-size);
+  line-height: var(--label-small-bold-line-height);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+/* The bubble sits a caret height above the gap, with or without the caret, so it never moves. */
+.tooltip { margin-bottom: calc(var(--slider-tooltip-caret-width) / 2); }
+.tooltip[data-caret="true"]::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-style: solid;
+  border-width: calc(var(--slider-tooltip-caret-width) / 2) calc(var(--slider-tooltip-caret-width) / 2) 0;
+  border-color: var(--slider-tooltip-bg) transparent transparent;
+  transform: translateX(-50%);
+}
+.root[data-press="grow"] .tooltip[data-lifted="true"] { bottom: calc(50% + var(--_thumb-pressed) / 2 + var(--slider-tooltip-gap)); }
+
+.limits { display: flex; justify-content: space-between; color: var(--_limit-color); font-weight: var(--label-small-regular-font-weight); font-size: var(--label-small-regular-font-size); line-height: var(--label-small-regular-line-height); }
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb, .halo { transition: none; }
+}
