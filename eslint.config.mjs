@@ -22,6 +22,7 @@ export default defineConfig([
     "docs-site/.next/",
     "docs-site/out/",
     "docs-site/next-env.d.ts",
+    "storybook/storybook-static/",
     // Vendored uSpec files, re-rendered by `npx uspec-skills update` — never hand-edited.
     ".claude/",
     ".cursor/",
@@ -52,6 +53,18 @@ export default defineConfig([
     plugins: { cosmos },
     languageOptions: { globals: globals.browser },
     settings: { next: { rootDir: "docs-site/" } },
+    rules: {
+      "cosmos/no-hardcoded-color": "error",
+      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+    },
+  },
+
+  {
+    name: "cosmos/storybook",
+    files: ["storybook/**/*.{ts,tsx}"],
+    extends: [js.configs.recommended, tseslint.configs.recommended, reactHooks.configs.flat.recommended, jsxA11y.flatConfigs.recommended],
+    plugins: { cosmos },
+    languageOptions: { globals: globals.browser },
     rules: {
       "cosmos/no-hardcoded-color": "error",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],

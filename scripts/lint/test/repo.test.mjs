@@ -180,6 +180,33 @@ describe("generated output", () => {
     const hits = ofRule(await lint(root, "docs-site/css-var"), "docs-site/css-var");
     assert.deepEqual(hits.map((h) => `${h.file}:${h.line} ${h.subject}`), ["docs-site/components/A.tsx:1 --color-text-gone"]);
   });
+
+  it("storybook/css-var: an undefined custom property in a block or an MDX page", async () => {
+    const root = fixture({
+      copy: DIST,
+      files: {
+        "storybook/src/blocks/blocks.css": ".doc { --doc-swatch: 1px; width: var(--doc-swatch); color: var(--color-text-primary); }\n",
+        "storybook/src/foundations/A.mdx": '<div style={{ color: "var(--color-text-gone)" }} />\n',
+      },
+    });
+    const hits = ofRule(await lint(root, "storybook/css-var"), "storybook/css-var");
+    assert.deepEqual(hits.map((h) => `${h.file}:${h.line} ${h.subject}`), ["storybook/src/foundations/A.mdx:1 --color-text-gone"]);
+  });
+
+  it("storybook/component-raw-value: hex and lengths in component CSS, not zero or comments", async () => {
+    const root = fixture({
+      files: {
+        "storybook/src/components/Button/Button.module.css": [
+          "/* 48px tall at #0067E8 */",
+          ".root { min-height: 48px; color: #fff; margin: 0px; padding: var(--button-padding-x-md); }",
+          ".icon { width: 1.5rem; flex: 1 1 0; opacity: 0.5; }",
+        ].join("\n"),
+        "storybook/src/blocks/blocks.css": ".doc { width: 120px; }\n",
+      },
+    });
+    const hits = ofRule(await lint(root, "storybook/component-raw-value"), "storybook/component-raw-value");
+    assert.deepEqual(hits.map((h) => `${h.line} ${h.subject}`), ["2 48px", "2 #fff", "3 1.5rem"]);
+  });
 });
 
 describe("skills rules", () => {

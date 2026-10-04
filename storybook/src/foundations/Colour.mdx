@@ -1,0 +1,60 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { CanvasPairing, ColorRole, ContrastTable, Palettes } from "../blocks";
+
+<Meta title="Foundations/Colour" />
+
+# Colour
+
+Semantic colours are grouped by **role** (background, surface, fill, text, border, icon), not by hue. Within a role, the suffix carries the **intent** (`brand`, `info`, `success`, `caution`, `warning`), the intensity (`strong`, `subtle`) and the interaction step (`hover`, `pressed`). In Cosmos, `warning` is the red error role and `caution` is amber.
+
+Use semantic tokens in product code. Primitives exist so a palette can be re-tinted in one place.
+
+## Canvas and container pairing
+
+A screen sits on one of two canvases, white or grey, and the container on top must be the other colour. Match the suffix: `bg` pairs with `bg-surface`, `bg-secondary` pairs with `bg-surface-secondary`. Interactive controls take their body colour from `bg-fill`, never from `bg`, so they stay white on either canvas.
+
+<CanvasPairing />
+
+## Background
+
+<ColorRole role="bg" />
+
+## Surface
+
+Containers that sit on the page canvas.
+
+<ColorRole role="surface" />
+
+## Fill
+
+Interactive and emphasis fills for buttons, badges and banners. Strong and subtle fills each have their own text partner.
+
+<ColorRole role="fill" />
+
+## Text
+
+Text tokens show their contrast against the surface they are designed for. The `on-bg-fill` and `on-bg-surface` variants are the contrast-safe partners for the matching background.
+
+<ColorRole role="text" />
+
+## Border
+
+<ColorRole role="border" />
+
+## Icon
+
+Icons have their own tokens so their weight can be tuned separately from text.
+
+<ColorRole role="icon" />
+
+## Contrast
+
+Every text token measured against its intended background. AA needs 4.5:1 for body text and 3:1 for large text.
+
+<ContrastTable />
+
+## Primitive palettes
+
+Thirteen palettes with steps from 50 to 950, plus white (`neutral.0`). Semantic brand roles rest on `brand.700`. The `alpha` palette holds transparent and the five shadow colours, the only colours with alpha baked into the hex.
+
+<Palettes />

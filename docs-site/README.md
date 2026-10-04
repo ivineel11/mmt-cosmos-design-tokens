@@ -39,3 +39,7 @@ Add the data in `scripts/generate-tokens.mjs`, extend `TokenData` in `lib/types.
 ## Fonts
 
 Lato 400/700/900 are self-hosted in `public/fonts` so builds work offline and specimens always render in the real typeface.
+
+## Shared with Storybook
+
+`../storybook` runs this generator too and reads `data/tokens.json`. Besides the sections above, the data holds `all`: every token in all three sets, flat, with its description, resolved value, alias and platform names. Keep that field when changing the generator.

@@ -1,0 +1,33 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Scale, TypeScale } from "../blocks";
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Cosmos uses **Lato** for every role, in three weights: regular (400), bold (700) and black (900). There is no display scale and no letter-spacing token.
+
+Each style is a composite token named `{group}.{size}.{weight}`, for example `body.medium.regular`. It bundles font family, weight, size and line height, and the build expands it into one variable per property:
+
+```css
+font-family: var(--body-medium-regular-font-family);
+font-weight: var(--body-medium-regular-font-weight);
+font-size: var(--body-medium-regular-font-size);
+line-height: var(--body-medium-regular-line-height);
+```
+
+Use the whole composite rather than assembling sizes and weights yourself.
+
+<TypeScale />
+
+## Primitives
+
+Authoring-only scales the composites are built from.
+
+### Font size
+
+<Scale kind="space" set="primitives" prefix="fontSize" />
+
+### Line height
+
+<Scale kind="space" set="primitives" prefix="lineHeight" />

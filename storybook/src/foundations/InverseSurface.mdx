@@ -1,0 +1,16 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { InverseSamples } from "../blocks";
+
+<Meta title="Foundations/Inverse surface" />
+
+# Inverse surface
+
+Cosmos has one light theme, but products still place controls on dark sections: hero banners, offer cards on navy, dark tooltips and snackbars, and photos under a scrim. The `-inverse` tokens are for those sections.
+
+- Labels sit at step 300 and icons and outlines one step deeper, at 400.
+- Hover and pressed get **lighter** by one step each, mirroring light surfaces, where they get darker.
+- Tints for hover, pressed and tertiary fills are a colour at a `bg-opacity-*` token, so they work on near-black, navy and photos alike. Disabled stays solid.
+
+Inverse is a surface inside the light theme, not dark mode. When a dark theme arrives these roles stay valid.
+
+<InverseSamples />

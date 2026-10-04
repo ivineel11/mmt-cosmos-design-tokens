@@ -1,0 +1,16 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Scale } from "../blocks";
+
+<Meta title="Foundations/Spacing" />
+
+# Spacing
+
+Layout uses the semantic **`space.*`** scale, T-shirt sized from `space.none` to `space.7xl`. Each step aliases a pixel primitive, so component code never holds a raw number.
+
+<Scale kind="space" prefix="space" />
+
+## Primitives
+
+The numeric `spacing.*` scale behind `space.*`. Negative steps exist only for optical adjustments, and a few mid-steps (10, 86, 200, 240, 320) exist for one specific component measurement each.
+
+<Scale kind="space" set="primitives" prefix="spacing" />

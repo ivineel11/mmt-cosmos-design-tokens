@@ -102,61 +102,84 @@ const docsSiteNames = {
   },
 };
 
-const docsSiteCssVar = {
-  id: "docs-site/css-var",
-  description: "Every var(--…) the docs site uses is defined — by dist/web/tokens.css, by the site's own stylesheet, or by a next/font variable — so a renamed token cannot silently unstyle the site.",
-  check(api) {
-    const tokenVars = api.distCssVars();
-    if (!tokenVars) return; // dist/fresh reports a missing dist
-    const files = api.files().filter((f) => /^docs-site\/(app|components|lib)\/.*\.(css|tsx?|mjs)$/.test(f) && f !== "docs-site/app/tokens.css");
-    const defined = new Set(tokenVars);
-    const sources = new Map(files.map((f) => [f, api.read(f) ?? ""]));
-    for (const src of sources.values()) {
-      for (const m of src.matchAll(/(--[\w-]+)\s*:/g)) defined.add(m[1]);
-      for (const m of src.matchAll(/variable:\s*["'](--[\w-]+)["']/g)) defined.add(m[1]);
-    }
-    for (const [file, src] of sources) {
-      src.split("\n").forEach((text, i) => {
-        for (const m of text.matchAll(/var\(\s*(--[\w-]+)/g)) {
-          const name = m[1];
-          if (defined.has(name) || name.startsWith("--tw-")) continue;
-          api.report({ file, line: i + 1, column: m.index + 1, subject: name, message: `${name} is not defined by dist/web/tokens.css or the site's own styles. Was the token renamed?` });
-        }
-      });
-    }
-  },
-};
+/**
+ * Every var(--…) a site uses is defined by dist/web/tokens.css or by the site's own
+ * styles. Shared by the docs site and Storybook.
+ */
+export function cssVarRule({ id, site, description, include, exclude = [] }) {
+  return {
+    id,
+    description,
+    check(api) {
+      const tokenVars = api.distCssVars();
+      if (!tokenVars) return; // dist/fresh reports a missing dist
+      const files = api.files().filter((f) => include.test(f) && !exclude.includes(f));
+      const defined = new Set(tokenVars);
+      const sources = new Map(files.map((f) => [f, api.read(f) ?? ""]));
+      for (const src of sources.values()) {
+        for (const m of src.matchAll(/(--[\w-]+)\s*:/g)) defined.add(m[1]);
+        for (const m of src.matchAll(/variable:\s*["'](--[\w-]+)["']/g)) defined.add(m[1]);
+      }
+      for (const [file, src] of sources) {
+        src.split("\n").forEach((text, i) => {
+          for (const m of text.matchAll(/var\(\s*(--[\w-]+)/g)) {
+            const name = m[1];
+            if (defined.has(name) || name.startsWith("--tw-")) continue;
+            api.report({ file, line: i + 1, column: m.index + 1, subject: name, message: `${name} is not defined by dist/web/tokens.css or ${site} own styles. Was the token renamed?` });
+          }
+        });
+      }
+    },
+  };
+}
 
-const docsSiteTypecheck = {
+/** A package type-checks (tsc --noEmit) against freshly generated docs-site token data. */
+export function typecheckRule({ id, dir, description }) {
+  return {
+    id,
+    description,
+    check(api) {
+      if (!api.exists(`${dir}/node_modules/typescript`)) {
+        api.skip(`${dir} dependencies are not installed (run \`npm ci\` in ${dir}/)`);
+        return;
+      }
+      if (api.tokens().error) return;
+      // tsc needs docs-site/data/tokens.json, which is generated and gitignored.
+      const gen = spawnSync(process.execPath, ["scripts/generate-tokens.mjs"], { cwd: api.abs("docs-site"), encoding: "utf8" });
+      if (gen.status !== 0) {
+        api.report({ file: "docs-site/scripts/generate-tokens.mjs", message: `Token data generation failed:\n${tail(gen.stderr)}` });
+        return;
+      }
+      const tsc = spawnSync(process.execPath, ["node_modules/typescript/bin/tsc", "--noEmit", "-p", "."], {
+        cwd: api.abs(dir),
+        encoding: "utf8",
+      });
+      if (tsc.status === 0) return;
+      const lines = `${tsc.stdout}\n${tsc.stderr}`.split("\n").filter(Boolean);
+      let reported = 0;
+      for (const line of lines) {
+        const m = /^(.+?)\((\d+),(\d+)\): (error .*)$/.exec(line);
+        if (!m) continue;
+        reported += 1;
+        api.report({ file: `${dir}/${toPosix(m[1])}`, line: Number(m[2]), column: Number(m[3]), message: m[4] });
+      }
+      if (!reported) api.report({ file: `${dir}/tsconfig.json`, message: tail(lines.join("\n")) });
+    },
+  };
+}
+
+const docsSiteCssVar = cssVarRule({
+  id: "docs-site/css-var",
+  site: "the site's",
+  description: "Every var(--…) the docs site uses is defined — by dist/web/tokens.css, by the site's own stylesheet, or by a next/font variable — so a renamed token cannot silently unstyle the site.",
+  include: /^docs-site\/(app|components|lib)\/.*\.(css|tsx?|mjs)$/,
+  exclude: ["docs-site/app/tokens.css"],
+});
+
+const docsSiteTypecheck = typecheckRule({
   id: "docs-site/typecheck",
+  dir: "docs-site",
   description: "The docs site type-checks (tsc --noEmit) against freshly generated token data.",
-  check(api) {
-    if (!api.exists("docs-site/node_modules/typescript")) {
-      api.skip("docs-site dependencies are not installed (run `npm ci` in docs-site/)");
-      return;
-    }
-    if (api.tokens().error) return;
-    // tsc needs data/tokens.json, which is generated and gitignored.
-    const gen = spawnSync(process.execPath, ["scripts/generate-tokens.mjs"], { cwd: api.abs("docs-site"), encoding: "utf8" });
-    if (gen.status !== 0) {
-      api.report({ file: "docs-site/scripts/generate-tokens.mjs", message: `Token data generation failed:\n${tail(gen.stderr)}` });
-      return;
-    }
-    const tsc = spawnSync(process.execPath, ["node_modules/typescript/bin/tsc", "--noEmit", "-p", "."], {
-      cwd: api.abs("docs-site"),
-      encoding: "utf8",
-    });
-    if (tsc.status === 0) return;
-    const lines = `${tsc.stdout}\n${tsc.stderr}`.split("\n").filter(Boolean);
-    let reported = 0;
-    for (const line of lines) {
-      const m = /^(.+?)\((\d+),(\d+)\): (error .*)$/.exec(line);
-      if (!m) continue;
-      reported += 1;
-      api.report({ file: `docs-site/${toPosix(m[1])}`, line: Number(m[2]), column: Number(m[3]), message: m[4] });
-    }
-    if (!reported) api.report({ file: "docs-site/tsconfig.json", message: tail(lines.join("\n")) });
-  },
-};
+});
 
 export default [distFresh, docsSiteNames, docsSiteCssVar, docsSiteTypecheck];
