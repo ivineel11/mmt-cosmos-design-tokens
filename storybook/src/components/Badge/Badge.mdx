@@ -1,0 +1,38 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Badge.stories";
+
+<Meta of={Stories} />
+
+# Badge
+
+A small, non-interactive marker attached to something else. **Count** shows how many items wait ("3", "99+"), **Dot** says something is new, and **Text** is a short status or promotional tag ("New", "Free cancellation"). Figma set `683:2823`. Full spec: [components/badge.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/badge.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Intents and types
+
+Count and dot default to `warning`; text defaults to `neutral`. Dots are always strong.
+
+<Canvas of={Stories.Small} />
+<Canvas of={Stories.Medium} />
+
+## Counts
+
+One digit is a circle; longer counts stretch into a pill. Above `max` (99) a count shows "99+", and 0 hides the badge.
+
+<Canvas of={Stories.CountOverflow} />
+
+## Examples
+
+On an icon, the badge's left edge sits 16 in from the icon's left edge and its top 4 above the icon.
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- A badge never takes focus. Count and dot badges are hidden from assistive tech; put their meaning in the host name instead, for example `aria-label="Notifications, 3 new"`.
+- Text badges are real text in reading order. Say the status in words, never with colour alone.
+- Brand and Info currently resolve to the same colours; both exist because their meaning differs.
+
+<ArgTypes of={Stories} />

@@ -1740,7 +1740,7 @@ npm run storybook      # http://localhost:6006
 
 Storybook keeps no copy of the tokens. It imports `dist/web/tokens.css` for styling and reads the token data that `docs-site/scripts/generate-tokens.mjs` writes (run automatically before `storybook` and `build-storybook`), so the two sites always show the same values, aliases, contrast ratios and platform names. That data includes `all`, a flat list of every token in every set with its description, which drives the token tables.
 
-Components live in `storybook/src/components/<Name>/`. Each Figma variant axis becomes a prop, and every visual value is a `var(--component-token)`: the `storybook/component-raw-value` lint rule rejects hex colours and px, rem or em lengths in component stylesheets. Renaming a token therefore means updating the component CSS that uses it, and `storybook/css-var` reports any that were missed.
+Components live in `storybook/src/components/<Name>/`: Button, Badge, Switch, Checkbox and Radio so far, with the rest following in batches. Glyphs come from `storybook/src/components/Icon/paths.ts`, exported from the Figma Icons page. Each Figma variant axis becomes a prop, and every visual value is a `var(--component-token)`: the `storybook/component-raw-value` lint rule rejects hex colours and px, rem or em lengths in component stylesheets. Renaming a token therefore means updating the component CSS that uses it, and `storybook/css-var` reports any that were missed.
 
 `.github/workflows/storybook.yml` builds Storybook on every pull request and deploys it to GitHub Pages from `main`.
 

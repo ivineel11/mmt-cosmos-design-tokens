@@ -1,0 +1,49 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Button.stories";
+
+<Meta of={Stories} />
+
+# Button
+
+The primary action control: a label with optional leading and trailing glyphs and a busy spinner. Figma set `58:202`, 240 variants. Full spec: [components/button.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/button.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Hierarchy and size
+
+`hierarchy` sets visual priority. Only Secondary paints an outline, and it sits inside the box so every hierarchy has the same footprint. `size` scales height (48 / 40 / 32), padding, radius, glyphs and type together. Every size has a minimum width of 86.
+
+<Canvas of={Stories.Hierarchies} />
+
+## Destructive
+
+`intent="destructive"` recolours every hierarchy for an irreversible action. Colour is not announced, so the label must carry the consequence: "Delete account", not a red "Delete".
+
+<Canvas of={Stories.Destructive} />
+
+## Inverse surface
+
+For dark sections such as hero banners, navy offer cards and photos under a scrim. Primary keeps its fills. The other hierarchies use light brand blue, and their tints are a colour at a `button/bg-opacity-*` token so they work on any dark background.
+
+<Canvas of={Stories.Inverse} />
+<Canvas of={Stories.InverseDestructive} />
+
+## Icons and loading
+
+The two icon slots are independent. `isLoading` puts a spinner ahead of them, keeps the label and sets `aria-busy`.
+
+<Canvas of={Stories.IconsAndLoading} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- One focus stop. The label is the accessible name; glyphs and the spinner are hidden from assistive tech.
+- The focus ring shows on keyboard focus only.
+- `isDisabled` uses the native `disabled` attribute, so the button leaves the tab order. It wins over `isLoading`, so a disabled button never announces that it is busy.
+- Only Large (48) clears the 44 px touch target on its own. Give Medium and Small extra hit area from the layout.
+
+<ArgTypes of={Stories} />

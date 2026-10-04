@@ -1,0 +1,156 @@
+/*
+ * Radio: components/radio.md. Every value is a radio/* or semantic token.
+ * The dot sizes are under test (issue #39).
+ */
+
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--_gap);
+  font-family: var(--label-medium-regular-font-family), system-ui, sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.root[data-disabled="true"] { cursor: not-allowed; }
+
+/*
+ * The native input carries the semantics and the hit area: invisible, centred on the
+ * control and at least the minimum touch target, without changing the drawn size.
+ */
+.input {
+  position: absolute;
+  top: calc(var(--_control) / 2);
+  left: calc(var(--_control) / 2);
+  width: max(var(--_control), var(--_target));
+  height: max(var(--_control), var(--_target));
+  margin: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  cursor: inherit;
+  z-index: 1;
+}
+
+.text { display: grid; gap: var(--_gap-text); }
+.label { color: var(--_label-color); font-weight: var(--_type-weight); font-size: var(--_type-size); line-height: var(--_type-line); }
+.description { color: var(--_description-color); font-weight: var(--_desc-weight); font-size: var(--_desc-size); line-height: var(--_desc-line); }
+.root[data-disabled="true"] .label { --_label-color: var(--_label-disabled); }
+.root[data-disabled="true"] .description { --_description-color: var(--_description-disabled); }
+.root[data-invalid="true"]:not([data-disabled="true"]) .description { --_description-color: var(--_description-error); }
+.root {
+  --_target: var(--radio-min-touch-target);
+  --_gap-text: var(--radio-gap-text);
+  --_label-color: var(--radio-label-default);
+  --_label-disabled: var(--radio-label-disabled);
+  --_description-color: var(--radio-description-default);
+  --_description-error: var(--radio-description-error);
+  --_description-disabled: var(--radio-description-disabled);
+}
+.root[data-size="small"] {
+  --_control: var(--radio-control-size-sm);
+  --_gap: var(--radio-gap-sm);
+  --_dot: var(--radio-dot-size-sm);
+  --_layer: var(--radio-state-layer-size-sm);
+  --_type-weight: var(--label-small-regular-font-weight);
+  --_type-size: var(--label-small-regular-font-size);
+  --_type-line: var(--label-small-regular-line-height);
+  --_desc-weight: var(--label-small-regular-font-weight);
+  --_desc-size: var(--label-small-regular-font-size);
+  --_desc-line: var(--label-small-regular-line-height);
+}
+.root[data-size="medium"] {
+  --_control: var(--radio-control-size-md);
+  --_gap: var(--radio-gap-md);
+  --_dot: var(--radio-dot-size-md);
+  --_layer: var(--radio-state-layer-size-md);
+  --_type-weight: var(--label-medium-regular-font-weight);
+  --_type-size: var(--label-medium-regular-font-size);
+  --_type-line: var(--label-medium-regular-line-height);
+  --_desc-weight: var(--label-small-regular-font-weight);
+  --_desc-size: var(--label-small-regular-font-size);
+  --_desc-line: var(--label-small-regular-line-height);
+}
+.root[data-size="large"] {
+  --_control: var(--radio-control-size-lg);
+  --_gap: var(--radio-gap-lg);
+  --_dot: var(--radio-dot-size-lg);
+  --_layer: var(--radio-state-layer-size-lg);
+  --_type-weight: var(--label-large-regular-font-weight);
+  --_type-size: var(--label-large-regular-font-size);
+  --_type-line: var(--label-large-regular-line-height);
+  --_desc-weight: var(--label-medium-regular-font-weight);
+  --_desc-size: var(--label-medium-regular-font-size);
+  --_desc-line: var(--label-medium-regular-line-height);
+}
+
+.control {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--_control);
+  height: var(--_control);
+  border: var(--radio-border-width) solid var(--_border);
+  border-radius: var(--radio-radius);
+  background: var(--_bg);
+}
+.dot { display: none; width: var(--_dot); height: var(--_dot); border-radius: var(--radio-radius); background: var(--_dot-color); }
+.input:checked + .control .dot { display: block; }
+
+/*
+ * Focus is Material's state layer only: the content colour at 10%, twice the control
+ * diameter, behind it. Below 3:1 by design (radio.md, Focus); accepted deviation.
+ */
+.control::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--_layer);
+  height: var(--_layer);
+  border-radius: var(--radio-radius);
+  background: var(--radio-state-layer-unselected);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  pointer-events: none;
+}
+.root { isolation: isolate; }
+.input:focus-visible + .control::before { opacity: var(--radio-state-layer-opacity-focus); }
+.input:checked:focus-visible + .control::before { background: var(--radio-state-layer-selected); }
+.root[data-invalid="true"] .input:focus-visible + .control::before { background: var(--radio-state-layer-error); }
+
+/* Interior is keyed by intent and state only; ring and dot also by selection. */
+.root .input:enabled + .control { --_bg: var(--radio-bg-default); }
+.root:hover .input:enabled + .control { --_bg: var(--radio-bg-hover); }
+.root:active .input:enabled + .control { --_bg: var(--radio-bg-pressed); }
+.root .input:disabled + .control { --_bg: var(--radio-bg-disabled); }
+.root[data-invalid="true"] .input:enabled + .control { --_bg: var(--radio-bg-error-default); }
+.root[data-invalid="true"]:hover .input:enabled + .control { --_bg: var(--radio-bg-error-hover); }
+.root[data-invalid="true"]:active .input:enabled + .control { --_bg: var(--radio-bg-error-pressed); }
+.root[data-invalid="true"] .input:disabled + .control { --_bg: var(--radio-bg-error-disabled); }
+.root .input:enabled:not(:checked) + .control { --_border: var(--radio-border-unselected-default); }
+.root:hover .input:enabled:not(:checked) + .control { --_border: var(--radio-border-unselected-hover); }
+.root:active .input:enabled:not(:checked) + .control { --_border: var(--radio-border-unselected-pressed); }
+.root .input:disabled:not(:checked) + .control { --_border: var(--radio-border-unselected-disabled); }
+.root .input:enabled:checked + .control { --_border: var(--radio-border-selected-default); }
+.root:hover .input:enabled:checked + .control { --_border: var(--radio-border-selected-hover); }
+.root:active .input:enabled:checked + .control { --_border: var(--radio-border-selected-pressed); }
+.root .input:disabled:checked + .control { --_border: var(--radio-border-selected-disabled); }
+.root[data-invalid="true"] .input:enabled:not(:checked) + .control { --_border: var(--radio-border-unselected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:not(:checked) + .control { --_border: var(--radio-border-unselected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:not(:checked) + .control { --_border: var(--radio-border-unselected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:not(:checked) + .control { --_border: var(--radio-border-unselected-error-disabled); }
+.root[data-invalid="true"] .input:enabled:checked + .control { --_border: var(--radio-border-selected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:checked + .control { --_border: var(--radio-border-selected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:checked + .control { --_border: var(--radio-border-selected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:checked + .control { --_border: var(--radio-border-selected-error-disabled); }
+.root .input:enabled:checked + .control { --_dot-color: var(--radio-dot-selected-default); }
+.root:hover .input:enabled:checked + .control { --_dot-color: var(--radio-dot-selected-hover); }
+.root:active .input:enabled:checked + .control { --_dot-color: var(--radio-dot-selected-pressed); }
+.root .input:disabled:checked + .control { --_dot-color: var(--radio-dot-selected-disabled); }
+.root[data-invalid="true"] .input:enabled:checked + .control { --_dot-color: var(--radio-dot-selected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:checked + .control { --_dot-color: var(--radio-dot-selected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:checked + .control { --_dot-color: var(--radio-dot-selected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:checked + .control { --_dot-color: var(--radio-dot-selected-error-disabled); }

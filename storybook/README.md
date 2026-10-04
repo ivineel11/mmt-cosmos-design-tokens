@@ -23,7 +23,12 @@ npm run build-storybook           # static build in storybook-static/
 | `src/foundations/*.mdx` | Colour, typography, spacing, radius, stroke, iconography, elevation, opacity, Inverse surface |
 | `src/tokens/*.mdx` | Searchable tables for the primitive, semantic and component tiers |
 | `src/blocks/` | Doc blocks (palettes, colour roles, type scale, scales, shadows, token tables) |
+| `src/components/storybook-helpers.tsx` | `Matrix` (labelled variant grid) and `InverseSection` for stories |
 | `src/components/<Name>/` | `<Name>.tsx`, `<Name>.module.css`, `<Name>.stories.tsx` and `<Name>.mdx` per component |
+
+## Icons
+
+`src/components/Icon/paths.ts` holds the glyph paths exported from the Figma **Icons** page (`Icon / *`, 24 × 24, one filled path each). `<Icon>` draws them in `currentColor`, so each component colours its glyphs with its own icon tokens. Re-export a glyph from Figma rather than editing a path by hand, and add icons in the phase that first uses them.
 
 ## Component rules
 

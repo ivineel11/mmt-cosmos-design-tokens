@@ -1,0 +1,40 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Radio.stories";
+
+<Meta of={Stories} />
+
+# Radio
+
+One choice from a group. A selected radio is cleared only by selecting a sibling, never by activating it again. Figma set `442:415`. Full spec: [components/radio.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/radio.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Selection
+
+The ring carries selection: neutral when unselected, brand when selected. Hovering an unselected radio previews the brand ring. Tab to a radio to see its focus state layer.
+
+<Canvas of={Stories.Selection} />
+
+## Invalid
+
+Set `invalid` on every member of the group, since the error belongs to the group.
+
+<Canvas of={Stories.Invalid} />
+
+## Under test: dot size
+
+The Large dot currently takes `radio/dot-size-lg` (16), 67% of the control, where the spec keeps every dot at 50%. This value is experimental and tracked in [issue #39](https://github.com/ivineel11/mmt-cosmos-design-tokens/issues/39).
+
+<Canvas of={Stories.UnderTestDot} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- A native `input type="radio"`. Radios sharing a `name` form one group with arrow-key navigation; wrap them in a `fieldset` with a `legend`.
+- **Known deviation:** focus is Material's state layer only, which does not reach 3:1 (WCAG 1.4.11). Button and Checkbox use a ring. See the Focus section of the spec.
+
+<ArgTypes of={Stories} />

@@ -1,0 +1,49 @@
+/* Badge: components/badge.md. Every value is a badge/* or semantic token. */
+
+.root {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  font-family: var(--label-small-bold-font-family), system-ui, sans-serif;
+  white-space: nowrap;
+  border-radius: var(--badge-radius);
+}
+
+.root[data-emphasis="strong"] { background: var(--_bg-strong); color: var(--_label-strong); }
+.root[data-emphasis="subtle"] { background: var(--_bg-subtle); color: var(--_label-subtle); }
+
+/* Small: Lato sits low in its line box, so 2 of bottom padding centres the ink. */
+.root[data-size="small"] {
+  height: var(--badge-height-sm);
+  min-width: var(--badge-min-width-sm);
+  padding: 0 var(--badge-padding-x-count) var(--badge-padding-bottom-sm);
+  font-weight: var(--label-small-bold-font-weight);
+  font-size: var(--label-small-bold-font-size);
+  line-height: var(--label-small-bold-line-height);
+}
+.root[data-size="medium"] {
+  height: var(--badge-height-md);
+  min-width: var(--badge-min-width-md);
+  padding: 0 var(--badge-padding-x-count);
+  font-weight: var(--label-medium-bold-font-weight);
+  font-size: var(--label-medium-bold-font-size);
+  line-height: var(--label-medium-bold-line-height);
+}
+
+.root[data-type="text"] { border-radius: var(--badge-radius-text); }
+.root[data-type="text"][data-size="small"] { padding-inline: var(--badge-padding-x-text-sm); }
+.root[data-type="text"][data-size="medium"] { padding-inline: var(--badge-padding-x-text-md); }
+
+/* A dot is always strong and has no content. */
+.root[data-type="dot"] { padding: 0; min-width: 0; background: var(--_dot); }
+.root[data-type="dot"][data-size="small"] { width: var(--badge-dot-size-sm); height: var(--badge-dot-size-sm); }
+.root[data-type="dot"][data-size="medium"] { width: var(--badge-dot-size-md); height: var(--badge-dot-size-md); }
+
+.root[data-intent="neutral"] { --_bg-strong: var(--badge-bg-strong-neutral); --_label-strong: var(--badge-label-strong-neutral); --_bg-subtle: var(--badge-bg-subtle-neutral); --_label-subtle: var(--badge-label-subtle-neutral); --_dot: var(--badge-dot-neutral); }
+.root[data-intent="brand"] { --_bg-strong: var(--badge-bg-strong-brand); --_label-strong: var(--badge-label-strong-brand); --_bg-subtle: var(--badge-bg-subtle-brand); --_label-subtle: var(--badge-label-subtle-brand); --_dot: var(--badge-dot-brand); }
+.root[data-intent="info"] { --_bg-strong: var(--badge-bg-strong-info); --_label-strong: var(--badge-label-strong-info); --_bg-subtle: var(--badge-bg-subtle-info); --_label-subtle: var(--badge-label-subtle-info); --_dot: var(--badge-dot-info); }
+.root[data-intent="success"] { --_bg-strong: var(--badge-bg-strong-success); --_label-strong: var(--badge-label-strong-success); --_bg-subtle: var(--badge-bg-subtle-success); --_label-subtle: var(--badge-label-subtle-success); --_dot: var(--badge-dot-success); }
+.root[data-intent="caution"] { --_bg-strong: var(--badge-bg-strong-caution); --_label-strong: var(--badge-label-strong-caution); --_bg-subtle: var(--badge-bg-subtle-caution); --_label-subtle: var(--badge-label-subtle-caution); --_dot: var(--badge-dot-caution); }
+.root[data-intent="warning"] { --_bg-strong: var(--badge-bg-strong-warning); --_label-strong: var(--badge-label-strong-warning); --_bg-subtle: var(--badge-bg-subtle-warning); --_label-subtle: var(--badge-label-subtle-warning); --_dot: var(--badge-dot-warning); }

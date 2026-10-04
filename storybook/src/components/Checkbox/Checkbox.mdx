@@ -1,0 +1,42 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Checkbox.stories";
+
+<Meta of={Stories} />
+
+# Checkbox
+
+The binary form control: a square box with an optional label and description. The box height equals the label line height at every size (16 / 20 / 24), so a wrapped label or a description grows downward without moving the box. Figma set `427:62`. Full spec: [components/checkbox.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/checkbox.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Selection
+
+`indeterminate` is how a parent shows that its children are partly checked. Activating it checks every child.
+
+<Canvas of={Stories.Selection} />
+
+## Invalid
+
+The box and the description carry the error; the label stays neutral so it reads as one message. Disabled wins over invalid.
+
+<Canvas of={Stories.Invalid} />
+
+## Under test: box radius
+
+The Large box currently takes `checkbox/radius-lg` (8), where the spec tables 4. This value is experimental and tracked in [issue #39](https://github.com/ivineel11/mmt-cosmos-design-tokens/issues/39).
+
+<Canvas of={Stories.UnderTestRadius} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- A native `input type="checkbox"` under the drawn box. Clicking the label toggles it.
+- The description is wired with `aria-describedby`, and invalid sets `aria-invalid`.
+- The hit area reaches `checkbox/min-touch-target` (48) at every size without changing the drawn box.
+- A bare box needs an `aria-label`.
+
+<ArgTypes of={Stories} />

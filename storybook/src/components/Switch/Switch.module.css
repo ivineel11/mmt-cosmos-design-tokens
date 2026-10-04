@@ -1,0 +1,83 @@
+/*
+ * Switch: components/switch.md (the Filled style). Every value is a switch/* token.
+ * Motion is documented but not tokenised yet: 150ms, cubic-bezier(0.2, 0, 0, 1).
+ */
+
+.root {
+  --_track-w: var(--switch-track-width-md);
+  --_track-h: var(--switch-track-height-md);
+  --_thumb: var(--switch-thumb-size-md);
+  --_glyph: var(--switch-icon-size-md);
+  --_target: var(--switch-min-touch-target-md);
+  --_track: var(--switch-track-off-default);
+  --_icon: var(--switch-icon-off-default);
+
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  width: var(--_track-w);
+  height: var(--_track-h);
+  margin: 0;
+  padding: var(--switch-thumb-inset);
+  border: 0;
+  border-radius: var(--switch-radius);
+  background: var(--_track);
+  cursor: pointer;
+  transition: background-color 150ms cubic-bezier(0.2, 0, 0, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.root[data-size="small"] {
+  --_track-w: var(--switch-track-width-sm);
+  --_track-h: var(--switch-track-height-sm);
+  --_thumb: var(--switch-thumb-size-sm);
+  --_glyph: var(--switch-icon-size-sm);
+  --_target: var(--switch-min-touch-target-sm);
+}
+
+/* Hit area: at least the minimum target, centred on the track, without changing its size. */
+.root::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--_target));
+  height: max(100%, var(--_target));
+  transform: translate(-50%, -50%);
+}
+
+.root:hover:not(:disabled) { --_track: var(--switch-track-off-hover); --_icon: var(--switch-icon-off-hover); }
+.root:active:not(:disabled) { --_track: var(--switch-track-off-pressed); --_icon: var(--switch-icon-off-pressed); }
+.root:disabled { --_track: var(--switch-track-off-disabled); --_icon: var(--switch-icon-off-disabled); cursor: not-allowed; }
+
+.root[aria-checked="true"] { --_track: var(--switch-track-on-default); --_icon: var(--switch-icon-on-default); }
+.root[aria-checked="true"]:hover:not(:disabled) { --_track: var(--switch-track-on-hover); --_icon: var(--switch-icon-on-hover); }
+.root[aria-checked="true"]:active:not(:disabled) { --_track: var(--switch-track-on-pressed); --_icon: var(--switch-icon-on-pressed); }
+.root[aria-checked="true"]:disabled { --_track: var(--switch-track-on-disabled); --_icon: var(--switch-icon-on-disabled); }
+
+.root:focus { outline: none; }
+.root:focus-visible {
+  outline: var(--switch-focus-ring-width) solid var(--switch-focus-ring);
+  outline-offset: var(--switch-focus-ring-offset);
+}
+
+.thumb {
+  display: grid;
+  place-items: center;
+  width: var(--_thumb);
+  height: var(--_thumb);
+  border-radius: var(--switch-radius);
+  background: var(--switch-thumb-default);
+  color: var(--_icon);
+  transition: transform 150ms cubic-bezier(0.2, 0, 0, 1), color 100ms linear;
+}
+
+/* Travel = track width - thumb - 2 x inset. Mirrors in right-to-left layouts. */
+.root[aria-checked="true"] .thumb { transform: translateX(calc(var(--_track-w) - var(--_thumb) - 2 * var(--switch-thumb-inset))); }
+.root[aria-checked="true"]:dir(rtl) .thumb { transform: translateX(calc(-1 * (var(--_track-w) - var(--_thumb) - 2 * var(--switch-thumb-inset)))); }
+
+@media (prefers-reduced-motion: reduce) {
+  .root, .thumb { transition: none; }
+}
