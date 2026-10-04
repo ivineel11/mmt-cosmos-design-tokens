@@ -56,4 +56,27 @@ const componentRawValue = {
   },
 };
 
-export default [storybookCssVar, storybookTypecheck, componentRawValue];
+const mdxProseBrace = {
+  id: "storybook/mdx-prose-brace",
+  description: "MDX prose has no bare {name}: MDX evaluates it as JavaScript, so the page builds but throws \"name is not defined\" when opened. Put it in backticks or escape the braces.",
+  check(api) {
+    const files = api.files().filter((f) => /^storybook\/src\/.*\.mdx$/.test(f));
+    for (const file of files) {
+      let fenced = false;
+      (api.read(file) ?? "").split("\n").forEach((text, i) => {
+        if (/^\s*```/.test(text)) {
+          fenced = !fenced;
+          return;
+        }
+        // Code fences, imports and JSX lines are code, where braces are meant.
+        if (fenced || /^\s*(import|export|<)/.test(text)) return;
+        const prose = text.replace(/`[^`]*`/g, "");
+        for (const m of prose.matchAll(/\{\s*[A-Za-z_$][\w$.]*\s*\}/g)) {
+          api.report({ file, line: i + 1, subject: m[0], message: `${m[0]} in MDX prose is evaluated as JavaScript. Wrap it in backticks or escape the braces.` });
+        }
+      });
+    }
+  },
+};
+
+export default [storybookCssVar, storybookTypecheck, componentRawValue, mdxProseBrace];

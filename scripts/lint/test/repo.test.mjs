@@ -207,6 +207,23 @@ describe("generated output", () => {
     const hits = ofRule(await lint(root, "storybook/component-raw-value"), "storybook/component-raw-value");
     assert.deepEqual(hits.map((h) => `${h.line} ${h.subject}`), ["2 48px", "2 #fff", "3 1.5rem"]);
   });
+
+  it("storybook/mdx-prose-brace: a bare {name} in prose, not in code, imports or JSX", async () => {
+    const root = fixture({
+      files: {
+        "storybook/src/components/Chip/Chip.mdx": [
+          'import * as Stories from "./Chip.stories";',
+          "<Canvas of={Stories.Playground} />",
+          "Its \"Remove {label}\" button and its `Remove {label}` name.",
+          "```css",
+          ".a { color: red; }",
+          "```",
+        ].join("\n"),
+      },
+    });
+    const hits = ofRule(await lint(root, "storybook/mdx-prose-brace"), "storybook/mdx-prose-brace");
+    assert.deepEqual(hits.map((h) => `${h.line} ${h.subject}`), ["3 {label}"]);
+  });
 });
 
 describe("skills rules", () => {
