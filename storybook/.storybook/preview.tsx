@@ -1,10 +1,12 @@
 import type { Preview } from "@storybook/react-vite";
 import "../../dist/web/tokens.css";
 import "../src/styles/base.css";
+import { cosmosTheme } from "./theme";
 
 const preview: Preview = {
   parameters: {
     layout: "centered",
+    docs: { theme: cosmosTheme },
     controls: { expanded: true, sort: "requiredFirst" },
     backgrounds: {
       options: {

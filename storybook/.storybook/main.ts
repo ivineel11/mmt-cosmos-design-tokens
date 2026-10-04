@@ -13,8 +13,8 @@ const config: StorybookConfig = {
   ],
   framework: "@storybook/react-vite",
   core: { disableTelemetry: true, disableWhatsNewNotifications: true },
-  // Token CSS, token data and the Lato files live outside this package
-  // (dist/web, docs-site/data, docs-site/public/fonts).
+  // Token CSS and token data live outside this package
+  // (dist/web and docs-site/data).
   viteFinal: (vite) => ({
     ...vite,
     server: { ...vite.server, fs: { ...vite.server?.fs, allow: [repoRoot] } },

@@ -13,12 +13,14 @@ npm run build-storybook           # static build in storybook-static/
 
 - **Styling:** `.storybook/preview.tsx` imports `../dist/web/tokens.css`, so every page and component is drawn with the generated tokens.
 - **Token data:** `npm run tokens` (run automatically before `storybook` and `build-storybook`) runs `../docs-site/scripts/generate-tokens.mjs`. The doc blocks read its output, `../docs-site/data/tokens.json`, through `src/blocks/data.ts`.
-- **Fonts:** Lato is bundled from `../docs-site/public/fonts`.
+- **Fonts:** Lato 400, 700 and 900 load from Google Fonts in `.storybook/manager-head.html` (the Storybook UI) and `.storybook/preview-head.html` (docs pages and stories). `.storybook/theme.ts` sets Lato as the font for both.
 
 ## Structure
 
 | Path | Purpose |
 |------|---------|
+| `.storybook/theme.ts` | The shared Lato theme for the Storybook UI and docs pages |
+| `src/styles/base.css` | Base text styles and the docs page spacing, set with Cosmos type and space tokens |
 | `src/Introduction.mdx` | Landing page |
 | `src/foundations/*.mdx` | Colour, typography, spacing, radius, stroke, iconography, elevation, opacity, Inverse surface |
 | `src/tokens/*.mdx` | Searchable tables for the primitive, semantic and component tiers |
