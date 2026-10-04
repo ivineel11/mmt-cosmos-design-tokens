@@ -12,10 +12,15 @@ export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type" |
   size?: "small" | "medium" | "large";
   /** Recolours the box and description and sets aria-invalid. Disabled wins over it. */
   invalid?: boolean;
+  /**
+   * The wrapper element. Use "span" when the control sits inside another label, such as
+   * a List selection row, where the whole row is the label.
+   */
+  wrapper?: "label" | "span";
 };
 
 /** Checkbox: components/checkbox.md (Figma 427:62). A native checkbox under a drawn box. */
-export function Checkbox({ label, description, indeterminate = false, size = "medium", invalid = false, disabled = false, className, id, ...rest }: CheckboxProps) {
+export function Checkbox({ label, description, indeterminate = false, size = "medium", invalid = false, disabled = false, wrapper = "label", className, id, ...rest }: CheckboxProps) {
   const ref = useRef<HTMLInputElement>(null);
   const autoId = useId();
   const inputId = id ?? autoId;
@@ -24,8 +29,9 @@ export function Checkbox({ label, description, indeterminate = false, size = "me
   useEffect(() => {
     if (ref.current) ref.current.indeterminate = indeterminate;
   }, [indeterminate]);
+  const Wrapper = wrapper;
   return (
-    <label className={[styles.root, className].filter(Boolean).join(" ")} data-size={size} data-invalid={invalid} data-disabled={disabled}>
+    <Wrapper className={[styles.root, className].filter(Boolean).join(" ")} data-size={size} data-invalid={invalid} data-disabled={disabled}>
       <input
         {...rest}
         ref={ref}
@@ -50,6 +56,6 @@ export function Checkbox({ label, description, indeterminate = false, size = "me
           )}
         </span>
       )}
-    </label>
+    </Wrapper>
   );
 }

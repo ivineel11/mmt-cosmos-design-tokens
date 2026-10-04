@@ -30,7 +30,7 @@ npm run build-storybook           # static build in storybook-static/
 
 ## Icons
 
-`src/components/Icon/paths.ts` holds the glyph paths exported from the Figma **Icons** page (`Icon / *`, 24 × 24, one filled path each). `<Icon>` draws them in `currentColor`, so each component colours its glyphs with its own icon tokens. Re-export a glyph from Figma rather than editing a path by hand, and add icons in the phase that first uses them.
+`src/components/Icon/paths.ts` holds the glyph paths exported from the Figma **Icons** page (`Icon / *`, 24 × 24, one filled path each). `<Icon>` draws them in `currentColor`, so each component colours its glyphs with its own icon tokens. Re-export a glyph from Figma rather than editing a path by hand, and keep it to the glyphs on the Figma Icons page (all 34 are in).
 
 ## Component rules
 

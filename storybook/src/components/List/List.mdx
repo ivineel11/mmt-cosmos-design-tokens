@@ -1,0 +1,44 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./List.stories";
+
+<Meta of={Stories} />
+
+# List
+
+Rows of related content for mobile and web: airports, account settings, filters, hotel results. Each row has one action at most. Figma set `797:4533` with List / Item `710:474`. Full spec: [components/list.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/list.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Leading and trailing slots
+
+Keep one leading type per list so the text column lines up. Disabled rows dim everything except images, hide a badge, and disable a button or switch.
+
+<Canvas of={Stories.LeadingSlot} />
+<Canvas of={Stories.TrailingSlot} />
+<Canvas of={Stories.Compact} />
+
+## One action per row
+
+- **Navigation** rows (`onPress` or `href`) open another screen and show a chevron. The whole row is the target.
+- **Selection** rows lead with a checkbox or radio, and **setting** rows end with a switch. The whole row is the label, so a tap anywhere toggles the control.
+- **Static** rows with a trailing button take no hover fill; only the button is interactive.
+
+## Grouped
+
+On the grey page, use the grouped variant so rows sit on white cards. Cards clip their rows, so the first and last rows take the card radius.
+
+<Canvas of={Stories.GroupedOnGrey} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- A `ul` of `li` rows, named by the section header. A single-select list is one `radiogroup`, where arrow keys move the selection.
+- Icons, circles, chevrons and dividers are hidden from assistive tech. A badge adds to the row name, such as "Notifications, 3 new".
+- The focus ring sits inside the row, because rows run edge to edge.
+- Comfortable rows are at least 48 tall; Compact rows (40) are for pointer-first web layouts only.
+
+<ArgTypes of={Stories} />
