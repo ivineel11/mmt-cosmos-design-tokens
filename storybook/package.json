@@ -10,13 +10,16 @@
     "storybook": "storybook dev -p 6006",
     "prebuild-storybook": "npm run tokens",
     "build-storybook": "storybook build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "connect:icons": "node scripts/generate-icon-code-connect.mjs",
+    "connect:publish": "figma connect publish"
   },
   "dependencies": {
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
+    "@figma/code-connect": "^2.0.1",
     "@storybook/addon-a11y": "^10.6.1",
     "@storybook/addon-docs": "^10.6.1",
     "@storybook/react-vite": "^10.6.1",
