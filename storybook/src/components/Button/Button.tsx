@@ -53,7 +53,7 @@ export function Button({
     >
       {isLoading && <Icon name="spinner" size={iconSize} className={`${styles.icon} ${styles.spinner}`} />}
       {leadingIcon && <Icon name={leadingIcon} size={iconSize} className={styles.icon} />}
-      <span>{label}</span>
+      <span className={styles.label}>{label}</span>
       {trailingIcon && <Icon name={trailingIcon} size={iconSize} className={styles.icon} />}
     </button>
   );

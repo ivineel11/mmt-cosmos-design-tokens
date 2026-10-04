@@ -1,0 +1,38 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Tabs.stories";
+
+<Meta of={Stories} />
+
+# Tabs
+
+Switch between views of the same context without leaving the screen, such as Flights, Hotels and Homestays on the home screen. One tab is always selected. Figma sets Tab / Primary `694:2811` and Tab / Secondary `697:59`. Full spec: [components/tab.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/tab.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Primary
+
+An icon above the label, for top-level switches. A badge is pinned to the icon corner, so it never widens the tab.
+
+<Canvas of={Stories.Primary} />
+
+## Secondary
+
+Label only, for sections inside a page. A badge sits after the label.
+
+<Canvas of={Stories.Secondary} />
+
+## Examples
+
+The indicator slides to the new tab in 200 ms. With `layout="auto"`, tabs share the width when they all fit and the row scrolls otherwise, keeping the selected tab in view.
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- `role="tablist"` with an `aria-label`, `role="tab"` with `aria-selected`, and roving focus.
+- Selection follows activation, not focus: arrow keys move focus and wrap, Home and End jump to the ends, Enter or Space selects. Disabled tabs are skipped.
+- A badge adds to the tab name, for example "Rooms, 3 new"; the visual badge is hidden from assistive tech.
+- Pass `idPrefix` to wire each tab to its `role="tabpanel"` with `aria-controls`.
+
+<ArgTypes of={Stories} />

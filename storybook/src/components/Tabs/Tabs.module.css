@@ -1,0 +1,111 @@
+/*
+ * Tabs: components/tab.md (Tab / Primary and Tab / Secondary). Every value is a tab/*
+ * token. Motion is documented but not tokenised: 200ms, cubic-bezier(0.2, 0, 0, 1).
+ */
+
+/* The track line belongs to the list and spans the whole row, scrolled or not. */
+.bar { position: relative; min-width: 0; }
+.bar[data-track="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--tab-track-width);
+  background: var(--tab-track);
+  pointer-events: none;
+}
+
+.list {
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.list::-webkit-scrollbar { display: none; }
+
+/* auto: tabs share spare width but never shrink below their hug width, else the row scrolls. */
+.list[data-layout="auto"] .tab { flex: 1 0 auto; }
+.list[data-layout="fixed"] .tab { flex: 1 1 0; min-width: 0; }
+.list[data-layout="scrollable"] .tab { flex: none; }
+
+.tab {
+  --_bg: var(--tab-bg-unselected-default);
+  --_label: var(--tab-label-unselected-default);
+  --_icon: var(--tab-icon-unselected-default);
+
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  border-radius: var(--tab-radius);
+  background: var(--_bg);
+  color: var(--_label);
+  font-family: var(--label-medium-bold-font-family), system-ui, sans-serif;
+  font-weight: var(--label-medium-bold-font-weight);
+  font-size: var(--label-medium-bold-font-size);
+  line-height: var(--label-medium-bold-line-height);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tab:hover:not(:disabled) { --_bg: var(--tab-bg-unselected-hover); --_label: var(--tab-label-unselected-hover); --_icon: var(--tab-icon-unselected-hover); }
+.tab:active:not(:disabled) { --_bg: var(--tab-bg-unselected-pressed); --_label: var(--tab-label-unselected-pressed); --_icon: var(--tab-icon-unselected-pressed); }
+.tab[aria-selected="true"] { --_bg: var(--tab-bg-selected-default); --_label: var(--tab-label-selected-default); --_icon: var(--tab-icon-selected-default); }
+.tab[aria-selected="true"]:hover:not(:disabled) { --_bg: var(--tab-bg-selected-hover); --_label: var(--tab-label-selected-hover); --_icon: var(--tab-icon-selected-hover); }
+.tab[aria-selected="true"]:active:not(:disabled) { --_bg: var(--tab-bg-selected-pressed); --_label: var(--tab-label-selected-pressed); --_icon: var(--tab-icon-selected-pressed); }
+.tab:disabled { --_bg: var(--tab-bg-disabled); --_label: var(--tab-label-disabled); --_icon: var(--tab-icon-disabled); cursor: not-allowed; }
+
+.list[data-type="primary"] .tab {
+  min-height: var(--tab-primary-min-height);
+  padding: var(--tab-primary-padding-y) var(--tab-primary-padding-x);
+  gap: var(--tab-primary-gap);
+}
+.list[data-type="secondary"] .tab {
+  flex-direction: row;
+  min-height: var(--tab-secondary-min-height);
+  padding: var(--tab-secondary-padding-y) var(--tab-secondary-padding-x);
+  gap: var(--tab-secondary-gap-badge);
+}
+
+/* Focus ring inside the tab: inset at the top and sides, flush with the bottom, under the indicator. */
+.tab:focus { outline: none; }
+.tab:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: var(--tab-focus-ring-inset) var(--tab-focus-ring-inset) 0;
+  border: var(--tab-focus-ring-width) solid var(--tab-focus-ring);
+  border-radius: var(--tab-focus-ring-radius);
+  pointer-events: none;
+}
+
+/* Primary: the badge is pinned to the icon corner, so it never widens the tab. */
+.iconSlot { position: relative; display: block; width: var(--tab-primary-icon-size); height: var(--tab-primary-icon-size); color: var(--_icon); }
+.iconBadge { position: absolute; left: var(--tab-primary-badge-offset-x); top: calc(-1 * var(--tab-primary-badge-offset-y)); }
+
+/* One indicator for the list, sized to the selected tab and slid between tabs. */
+.indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: var(--tab-indicator-height);
+  border-radius: var(--tab-indicator-radius);
+  background: var(--tab-indicator-default);
+  pointer-events: none;
+  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1), width 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+.indicator[data-disabled="true"] { background: var(--tab-indicator-disabled); }
+@media (prefers-reduced-motion: reduce) { .indicator { transition: none; } }
+
+/*
+ * Optical centring on the web: browsers round Lato's ascent and descent to whole pixels,
+ * which draws 12px text half a pixel above where Figma draws it and 14px text half a
+ * pixel below (16px matches). Labels shift by half a pixel, a quarter of space-3xs, to
+ * land on the Figma glyph bounds.
+ */
+.label { position: relative; top: calc(var(--space-3xs) / -4); }

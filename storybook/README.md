@@ -36,5 +36,6 @@ npm run build-storybook           # static build in storybook-static/
 
 - Each Figma variant axis is a prop with the same values, and Figma boolean properties are boolean props.
 - Every visual value is a `var(--…)` from `dist/web/tokens.css`, using the component tier where one exists. `storybook/component-raw-value` rejects hex colours and px, rem or em lengths in component CSS.
+- Text in a fixed-height box must land where Figma draws it. Browsers round Lato's ascent and descent to whole pixels, which draws 12 px text half a pixel high and 14 px text half a pixel low (16 px matches). Shift such labels by half a pixel (`calc(var(--space-3xs) / 4)` down for 12 px, `/ -4` up for 14 px), then compare the glyph bounds with Figma (`absoluteRenderBounds` on the Figma text node).
 - Stories: one per variant axis, a kitchen-sink matrix that mirrors the Figma showcase frame with placeholder copy, and an examples story with realistic copy. Options under test get their own story marked "Under test".
 - The MDX page summarises `../components/<name>.md` (Overview, API and screen-reader behaviour) and links to it.

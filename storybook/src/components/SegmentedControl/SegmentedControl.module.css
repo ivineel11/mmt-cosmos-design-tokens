@@ -1,0 +1,163 @@
+/*
+ * Segmented control: components/segmented-control.md. Every value is a
+ * segmented-control/* token. Three thumb styles (neutral, brand, tinted) and two shapes
+ * (rounded, pill) are under test; only one of each will ship.
+ *
+ * In code the thumb is one layer under all the segments, sized to one segment and moved
+ * between them, which is what makes the slide and the drag possible. Motion is not
+ * tokenised: a ~300ms slide with no overshoot, and a 0.95 press scale over 100ms.
+ */
+
+.root {
+  --_count: 1;
+  --_index: 0;
+  --_drag: 0px;
+  --_track-radius: var(--segmented-control-track-radius-md);
+  --_thumb-radius: var(--segmented-control-thumb-radius-md);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: var(--segmented-control-height-md);
+  padding: var(--segmented-control-track-padding);
+  border-radius: var(--_track-radius);
+  background: var(--segmented-control-track);
+  font-family: var(--label-medium-bold-font-family), system-ui, sans-serif;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.root[data-size="small"] {
+  height: var(--segmented-control-height-sm);
+  --_track-radius: var(--segmented-control-track-radius-sm);
+  --_thumb-radius: var(--segmented-control-thumb-radius-sm);
+}
+.root[data-shape="pill"] {
+  --_track-radius: var(--segmented-control-pill-radius);
+  --_thumb-radius: var(--segmented-control-pill-radius);
+}
+
+/* Style ramps for the selected segment. */
+.root[data-style="neutral"] {
+  --_thumb: var(--segmented-control-neutral-thumb-default);
+  --_thumb-pressed: var(--segmented-control-neutral-thumb-pressed);
+  --_thumb-shadow: var(--segmented-control-neutral-thumb-shadow);
+  --_sel-label: var(--segmented-control-neutral-label-selected-default);
+  --_sel-label-pressed: var(--segmented-control-neutral-label-selected-pressed);
+  --_sel-icon: var(--segmented-control-neutral-icon-selected-default);
+  --_sel-icon-pressed: var(--segmented-control-neutral-icon-selected-pressed);
+}
+.root[data-style="brand"] {
+  --_thumb: var(--segmented-control-brand-thumb-default);
+  --_thumb-pressed: var(--segmented-control-brand-thumb-pressed);
+  --_sel-label: var(--segmented-control-brand-label-selected-default);
+  --_sel-label-pressed: var(--segmented-control-brand-label-selected-default);
+  --_sel-icon: var(--segmented-control-brand-icon-selected-default);
+  --_sel-icon-pressed: var(--segmented-control-brand-icon-selected-pressed);
+}
+.root[data-style="tinted"] {
+  --_thumb: var(--segmented-control-tinted-thumb-default);
+  --_thumb-pressed: var(--segmented-control-tinted-thumb-pressed);
+  --_thumb-border: var(--segmented-control-tinted-thumb-border-default);
+  --_thumb-border-pressed: var(--segmented-control-tinted-thumb-border-pressed);
+  --_sel-label: var(--segmented-control-tinted-label-selected-default);
+  --_sel-label-pressed: var(--segmented-control-tinted-label-selected-pressed);
+  --_sel-icon: var(--segmented-control-tinted-icon-selected-default);
+  --_sel-icon-pressed: var(--segmented-control-tinted-icon-selected-pressed);
+}
+
+.thumb {
+  position: absolute;
+  top: var(--segmented-control-track-padding);
+  bottom: var(--segmented-control-track-padding);
+  left: var(--segmented-control-track-padding);
+  width: calc((100% - 2 * var(--segmented-control-track-padding)) / var(--_count));
+  border-radius: var(--_thumb-radius);
+  background: var(--_thumb);
+  box-shadow: var(--_thumb-shadow, 0 0 transparent), inset 0 0 0 var(--segmented-control-tinted-thumb-border-width) var(--_thumb-border, transparent);
+  transform: translateX(calc(var(--_index) * 100% + var(--_drag, 0px))) scale(var(--_scale, 1));
+  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1), background-color 100ms linear;
+  pointer-events: none;
+}
+.root[data-thumb-pressed="true"] .thumb {
+  --_scale: 0.95;
+  background: var(--_thumb-pressed);
+  --_thumb-border: var(--_thumb-border-pressed);
+}
+/* While dragging, the thumb follows the finger directly. */
+.root[data-dragging="true"] .thumb { transition: background-color 100ms linear; }
+.thumb[data-disabled="true"] { background: var(--segmented-control-thumb-disabled); box-shadow: none; }
+
+.segment {
+  --_bg: var(--segmented-control-bg-unselected-default);
+  --_label: var(--segmented-control-label-unselected-default);
+  --_icon: var(--segmented-control-icon-unselected-default);
+
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--segmented-control-gap-icon);
+  min-width: 0;
+  margin: 0;
+  padding: 0 var(--segmented-control-segment-padding-x-md);
+  border: 0;
+  border-radius: var(--_thumb-radius);
+  background: var(--_bg);
+  color: var(--_label);
+  font: inherit;
+  font-weight: var(--label-medium-bold-font-weight);
+  font-size: var(--label-medium-bold-font-size);
+  line-height: var(--label-medium-bold-line-height);
+  cursor: pointer;
+}
+.root[data-size="small"] .segment {
+  padding: 0 var(--segmented-control-segment-padding-x-sm);
+  font-weight: var(--label-small-bold-font-weight);
+  font-size: var(--label-small-bold-font-size);
+  line-height: var(--label-small-bold-line-height);
+}
+/* Hit area at least 48 tall, centred on the track. */
+.segment::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: max(100%, var(--segmented-control-min-touch-target));
+  transform: translateY(-50%);
+}
+/*
+ * Optical centring on the web: browsers round Lato's ascent and descent to whole pixels,
+ * which draws 12px text half a pixel above where Figma draws it and 14px text half a
+ * pixel below (16px matches). Labels shift by half a pixel, a quarter of space-3xs, to
+ * land on the Figma glyph bounds.
+ */
+.label { position: relative; top: calc(var(--space-3xs) / -4); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.root[data-size="small"] .label { top: calc(var(--space-3xs) / 4); }
+.icon { color: var(--_icon); flex: none; }
+
+.segment[data-pressed="true"]:not([data-active="true"]) {
+  --_bg: var(--segmented-control-bg-unselected-pressed);
+  --_label: var(--segmented-control-label-unselected-pressed);
+  --_icon: var(--segmented-control-icon-unselected-pressed);
+}
+.segment[data-active="true"] { --_label: var(--_sel-label); --_icon: var(--_sel-icon); }
+.root[data-thumb-pressed="true"] .segment[data-active="true"] { --_label: var(--_sel-label-pressed); --_icon: var(--_sel-icon-pressed); }
+.segment:disabled { --_bg: transparent; --_label: var(--segmented-control-label-disabled); --_icon: var(--segmented-control-icon-disabled); cursor: not-allowed; }
+
+/* The ring sits outside the segment, filling the track padding, at the track radius. */
+.segment:focus { outline: none; }
+.segment:focus-visible {
+  outline: var(--segmented-control-focus-ring-width) solid var(--segmented-control-focus-ring);
+  outline-offset: var(--segmented-control-focus-ring-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb { transition: background-color 100ms linear; }
+  .root[data-thumb-pressed="true"] .thumb { --_scale: 1; }
+}

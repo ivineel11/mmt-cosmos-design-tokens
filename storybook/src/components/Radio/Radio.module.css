@@ -32,8 +32,14 @@
 }
 
 .text { display: grid; gap: var(--_gap-text); }
-.label { color: var(--_label-color); font-weight: var(--_type-weight); font-size: var(--_type-size); line-height: var(--_type-line); }
-.description { color: var(--_description-color); font-weight: var(--_desc-weight); font-size: var(--_desc-size); line-height: var(--_desc-line); }
+/*
+ * Optical centring on the web: browsers round Lato's ascent and descent to whole pixels,
+ * which draws 12px text half a pixel above where Figma draws it and 14px text half a
+ * pixel below (16px matches). Labels shift by half a pixel, a quarter of space-3xs, to
+ * land on the Figma glyph bounds.
+ */
+.label { position: relative; top: var(--_label-nudge, 0); color: var(--_label-color); font-weight: var(--_type-weight); font-size: var(--_type-size); line-height: var(--_type-line); }
+.description { position: relative; top: var(--_desc-nudge, 0); color: var(--_description-color); font-weight: var(--_desc-weight); font-size: var(--_desc-size); line-height: var(--_desc-line); }
 .root[data-disabled="true"] .label { --_label-color: var(--_label-disabled); }
 .root[data-disabled="true"] .description { --_description-color: var(--_description-disabled); }
 .root[data-invalid="true"]:not([data-disabled="true"]) .description { --_description-color: var(--_description-error); }
@@ -54,9 +60,11 @@
   --_type-weight: var(--label-small-regular-font-weight);
   --_type-size: var(--label-small-regular-font-size);
   --_type-line: var(--label-small-regular-line-height);
+  --_label-nudge: calc(var(--space-3xs) / 4);
   --_desc-weight: var(--label-small-regular-font-weight);
   --_desc-size: var(--label-small-regular-font-size);
   --_desc-line: var(--label-small-regular-line-height);
+  --_desc-nudge: calc(var(--space-3xs) / 4);
 }
 .root[data-size="medium"] {
   --_control: var(--radio-control-size-md);
@@ -66,9 +74,11 @@
   --_type-weight: var(--label-medium-regular-font-weight);
   --_type-size: var(--label-medium-regular-font-size);
   --_type-line: var(--label-medium-regular-line-height);
+  --_label-nudge: calc(var(--space-3xs) / -4);
   --_desc-weight: var(--label-small-regular-font-weight);
   --_desc-size: var(--label-small-regular-font-size);
   --_desc-line: var(--label-small-regular-line-height);
+  --_desc-nudge: calc(var(--space-3xs) / 4);
 }
 .root[data-size="large"] {
   --_control: var(--radio-control-size-lg);
@@ -81,6 +91,7 @@
   --_desc-weight: var(--label-medium-regular-font-weight);
   --_desc-size: var(--label-medium-regular-font-size);
   --_desc-line: var(--label-medium-regular-line-height);
+  --_desc-nudge: calc(var(--space-3xs) / -4);
 }
 
 .control {
