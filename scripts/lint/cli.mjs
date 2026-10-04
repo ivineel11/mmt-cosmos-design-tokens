@@ -4,7 +4,7 @@
  *
  *   npm run lint                      run every rule
  *   npm run lint -- --fix             apply the automatic fixes, then report what is left
- *   npm run lint -- --only tokens     one category (tokens, dist, docs, docs-site, skills, js)
+ *   npm run lint -- --only tokens     one category (tokens, dist, docs, docs-site, storybook, skills, js)
  *   npm run lint -- --skip dist/fresh skip a rule or category
  *   npm run lint -- --list            describe every rule
  *   npm run lint -- --format json     machine-readable output (also: github)

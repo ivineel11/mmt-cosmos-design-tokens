@@ -1,0 +1,24 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Scale, Shadows } from "../blocks";
+
+<Meta title="Foundations/Elevation" />
+
+# Elevation
+
+Cosmos has one elevation scale, written as shadows and named by what sits at each height. Every shadow has two layers: a tight **key** layer that defines the edge and a soft **ambient** layer that carries the height. There is no spread and no inner shadow, because SwiftUI and Compose cannot draw them, so the three platforms match.
+
+A shadow only ever means height. The edge of a card stays a `border-*` token.
+
+<Shadows />
+
+## Primitives
+
+Shadows are composites of offset, blur and an `alpha` colour primitive.
+
+### Offset
+
+<Scale kind="space" set="primitives" prefix="shadowOffset" />
+
+### Blur
+
+<Scale kind="space" set="primitives" prefix="shadowBlur" />

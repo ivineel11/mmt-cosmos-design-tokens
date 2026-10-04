@@ -46,6 +46,7 @@ function resolve(value, trail = []) {
     if (!isToken(target)) throw new Error(`Unresolved reference {${path}}`);
     return resolve(target.value, [...trail, path]);
   }
+  if (Array.isArray(value)) return value.map((item) => resolve(item, trail));
   if (value && typeof value === "object") {
     return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, resolve(v, trail)]));
   }
@@ -298,6 +299,28 @@ const data = {
     icon: semanticScale("icon"),
   },
 };
+
+// Every token in every set, flat, for consumers that list tokens rather than render
+// specimens (the Storybook token tables). Composites keep their resolved object.
+const COMPOSITE_PROPERTIES = ["font-family", "font-weight", "font-size", "line-height"];
+const flatten = (set, node, prefix = []) =>
+  Object.entries(node).flatMap(([key, raw]) => {
+    const parts = [...prefix, key];
+    if (!isToken(raw)) return flatten(set, raw, parts);
+    const token = { set, ...makeToken(parts, raw), description: raw.description ?? null };
+    if (raw.type === "typography") {
+      token.names = { ...token.names, css: `${cssVar(parts)}-*` };
+      token.copy = {
+        ...token.copy,
+        css: COMPOSITE_PROPERTIES.map((p) => `${p}: var(${cssVar(parts)}-${p});`).join("\n"),
+      };
+    }
+    return [token];
+  });
+
+data.all = (source.$metadata?.tokenSetOrder ?? ["primitives", "semantic", "component"]).flatMap(
+  (set) => flatten(set, source[set]),
+);
 
 // Contrast pairings: each text token against the surface it is designed for.
 const colorValue = (key) => resolve(source.semantic.color[key]?.value);

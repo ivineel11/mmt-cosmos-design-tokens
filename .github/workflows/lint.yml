@@ -21,6 +21,7 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             docs-site/package-lock.json
+            storybook/package-lock.json
 
       - name: Install root dependencies
         run: npm ci
@@ -29,6 +30,11 @@ jobs:
       - name: Install docs-site dependencies
         run: npm ci
         working-directory: docs-site
+
+      # Needed by the storybook/typecheck rule.
+      - name: Install Storybook dependencies
+        run: npm ci
+        working-directory: storybook
 
       - name: Test the linter
         run: npm run test:lint

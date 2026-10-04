@@ -1663,7 +1663,7 @@ Box(
 | `scripts/lint/` | The repository linter (`npm run lint`); rules in `rules/`, tests in `test/` |
 | `scripts/lib/` | Code shared by the build, `describe-primitives.mjs` and the linter (opacity rules, WCAG contrast) |
 | `lint.config.mjs` | Linter severity overrides and reasoned ignores |
-| `eslint.config.mjs` | ESLint config for the build scripts and the docs site |
+| `eslint.config.mjs` | ESLint config for the build scripts, the docs site and Storybook |
 | `proposals/` | Drafted token changes that need a design decision or Figma work before they can land |
 | `build-tokens.mjs` | Style Dictionary config and custom transforms |
 | `package.json` | Package metadata and build script |
@@ -1673,6 +1673,7 @@ Box(
 | `dist/ios/LineHeight.swift` | Generated SwiftUI `.lineHeight` modifier (total line-box height → line spacing) |
 | `dist/android/CosmosTokens.kt` | Generated Compose object (`com.makemytrip.cosmos.tokens`) |
 | `docs-site/` | Browsable documentation site for every token (see below) |
+| `storybook/` | Storybook for the foundations, every token tier and the React components (see below) |
 | `components/*.md` | Component specifications — uSpec-generated where noted, otherwise hand-authored (see below) |
 | `uspecs.config.json` | uSpec CLI configuration (agent, Figma MCP provider, pinned CLI version) |
 | `.claude/skills/`, `.cursor/skills/`, `references/` | Vendored uSpec agent skills and reference instructions — do not hand-edit |
@@ -1686,7 +1687,7 @@ Box(
 ```bash
 npm run lint                         # everything
 npm run lint -- --fix                # apply automatic fixes, then report what is left
-npm run lint -- --only tokens        # one category: tokens, dist, docs-site, docs, skills, js
+npm run lint -- --only tokens        # one category: tokens, dist, docs-site, storybook, docs, skills, js
 npm run lint -- --list               # every rule, with what it checks and why
 npm run lint -- --format json        # machine-readable (also: github)
 npm run test:lint                    # the linter's own tests
@@ -1697,9 +1698,10 @@ npm run test:lint                    # the linter's own tests
 | `tokens/*` | Anything in `tokens/tokens.json` that breaks the conventions above: duplicate keys a bad merge left behind, a tier referencing the wrong tier (or a component skipping a semantic alias that exists), raw values above the primitive tier, dangling or circular references, values the platform transforms cannot parse, opacity outside 0–1 or out of step with its mirror, disabled expressed as opacity, a control filled with a canvas colour, typography composites with the wrong weight or missing metrics, shadows with more than two layers, a spread or an off-scale primitive, t-shirt scales that do not grow, palettes that do not darken, names outside the role taxonomy, flat-namespace collisions, on-fill text and component labels below WCAG AA (inverse labels on the dark canvas, tints blended at their opacity), missing or Figma-unsafe descriptions (apostrophes become `&#39;`), stale computed primitive descriptions, and non-canonical formatting |
 | `dist/*` | `dist/` differs from a fresh build of the current tokens — stale, hand-edited, or carrying files the build does not produce |
 | `docs-site/*` | The site's derived CSS names drift from the build, it uses a `var(--…)` that no longer exists, or it fails to type-check |
+| `storybook/*` | Storybook uses a `var(--…)` that no longer exists, fails to type-check, or a component stylesheet in `storybook/src/components` holds a raw hex or px, rem or em length instead of a token |
 | `docs/*` | Markdown that has drifted from the tokens: broken links and anchors, references to tokens that do not exist, wrong values, aliases, hexes and counts in the README's tables, a semantic colour missing from the inventory, a component group without a spec |
 | `skills/*` | The `.claude` and `.cursor` uSpec installs disagree where they must be byte-identical, or `uspecs.config.json` and the docs pin different CLI versions |
-| `js/*` | ESLint over the build scripts and the docs site (typescript-eslint, React hooks, jsx-a11y, Next.js), plus `cosmos/no-hardcoded-color`, which rejects colour literals in styles |
+| `js/*` | ESLint over the build scripts, the docs site and Storybook (typescript-eslint, React hooks, jsx-a11y, Next.js), plus `cosmos/no-hardcoded-color`, which rejects colour literals in styles |
 
 `--fix` regenerates stale primitive descriptions, reformats `tokens.json`, rebuilds `dist/` and applies ESLint's fixes. Everything else needs a decision, and the message says which rule of this README it enforces.
 
@@ -1722,6 +1724,25 @@ The site does not maintain its own copy of the tokens. A pre-step (`npm run toke
 The generated platform names are checked against `dist/web/tokens.css` on every run; if the naming rules in `build-tokens.mjs` change, the generator prints a warning listing the names that no longer match.
 
 `npm run build` produces a static export in `docs-site/out/` that can be hosted anywhere.
+
+---
+
+## Storybook
+
+`storybook/` is a Storybook 10 (React and Vite) that documents the system as a whole: the foundations (colour, typography, spacing, radius, stroke, iconography, elevation, opacity and the Inverse surface), searchable tables for all three token tiers, and a live React component for each Figma component set.
+
+```bash
+npm run build:tokens   # in the repo root, first
+cd storybook
+npm install
+npm run storybook      # http://localhost:6006
+```
+
+Storybook keeps no copy of the tokens. It imports `dist/web/tokens.css` for styling and reads the token data that `docs-site/scripts/generate-tokens.mjs` writes (run automatically before `storybook` and `build-storybook`), so the two sites always show the same values, aliases, contrast ratios and platform names. That data includes `all`, a flat list of every token in every set with its description, which drives the token tables.
+
+Components live in `storybook/src/components/<Name>/`. Each Figma variant axis becomes a prop, and every visual value is a `var(--component-token)`: the `storybook/component-raw-value` lint rule rejects hex colours and px, rem or em lengths in component stylesheets. Renaming a token therefore means updating the component CSS that uses it, and `storybook/css-var` reports any that were missed.
+
+`.github/workflows/storybook.yml` builds Storybook on every pull request and deploys it to GitHub Pages from `main`.
 
 ---
 
@@ -1823,4 +1844,4 @@ Step 1 is manual and cannot be automated: the [uSpec Extract](https://www.figma.
 
 Only uSpec's Stage 1 (Markdown generation) is set up. Stage 2 renders spec sections back into Figma as annotation frames, which additionally requires the uSpec Template file published as a library in the MakeMyTrip org plus a `firstrun` skill pass to capture its template component keys. `uspecs.config.json` therefore has no `templateKeys` entry yet. The `create-anatomy`, `create-api`, `create-color`, `create-property`, `create-structure`, `create-voice`, and `create-motion` skills are installed but will not work until that setup is done.
 
-uSpec does not generate a docs site, React components, or Storybook stories. Surfacing these specs in `docs-site/` would be a separate piece of work.
+uSpec does not generate a docs site, React components, or Storybook stories. The React components and their stories in `storybook/` are written from these specs by hand.

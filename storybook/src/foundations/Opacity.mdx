@@ -1,0 +1,14 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { OpacityScale } from "../blocks";
+
+<Meta title="Foundations/Opacity" />
+
+# Opacity
+
+Opacity is applied **to a colour token**, never baked into a hex and never set on a whole control. A scrim is `bg-surface-inverse` at `opacity.scrim`; a state layer is a separate element filled with the control colour at a state-layer opacity.
+
+**Disabled is not an opacity.** Every disabled state is a solid neutral (`text-disabled`, `bg-fill-disabled-strong`), and hover and pressed are solid palette steps too.
+
+Opacity is not T-shirt sized. Named steps say what they dim; the rest mirror the percent ramp. Values are decimals from 0 to 1.
+
+<OpacityScale />
