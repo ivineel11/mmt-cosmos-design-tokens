@@ -1,9 +1,69 @@
-@font-face { font-family: "Lato"; font-weight: 400; font-display: swap; src: url("../../../docs-site/public/fonts/lato-400.woff2") format("woff2"); }
-@font-face { font-family: "Lato"; font-weight: 700; font-display: swap; src: url("../../../docs-site/public/fonts/lato-700.woff2") format("woff2"); }
-@font-face { font-family: "Lato"; font-weight: 900; font-display: swap; src: url("../../../docs-site/public/fonts/lato-900.woff2") format("woff2"); }
+/*
+ * Storybook-wide base styles. Lato comes from Google Fonts (.storybook/preview-head.html).
+ * The docs overrides below give the pages room to breathe, using the Cosmos type and
+ * space tokens rather than Storybook's compact defaults.
+ */
 
 body {
   font-family: var(--font-family-lato), system-ui, sans-serif;
   color: var(--color-text-primary);
   background: var(--color-bg);
 }
+
+/* Docs pages: a wider column, more padding, and reading-size text. */
+.sbdocs.sbdocs-wrapper { padding: var(--space-7xl) var(--space-6xl); }
+.sbdocs.sbdocs-content { max-width: 1200px; }
+
+.sbdocs.sbdocs-content :where(p, li):not(.sb-unstyled *, .docs-story *) {
+  font-size: var(--body-large-regular-font-size);
+  line-height: var(--body-large-regular-line-height);
+}
+.sbdocs.sbdocs-content :where(p):not(.sb-unstyled *, .docs-story *) { margin-block: 0 var(--space-md); }
+.sbdocs.sbdocs-content :where(ul, ol):not(.sb-unstyled *, .docs-story *) { margin-block: 0 var(--space-xl); }
+.sbdocs.sbdocs-content :where(li):not(.sb-unstyled *, .docs-story *) { margin-block-end: var(--space-xs); }
+
+.sbdocs.sbdocs-content h1:not(.sb-unstyled *) {
+  font-size: var(--headline-large-black-font-size);
+  line-height: var(--headline-large-black-line-height);
+  font-weight: var(--font-weight-black);
+  margin-block: 0 var(--space-xl);
+}
+.sbdocs.sbdocs-content h2:not(.sb-unstyled *) {
+  font-size: var(--headline-small-bold-font-size);
+  line-height: var(--headline-small-bold-line-height);
+  font-weight: var(--font-weight-bold);
+  margin-block: var(--space-7xl) var(--space-md);
+  padding-block-end: var(--space-sm);
+}
+.sbdocs.sbdocs-content h3:not(.sb-unstyled *) {
+  font-size: var(--title-medium-bold-font-size);
+  line-height: var(--title-medium-bold-line-height);
+  font-weight: var(--font-weight-bold);
+  margin-block: var(--space-5xl) var(--space-sm);
+}
+
+/* Markdown tables in docs prose. */
+.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) { margin-block: var(--space-md) var(--space-xl); }
+.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) :where(th, td) {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--body-medium-regular-font-size);
+  line-height: var(--body-medium-regular-line-height);
+}
+
+/* Story canvases and the props table. */
+/*
+ * The canvas centres its story; let it shrink so a wide grid scrolls instead of clipping.
+ * Storybook sets this element's height from the measured story, so keep content-box sizing
+ * and subtract the side padding from the width instead.
+ */
+.sbdocs.sbdocs-content .docs-story > div:first-child {
+  min-width: 0;
+  max-width: calc(100% - 2 * var(--space-5xl));
+  padding: var(--space-6xl) var(--space-5xl);
+}
+.sbdocs.sbdocs-content .sbdocs-preview { margin-block: var(--space-xl) var(--space-3xl); }
+.sbdocs.sbdocs-content .docblock-argstable :where(td, th) { padding: var(--space-sm) var(--space-md); }
+
+/* Story canvas (outside docs): keep variant grids clear of the frame edge. */
+.sb-main-centered #storybook-root,
+.sb-main-padded #storybook-root { padding: var(--space-5xl); }
