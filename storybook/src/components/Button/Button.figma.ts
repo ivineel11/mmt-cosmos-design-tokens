@@ -6,13 +6,13 @@ import figma from "figma";
 const instance = figma.selectedInstance;
 
 const label = instance.getString("Label");
+// Defaults map to undefined so the snippet only shows what differs from <Button>'s defaults.
 const hierarchy = instance.getEnum("Hierarchy", {
-  Primary: "primary",
+  Primary: undefined,
   Secondary: "secondary",
   Tertiary: "tertiary",
   Text: "text",
 });
-// Defaults map to undefined so the snippet only shows what differs from <Button>'s defaults.
 const intent = instance.getEnum("Intent", { Default: undefined, Destructive: "destructive" });
 const size = instance.getEnum("Size", { Small: "small", Medium: undefined, Large: "large" });
 const surface = instance.getEnum("Surface", { Default: undefined, Inverse: "inverse" });
@@ -40,7 +40,7 @@ const trailingIcon = iconName("Show Trailing Icon", "Select Trailing Icon");
 
 const attrs = [
   label.includes('"') ? `label={${JSON.stringify(label)}}` : `label="${label}"`,
-  `hierarchy="${hierarchy}"`,
+  hierarchy && `hierarchy="${hierarchy}"`,
   intent && `intent="${intent}"`,
   size && `size="${size}"`,
   surface && `surface="${surface}"`,
