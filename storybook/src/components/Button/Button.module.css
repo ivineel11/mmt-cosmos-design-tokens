@@ -1,0 +1,399 @@
+/*
+ * Button: components/button.md. Every value is a button/* or semantic token.
+ *
+ * Colours: one block per surface x hierarchy x intent (bottom of the file) sets private
+ * --_* properties from the button/* tokens, and the state rules below pick from them.
+ * Translucent inverse fills are a tint colour at its button/bg-opacity-* token, mixed
+ * with transparent (button.md, Inverse surface).
+ */
+
+.root {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--button-gap-sm);
+  min-width: var(--button-min-width);
+  margin: 0;
+  /* The outline is drawn inside the box, as Figma's inside stroke, so it never adds height. */
+  border: 0;
+  box-shadow: inset 0 0 0 var(--button-border-width) var(--_border);
+  --_border: var(--_border-default);
+  background: var(--_bg-default);
+  color: var(--_label-default);
+  font-family: var(--label-medium-bold-font-family), system-ui, sans-serif;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.root:hover:not(:disabled) { background: var(--_bg-hover); --_border: var(--_border-hover); color: var(--_label-hover); }
+.root:active:not(:disabled) { background: var(--_bg-pressed); --_border: var(--_border-pressed); color: var(--_label-pressed); }
+.root:disabled { background: var(--_bg-disabled); --_border: var(--_border-disabled); color: var(--_label-disabled); cursor: not-allowed; }
+
+/* The ring sits offset outside the box and only on keyboard focus. */
+.root:focus { outline: none; }
+.root:focus-visible {
+  outline: var(--button-focus-ring-width) solid var(--_ring);
+  outline-offset: var(--button-focus-ring-offset);
+}
+
+
+/* Sizes */
+.root[data-size="large"] {
+  min-height: var(--button-min-height-lg);
+  padding: var(--button-padding-y-lg) var(--button-padding-x-lg);
+  border-radius: var(--button-radius-lg);
+  font-weight: var(--label-large-bold-font-weight);
+  font-size: var(--label-large-bold-font-size);
+  line-height: var(--label-large-bold-line-height);
+  --_icon-size: var(--button-icon-size-lg);
+}
+.root[data-size="medium"] {
+  min-height: var(--button-min-height-md);
+  padding: var(--button-padding-y-md) var(--button-padding-x-md);
+  border-radius: var(--button-radius-md);
+  font-weight: var(--label-medium-bold-font-weight);
+  font-size: var(--label-medium-bold-font-size);
+  line-height: var(--label-medium-bold-line-height);
+  --_icon-size: var(--button-icon-size-md);
+}
+.root[data-size="small"] {
+  min-height: var(--button-min-height-sm);
+  padding: var(--button-padding-y-sm) var(--button-padding-x-sm);
+  border-radius: var(--button-radius-md);
+  font-weight: var(--label-small-bold-font-weight);
+  font-size: var(--label-small-bold-font-size);
+  line-height: var(--label-small-bold-line-height);
+  --_icon-size: var(--button-icon-size-sm);
+}
+
+/* Glyphs take the icon token for the current state, not the label colour. */
+.icon { color: var(--_icon-default); }
+.root:hover:not(:disabled) .icon { color: var(--_icon-hover); }
+.root:active:not(:disabled) .icon { color: var(--_icon-pressed); }
+.root:disabled .icon { color: var(--_icon-disabled); }
+
+.spinner { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(1turn); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
+
+.root[data-surface="default"][data-hierarchy="primary"][data-intent="default"] {
+  --_bg-default: var(--button-bg-primary-default);
+  --_bg-hover: var(--button-bg-primary-hover);
+  --_bg-pressed: var(--button-bg-primary-pressed);
+  --_bg-disabled: var(--button-bg-primary-disabled);
+  --_border-default: var(--button-border-primary-default);
+  --_border-hover: var(--button-border-primary-hover);
+  --_border-pressed: var(--button-border-primary-pressed);
+  --_border-disabled: var(--button-border-primary-disabled);
+  --_label-default: var(--button-label-primary-default);
+  --_label-hover: var(--button-label-primary-hover);
+  --_label-pressed: var(--button-label-primary-pressed);
+  --_label-disabled: var(--button-label-primary-disabled);
+  --_icon-default: var(--button-icon-primary-default);
+  --_icon-hover: var(--button-icon-primary-hover);
+  --_icon-pressed: var(--button-icon-primary-pressed);
+  --_icon-disabled: var(--button-icon-primary-disabled);
+  --_ring: var(--button-focus-ring);
+}
+
+.root[data-surface="default"][data-hierarchy="primary"][data-intent="destructive"] {
+  --_bg-default: var(--button-bg-primary-destructive-default);
+  --_bg-hover: var(--button-bg-primary-destructive-hover);
+  --_bg-pressed: var(--button-bg-primary-destructive-pressed);
+  --_bg-disabled: var(--button-bg-primary-destructive-disabled);
+  --_border-default: var(--button-border-primary-destructive-default);
+  --_border-hover: var(--button-border-primary-destructive-hover);
+  --_border-pressed: var(--button-border-primary-destructive-pressed);
+  --_border-disabled: var(--button-border-primary-destructive-disabled);
+  --_label-default: var(--button-label-primary-destructive-default);
+  --_label-hover: var(--button-label-primary-destructive-hover);
+  --_label-pressed: var(--button-label-primary-destructive-pressed);
+  --_label-disabled: var(--button-label-primary-destructive-disabled);
+  --_icon-default: var(--button-icon-primary-destructive-default);
+  --_icon-hover: var(--button-icon-primary-destructive-hover);
+  --_icon-pressed: var(--button-icon-primary-destructive-pressed);
+  --_icon-disabled: var(--button-icon-primary-destructive-disabled);
+  --_ring: var(--button-focus-ring-destructive);
+}
+
+.root[data-surface="default"][data-hierarchy="secondary"][data-intent="default"] {
+  --_bg-default: var(--button-bg-secondary-default);
+  --_bg-hover: var(--button-bg-secondary-hover);
+  --_bg-pressed: var(--button-bg-secondary-pressed);
+  --_bg-disabled: var(--button-bg-secondary-disabled);
+  --_border-default: var(--button-border-secondary-default);
+  --_border-hover: var(--button-border-secondary-hover);
+  --_border-pressed: var(--button-border-secondary-pressed);
+  --_border-disabled: var(--button-border-secondary-disabled);
+  --_label-default: var(--button-label-secondary-default);
+  --_label-hover: var(--button-label-secondary-hover);
+  --_label-pressed: var(--button-label-secondary-pressed);
+  --_label-disabled: var(--button-label-secondary-disabled);
+  --_icon-default: var(--button-icon-secondary-default);
+  --_icon-hover: var(--button-icon-secondary-hover);
+  --_icon-pressed: var(--button-icon-secondary-pressed);
+  --_icon-disabled: var(--button-icon-secondary-disabled);
+  --_ring: var(--button-focus-ring);
+}
+
+.root[data-surface="default"][data-hierarchy="secondary"][data-intent="destructive"] {
+  --_bg-default: var(--button-bg-secondary-destructive-default);
+  --_bg-hover: var(--button-bg-secondary-destructive-hover);
+  --_bg-pressed: var(--button-bg-secondary-destructive-pressed);
+  --_bg-disabled: var(--button-bg-secondary-destructive-disabled);
+  --_border-default: var(--button-border-secondary-destructive-default);
+  --_border-hover: var(--button-border-secondary-destructive-hover);
+  --_border-pressed: var(--button-border-secondary-destructive-pressed);
+  --_border-disabled: var(--button-border-secondary-destructive-disabled);
+  --_label-default: var(--button-label-secondary-destructive-default);
+  --_label-hover: var(--button-label-secondary-destructive-hover);
+  --_label-pressed: var(--button-label-secondary-destructive-pressed);
+  --_label-disabled: var(--button-label-secondary-destructive-disabled);
+  --_icon-default: var(--button-icon-secondary-destructive-default);
+  --_icon-hover: var(--button-icon-secondary-destructive-hover);
+  --_icon-pressed: var(--button-icon-secondary-destructive-pressed);
+  --_icon-disabled: var(--button-icon-secondary-destructive-disabled);
+  --_ring: var(--button-focus-ring-destructive);
+}
+
+.root[data-surface="default"][data-hierarchy="tertiary"][data-intent="default"] {
+  --_bg-default: var(--button-bg-tertiary-default);
+  --_bg-hover: var(--button-bg-tertiary-hover);
+  --_bg-pressed: var(--button-bg-tertiary-pressed);
+  --_bg-disabled: var(--button-bg-tertiary-disabled);
+  --_border-default: var(--button-border-tertiary-default);
+  --_border-hover: var(--button-border-tertiary-hover);
+  --_border-pressed: var(--button-border-tertiary-pressed);
+  --_border-disabled: var(--button-border-tertiary-disabled);
+  --_label-default: var(--button-label-tertiary-default);
+  --_label-hover: var(--button-label-tertiary-hover);
+  --_label-pressed: var(--button-label-tertiary-pressed);
+  --_label-disabled: var(--button-label-tertiary-disabled);
+  --_icon-default: var(--button-icon-tertiary-default);
+  --_icon-hover: var(--button-icon-tertiary-hover);
+  --_icon-pressed: var(--button-icon-tertiary-pressed);
+  --_icon-disabled: var(--button-icon-tertiary-disabled);
+  --_ring: var(--button-focus-ring);
+}
+
+.root[data-surface="default"][data-hierarchy="tertiary"][data-intent="destructive"] {
+  --_bg-default: var(--button-bg-tertiary-destructive-default);
+  --_bg-hover: var(--button-bg-tertiary-destructive-hover);
+  --_bg-pressed: var(--button-bg-tertiary-destructive-pressed);
+  --_bg-disabled: var(--button-bg-tertiary-destructive-disabled);
+  --_border-default: var(--button-border-tertiary-destructive-default);
+  --_border-hover: var(--button-border-tertiary-destructive-hover);
+  --_border-pressed: var(--button-border-tertiary-destructive-pressed);
+  --_border-disabled: var(--button-border-tertiary-destructive-disabled);
+  --_label-default: var(--button-label-tertiary-destructive-default);
+  --_label-hover: var(--button-label-tertiary-destructive-hover);
+  --_label-pressed: var(--button-label-tertiary-destructive-pressed);
+  --_label-disabled: var(--button-label-tertiary-destructive-disabled);
+  --_icon-default: var(--button-icon-tertiary-destructive-default);
+  --_icon-hover: var(--button-icon-tertiary-destructive-hover);
+  --_icon-pressed: var(--button-icon-tertiary-destructive-pressed);
+  --_icon-disabled: var(--button-icon-tertiary-destructive-disabled);
+  --_ring: var(--button-focus-ring-destructive);
+}
+
+.root[data-surface="default"][data-hierarchy="text"][data-intent="default"] {
+  --_bg-default: var(--button-bg-text-default);
+  --_bg-hover: var(--button-bg-text-hover);
+  --_bg-pressed: var(--button-bg-text-pressed);
+  --_bg-disabled: var(--button-bg-text-disabled);
+  --_border-default: var(--button-border-text-default);
+  --_border-hover: var(--button-border-text-hover);
+  --_border-pressed: var(--button-border-text-pressed);
+  --_border-disabled: var(--button-border-text-disabled);
+  --_label-default: var(--button-label-text-default);
+  --_label-hover: var(--button-label-text-hover);
+  --_label-pressed: var(--button-label-text-pressed);
+  --_label-disabled: var(--button-label-text-disabled);
+  --_icon-default: var(--button-icon-text-default);
+  --_icon-hover: var(--button-icon-text-hover);
+  --_icon-pressed: var(--button-icon-text-pressed);
+  --_icon-disabled: var(--button-icon-text-disabled);
+  --_ring: var(--button-focus-ring);
+}
+
+.root[data-surface="default"][data-hierarchy="text"][data-intent="destructive"] {
+  --_bg-default: var(--button-bg-text-destructive-default);
+  --_bg-hover: var(--button-bg-text-destructive-hover);
+  --_bg-pressed: var(--button-bg-text-destructive-pressed);
+  --_bg-disabled: var(--button-bg-text-destructive-disabled);
+  --_border-default: var(--button-border-text-destructive-default);
+  --_border-hover: var(--button-border-text-destructive-hover);
+  --_border-pressed: var(--button-border-text-destructive-pressed);
+  --_border-disabled: var(--button-border-text-destructive-disabled);
+  --_label-default: var(--button-label-text-destructive-default);
+  --_label-hover: var(--button-label-text-destructive-hover);
+  --_label-pressed: var(--button-label-text-destructive-pressed);
+  --_label-disabled: var(--button-label-text-destructive-disabled);
+  --_icon-default: var(--button-icon-text-destructive-default);
+  --_icon-hover: var(--button-icon-text-destructive-hover);
+  --_icon-pressed: var(--button-icon-text-destructive-pressed);
+  --_icon-disabled: var(--button-icon-text-destructive-disabled);
+  --_ring: var(--button-focus-ring-destructive);
+}
+
+.root[data-surface="inverse"][data-hierarchy="primary"][data-intent="default"] {
+  --_bg-default: var(--button-bg-primary-inverse-default);
+  --_bg-hover: var(--button-bg-primary-inverse-hover);
+  --_bg-pressed: var(--button-bg-primary-inverse-pressed);
+  --_bg-disabled: var(--button-bg-primary-inverse-disabled);
+  --_border-default: var(--button-border-primary-inverse-default);
+  --_border-hover: var(--button-border-primary-inverse-hover);
+  --_border-pressed: var(--button-border-primary-inverse-pressed);
+  --_border-disabled: var(--button-border-primary-inverse-disabled);
+  --_label-default: var(--button-label-primary-inverse-default);
+  --_label-hover: var(--button-label-primary-inverse-hover);
+  --_label-pressed: var(--button-label-primary-inverse-pressed);
+  --_label-disabled: var(--button-label-primary-inverse-disabled);
+  --_icon-default: var(--button-icon-primary-inverse-default);
+  --_icon-hover: var(--button-icon-primary-inverse-hover);
+  --_icon-pressed: var(--button-icon-primary-inverse-pressed);
+  --_icon-disabled: var(--button-icon-primary-inverse-disabled);
+  --_ring: var(--button-focus-ring-inverse);
+}
+
+.root[data-surface="inverse"][data-hierarchy="primary"][data-intent="destructive"] {
+  --_bg-default: var(--button-bg-primary-inverse-destructive-default);
+  --_bg-hover: var(--button-bg-primary-inverse-destructive-hover);
+  --_bg-pressed: var(--button-bg-primary-inverse-destructive-pressed);
+  --_bg-disabled: var(--button-bg-primary-inverse-destructive-disabled);
+  --_border-default: var(--button-border-primary-inverse-destructive-default);
+  --_border-hover: var(--button-border-primary-inverse-destructive-hover);
+  --_border-pressed: var(--button-border-primary-inverse-destructive-pressed);
+  --_border-disabled: var(--button-border-primary-inverse-destructive-disabled);
+  --_label-default: var(--button-label-primary-inverse-destructive-default);
+  --_label-hover: var(--button-label-primary-inverse-destructive-hover);
+  --_label-pressed: var(--button-label-primary-inverse-destructive-pressed);
+  --_label-disabled: var(--button-label-primary-inverse-destructive-disabled);
+  --_icon-default: var(--button-icon-primary-inverse-destructive-default);
+  --_icon-hover: var(--button-icon-primary-inverse-destructive-hover);
+  --_icon-pressed: var(--button-icon-primary-inverse-destructive-pressed);
+  --_icon-disabled: var(--button-icon-primary-inverse-destructive-disabled);
+  --_ring: var(--button-focus-ring-inverse-destructive);
+}
+
+.root[data-surface="inverse"][data-hierarchy="secondary"][data-intent="default"] {
+  --_bg-default: var(--button-bg-secondary-inverse-default);
+  --_bg-hover: color-mix(in srgb, var(--button-bg-secondary-inverse-hover) calc(var(--button-bg-opacity-secondary-inverse-hover) * 100%), transparent);
+  --_bg-pressed: color-mix(in srgb, var(--button-bg-secondary-inverse-pressed) calc(var(--button-bg-opacity-secondary-inverse-pressed) * 100%), transparent);
+  --_bg-disabled: var(--button-bg-secondary-inverse-disabled);
+  --_border-default: var(--button-border-secondary-inverse-default);
+  --_border-hover: var(--button-border-secondary-inverse-hover);
+  --_border-pressed: var(--button-border-secondary-inverse-pressed);
+  --_border-disabled: var(--button-border-secondary-inverse-disabled);
+  --_label-default: var(--button-label-secondary-inverse-default);
+  --_label-hover: var(--button-label-secondary-inverse-hover);
+  --_label-pressed: var(--button-label-secondary-inverse-pressed);
+  --_label-disabled: var(--button-label-secondary-inverse-disabled);
+  --_icon-default: var(--button-icon-secondary-inverse-default);
+  --_icon-hover: var(--button-icon-secondary-inverse-hover);
+  --_icon-pressed: var(--button-icon-secondary-inverse-pressed);
+  --_icon-disabled: var(--button-icon-secondary-inverse-disabled);
+  --_ring: var(--button-focus-ring-inverse);
+}
+
+.root[data-surface="inverse"][data-hierarchy="secondary"][data-intent="destructive"] {
+  --_bg-default: var(--button-bg-secondary-inverse-destructive-default);
+  --_bg-hover: color-mix(in srgb, var(--button-bg-secondary-inverse-destructive-hover) calc(var(--button-bg-opacity-secondary-inverse-destructive-hover) * 100%), transparent);
+  --_bg-pressed: color-mix(in srgb, var(--button-bg-secondary-inverse-destructive-pressed) calc(var(--button-bg-opacity-secondary-inverse-destructive-pressed) * 100%), transparent);
+  --_bg-disabled: var(--button-bg-secondary-inverse-destructive-disabled);
+  --_border-default: var(--button-border-secondary-inverse-destructive-default);
+  --_border-hover: var(--button-border-secondary-inverse-destructive-hover);
+  --_border-pressed: var(--button-border-secondary-inverse-destructive-pressed);
+  --_border-disabled: var(--button-border-secondary-inverse-destructive-disabled);
+  --_label-default: var(--button-label-secondary-inverse-destructive-default);
+  --_label-hover: var(--button-label-secondary-inverse-destructive-hover);
+  --_label-pressed: var(--button-label-secondary-inverse-destructive-pressed);
+  --_label-disabled: var(--button-label-secondary-inverse-destructive-disabled);
+  --_icon-default: var(--button-icon-secondary-inverse-destructive-default);
+  --_icon-hover: var(--button-icon-secondary-inverse-destructive-hover);
+  --_icon-pressed: var(--button-icon-secondary-inverse-destructive-pressed);
+  --_icon-disabled: var(--button-icon-secondary-inverse-destructive-disabled);
+  --_ring: var(--button-focus-ring-inverse-destructive);
+}
+
+.root[data-surface="inverse"][data-hierarchy="tertiary"][data-intent="default"] {
+  --_bg-default: color-mix(in srgb, var(--button-bg-tertiary-inverse-default) calc(var(--button-bg-opacity-tertiary-inverse-default) * 100%), transparent);
+  --_bg-hover: color-mix(in srgb, var(--button-bg-tertiary-inverse-hover) calc(var(--button-bg-opacity-tertiary-inverse-hover) * 100%), transparent);
+  --_bg-pressed: color-mix(in srgb, var(--button-bg-tertiary-inverse-pressed) calc(var(--button-bg-opacity-tertiary-inverse-pressed) * 100%), transparent);
+  --_bg-disabled: var(--button-bg-tertiary-inverse-disabled);
+  --_border-default: var(--button-border-tertiary-inverse-default);
+  --_border-hover: var(--button-border-tertiary-inverse-hover);
+  --_border-pressed: var(--button-border-tertiary-inverse-pressed);
+  --_border-disabled: var(--button-border-tertiary-inverse-disabled);
+  --_label-default: var(--button-label-tertiary-inverse-default);
+  --_label-hover: var(--button-label-tertiary-inverse-hover);
+  --_label-pressed: var(--button-label-tertiary-inverse-pressed);
+  --_label-disabled: var(--button-label-tertiary-inverse-disabled);
+  --_icon-default: var(--button-icon-tertiary-inverse-default);
+  --_icon-hover: var(--button-icon-tertiary-inverse-hover);
+  --_icon-pressed: var(--button-icon-tertiary-inverse-pressed);
+  --_icon-disabled: var(--button-icon-tertiary-inverse-disabled);
+  --_ring: var(--button-focus-ring-inverse);
+}
+
+.root[data-surface="inverse"][data-hierarchy="tertiary"][data-intent="destructive"] {
+  --_bg-default: color-mix(in srgb, var(--button-bg-tertiary-inverse-destructive-default) calc(var(--button-bg-opacity-tertiary-inverse-destructive-default) * 100%), transparent);
+  --_bg-hover: color-mix(in srgb, var(--button-bg-tertiary-inverse-destructive-hover) calc(var(--button-bg-opacity-tertiary-inverse-destructive-hover) * 100%), transparent);
+  --_bg-pressed: color-mix(in srgb, var(--button-bg-tertiary-inverse-destructive-pressed) calc(var(--button-bg-opacity-tertiary-inverse-destructive-pressed) * 100%), transparent);
+  --_bg-disabled: var(--button-bg-tertiary-inverse-destructive-disabled);
+  --_border-default: var(--button-border-tertiary-inverse-destructive-default);
+  --_border-hover: var(--button-border-tertiary-inverse-destructive-hover);
+  --_border-pressed: var(--button-border-tertiary-inverse-destructive-pressed);
+  --_border-disabled: var(--button-border-tertiary-inverse-destructive-disabled);
+  --_label-default: var(--button-label-tertiary-inverse-destructive-default);
+  --_label-hover: var(--button-label-tertiary-inverse-destructive-hover);
+  --_label-pressed: var(--button-label-tertiary-inverse-destructive-pressed);
+  --_label-disabled: var(--button-label-tertiary-inverse-destructive-disabled);
+  --_icon-default: var(--button-icon-tertiary-inverse-destructive-default);
+  --_icon-hover: var(--button-icon-tertiary-inverse-destructive-hover);
+  --_icon-pressed: var(--button-icon-tertiary-inverse-destructive-pressed);
+  --_icon-disabled: var(--button-icon-tertiary-inverse-destructive-disabled);
+  --_ring: var(--button-focus-ring-inverse-destructive);
+}
+
+.root[data-surface="inverse"][data-hierarchy="text"][data-intent="default"] {
+  --_bg-default: var(--button-bg-text-inverse-default);
+  --_bg-hover: color-mix(in srgb, var(--button-bg-text-inverse-hover) calc(var(--button-bg-opacity-text-inverse-hover) * 100%), transparent);
+  --_bg-pressed: color-mix(in srgb, var(--button-bg-text-inverse-pressed) calc(var(--button-bg-opacity-text-inverse-pressed) * 100%), transparent);
+  --_bg-disabled: var(--button-bg-text-inverse-disabled);
+  --_border-default: var(--button-border-text-inverse-default);
+  --_border-hover: var(--button-border-text-inverse-hover);
+  --_border-pressed: var(--button-border-text-inverse-pressed);
+  --_border-disabled: var(--button-border-text-inverse-disabled);
+  --_label-default: var(--button-label-text-inverse-default);
+  --_label-hover: var(--button-label-text-inverse-hover);
+  --_label-pressed: var(--button-label-text-inverse-pressed);
+  --_label-disabled: var(--button-label-text-inverse-disabled);
+  --_icon-default: var(--button-icon-text-inverse-default);
+  --_icon-hover: var(--button-icon-text-inverse-hover);
+  --_icon-pressed: var(--button-icon-text-inverse-pressed);
+  --_icon-disabled: var(--button-icon-text-inverse-disabled);
+  --_ring: var(--button-focus-ring-inverse);
+}
+
+.root[data-surface="inverse"][data-hierarchy="text"][data-intent="destructive"] {
+  --_bg-default: var(--button-bg-text-inverse-destructive-default);
+  --_bg-hover: color-mix(in srgb, var(--button-bg-text-inverse-destructive-hover) calc(var(--button-bg-opacity-text-inverse-destructive-hover) * 100%), transparent);
+  --_bg-pressed: color-mix(in srgb, var(--button-bg-text-inverse-destructive-pressed) calc(var(--button-bg-opacity-text-inverse-destructive-pressed) * 100%), transparent);
+  --_bg-disabled: var(--button-bg-text-inverse-destructive-disabled);
+  --_border-default: var(--button-border-text-inverse-destructive-default);
+  --_border-hover: var(--button-border-text-inverse-destructive-hover);
+  --_border-pressed: var(--button-border-text-inverse-destructive-pressed);
+  --_border-disabled: var(--button-border-text-inverse-destructive-disabled);
+  --_label-default: var(--button-label-text-inverse-destructive-default);
+  --_label-hover: var(--button-label-text-inverse-destructive-hover);
+  --_label-pressed: var(--button-label-text-inverse-destructive-pressed);
+  --_label-disabled: var(--button-label-text-inverse-destructive-disabled);
+  --_icon-default: var(--button-icon-text-inverse-destructive-default);
+  --_icon-hover: var(--button-icon-text-inverse-destructive-hover);
+  --_icon-pressed: var(--button-icon-text-inverse-destructive-pressed);
+  --_icon-disabled: var(--button-icon-text-inverse-destructive-disabled);
+  --_ring: var(--button-focus-ring-inverse-destructive);
+}

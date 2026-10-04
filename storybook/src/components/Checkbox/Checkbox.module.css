@@ -1,0 +1,146 @@
+/*
+ * Checkbox: components/checkbox.md. Every value is a checkbox/* or semantic token.
+ * The box radius tokens are under test (issue #39).
+ */
+
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--_gap);
+  font-family: var(--label-medium-regular-font-family), system-ui, sans-serif;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.root[data-disabled="true"] { cursor: not-allowed; }
+
+/*
+ * The native input carries the semantics and the hit area: invisible, centred on the
+ * control and at least the minimum touch target, without changing the drawn size.
+ */
+.input {
+  position: absolute;
+  top: calc(var(--_control) / 2);
+  left: calc(var(--_control) / 2);
+  width: max(var(--_control), var(--_target));
+  height: max(var(--_control), var(--_target));
+  margin: 0;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  cursor: inherit;
+  z-index: 1;
+}
+
+.text { display: grid; gap: var(--_gap-text); }
+.label { color: var(--_label-color); font-weight: var(--_type-weight); font-size: var(--_type-size); line-height: var(--_type-line); }
+.description { color: var(--_description-color); font-weight: var(--_desc-weight); font-size: var(--_desc-size); line-height: var(--_desc-line); }
+.root[data-disabled="true"] .label { --_label-color: var(--_label-disabled); }
+.root[data-disabled="true"] .description { --_description-color: var(--_description-disabled); }
+.root[data-invalid="true"]:not([data-disabled="true"]) .description { --_description-color: var(--_description-error); }
+.root {
+  --_target: var(--checkbox-min-touch-target);
+  --_gap-text: var(--checkbox-gap-text);
+  --_label-color: var(--checkbox-label-default);
+  --_label-disabled: var(--checkbox-label-disabled);
+  --_description-color: var(--checkbox-description-default);
+  --_description-error: var(--checkbox-description-error);
+  --_description-disabled: var(--checkbox-description-disabled);
+}
+.root[data-size="small"] {
+  --_control: var(--checkbox-control-size-sm);
+  --_gap: var(--checkbox-gap-sm);
+  --_glyph: var(--checkbox-icon-size-sm);
+  --_radius: var(--checkbox-radius-sm);
+  --_type-weight: var(--label-small-regular-font-weight);
+  --_type-size: var(--label-small-regular-font-size);
+  --_type-line: var(--label-small-regular-line-height);
+  --_desc-weight: var(--label-small-regular-font-weight);
+  --_desc-size: var(--label-small-regular-font-size);
+  --_desc-line: var(--label-small-regular-line-height);
+}
+.root[data-size="medium"] {
+  --_control: var(--checkbox-control-size-md);
+  --_gap: var(--checkbox-gap-md);
+  --_glyph: var(--checkbox-icon-size-md);
+  --_radius: var(--checkbox-radius-md);
+  --_type-weight: var(--label-medium-regular-font-weight);
+  --_type-size: var(--label-medium-regular-font-size);
+  --_type-line: var(--label-medium-regular-line-height);
+  --_desc-weight: var(--label-small-regular-font-weight);
+  --_desc-size: var(--label-small-regular-font-size);
+  --_desc-line: var(--label-small-regular-line-height);
+}
+.root[data-size="large"] {
+  --_control: var(--checkbox-control-size-lg);
+  --_gap: var(--checkbox-gap-lg);
+  --_glyph: var(--checkbox-icon-size-lg);
+  --_radius: var(--checkbox-radius-lg);
+  --_type-weight: var(--label-large-regular-font-weight);
+  --_type-size: var(--label-large-regular-font-size);
+  --_type-line: var(--label-large-regular-line-height);
+  --_desc-weight: var(--label-medium-regular-font-weight);
+  --_desc-size: var(--label-medium-regular-font-size);
+  --_desc-line: var(--label-medium-regular-line-height);
+}
+
+.control {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--_control);
+  height: var(--_control);
+  border: var(--checkbox-border-width) solid var(--_border);
+  border-radius: var(--_radius);
+  background: var(--_bg);
+  color: var(--_icon);
+}
+.glyph { display: none; }
+.input:checked:not(:indeterminate) + .control .check,
+.input:indeterminate + .control .minus { display: block; }
+
+/* Focus: a ring outside the box, on keyboard focus only. */
+.input:focus-visible + .control { outline: var(--checkbox-focus-ring-width) solid var(--checkbox-focus-ring); outline-offset: var(--checkbox-focus-ring-offset); }
+.root[data-invalid="true"] .input:focus-visible + .control { outline-color: var(--checkbox-focus-ring-error); }
+
+/* Colours by selection x intent x state. Checked and indeterminate share the selected ramp. */
+.root .input:enabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-default); }
+.root:hover .input:enabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-hover); }
+.root:active .input:enabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-pressed); }
+.root .input:disabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-disabled); }
+.root .input:enabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-default); }
+.root:hover .input:enabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-hover); }
+.root:active .input:enabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-pressed); }
+.root .input:disabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-disabled); }
+.root[data-invalid="true"] .input:enabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:not(:checked):not(:indeterminate) + .control { --_bg: var(--checkbox-bg-unselected-error-disabled); }
+.root[data-invalid="true"] .input:enabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:is(:checked, :indeterminate) + .control { --_bg: var(--checkbox-bg-selected-error-disabled); }
+.root .input:enabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-default); }
+.root:hover .input:enabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-hover); }
+.root:active .input:enabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-pressed); }
+.root .input:disabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-disabled); }
+.root .input:enabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-default); }
+.root:hover .input:enabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-hover); }
+.root:active .input:enabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-pressed); }
+.root .input:disabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-disabled); }
+.root[data-invalid="true"] .input:enabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:not(:checked):not(:indeterminate) + .control { --_border: var(--checkbox-border-unselected-error-disabled); }
+.root[data-invalid="true"] .input:enabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:is(:checked, :indeterminate) + .control { --_border: var(--checkbox-border-selected-error-disabled); }
+.root .input:enabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-default); }
+.root:hover .input:enabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-hover); }
+.root:active .input:enabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-pressed); }
+.root .input:disabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-disabled); }
+.root[data-invalid="true"] .input:enabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-error-default); }
+.root[data-invalid="true"]:hover .input:enabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-error-hover); }
+.root[data-invalid="true"]:active .input:enabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-error-pressed); }
+.root[data-invalid="true"] .input:disabled:is(:checked, :indeterminate) + .control { --_icon: var(--checkbox-icon-selected-error-disabled); }

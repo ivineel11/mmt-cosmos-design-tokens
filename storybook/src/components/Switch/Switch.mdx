@@ -1,0 +1,32 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Switch.stories";
+
+<Meta of={Stories} />
+
+# Switch
+
+Turns one setting on or off with immediate effect, with no Save button. If a choice only applies after the user submits a form, use a Checkbox instead. Figma set `731:172` (the Filled style). Full spec: [components/switch.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/switch.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Selection and state
+
+Hover and press a switch to see the states. `showIcon` adds a check or close glyph so the value does not rely on colour; use one setting per screen. A disabled switch keeps its value and takes the lightest track. Small (36 × 20) is for pointer-first web layouts only.
+
+<Canvas of={Stories.States} />
+
+## In a list row
+
+A switch has no label of its own. The row title names it (`aria-labelledby`), the supporting text describes it (`aria-describedby`), and the whole row toggles it.
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- `button role="switch"` with `aria-checked`. Space and Enter toggle it.
+- The off track (#D4D4D4) is below 3:1 against the page by design choice; the thumb position carries the value.
+- The hit area is at least 48 (Medium) or 24 (Small) without changing the drawn size.
+- The thumb slides in 150 ms; with reduced motion it changes without animation.
+
+<ArgTypes of={Stories} />
