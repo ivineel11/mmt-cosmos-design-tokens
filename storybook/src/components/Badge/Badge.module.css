@@ -14,11 +14,20 @@
 .root[data-emphasis="strong"] { background: var(--_bg-strong); color: var(--_label-strong); }
 .root[data-emphasis="subtle"] { background: var(--_bg-subtle); color: var(--_label-subtle); }
 
-/* Small: Lato sits low in its line box, so 2 of bottom padding centres the ink. */
+/*
+ * Optical centring on the web. Figma takes 2 of bottom padding at Small and none at
+ * Medium (badge.md, Optical centring). Browsers round Lato's ascent and descent to
+ * whole pixels, which puts the baseline half a pixel off Figma's: too high at Small,
+ * too low at Medium. A bottom padding of 1 at both sizes puts the glyph ink exactly
+ * where Figma draws it (measured against the Figma glyph bounds: Small 3.23 to 12.1,
+ * Medium 6.77 to 17.11).
+ */
+.root { --_optical-bottom: calc(var(--badge-padding-bottom-sm) / 2); }
+
 .root[data-size="small"] {
   height: var(--badge-height-sm);
   min-width: var(--badge-min-width-sm);
-  padding: 0 var(--badge-padding-x-count) var(--badge-padding-bottom-sm);
+  padding: 0 var(--badge-padding-x-count) var(--_optical-bottom);
   font-weight: var(--label-small-bold-font-weight);
   font-size: var(--label-small-bold-font-size);
   line-height: var(--label-small-bold-line-height);
@@ -26,7 +35,7 @@
 .root[data-size="medium"] {
   height: var(--badge-height-md);
   min-width: var(--badge-min-width-md);
-  padding: 0 var(--badge-padding-x-count);
+  padding: 0 var(--badge-padding-x-count) var(--_optical-bottom);
   font-weight: var(--label-medium-bold-font-weight);
   font-size: var(--label-medium-bold-font-size);
   line-height: var(--label-medium-bold-line-height);
