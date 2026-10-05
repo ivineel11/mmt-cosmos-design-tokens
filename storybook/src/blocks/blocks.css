@@ -32,31 +32,39 @@
 .doc-toolbar select {
   font: inherit;
   font-size: var(--font-size-16);
-  padding: var(--space-sm) var(--space-md);
+  /* Match the Medium Segmented control beside them. */
+  box-sizing: border-box;
+  block-size: var(--segmented-control-height-md);
+  padding: 0 var(--space-md);
   border: var(--stroke-default) solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg-fill);
   color: var(--color-text-primary);
 }
 .doc-toolbar input { flex: 1 1 220px; }
+/* The native select centres its label and draws its chevron differently in every browser,
+   so draw it: no native arrow, a line box that fills the field, and a Cosmos chevron centred on it. */
+.doc-toolbar input,
+.doc-toolbar select { line-height: calc(var(--segmented-control-height-md) - 2 * var(--stroke-default)); }
+.doc-select { position: relative; display: inline-flex; align-items: center; }
+.doc-select select {
+  appearance: none;
+  padding-inline-end: calc(var(--space-md) + var(--icon-sm) + var(--space-xs));
+  cursor: pointer;
+}
+.doc-select-icon {
+  position: absolute;
+  inset-inline-end: var(--space-md);
+  color: var(--color-icon-secondary);
+  pointer-events: none;
+}
 .doc-toolbar input:focus-visible,
 .doc-toolbar select:focus-visible,
-.doc-platforms button:focus-visible,
 .doc-copy:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);
   outline-offset: var(--space-3xs);
 }
-.doc-platforms { display: inline-flex; border: var(--stroke-default) solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; }
-.doc-platforms button {
-  font: inherit;
-  font-size: var(--font-size-14);
-  padding: var(--space-sm) var(--space-md);
-  border: 0;
-  background: var(--color-bg-fill);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
-.doc-platforms button[aria-pressed="true"] { background: var(--color-bg-fill-brand); color: var(--color-text-brand-on-bg-fill); }
+.doc-platforms { flex: 0 0 320px; }
 
 /* Tables */
 .doc-table { width: 100%; border-collapse: collapse; font-size: var(--body-large-regular-font-size); line-height: var(--body-large-regular-line-height); }
@@ -129,7 +137,7 @@
 
 /* Elevation */
 .doc-shadows { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-5xl); padding: var(--space-6xl); background: var(--color-bg-secondary); border-radius: var(--radius-xl); }
-.doc-shadow-card { background: var(--color-bg-surface-secondary); border-radius: var(--radius-lg); padding: var(--space-xl); min-block-size: 160px; display: grid; gap: var(--space-xs); align-content: start; }
+.doc-shadow-card { background: var(--color-bg-surface-secondary); border-radius: var(--radius-xl); padding: var(--space-xl); min-block-size: 160px; display: grid; gap: var(--space-xs); align-content: start; }
 .doc-shadow-card strong { font-size: var(--font-size-16); }
 
 /* Opacity */
@@ -152,8 +160,8 @@
 .doc-sample-text { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-md); font-weight: var(--font-weight-bold); }
 
 .doc-pairs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-xl); }
-.doc-canvas { padding: var(--space-3xl); border-radius: var(--radius-lg); border: var(--stroke-default) solid var(--color-border-secondary); }
-.doc-container { padding: var(--space-xl); border-radius: var(--radius-md); display: grid; gap: var(--space-2xs); }
+.doc-canvas { padding: var(--space-3xl); border-radius: var(--radius-xl); border: var(--stroke-default) solid var(--color-border-secondary); }
+.doc-container { padding: var(--space-xl); border-radius: var(--radius-xl); display: grid; gap: var(--space-2xs); }
 
 .doc-inverse { background: var(--color-bg-surface-inverse); color: var(--color-text-inverse); border-radius: var(--radius-xl); padding: var(--space-5xl); display: grid; gap: var(--space-lg); }
 .doc-inverse-row { display: flex; justify-content: space-between; gap: var(--space-md); align-items: baseline; }
