@@ -42,12 +42,31 @@ body {
   margin-block: var(--space-5xl) var(--space-sm);
 }
 
-/* Markdown tables in docs prose. */
-.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) { margin-block: var(--space-md) var(--space-xl); }
-.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) :where(th, td) {
-  padding: var(--space-sm) var(--space-md);
+/* Markdown tables in docs prose: a 16px card with row dividers, spaced like the props tables. */
+.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) {
+  margin-block: var(--space-md) var(--space-xl);
+  border-collapse: separate;
+  border-spacing: 0;
+  border: var(--stroke-default) solid var(--color-border-secondary);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) tr { background: none; border: 0; }
+.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) :is(th, td) {
+  padding: var(--space-3xl) var(--space-xl);
+  border: 0;
+  text-align: start;
+  vertical-align: top;
   font-size: var(--body-medium-regular-font-size);
   line-height: var(--body-medium-regular-line-height);
+}
+.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) th {
+  padding-block: var(--space-lg);
+  color: var(--color-text-secondary);
+  border-block-end: var(--stroke-default) solid var(--color-border-secondary);
+}
+.sbdocs.sbdocs-content table:not(.sb-unstyled *, .docblock-argstable) tbody tr + tr > td {
+  border-block-start: var(--stroke-default) solid var(--color-border-secondary);
 }
 
 /* Story canvases and the props table. */
