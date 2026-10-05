@@ -753,7 +753,7 @@ const semanticColorRole = {
       if (!SEMANTIC_COLOR_ROLE.test(key)) {
         api.report({ ...at(leaf, "key"), message: `color.${key} does not fit the role taxonomy (bg, bg-secondary, bg-surface-*, bg-fill-*, text-*, border-*, icon-*, exp-{hue}-{step}). Name it by role, not by value.` });
       }
-      if (/(^|-)(neutral|azure|brand|red|orange|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
+      if (/(^|-)(neutral|azure|brand|red|rose|orange|tangerine|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
         api.report({ ...at(leaf, "key"), message: `color.${key} is named after a palette value. Semantic names describe intent (text-caution, not text-yellow-700).` });
       }
     }
