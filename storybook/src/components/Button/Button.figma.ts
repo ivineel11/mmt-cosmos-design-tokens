@@ -2,6 +2,7 @@
 // source=https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/storybook/src/components/Button/Button.tsx
 // component=Button
 import figma from "figma";
+import { flag, str, swapIcon, tag } from "../../code-connect/helpers";
 
 const instance = figma.selectedInstance;
 
@@ -26,35 +27,21 @@ const isDisabled = instance.getEnum("State", {
 });
 const isLoading = instance.getBoolean("Show Loading");
 
-// Each connected `Icon / *` component exposes its code name as metadata.props.name.
-// An icon without a template (not in Icon/paths.ts yet) is left out of the snippet.
-function iconName(showProp: string, swapProp: string): string | undefined {
-  if (!instance.getBoolean(showProp)) return undefined;
-  const icon = instance.getInstanceSwap(swapProp);
-  if (!icon || icon.type !== "INSTANCE") return undefined;
-  const name = icon.executeTemplate().metadata?.props?.name;
-  return typeof name === "string" ? name : undefined;
-}
-const leadingIcon = iconName("Show Leading Icon", "Select Leading Icon");
-const trailingIcon = iconName("Show Trailing Icon", "Select Trailing Icon");
-
 const attrs = [
-  label.includes('"') ? `label={${JSON.stringify(label)}}` : `label="${label}"`,
-  hierarchy && `hierarchy="${hierarchy}"`,
-  intent && `intent="${intent}"`,
-  size && `size="${size}"`,
-  surface && `surface="${surface}"`,
-  leadingIcon && `leadingIcon="${leadingIcon}"`,
-  trailingIcon && `trailingIcon="${trailingIcon}"`,
-  isLoading && "isLoading",
-  isDisabled && "isDisabled",
-].filter(Boolean);
+  str("label", label),
+  str("hierarchy", hierarchy),
+  str("intent", intent),
+  str("size", size),
+  str("surface", surface),
+  str("leadingIcon", swapIcon(instance, "Select Leading Icon", "Show Leading Icon")),
+  str("trailingIcon", swapIcon(instance, "Select Trailing Icon", "Show Trailing Icon")),
+  flag("isLoading", isLoading),
+  flag("isDisabled", isDisabled),
+];
 
 export default {
-  example: figma.tsx`<Button
-  ${attrs.join("\n  ")}
-/>`,
+  example: figma.tsx`${tag("Button", attrs)}`,
   imports: ['import { Button } from "@mmt/cosmos"'],
   id: "button",
-  metadata: { nestable: true },
+  metadata: { nestable: true, props: { label } },
 };

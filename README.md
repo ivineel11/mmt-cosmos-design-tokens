@@ -1742,7 +1742,7 @@ Storybook keeps no copy of the tokens. It imports `dist/web/tokens.css` for styl
 
 Components live in `storybook/src/components/<Name>/`: Button, Badge, Switch, Checkbox, Radio, Chip, Chip / Vertical, Tabs, Segmented control, Slider, List, Menu, Snackbar and Tooltip so far, with Top app bar to follow. Glyphs come from `storybook/src/components/Icon/paths.ts`, exported from the Figma Icons page. Each Figma variant axis becomes a prop, and every visual value is a `var(--component-token)`: the `storybook/component-raw-value` lint rule rejects hex colours and px, rem or em lengths in component stylesheets. Renaming a token therefore means updating the component CSS that uses it, and `storybook/css-var` reports any that were missed.
 
-Button and the icons it uses are connected to Figma Dev Mode with Code Connect templates (`*.figma.ts`), so selecting a Button in Figma shows its React snippet. `storybook/README.md` → "Figma Code Connect" covers publishing and adding more.
+Every component and icon is connected to Figma Dev Mode with Code Connect templates (`*.figma.ts`), so selecting one in Figma shows its React snippet. `storybook/README.md` → "Figma Code Connect" covers publishing and adding more.
 
 `.github/workflows/storybook.yml` builds Storybook on every pull request and deploys it to GitHub Pages from `main`.
 
