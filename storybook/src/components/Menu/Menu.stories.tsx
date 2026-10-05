@@ -76,7 +76,7 @@ export const Examples: Story = {
   parameters: { docs: { story: { height: "520px" } } },
   render: () => (
     <div style={{ display: "flex", gap: "var(--space-5xl)", alignItems: "flex-start", flexWrap: "wrap" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-md)", padding: "var(--space-sm) var(--space-sm) var(--space-sm) var(--space-md)", borderRadius: "var(--radius-lg)", background: "var(--color-bg-surface-secondary)", boxShadow: "var(--shadow-card)", font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--font-family-lato)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-md)", padding: "var(--space-sm) var(--space-sm) var(--space-sm) var(--space-md)", borderRadius: "var(--radius-lg)", background: "var(--color-bg-surface-secondary)", boxShadow: "var(--shadow-card)", font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--typeface-default)" }}>
         Delhi to Goa · 12 Dec
         <Menu
           align="end"

@@ -5,7 +5,7 @@ import { Scale, TypeScale } from "../blocks";
 
 # Typography
 
-Cosmos uses **Lato** for every role, in three weights: regular (400), bold (700) and black (900). There is no display scale and no letter-spacing token.
+Each brand sets every role in one typeface. MakeMyTrip and myBiz use **Lato** at regular (400), bold (700) and black (900). Goibibo uses **Rubik** at regular (400), bold as SemiBold (600) and black as Bold (700). Switch the Brand toolbar to see it. Every style reads its family from `typeface.default` and its weight from `weight.*`, the tokens a brand overrides. Sizes and line heights are shared. There is no display scale and no letter-spacing token.
 
 Each style is a composite token named `{group}.{size}.{weight}`, for example `body.medium.regular`. It bundles font family, weight, size and line height, and the build expands it into one variable per property:
 

@@ -29,11 +29,11 @@ Before every commit, run `npm run build:tokens`, then `npm run lint` and `npm ru
 
 ## Rules that matter
 
-- **Tiers only reference the tier below.** Semantic tokens alias primitives, and component tokens alias semantic tokens. No raw hex outside `primitives`, and no component token pointing at a primitive.
+- **Tiers only reference the tier below.** Semantic tokens alias primitives, and component tokens alias semantic tokens. No raw hex outside `primitives`, and no component token pointing at a primitive. The one exception: typography composites read their family from `typeface.default` and their weight from `weight.*`, so a brand can change its font.
 - **Every semantic and component token needs a `description`** that states intent and boundary (which neighbouring token to use instead) and not the value. Descriptions sync to Figma, so **don't use apostrophes** in them, because Figma HTML-escapes them.
 - Opacity is a decimal from 0 to 1 in JSON (Figma holds the percentage). Every `opacityScale` step needs an `opacity.*` mirror, and the build throws otherwise.
 - Keep `$metadata.tokenSetOrder` as `["primitives", "semantic", ...brand sets, "component"]`.
-- A brand set (`brands/mybiz`) only overrides the value of existing semantic colour tokens, aliasing a primitive, with no description. New tokens go in `semantic` first. Each brand has a `$themes` entry, the default brand (MakeMyTrip) first. Contrast is linted per brand.
+- A brand set (`brands/mybiz`, `brands/goibibo`) only overrides the value of existing semantic colour, font family or font weight tokens, aliasing a primitive, with no description. New tokens go in `semantic` first. Each brand has a `$themes` entry, the default brand (MakeMyTrip) first. Contrast is linted per brand.
 - Shadows (`semantic.shadow.*`) are one or two drop-shadow layers of `x`, `y`, `blur` and `color` only, aliasing `shadowOffset.*`, `shadowBlur.*` and `color.alpha.*` primitives. No spread and no inner shadows: SwiftUI and Compose cannot draw them.
 - Name semantic tokens by role (`text-caution`), not by value (`text-yellow-700`).
 - After changing a primitive colour, re-run `describe-primitives.mjs` so the quoted contrast ratios stay correct.

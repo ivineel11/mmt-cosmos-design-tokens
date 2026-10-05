@@ -56,7 +56,7 @@ Export or sync from Tokens Studio into `tokens/tokens.json`. This file is the **
 The export must preserve:
 
 - `$metadata.tokenSetOrder`: `["primitives", "semantic", "brands/mybiz", "component"]` — each tier resolves before the one that references it, and a brand set overrides semantic before component aliases it
-- `$themes`: one entry per brand, the default brand (MakeMyTrip) first — see [Brands](#14-brands-makemytrip-and-mybiz)
+- `$themes`: one entry per brand, the default brand (MakeMyTrip) first — see [Brands](#14-brands-makemytrip-mybiz-and-goibibo)
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
 - `description` on every semantic and component token, and on every primitive colour — see below
@@ -164,7 +164,7 @@ tokens/tokens.json
 dist/web · dist/ios · dist/android
 ```
 
-The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**, with any `brands/*` set between semantic and component. Each tier must resolve before the tier that references it — primitives before semantic aliases, semantic before component aliases. The build never merges a brand set into the default build: it builds each brand separately (see [Brands](#14-brands-makemytrip-and-mybiz)).
+The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**, with any `brands/*` set between semantic and component. Each tier must resolve before the tier that references it — primitives before semantic aliases, semantic before component aliases. The build never merges a brand set into the default build: it builds each brand separately (see [Brands](#14-brands-makemytrip-mybiz-and-goibibo)).
 
 ### Build pipeline internals
 
@@ -288,18 +288,19 @@ Chips follow the same rule, and their border toggle is what adapts them to the c
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
 - **Brand primary (interactive):** semantic brand roles rest on `color.azure.700` = `#0067E8` (WCAG AA on white). The lighter `color.azure.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
 
-### 5. Single-font typography system (Lato)
+### 5. One typeface per brand (Lato, Rubik for Goibibo)
 
-Cosmos uses **Lato** for all typography roles — headline, title, body, and label. There is no display scale and no letter-spacing tokens.
+Each brand sets every typography role (headline, title, body and label) in one typeface. MakeMyTrip and myBiz use **Lato**. Goibibo uses **Rubik**. There is no display scale and no letter-spacing tokens.
 
-| Category | Font | Weights |
-|----------|------|---------|
-| **Headline / Title / Body / Label** | Lato | regular (400), bold (700), black (900) |
+| Brand | Font | regular | bold | black |
+|-------|------|---------|------|-------|
+| MakeMyTrip, myBiz | Lato | 400 | 700 | 900 |
+| Goibibo | Rubik | 400 | 600 (SemiBold) | 700 (Bold) |
 
-Lato is a [Google Font](https://fonts.google.com/specimen/Lato). **This repository does not ship font files.** Web consumers must load Lato themselves, for example:
+Lato and Rubik are Google Fonts ([Lato](https://fonts.google.com/specimen/Lato), [Rubik](https://fonts.google.com/specimen/Rubik)). **This repository does not ship font files.** Web consumers load the fonts of the brands they serve themselves, for example:
 
 ```css
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Rubik:wght@400;600;700&display=swap");
 ```
 
 Typography tokens are **composite** — each bundles `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` in a flat `{group}.{size}.{weight}` shape (e.g. `body.medium.regular`). The build pipeline expands them into individual output properties. Radius, icon, and space T-shirt sizes (`radius.md`, `icon.lg`, `space.md`, etc.) are unrelated and keep their existing names.
@@ -421,19 +422,20 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 - **Primary keeps its fill.** The brand and destructive fills are shared with light, so Primary is the same button on every surface. Its hover and pressed fills get darker, and the pressed fill is only 2.38:1 against `#0A0A0A`. The white label keeps it readable at 5.12:1 or more.
 - **Contrast is linted on the dark canvas.** `tokens/contrast` checks an `-inverse` key against `bg-surface-inverse`, blending a tint over it at its `bg-opacity-*` value first.
 
-### 14. Brands (MakeMyTrip and myBiz)
+### 14. Brands (MakeMyTrip, myBiz and Goibibo)
 
-Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: orange instead of azure. Goibibo will be the next brand.
+Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: orange instead of azure. Goibibo differs in its typeface: Rubik instead of Lato, with its own weights. Its brand colour is not decided yet, so it keeps azure for now.
 
 **A brand is a list of value overrides on semantic tokens.** It cannot add, rename or describe a token. The default brand is the plain `primitives` → `semantic` → `component` chain. Another brand adds a `brands/{id}` set that sets new values for a few semantic tokens. Component tokens alias semantic tokens, so every component follows without a component token changing.
 
 ```
 primitives (azure, orange, …)  →  semantic  →  component
                                      ↑
-                    brands/mybiz overrides 30 semantic values
+                    brands/mybiz overrides 30 semantic colours
+                    brands/goibibo overrides typeface.default, weight.bold and weight.black
 ```
 
-This is exactly what a **Figma extended collection** does. In Figma the semantic set is the collection named **MakeMyTrip**, the parent. Its **myBiz** extension overrides the same 30 values and inherits everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → myBiz** (or back to MakeMyTrip). The Figma collection is named after the default brand, while the JSON set keeps the tier name `semantic`. The build never reads Figma names, so the two can differ. Do not push variables to Figma from Tokens Studio: it matches collections by name, so it would recreate a `semantic` collection, and it models brands as modes, not extensions.
+This is exactly what a **Figma extended collection** does. In Figma the semantic set is the collection named **MakeMyTrip**, the parent. Its **myBiz** and **Goibibo** extensions override the same values as their brand sets and inherit everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → myBiz** or **Goibibo** (or back to MakeMyTrip). The Figma collection is named after the default brand, while the JSON set keeps the tier name `semantic`. The build never reads Figma names, so the two can differ. Do not push variables to Figma from Tokens Studio: it matches collections by name, so it would recreate a `semantic` collection, and it models brands as modes, not extensions.
 
 **Only brand roles change.** Info, links and the focus ring stay azure in every brand, because they signal status and interactivity, not brand. `text-brand-on-bg-fill` and `icon-brand-on-bg-fill` stay white.
 
@@ -458,17 +460,30 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 
 **Contrast.** The orange ramp tracks the azure ramp step for step, so the pairings hold. The primary fill `orange.700` (`#CA3500`) gives the white label 5.22:1, where MakeMyTrip gives 5.11:1. `text-brand-hover` at `orange.600` is 3.59:1 on white. It only backs non-text marks such as the Radio dot, so it clears the 3:1 graphics minimum. On the dark `bg-surface-inverse` (`#0A0A0A`), `text-brand-inverse` reads at 11.61:1 (MakeMyTrip 12.09:1). The Inverse Primary pressed fill, the gap already accepted for MakeMyTrip, drops from 2.37:1 to 2.09:1 against `#0A0A0A`. `tokens/contrast` checks every brand, and names the brand in its report.
 
+**Typography per brand.** The 36 text styles share their sizes, line heights and roles across brands. Each style reads its family from `typeface.default` and its weight from `weight.regular`, `weight.bold` or `weight.black`, the only place a semantic token aliases another semantic token (README → Typography mappings). In Figma, the text styles bind to the same variables in the MakeMyTrip collection, so a brand extension swaps the font for every style at once.
+
+| Semantic token | MakeMyTrip, myBiz | Goibibo |
+|---|---|---|
+| `typeface.default` | `fontFamily.lato` (Lato) | `fontFamily.rubik` (Rubik) |
+| `weight.regular` | `fontWeight.regular` (400) | `fontWeight.regular` (400) |
+| `weight.bold` | `fontWeight.bold` (700) | `fontWeight.semibold` (600) |
+| `weight.black` | `fontWeight.black` (900) | `fontWeight.bold` (700) |
+
+Rubik is wider than Lato and has a taller x-height, so the same size reads larger in Goibibo. The sizes stay shared on purpose. Apps load Rubik themselves, as they do Lato.
+
 **Watch the warning red.** myBiz `bg-fill-brand` (`#CA3500`) sits close to `bg-fill-warning-strong` (`#C10007`). In myBiz, a primary Button and a destructive one differ mainly by label, so keep destructive actions in their own confirmation step.
 
-**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 169 tokens that differ (30 semantic and 139 component) get a runtime switch. Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
+**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 232 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (36 families and 24 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
 
-**Adding a brand (Goibibo).**
-1. Add `brands/goibibo` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
-2. Add a `$themes` entry with `id: "goibibo"` that enables the three base sets and `brands/goibibo`.
+**Adding a brand.**
+1. Add `brands/{id}` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
+2. Add a `$themes` entry with that `id` that enables the three base sets and the brand set.
 3. Run `npm run build:tokens`. The outputs gain the brand on their own.
-4. In Figma, extend the **MakeMyTrip** collection as `Goibibo` and set the same overrides.
+4. In Figma, extend the **MakeMyTrip** collection with the brand name and set the same overrides.
 
-`tokens/brand` enforces the shape: an override must name an existing semantic colour, alias a primitive and differ from the default value, and each brand set must belong to exactly one theme.
+To give Goibibo its colour, add its 30 brand colour overrides to `brands/goibibo` and to the Figma Goibibo extension, the same way myBiz does it.
+
+`tokens/brand` enforces the shape: an override must name an existing semantic colour, font family or font weight, alias a primitive and differ from the default value, and each brand set must belong to exactly one theme.
 
 ---
 
@@ -538,11 +553,11 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 
 ## Token Inventory
 
-**Totals:** 279 primitive tokens · 394 semantic tokens (287 colors + 36 typography + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1029 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 69 `tooltip/*`) · **1810 values on web** · **1894 on iOS and Android** · **0 gradients**
+**Totals:** 281 primitive tokens · 398 semantic tokens (287 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1029 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 69 `tooltip/*`) · **1816 values on web** · **1900 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1702 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1708 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (279)
+### Primitive tokens (281)
 
 #### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
 
@@ -574,21 +589,23 @@ The `alpha` palette holds the only translucent colours. Apart from `transparent`
 | `color.alpha.neutral-950-12` | #0A0A0A1F | 12% |
 | `color.alpha.neutral-950-16` | #0A0A0A29 | 16% |
 
-#### Font family — 1 token
+#### Font family — 2 tokens
 
 | Token | Value |
 |-------|-------|
 | `fontFamily.lato` | Lato |
+| `fontFamily.rubik` | Rubik |
 
-Lato is loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checked into this repo.
+Lato and Rubik are loaded by consumers (Google Fonts); no `.ttf` / `.woff` files are checked into this repo.
 
-#### Font weight — 3 tokens
+#### Font weight — 4 tokens
 
 | Token | Value | Notes |
 |-------|-------|-------|
-| `fontWeight.regular` | 400 | Real Lato face |
-| `fontWeight.bold` | 700 | Real Lato face |
-| `fontWeight.black` | 900 | Real Lato face |
+| `fontWeight.regular` | 400 | Lato and Rubik |
+| `fontWeight.semibold` | 600 | Rubik only, Goibibo `weight.bold` |
+| `fontWeight.bold` | 700 | Lato `weight.bold`, Rubik `weight.black` |
+| `fontWeight.black` | 900 | Lato only |
 
 #### Font size — 18 tokens
 
@@ -762,7 +779,7 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (394)
+### Semantic tokens (398)
 
 #### Color — 287 tokens
 
@@ -977,7 +994,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 
 #### Typography — 36 composite tokens
 
-Flat shape `{group}.{size}.{weight}` · font family Lato · no letter spacing.
+Flat shape `{group}.{size}.{weight}` · family from `typeface.default` and weight from `weight.*`, so each brand sets its own · no letter spacing.
 
 | Category | Size | Font size | Line height | Weight variants |
 |----------|------|-----------|-------------|-----------------|
@@ -993,6 +1010,20 @@ Flat shape `{group}.{size}.{weight}` · font family Lato · no letter spacing.
 | label | large | 16px | 24px | regular, bold, black |
 | label | medium | 14px | 20px | regular, bold, black |
 | label | small | 12px | 16px | regular, bold, black |
+
+#### Typeface — 1 token
+
+| Token | Role |
+|-------|------|
+| `typeface.default` | Family of every text style; the token a brand overrides to change its font |
+
+#### Weight — 3 tokens
+
+| Token | Role |
+|-------|------|
+| `weight.regular` | Weight of the regular text styles |
+| `weight.bold` | Weight of the bold text styles: emphasis and Button labels |
+| `weight.black` | Weight of the black text styles: promotional emphasis |
 
 #### Radius — 10 tokens
 
@@ -1432,50 +1463,50 @@ Each typography token is a composite reference. Pattern:
 
 ```
 {group}.{size}.{weight}
-  → fontFamily.lato
-  → fontWeight.{weight}
+  → typeface.default   → fontFamily.lato (Rubik in Goibibo)
+  → weight.{weight}    → fontWeight.{weight} (per brand, see Brands)
   → fontSize.{N}
   → lineHeight.{N}
 ```
 
 Full token list with resolved primitive references (generated from `tokens/tokens.json`):
 
-- `headline.large.regular` → fontFamily.lato · fontWeight.regular · 32px · 40px
-- `headline.large.bold` → fontFamily.lato · fontWeight.bold · 32px · 40px
-- `headline.large.black` → fontFamily.lato · fontWeight.black · 32px · 40px
-- `headline.medium.regular` → fontFamily.lato · fontWeight.regular · 28px · 36px
-- `headline.medium.bold` → fontFamily.lato · fontWeight.bold · 28px · 36px
-- `headline.medium.black` → fontFamily.lato · fontWeight.black · 28px · 36px
-- `headline.small.regular` → fontFamily.lato · fontWeight.regular · 24px · 32px
-- `headline.small.bold` → fontFamily.lato · fontWeight.bold · 24px · 32px
-- `headline.small.black` → fontFamily.lato · fontWeight.black · 24px · 32px
-- `title.large.regular` → fontFamily.lato · fontWeight.regular · 22px · 30px
-- `title.large.bold` → fontFamily.lato · fontWeight.bold · 22px · 30px
-- `title.large.black` → fontFamily.lato · fontWeight.black · 22px · 30px
-- `title.medium.regular` → fontFamily.lato · fontWeight.regular · 18px · 26px
-- `title.medium.bold` → fontFamily.lato · fontWeight.bold · 18px · 26px
-- `title.medium.black` → fontFamily.lato · fontWeight.black · 18px · 26px
-- `title.small.regular` → fontFamily.lato · fontWeight.regular · 14px · 22px
-- `title.small.bold` → fontFamily.lato · fontWeight.bold · 14px · 22px
-- `title.small.black` → fontFamily.lato · fontWeight.black · 14px · 22px
-- `body.large.regular` → fontFamily.lato · fontWeight.regular · 16px · 26px
-- `body.large.bold` → fontFamily.lato · fontWeight.bold · 16px · 26px
-- `body.large.black` → fontFamily.lato · fontWeight.black · 16px · 26px
-- `body.medium.regular` → fontFamily.lato · fontWeight.regular · 14px · 22px
-- `body.medium.bold` → fontFamily.lato · fontWeight.bold · 14px · 22px
-- `body.medium.black` → fontFamily.lato · fontWeight.black · 14px · 22px
-- `body.small.regular` → fontFamily.lato · fontWeight.regular · 12px · 18px
-- `body.small.bold` → fontFamily.lato · fontWeight.bold · 12px · 18px
-- `body.small.black` → fontFamily.lato · fontWeight.black · 12px · 18px
-- `label.large.regular` → fontFamily.lato · fontWeight.regular · 16px · 24px
-- `label.large.bold` → fontFamily.lato · fontWeight.bold · 16px · 24px
-- `label.large.black` → fontFamily.lato · fontWeight.black · 16px · 24px
-- `label.medium.regular` → fontFamily.lato · fontWeight.regular · 14px · 20px
-- `label.medium.bold` → fontFamily.lato · fontWeight.bold · 14px · 20px
-- `label.medium.black` → fontFamily.lato · fontWeight.black · 14px · 20px
-- `label.small.regular` → fontFamily.lato · fontWeight.regular · 12px · 16px
-- `label.small.bold` → fontFamily.lato · fontWeight.bold · 12px · 16px
-- `label.small.black` → fontFamily.lato · fontWeight.black · 12px · 16px
+- `headline.large.regular` → typeface.default · weight.regular · 32px · 40px
+- `headline.large.bold` → typeface.default · weight.bold · 32px · 40px
+- `headline.large.black` → typeface.default · weight.black · 32px · 40px
+- `headline.medium.regular` → typeface.default · weight.regular · 28px · 36px
+- `headline.medium.bold` → typeface.default · weight.bold · 28px · 36px
+- `headline.medium.black` → typeface.default · weight.black · 28px · 36px
+- `headline.small.regular` → typeface.default · weight.regular · 24px · 32px
+- `headline.small.bold` → typeface.default · weight.bold · 24px · 32px
+- `headline.small.black` → typeface.default · weight.black · 24px · 32px
+- `title.large.regular` → typeface.default · weight.regular · 22px · 30px
+- `title.large.bold` → typeface.default · weight.bold · 22px · 30px
+- `title.large.black` → typeface.default · weight.black · 22px · 30px
+- `title.medium.regular` → typeface.default · weight.regular · 18px · 26px
+- `title.medium.bold` → typeface.default · weight.bold · 18px · 26px
+- `title.medium.black` → typeface.default · weight.black · 18px · 26px
+- `title.small.regular` → typeface.default · weight.regular · 14px · 22px
+- `title.small.bold` → typeface.default · weight.bold · 14px · 22px
+- `title.small.black` → typeface.default · weight.black · 14px · 22px
+- `body.large.regular` → typeface.default · weight.regular · 16px · 26px
+- `body.large.bold` → typeface.default · weight.bold · 16px · 26px
+- `body.large.black` → typeface.default · weight.black · 16px · 26px
+- `body.medium.regular` → typeface.default · weight.regular · 14px · 22px
+- `body.medium.bold` → typeface.default · weight.bold · 14px · 22px
+- `body.medium.black` → typeface.default · weight.black · 14px · 22px
+- `body.small.regular` → typeface.default · weight.regular · 12px · 18px
+- `body.small.bold` → typeface.default · weight.bold · 12px · 18px
+- `body.small.black` → typeface.default · weight.black · 12px · 18px
+- `label.large.regular` → typeface.default · weight.regular · 16px · 24px
+- `label.large.bold` → typeface.default · weight.bold · 16px · 24px
+- `label.large.black` → typeface.default · weight.black · 16px · 24px
+- `label.medium.regular` → typeface.default · weight.regular · 14px · 20px
+- `label.medium.bold` → typeface.default · weight.bold · 14px · 20px
+- `label.medium.black` → typeface.default · weight.black · 14px · 20px
+- `label.small.regular` → typeface.default · weight.regular · 12px · 16px
+- `label.small.bold` → typeface.default · weight.bold · 12px · 16px
+- `label.small.black` → typeface.default · weight.black · 12px · 16px
 
 ### Space (semantic layer)
 
@@ -1704,7 +1735,7 @@ Box(
 
 ### Brands
 
-The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 169 brandable tokens move. Everything else stays where it is.
+The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 232 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
 
 ```html
 <!-- Web: everything inside switches, including nested components. -->

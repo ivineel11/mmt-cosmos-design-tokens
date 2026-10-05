@@ -16,6 +16,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { brandSetsIn } from "./lib/brands.mjs";
 import { contrast, formatRatio as fmt } from "./lib/color.mjs";
 
 const FILE = new URL("../tokens/tokens.json", import.meta.url);
@@ -77,10 +78,12 @@ const EXPLICIT = {
   "borderWidth.0": "Explicit no border, for switching a border off while keeping the property bound to a token.",
   "borderWidth.1": "Default hairline border — inputs, cards, dividers, and the Checkbox box.",
   "borderWidth.2": "Heavier border, used for focus rings and for the Radio circle.",
-  "fontFamily.lato": "The only family in the system. Every text style across every size, weight, hierarchy and platform resolves to it, so there is no fallback or secondary family to choose between.",
-  "fontWeight.regular": "Default weight. Cosmos ships only three weights — regular, bold and black — so there is no medium or semibold step to reach for.",
-  "fontWeight.bold": "Emphasis weight, and the weight every Button label uses at all three sizes.",
-  "fontWeight.black": "Heaviest of the three weights, for promotional and marketing emphasis rather than routine UI.",
+  "fontFamily.lato": "Default family. MakeMyTrip and myBiz set every text style in it, through typeface.default.",
+  "fontFamily.rubik": "Goibibo family. The Goibibo brand points typeface.default at it, so every text style switches to Rubik there.",
+  "fontWeight.regular": "Default weight, behind weight.regular in every brand.",
+  "fontWeight.semibold": "Goibibo emphasis weight, behind weight.bold in that brand only. MakeMyTrip and myBiz have no semibold step.",
+  "fontWeight.bold": "Emphasis weight behind weight.bold in MakeMyTrip and myBiz, and the heaviest Goibibo weight, behind weight.black there.",
+  "fontWeight.black": "Heaviest weight, behind weight.black in MakeMyTrip and myBiz, for promotional and marketing emphasis rather than routine UI.",
 };
 
 /**
@@ -127,8 +130,9 @@ export function describePrimitives(json) {
   const textPrimary = json.primitives.color.neutral["950"].value; // semantic text-primary
   const textInverse = json.primitives.color.neutral["0"].value; // semantic text-inverse
 
-  // Anything in semantic or component that points at a primitive, so unused steps can
-  // say so rather than looking like part of the supported scale.
+  // Anything in semantic, component or a brand set that points at a primitive, so unused
+  // steps can say so rather than looking like part of the supported scale. A brand set
+  // counts: rubik is used only by Goibibo, and that is a real consumer.
   const referenced = new Set();
   (function walk(node) {
     if (node && typeof node === "object" && "value" in node) {
@@ -144,7 +148,7 @@ export function describePrimitives(json) {
       return;
     }
     if (node && typeof node === "object" && !Array.isArray(node)) Object.values(node).forEach(walk);
-  })({ semantic: json.semantic, component: json.component });
+  })({ semantic: json.semantic, component: json.component, ...Object.fromEntries(brandSetsIn(json).map((set) => [set, json[set]])) });
 
   let colors = 0;
   let others = 0;
