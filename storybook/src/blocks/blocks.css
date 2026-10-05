@@ -57,22 +57,11 @@
 }
 .doc-toolbar input:focus-visible,
 .doc-toolbar select:focus-visible,
-.doc-platforms button:focus-visible,
 .doc-copy:focus-visible {
   outline: var(--stroke-focus) solid var(--color-border-focus);
   outline-offset: var(--space-3xs);
 }
-.doc-platforms { display: inline-flex; border: var(--stroke-default) solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; }
-.doc-platforms button {
-  font: inherit;
-  font-size: var(--font-size-14);
-  padding: var(--space-sm) var(--space-md);
-  border: 0;
-  background: var(--color-bg-fill);
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
-.doc-platforms button[aria-pressed="true"] { background: var(--color-bg-fill-brand); color: var(--color-text-brand-on-bg-fill); }
+.doc-platforms { flex: 0 0 320px; }
 
 /* Tables */
 .doc-table { width: 100%; border-collapse: collapse; font-size: var(--body-large-regular-font-size); line-height: var(--body-large-regular-line-height); }
