@@ -27,28 +27,28 @@
   --color-neutral-900: #171717;
   /** Neutral ramp, step 950. Safe text on top: text-inverse at 19.79:1 (passes AA and AAA); text-primary fails at 1.00:1. */
   --color-neutral-950: #0A0A0A;
-  /** Brand ramp, step 50. Safe text on top: text-primary at 18.35:1 (passes AA and AAA); text-inverse fails at 1.07:1. */
-  --color-brand-50: #EDF8FF;
-  /** Brand ramp, step 100. Safe text on top: text-primary at 16.63:1 (passes AA and AAA); text-inverse fails at 1.18:1. */
-  --color-brand-100: #D6EFFF;
-  /** Brand ramp, step 200. Safe text on top: text-primary at 15.34:1 (passes AA and AAA); text-inverse fails at 1.28:1. */
-  --color-brand-200: #C2E8FF;
-  /** Brand ramp, step 300. Safe text on top: text-primary at 12.09:1 (passes AA and AAA); text-inverse fails at 1.63:1. */
-  --color-brand-300: #83D4FF;
-  /** Brand ramp, step 400. Safe text on top: text-primary at 9.26:1 (passes AA and AAA); text-inverse fails at 2.13:1. */
-  --color-brand-400: #48BBFF;
-  /** Brand ramp, step 500. Safe text on top: text-primary at 6.83:1 (passes AA); text-inverse fails at 2.89:1. */
-  --color-brand-500: #1E9CFF;
-  /** Brand ramp, step 600. Safe text on top: text-primary at 5.27:1 (passes AA); text-inverse fails at 3.75:1. Too weak for text: it fails AA on white at 3.75:1, which is why text-link and bg-fill-brand-hover were moved off it. It still backs border-focus and border-brand-hover, and text-brand-hover for the Radio dot — all non-text graphics under the 3:1 rule of WCAG 1.4.11, which it clears. */
-  --color-brand-600: #0681FF;
-  /** Brand ramp, step 700. Safe text on top: text-inverse at 5.11:1 (passes AA); text-primary fails at 3.87:1. */
-  --color-brand-700: #0067E8;
-  /** Brand ramp, step 800. Safe text on top: text-inverse at 6.60:1 (passes AA); text-primary fails at 2.99:1. */
-  --color-brand-800: #0857C5;
-  /** Brand ramp, step 900. Safe text on top: text-inverse at 8.31:1 (passes AA and AAA); text-primary fails at 2.37:1. */
-  --color-brand-900: #0D4C9B;
-  /** Brand ramp, step 950. Safe text on top: text-inverse at 13.26:1 (passes AA and AAA); text-primary fails at 1.49:1. */
-  --color-brand-950: #0E2F5D;
+  /** Azure ramp, step 50. Safe text on top: text-primary at 18.35:1 (passes AA and AAA); text-inverse fails at 1.07:1. */
+  --color-azure-50: #EDF8FF;
+  /** Azure ramp, step 100. Safe text on top: text-primary at 16.63:1 (passes AA and AAA); text-inverse fails at 1.18:1. */
+  --color-azure-100: #D6EFFF;
+  /** Azure ramp, step 200. Safe text on top: text-primary at 15.34:1 (passes AA and AAA); text-inverse fails at 1.28:1. */
+  --color-azure-200: #C2E8FF;
+  /** Azure ramp, step 300. Safe text on top: text-primary at 12.09:1 (passes AA and AAA); text-inverse fails at 1.63:1. */
+  --color-azure-300: #83D4FF;
+  /** Azure ramp, step 400. Safe text on top: text-primary at 9.26:1 (passes AA and AAA); text-inverse fails at 2.13:1. */
+  --color-azure-400: #48BBFF;
+  /** Azure ramp, step 500. Safe text on top: text-primary at 6.83:1 (passes AA); text-inverse fails at 2.89:1. */
+  --color-azure-500: #1E9CFF;
+  /** Azure ramp, step 600. Safe text on top: text-primary at 5.27:1 (passes AA); text-inverse fails at 3.75:1. Too weak for text: it fails AA on white at 3.75:1, which is why text-link and bg-fill-brand-hover were moved off it. It still backs border-focus and border-brand-hover, and text-brand-hover for the Radio dot — all non-text graphics under the 3:1 rule of WCAG 1.4.11, which it clears. */
+  --color-azure-600: #0681FF;
+  /** Azure ramp, step 700. Safe text on top: text-inverse at 5.11:1 (passes AA); text-primary fails at 3.87:1. */
+  --color-azure-700: #0067E8;
+  /** Azure ramp, step 800. Safe text on top: text-inverse at 6.60:1 (passes AA); text-primary fails at 2.99:1. */
+  --color-azure-800: #0857C5;
+  /** Azure ramp, step 900. Safe text on top: text-inverse at 8.31:1 (passes AA and AAA); text-primary fails at 2.37:1. */
+  --color-azure-900: #0D4C9B;
+  /** Azure ramp, step 950. Safe text on top: text-inverse at 13.26:1 (passes AA and AAA); text-primary fails at 1.49:1. */
+  --color-azure-950: #0E2F5D;
   /** Red ramp, step 50. Safe text on top: text-primary at 18.09:1 (passes AA and AAA); text-inverse fails at 1.09:1. */
   --color-red-50: #FEF2F2;
   /** Red ramp, step 100. Safe text on top: text-primary at 16.24:1 (passes AA and AAA); text-inverse fails at 1.21:1. */

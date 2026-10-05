@@ -47,7 +47,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 | **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
 | **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`, `chip/*`) that reference semantic tokens — one key per property × variant × state |
 
-Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
+Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.azure.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
 
 ### 2. Export to JSON
 
@@ -67,7 +67,7 @@ Every token in the **semantic** and **component** sets carries a `description` a
 
 ```json
 "bg-fill-brand": {
-  "value": "{color.brand.700}",
+  "value": "{color.azure.700}",
   "type": "color",
   "description": "Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand."
 }
@@ -282,10 +282,10 @@ Chips follow the same rule, and their border toggle is what adapts them to the c
 
 ### 4. Color scale system
 
-- **13 palettes:** neutral, brand, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
+- **13 palettes:** neutral, azure, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
 - **11–12 steps per palette:** `50`, `100`–`900`, `950`, plus `0` on neutral only
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
-- **Brand primary (interactive):** semantic brand roles rest on `color.brand.700` = `#0067E8` (WCAG AA on white). The lighter `color.brand.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
+- **Brand primary (interactive):** semantic brand roles rest on `color.azure.700` = `#0067E8` (WCAG AA on white). The lighter `color.azure.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
 
 ### 5. Single-font typography system (Lato)
 
@@ -442,7 +442,7 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 9. **Use negative spacing primitives sparingly.** They exist for optical adjustments (overlapping elements, negative margins) — not for general layout gaps.
 
-10. **Document intentional exceptions.** Some mappings are deliberate product choices (e.g. `bg-surface-info` uses `brand.50`, not `blue.50`). Note these when adding new tokens.
+10. **Document intentional exceptions.** Some mappings are deliberate product choices (e.g. `bg-surface-info` uses `azure.50`, not `blue.50`). Note these when adding new tokens.
 
 11. **Apply opacity to a colour token, not to a control.** A state layer or scrim is a separate element filled with a `color.*` token and rendered at an `opacity.*` token. Setting `opacity` on the control itself fades its label and border along with the tint.
 
@@ -452,7 +452,7 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 ### Do
 
-- Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.brand.600}`).
+- Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.azure.600}`).
 - Do reference semantic tokens from component tokens the same way (e.g. `{color.bg-fill-brand}`), so a palette change propagates through both tiers.
 - Do use the semantic color role system (`bg-surface`, `bg-fill`, `text`, `border`, `icon`) consistently.
 - Do pair canvas and container by suffix: `bg` with `bg-surface`, `bg-secondary` with `bg-surface-secondary`. See [Canvas and container pairing](#canvas-and-container-pairing).
@@ -498,7 +498,7 @@ The emitted count exceeds the 1702 source tokens because the build expands each 
 
 Token path pattern: `color.{palette}.{step}`
 
-| Step | Neutral | Brand | Red | Orange | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
+| Step | Neutral | Azure | Red | Orange | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
 |------|---------|-------|-----|--------|-------|--------|------|-------|------|--------|--------|--------|---------|
 | `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — |
 | `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
@@ -1091,13 +1091,13 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-secondary` | `color.neutral.0` |
 | `bg-surface-secondary-hover` | `color.neutral.50` |
 | `bg-surface-secondary-pressed` | `color.neutral.100` |
-| `bg-surface-brand` | `color.brand.50` |
-| `bg-surface-brand-hover` | `color.brand.100` |
-| `bg-surface-brand-pressed-subtle` | `color.brand.100` |
-| `bg-surface-brand-pressed-strong` | `color.brand.200` |
-| `bg-surface-info` | `color.brand.50` |
-| `bg-surface-info-hover` | `color.brand.100` |
-| `bg-surface-info-pressed` | `color.brand.200` |
+| `bg-surface-brand` | `color.azure.50` |
+| `bg-surface-brand-hover` | `color.azure.100` |
+| `bg-surface-brand-pressed-subtle` | `color.azure.100` |
+| `bg-surface-brand-pressed-strong` | `color.azure.200` |
+| `bg-surface-info` | `color.azure.50` |
+| `bg-surface-info-hover` | `color.azure.100` |
+| `bg-surface-info-pressed` | `color.azure.200` |
 | `bg-surface-success` | `color.green.50` |
 | `bg-surface-success-hover` | `color.green.100` |
 | `bg-surface-success-pressed` | `color.green.200` |
@@ -1109,7 +1109,7 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-warning-pressed` | `color.red.200` |
 | `bg-surface-inverse` | `color.neutral.950` |
 | `bg-surface-inverse-disabled` | `color.neutral.800` |
-| `bg-surface-brand-inverse` | `color.brand.400` |
+| `bg-surface-brand-inverse` | `color.azure.400` |
 | `bg-surface-warning-inverse` | `color.red.400` |
 | `bg-fill` | `color.neutral.0` |
 | `bg-fill-hover` | `color.neutral.100` |
@@ -1121,13 +1121,13 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-secondary` | `color.neutral.100` |
 | `bg-fill-secondary-hover` | `color.neutral.200` |
 | `bg-fill-secondary-pressed` | `color.neutral.300` |
-| `bg-fill-brand` | `color.brand.700` |
-| `bg-fill-brand-hover` | `color.brand.800` |
-| `bg-fill-brand-pressed` | `color.brand.900` |
-| `bg-fill-info-strong` | `color.brand.700` |
-| `bg-fill-info-strong-hover` | `color.brand.800` |
-| `bg-fill-info-strong-pressed` | `color.brand.900` |
-| `bg-fill-info-subtle` | `color.brand.50` |
+| `bg-fill-brand` | `color.azure.700` |
+| `bg-fill-brand-hover` | `color.azure.800` |
+| `bg-fill-brand-pressed` | `color.azure.900` |
+| `bg-fill-info-strong` | `color.azure.700` |
+| `bg-fill-info-strong-hover` | `color.azure.800` |
+| `bg-fill-info-strong-pressed` | `color.azure.900` |
+| `bg-fill-info-subtle` | `color.azure.50` |
 | `bg-fill-success-strong` | `color.green.700` |
 | `bg-fill-success-strong-hover` | `color.green.800` |
 | `bg-fill-success-strong-pressed` | `color.green.900` |
@@ -1154,24 +1154,24 @@ Add a component group only when a component has enough variant × state combinat
 | `text-inverse` | `color.neutral.0` |
 | `text-inverse-secondary` | `color.neutral.400` |
 | `text-inverse-disabled` | `color.neutral.500` |
-| `text-link` | `color.brand.700` |
-| `text-link-hover` | `color.brand.800` |
-| `text-link-pressed` | `color.brand.900` |
-| `text-link-inverse` | `color.brand.300` |
-| `text-brand` | `color.brand.700` |
-| `text-brand-hover` | `color.brand.600` |
-| `text-brand-pressed` | `color.brand.800` |
+| `text-link` | `color.azure.700` |
+| `text-link-hover` | `color.azure.800` |
+| `text-link-pressed` | `color.azure.900` |
+| `text-link-inverse` | `color.azure.300` |
+| `text-brand` | `color.azure.700` |
+| `text-brand-hover` | `color.azure.600` |
+| `text-brand-pressed` | `color.azure.800` |
 | `text-brand-on-bg-fill` | `color.neutral.0` |
-| `text-brand-on-bg-surface-hover` | `color.brand.800` |
-| `text-brand-on-bg-surface-pressed` | `color.brand.900` |
-| `text-brand-inverse` | `color.brand.300` |
-| `text-brand-inverse-hover` | `color.brand.200` |
-| `text-brand-inverse-pressed` | `color.brand.100` |
-| `text-info` | `color.brand.700` |
+| `text-brand-on-bg-surface-hover` | `color.azure.800` |
+| `text-brand-on-bg-surface-pressed` | `color.azure.900` |
+| `text-brand-inverse` | `color.azure.300` |
+| `text-brand-inverse-hover` | `color.azure.200` |
+| `text-brand-inverse-pressed` | `color.azure.100` |
+| `text-info` | `color.azure.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
-| `text-info-on-bg-fill-subtle` | `color.brand.700` |
-| `text-info-on-bg-surface-hover` | `color.brand.800` |
-| `text-info-on-bg-surface-pressed` | `color.brand.900` |
+| `text-info-on-bg-fill-subtle` | `color.azure.700` |
+| `text-info-on-bg-surface-hover` | `color.azure.800` |
+| `text-info-on-bg-surface-pressed` | `color.azure.900` |
 | `text-success` | `color.green.700` |
 | `text-success-on-bg-fill-strong` | `color.neutral.0` |
 | `text-success-on-bg-fill-subtle` | `color.green.700` |
@@ -1198,11 +1198,11 @@ Add a component group only when a component has enough variant × state combinat
 | `border-strong` | `color.neutral.500` |
 | `border-disabled-strong` | `color.neutral.400` |
 | `border-disabled-subtle` | `color.neutral.300` |
-| `border-focus` | `color.brand.600` |
-| `border-brand` | `color.brand.700` |
-| `border-brand-hover` | `color.brand.600` |
-| `border-brand-pressed` | `color.brand.800` |
-| `border-info` | `color.brand.300` |
+| `border-focus` | `color.azure.600` |
+| `border-brand` | `color.azure.700` |
+| `border-brand-hover` | `color.azure.600` |
+| `border-brand-pressed` | `color.azure.800` |
+| `border-info` | `color.azure.300` |
 | `border-success` | `color.green.300` |
 | `border-success-strong` | `color.green.700` |
 | `border-caution` | `color.yellow.300` |
@@ -1210,9 +1210,9 @@ Add a component group only when a component has enough variant × state combinat
 | `border-warning-strong` | `color.red.700` |
 | `border-warning-strong-hover` | `color.red.600` |
 | `border-warning-strong-pressed` | `color.red.800` |
-| `border-brand-inverse` | `color.brand.400` |
-| `border-brand-inverse-hover` | `color.brand.300` |
-| `border-brand-inverse-pressed` | `color.brand.200` |
+| `border-brand-inverse` | `color.azure.400` |
+| `border-brand-inverse-hover` | `color.azure.300` |
+| `border-brand-inverse-pressed` | `color.azure.200` |
 | `border-warning-inverse` | `color.red.400` |
 | `border-warning-inverse-hover` | `color.red.300` |
 | `border-warning-inverse-pressed` | `color.red.200` |
@@ -1224,7 +1224,7 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-inverse` | `color.neutral.0` |
 | `icon-inverse-secondary` | `color.neutral.400` |
 | `icon-inverse-disabled` | `color.neutral.500` |
-| `icon-info-inverse` | `color.brand.400` |
+| `icon-info-inverse` | `color.azure.400` |
 | `icon-success-inverse` | `color.green.400` |
 | `icon-caution-inverse` | `color.yellow.400` |
 | `icon-warning-inverse` | `color.red.400` |
@@ -1232,15 +1232,15 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-inverse-pressed` | `color.red.200` |
 | `icon-secondary` | `color.neutral.600` |
 | `icon-tertiary` | `color.neutral.500` |
-| `icon-brand` | `color.brand.700` |
-| `icon-brand-hover` | `color.brand.600` |
-| `icon-brand-pressed` | `color.brand.800` |
+| `icon-brand` | `color.azure.700` |
+| `icon-brand-hover` | `color.azure.600` |
+| `icon-brand-pressed` | `color.azure.800` |
 | `icon-brand-on-bg-fill` | `color.neutral.0` |
-| `icon-brand-on-bg-surface-hover` | `color.brand.800` |
-| `icon-brand-on-bg-surface-pressed` | `color.brand.900` |
-| `icon-brand-inverse` | `color.brand.400` |
-| `icon-brand-inverse-hover` | `color.brand.300` |
-| `icon-brand-inverse-pressed` | `color.brand.200` |
+| `icon-brand-on-bg-surface-hover` | `color.azure.800` |
+| `icon-brand-on-bg-surface-pressed` | `color.azure.900` |
+| `icon-brand-inverse` | `color.azure.400` |
+| `icon-brand-inverse-hover` | `color.azure.300` |
+| `icon-brand-inverse-pressed` | `color.azure.200` |
 | `icon-success` | `color.green.700` |
 | `icon-success-on-bg-fill-strong` | `color.neutral.0` |
 | `icon-success-on-bg-fill-subtle` | `color.green.700` |
@@ -1254,9 +1254,9 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-on-bg-surface-hover` | `color.red.800` |
 | `icon-warning-on-bg-surface-pressed` | `color.red.900` |
 | `icon-warning-on-bg-fill-subtle` | `color.red.700` |
-| `icon-info` | `color.brand.700` |
+| `icon-info` | `color.azure.700` |
 | `icon-info-on-bg-fill-strong` | `color.neutral.0` |
-| `icon-info-on-bg-fill-subtle` | `color.brand.700` |
+| `icon-info-on-bg-fill-subtle` | `color.azure.700` |
 | `transparent` | `color.alpha.transparent` |
 
 ### Radius mappings

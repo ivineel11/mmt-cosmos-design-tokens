@@ -47,7 +47,7 @@ const cases = [
   }, "circular reference"],
   ["tokens/tier-reference", (j) => { j.primitives.color.red["500"].value = "{color.red.600}"; }, "Primitives hold raw values"],
   ["tokens/tier-reference", (j) => { j.semantic.color.bg.value = "{color.bg-fill}"; }, "Semantic tokens alias primitives only"],
-  ["tokens/tier-reference", (j) => { j.component.button["bg-primary-default"].value = "{color.brand.700}"; }, "{color.bg-fill-brand}"],
+  ["tokens/tier-reference", (j) => { j.component.button["bg-primary-default"].value = "{color.azure.700}"; }, "{color.bg-fill-brand}"],
   ["tokens/tier-reference", (j) => { j.component.button["bg-primary-hover"].value = "{button.bg-primary-default}"; }, "another component token"],
   ["tokens/alias-required", (j) => { j.semantic.color.bg.value = "#FFFFFF"; }, "raw value"],
   ["tokens/alias-required", (j) => { j.semantic.body.medium.regular.value.fontSize = "14px"; }, ".fontSize holds the raw value"],
@@ -77,11 +77,11 @@ const cases = [
   ["tokens/expressive-mirror", (j) => { j.semantic.color["exp-red-500"].value = "{color.red.600}"; }, "should alias {color.red.500}"],
   ["tokens/namespace-collision", (j) => { j.primitives.color.bg = { fill: { value: "#FFFFFF", type: "color", description: "Collides with the semantic bg-fill role." } }; }, "--color-bg-fill"],
   ["tokens/namespace-collision", (j) => { j.semantic.spacing = { 16: { value: "{spacing.16}", type: "spacing", description: "Collides with the primitive spacing step." } }; }, "exists in both"],
-  ["tokens/contrast", (j) => { j.semantic.color["text-info-on-bg-fill-strong"].value = "{color.brand.300}"; }, "WCAG 1.4.3"],
+  ["tokens/contrast", (j) => { j.semantic.color["text-info-on-bg-fill-strong"].value = "{color.azure.300}"; }, "WCAG 1.4.3"],
   ["tokens/contrast", (j) => { j.component.button["label-primary-hover"].value = "{color.text-brand}"; }, "button.label-primary-hover"],
   ["tokens/contrast", (j) => { j.component.checkbox["icon-selected-default"].value = "{color.bg-fill-brand}"; }, "WCAG 1.4.11"],
   ["tokens/contrast", (j) => { j.semantic.color["text-teal-on-bg-fill-strong"] = { ...j.semantic.color["text-info-on-bg-fill-strong"] }; }, "does not exist"],
-  ["tokens/contrast", (j) => { j.semantic.color["bg-surface-brand-pressed-subtle"].value = "{color.brand.800}"; }, "on color.bg-surface-brand-pressed-subtle"],
+  ["tokens/contrast", (j) => { j.semantic.color["bg-surface-brand-pressed-subtle"].value = "{color.azure.800}"; }, "on color.bg-surface-brand-pressed-subtle"],
   // An -inverse key over a transparent fill is checked on the dark canvas, not on white.
   ["tokens/contrast", (j) => { j.component.button["label-secondary-inverse-default"].value = "{color.text-brand}"; }, "on color.bg-surface-inverse"],
   // A tint with a bg-opacity-* companion is blended over the canvas, so a heavier tint can fail.

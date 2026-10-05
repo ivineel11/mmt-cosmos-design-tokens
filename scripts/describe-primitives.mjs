@@ -27,7 +27,7 @@ const level = (r) => (r >= 7 ? "AA and AAA" : "AA");
 
 // Primitives whose real-world pairing already fails, called out on the swatch itself.
 const PAIRING_NOTES = {
-  "brand.600":
+  "azure.600":
     " Too weak for text: it fails AA on white at 3.75:1, which is why text-link and bg-fill-brand-hover were moved off it. It still backs border-focus and border-brand-hover, and text-brand-hover for the Radio dot — all non-text graphics under the 3:1 rule of WCAG 1.4.11, which it clears.",
   "yellow.100":
     " In use as bg-fill-caution-subtle it carries text-caution-on-bg-fill-subtle (yellow.800) at 6.36:1. The pairing used to be yellow.600 at 2.73:1, the worst in the system.",

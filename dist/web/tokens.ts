@@ -18,7 +18,7 @@ export default {
       900: "#171717",
       950: "#0A0A0A",
     },
-    brand: {
+    azure: {
       50: "#EDF8FF",
       100: "#D6EFFF",
       200: "#C2E8FF",
