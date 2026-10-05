@@ -40,8 +40,8 @@ New semantic roles, named after `text-brand-on-bg-fill`: where `on-bg-fill` mean
 
 | Token | Value |
 |---|---|
-| `text-brand-on-bg-surface-hover` | `{color.brand.800}` |
-| `text-brand-on-bg-surface-pressed` | `{color.brand.900}` |
+| `text-brand-on-bg-surface-hover` | `{color.azure.800}` |
+| `text-brand-on-bg-surface-pressed` | `{color.azure.900}` |
 | `text-warning-on-bg-surface-hover` | `{color.red.800}` |
 | `text-warning-on-bg-surface-pressed` | `{color.red.900}` |
 

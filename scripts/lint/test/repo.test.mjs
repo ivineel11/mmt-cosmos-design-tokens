@@ -30,8 +30,8 @@ describe("docs rules", () => {
   it("docs/unknown-token: every spelling of a token", async () => {
     const root = readme([
       "# T",
-      "Real: `color.text-primary`, `button/bg-primary-default`, `{color.brand.700}`, `--space-md`, `CosmosTokens.colorBgFillBrand`, `spacing.minus8`, `CosmosTokens.swift`.",
-      "Dead: `color.text-primry`, `button/bg-nope`, `{color.brand.1000}`, `--space-huge`, `CosmosTokens.colorNope`.",
+      "Real: `color.text-primary`, `button/bg-primary-default`, `{color.azure.700}`, `--space-md`, `CosmosTokens.colorBgFillBrand`, `spacing.minus8`, `CosmosTokens.swift`.",
+      "Dead: `color.text-primry`, `button/bg-nope`, `{color.azure.1000}`, `--space-huge`, `CosmosTokens.colorNope`.",
       "Not tokens: `color.*`, `{group}.{size}`, `README.md`.",
       "```css",
       ".a { color: var(--color-text-nope); }",
@@ -44,7 +44,7 @@ describe("docs rules", () => {
     assert.deepEqual(hits.map((h) => h.subject), [
       "color.text-primry",
       "button/bg-nope",
-      "{color.brand.1000}",
+      "{color.azure.1000}",
       "--space-huge",
       "CosmosTokens.colorNope",
       "--color-text-nope",
@@ -58,14 +58,14 @@ describe("docs rules", () => {
       "| Semantic token | Primitive reference(s) |",
       "|---|---|",
       "| `bg` | `color.neutral.0` |",
-      "| `border-focus` | `color.brand.400` |",
+      "| `border-focus` | `color.azure.400` |",
       "",
       "| Token | Value |",
       "|---|---|",
       "| `spacing.16` | 16px |",
       "| `fontSize.14` | 15px |",
       "",
-      "| Step | Neutral | Brand |",
+      "| Step | Neutral | Azure |",
       "|---|---|---|",
       "| `0` | #FFFFFF | #000000 |",
       "| `50` | #FAFAFA | #EDF8FF |",
@@ -79,9 +79,9 @@ describe("docs rules", () => {
     const hits = ofRule(await lint(root, "docs/token-facts"), "docs/token-facts");
     const text = hits.map((h) => h.message).join("\n");
     assert.equal(hits.length, 5, text);
-    assert.match(text, /border-focus aliases color\.brand\.400; tokens\.json has \{color\.brand\.600\}/);
+    assert.match(text, /border-focus aliases color\.azure\.400; tokens\.json has \{color\.azure\.600\}/);
     assert.match(text, /fontSize\.14 is 15px; it resolves to 14px/);
-    assert.match(text, /color\.brand\.0 \(#000000\), which does not exist/);
+    assert.match(text, /color\.azure\.0 \(#000000\), which does not exist/);
     assert.match(text, new RegExp(`button/\\* has 104 tokens; tokens\\.json has ${BUTTON_TOKENS}`));
     assert.match(text, /body\.medium\.regular/);
   });

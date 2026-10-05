@@ -23,7 +23,7 @@ export const groupsOf = (set: TokenSet): string[] => [
 
 export const cssVar = (token: { names: { css: string } }) => `var(${token.names.css})`;
 
-/** `{color.brand.700}` → `brand.700`, the way the README writes an alias. */
+/** `{color.azure.700}` → `brand.700`, the way the README writes an alias. */
 export const aliasLabel = (reference: string | null) =>
   reference ? reference.replace(/^color\./, "") : null;
 

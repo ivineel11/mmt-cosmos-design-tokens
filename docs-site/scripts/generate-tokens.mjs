@@ -21,9 +21,15 @@ const outDir = join(here, "..", "data");
 
 const source = JSON.parse(readFileSync(join(repoRoot, "tokens", "tokens.json"), "utf8"));
 
-/** Both token sets are hoisted to the root so cross-set references resolve. */
+/** The base sets in order. Brand sets (brands/*) hold another brand's overrides, so the
+ * docs, which show the default brand, leave them out. */
+const baseSets = (source.$metadata?.tokenSetOrder ?? ["primitives", "semantic", "component"]).filter(
+  (set) => !set.startsWith("brands/"),
+);
+
+/** The token sets are hoisted to the root so cross-set references resolve. */
 const root = {};
-for (const setName of source.$metadata?.tokenSetOrder ?? ["primitives", "semantic"]) {
+for (const setName of baseSets) {
   for (const [group, value] of Object.entries(source[setName])) {
     root[group] = { ...(root[group] ?? {}), ...value };
   }
@@ -336,9 +342,7 @@ const flatten = (set, node, prefix = []) =>
     return [token];
   });
 
-data.all = (source.$metadata?.tokenSetOrder ?? ["primitives", "semantic", "component"]).flatMap(
-  (set) => flatten(set, source[set]),
-);
+data.all = baseSets.flatMap((set) => flatten(set, source[set]));
 
 // Contrast pairings: each text token against the surface it is designed for.
 const colorValue = (key) => resolve(source.semantic.color[key]?.value);

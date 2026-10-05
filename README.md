@@ -47,7 +47,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 | **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
 | **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`, `chip/*`) that reference semantic tokens — one key per property × variant × state |
 
-Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.brand.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
+Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.azure.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
 
 ### 2. Export to JSON
 
@@ -55,7 +55,8 @@ Export or sync from Tokens Studio into `tokens/tokens.json`. This file is the **
 
 The export must preserve:
 
-- `$metadata.tokenSetOrder`: `["primitives", "semantic", "component"]` — each tier resolves before the one that references it
+- `$metadata.tokenSetOrder`: `["primitives", "semantic", "brands/mybiz", "component"]` — each tier resolves before the one that references it, and a brand set overrides semantic before component aliases it
+- `$themes`: one entry per brand, the default brand (MakeMyTrip) first — see [Brands](#14-brands-makemytrip-and-mybiz)
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
 - `description` on every semantic and component token, and on every primitive colour — see below
@@ -67,7 +68,7 @@ Every token in the **semantic** and **component** sets carries a `description` a
 
 ```json
 "bg-fill-brand": {
-  "value": "{color.brand.700}",
+  "value": "{color.azure.700}",
   "type": "color",
   "description": "Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand."
 }
@@ -163,7 +164,7 @@ tokens/tokens.json
 dist/web · dist/ios · dist/android
 ```
 
-The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**. Each tier must resolve before the tier that references it — primitives before semantic aliases, semantic before component aliases.
+The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**, with any `brands/*` set between semantic and component. Each tier must resolve before the tier that references it — primitives before semantic aliases, semantic before component aliases. The build never merges a brand set into the default build: it builds each brand separately (see [Brands](#14-brands-makemytrip-and-mybiz)).
 
 ### Build pipeline internals
 
@@ -282,10 +283,10 @@ Chips follow the same rule, and their border toggle is what adapts them to the c
 
 ### 4. Color scale system
 
-- **13 palettes:** neutral, brand, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
+- **13 palettes:** neutral, azure, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
 - **11–12 steps per palette:** `50`, `100`–`900`, `950`, plus `0` on neutral only
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
-- **Brand primary (interactive):** semantic brand roles rest on `color.brand.700` = `#0067E8` (WCAG AA on white). The lighter `color.brand.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
+- **Brand primary (interactive):** semantic brand roles rest on `color.azure.700` = `#0067E8` (WCAG AA on white). The lighter `color.azure.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
 
 ### 5. Single-font typography system (Lato)
 
@@ -420,6 +421,55 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 - **Primary keeps its fill.** The brand and destructive fills are shared with light, so Primary is the same button on every surface. Its hover and pressed fills get darker, and the pressed fill is only 2.38:1 against `#0A0A0A`. The white label keeps it readable at 5.12:1 or more.
 - **Contrast is linted on the dark canvas.** `tokens/contrast` checks an `-inverse` key against `bg-surface-inverse`, blending a tint over it at its `bg-opacity-*` value first.
 
+### 14. Brands (MakeMyTrip and myBiz)
+
+Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: orange instead of azure. Goibibo will be the next brand.
+
+**A brand is a list of value overrides on semantic tokens.** It cannot add, rename or describe a token. The default brand is the plain `primitives` → `semantic` → `component` chain. Another brand adds a `brands/{id}` set that sets new values for a few semantic tokens. Component tokens alias semantic tokens, so every component follows without a component token changing.
+
+```
+primitives (azure, orange, …)  →  semantic  →  component
+                                     ↑
+                    brands/mybiz overrides 30 semantic values
+```
+
+This is exactly what a **Figma extended collection** does. In Figma the semantic set is the collection named **MakeMyTrip**, the parent. Its **myBiz** extension overrides the same 30 values and inherits everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → myBiz** (or back to MakeMyTrip). The Figma collection is named after the default brand, while the JSON set keeps the tier name `semantic`. The build never reads Figma names, so the two can differ. Do not push variables to Figma from Tokens Studio: it matches collections by name, so it would recreate a `semantic` collection, and it models brands as modes, not extensions.
+
+**Only brand roles change.** Info, links and the focus ring stay azure in every brand, because they signal status and interactivity, not brand. `text-brand-on-bg-fill` and `icon-brand-on-bg-fill` stay white.
+
+| Semantic token | MakeMyTrip | myBiz |
+|---|---|---|
+| `bg-surface-brand` | `azure.50` | `orange.50` |
+| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle` | `azure.100` | `orange.100` |
+| `bg-surface-brand-pressed-strong` | `azure.200` | `orange.200` |
+| `bg-surface-brand-inverse` | `azure.400` | `orange.400` |
+| `bg-fill-brand` | `azure.700` | `orange.700` |
+| `bg-fill-brand-hover` | `azure.800` | `orange.800` |
+| `bg-fill-brand-pressed` | `azure.900` | `orange.900` |
+| `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `orange.700` |
+| `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `orange.600` |
+| `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `orange.800` |
+| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `orange.800` |
+| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `orange.900` |
+| `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `orange.300` |
+| `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `orange.200` |
+| `text-brand-inverse-pressed` | `azure.100` | `orange.100` |
+| `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `orange.400` |
+
+**Contrast.** The orange ramp tracks the azure ramp step for step, so the pairings hold. The primary fill `orange.700` (`#CA3500`) gives the white label 5.22:1, where MakeMyTrip gives 5.11:1. `text-brand-hover` at `orange.600` is 3.59:1 on white. It only backs non-text marks such as the Radio dot, so it clears the 3:1 graphics minimum. On the dark `bg-surface-inverse` (`#0A0A0A`), `text-brand-inverse` reads at 11.61:1 (MakeMyTrip 12.09:1). The Inverse Primary pressed fill, the gap already accepted for MakeMyTrip, drops from 2.37:1 to 2.09:1 against `#0A0A0A`. `tokens/contrast` checks every brand, and names the brand in its report.
+
+**Watch the warning red.** myBiz `bg-fill-brand` (`#CA3500`) sits close to `bg-fill-warning-strong` (`#C10007`). In myBiz, a primary Button and a destructive one differ mainly by label, so keep destructive actions in their own confirmation step.
+
+**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 169 tokens that differ (30 semantic and 139 component) get a runtime switch. Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
+
+**Adding a brand (Goibibo).**
+1. Add `brands/goibibo` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
+2. Add a `$themes` entry with `id: "goibibo"` that enables the three base sets and `brands/goibibo`.
+3. Run `npm run build:tokens`. The outputs gain the brand on their own.
+4. In Figma, extend the **MakeMyTrip** collection as `Goibibo` and set the same overrides.
+
+`tokens/brand` enforces the shape: an override must name an existing semantic colour, alias a primitive and differ from the default value, and each brand set must belong to exactly one theme.
+
 ---
 
 ## Best Practices
@@ -436,13 +486,13 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 6. **Run the build and the linter after every token change.** `npm run build:tokens` regenerates all platform outputs; `npm run lint` checks the tier, naming, contrast and description rules and that `dist/` and the docs still match.
 
-7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic", "component"]`. Reordering or dropping a set breaks reference resolution at build time.
+7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic", …brand sets, "component"]`. Reordering or dropping a set breaks reference resolution at build time.
 
 8. **Name semantic tokens by role, not value.** Prefer `text-caution` over `text-yellow-700` in the semantic layer (the mapping to yellow happens internally).
 
 9. **Use negative spacing primitives sparingly.** They exist for optical adjustments (overlapping elements, negative margins) — not for general layout gaps.
 
-10. **Document intentional exceptions.** Some mappings are deliberate product choices (e.g. `bg-surface-info` uses `brand.50`, not `blue.50`). Note these when adding new tokens.
+10. **Document intentional exceptions.** Some mappings are deliberate product choices (e.g. `bg-surface-info` uses `azure.50`, not `blue.50`). Note these when adding new tokens.
 
 11. **Apply opacity to a colour token, not to a control.** A state layer or scrim is a separate element filled with a `color.*` token and rendered at an `opacity.*` token. Setting `opacity` on the control itself fades its label and border along with the tint.
 
@@ -452,7 +502,7 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 ### Do
 
-- Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.brand.600}`).
+- Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.azure.600}`).
 - Do reference semantic tokens from component tokens the same way (e.g. `{color.bg-fill-brand}`), so a palette change propagates through both tiers.
 - Do use the semantic color role system (`bg-surface`, `bg-fill`, `text`, `border`, `icon`) consistently.
 - Do pair canvas and container by suffix: `bg` with `bg-surface`, `bg-secondary` with `bg-surface-secondary`. See [Canvas and container pairing](#canvas-and-container-pairing).
@@ -498,7 +548,7 @@ The emitted count exceeds the 1702 source tokens because the build expands each 
 
 Token path pattern: `color.{palette}.{step}`
 
-| Step | Neutral | Brand | Red | Orange | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
+| Step | Neutral | Azure | Red | Orange | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
 |------|---------|-------|-----|--------|-------|--------|------|-------|------|--------|--------|--------|---------|
 | `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — |
 | `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
@@ -1091,13 +1141,13 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-secondary` | `color.neutral.0` |
 | `bg-surface-secondary-hover` | `color.neutral.50` |
 | `bg-surface-secondary-pressed` | `color.neutral.100` |
-| `bg-surface-brand` | `color.brand.50` |
-| `bg-surface-brand-hover` | `color.brand.100` |
-| `bg-surface-brand-pressed-subtle` | `color.brand.100` |
-| `bg-surface-brand-pressed-strong` | `color.brand.200` |
-| `bg-surface-info` | `color.brand.50` |
-| `bg-surface-info-hover` | `color.brand.100` |
-| `bg-surface-info-pressed` | `color.brand.200` |
+| `bg-surface-brand` | `color.azure.50` |
+| `bg-surface-brand-hover` | `color.azure.100` |
+| `bg-surface-brand-pressed-subtle` | `color.azure.100` |
+| `bg-surface-brand-pressed-strong` | `color.azure.200` |
+| `bg-surface-info` | `color.azure.50` |
+| `bg-surface-info-hover` | `color.azure.100` |
+| `bg-surface-info-pressed` | `color.azure.200` |
 | `bg-surface-success` | `color.green.50` |
 | `bg-surface-success-hover` | `color.green.100` |
 | `bg-surface-success-pressed` | `color.green.200` |
@@ -1109,7 +1159,7 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-warning-pressed` | `color.red.200` |
 | `bg-surface-inverse` | `color.neutral.950` |
 | `bg-surface-inverse-disabled` | `color.neutral.800` |
-| `bg-surface-brand-inverse` | `color.brand.400` |
+| `bg-surface-brand-inverse` | `color.azure.400` |
 | `bg-surface-warning-inverse` | `color.red.400` |
 | `bg-fill` | `color.neutral.0` |
 | `bg-fill-hover` | `color.neutral.100` |
@@ -1121,13 +1171,13 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-secondary` | `color.neutral.100` |
 | `bg-fill-secondary-hover` | `color.neutral.200` |
 | `bg-fill-secondary-pressed` | `color.neutral.300` |
-| `bg-fill-brand` | `color.brand.700` |
-| `bg-fill-brand-hover` | `color.brand.800` |
-| `bg-fill-brand-pressed` | `color.brand.900` |
-| `bg-fill-info-strong` | `color.brand.700` |
-| `bg-fill-info-strong-hover` | `color.brand.800` |
-| `bg-fill-info-strong-pressed` | `color.brand.900` |
-| `bg-fill-info-subtle` | `color.brand.50` |
+| `bg-fill-brand` | `color.azure.700` |
+| `bg-fill-brand-hover` | `color.azure.800` |
+| `bg-fill-brand-pressed` | `color.azure.900` |
+| `bg-fill-info-strong` | `color.azure.700` |
+| `bg-fill-info-strong-hover` | `color.azure.800` |
+| `bg-fill-info-strong-pressed` | `color.azure.900` |
+| `bg-fill-info-subtle` | `color.azure.50` |
 | `bg-fill-success-strong` | `color.green.700` |
 | `bg-fill-success-strong-hover` | `color.green.800` |
 | `bg-fill-success-strong-pressed` | `color.green.900` |
@@ -1154,24 +1204,24 @@ Add a component group only when a component has enough variant × state combinat
 | `text-inverse` | `color.neutral.0` |
 | `text-inverse-secondary` | `color.neutral.400` |
 | `text-inverse-disabled` | `color.neutral.500` |
-| `text-link` | `color.brand.700` |
-| `text-link-hover` | `color.brand.800` |
-| `text-link-pressed` | `color.brand.900` |
-| `text-link-inverse` | `color.brand.300` |
-| `text-brand` | `color.brand.700` |
-| `text-brand-hover` | `color.brand.600` |
-| `text-brand-pressed` | `color.brand.800` |
+| `text-link` | `color.azure.700` |
+| `text-link-hover` | `color.azure.800` |
+| `text-link-pressed` | `color.azure.900` |
+| `text-link-inverse` | `color.azure.300` |
+| `text-brand` | `color.azure.700` |
+| `text-brand-hover` | `color.azure.600` |
+| `text-brand-pressed` | `color.azure.800` |
 | `text-brand-on-bg-fill` | `color.neutral.0` |
-| `text-brand-on-bg-surface-hover` | `color.brand.800` |
-| `text-brand-on-bg-surface-pressed` | `color.brand.900` |
-| `text-brand-inverse` | `color.brand.300` |
-| `text-brand-inverse-hover` | `color.brand.200` |
-| `text-brand-inverse-pressed` | `color.brand.100` |
-| `text-info` | `color.brand.700` |
+| `text-brand-on-bg-surface-hover` | `color.azure.800` |
+| `text-brand-on-bg-surface-pressed` | `color.azure.900` |
+| `text-brand-inverse` | `color.azure.300` |
+| `text-brand-inverse-hover` | `color.azure.200` |
+| `text-brand-inverse-pressed` | `color.azure.100` |
+| `text-info` | `color.azure.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
-| `text-info-on-bg-fill-subtle` | `color.brand.700` |
-| `text-info-on-bg-surface-hover` | `color.brand.800` |
-| `text-info-on-bg-surface-pressed` | `color.brand.900` |
+| `text-info-on-bg-fill-subtle` | `color.azure.700` |
+| `text-info-on-bg-surface-hover` | `color.azure.800` |
+| `text-info-on-bg-surface-pressed` | `color.azure.900` |
 | `text-success` | `color.green.700` |
 | `text-success-on-bg-fill-strong` | `color.neutral.0` |
 | `text-success-on-bg-fill-subtle` | `color.green.700` |
@@ -1198,11 +1248,11 @@ Add a component group only when a component has enough variant × state combinat
 | `border-strong` | `color.neutral.500` |
 | `border-disabled-strong` | `color.neutral.400` |
 | `border-disabled-subtle` | `color.neutral.300` |
-| `border-focus` | `color.brand.600` |
-| `border-brand` | `color.brand.700` |
-| `border-brand-hover` | `color.brand.600` |
-| `border-brand-pressed` | `color.brand.800` |
-| `border-info` | `color.brand.300` |
+| `border-focus` | `color.azure.600` |
+| `border-brand` | `color.azure.700` |
+| `border-brand-hover` | `color.azure.600` |
+| `border-brand-pressed` | `color.azure.800` |
+| `border-info` | `color.azure.300` |
 | `border-success` | `color.green.300` |
 | `border-success-strong` | `color.green.700` |
 | `border-caution` | `color.yellow.300` |
@@ -1210,9 +1260,9 @@ Add a component group only when a component has enough variant × state combinat
 | `border-warning-strong` | `color.red.700` |
 | `border-warning-strong-hover` | `color.red.600` |
 | `border-warning-strong-pressed` | `color.red.800` |
-| `border-brand-inverse` | `color.brand.400` |
-| `border-brand-inverse-hover` | `color.brand.300` |
-| `border-brand-inverse-pressed` | `color.brand.200` |
+| `border-brand-inverse` | `color.azure.400` |
+| `border-brand-inverse-hover` | `color.azure.300` |
+| `border-brand-inverse-pressed` | `color.azure.200` |
 | `border-warning-inverse` | `color.red.400` |
 | `border-warning-inverse-hover` | `color.red.300` |
 | `border-warning-inverse-pressed` | `color.red.200` |
@@ -1224,7 +1274,7 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-inverse` | `color.neutral.0` |
 | `icon-inverse-secondary` | `color.neutral.400` |
 | `icon-inverse-disabled` | `color.neutral.500` |
-| `icon-info-inverse` | `color.brand.400` |
+| `icon-info-inverse` | `color.azure.400` |
 | `icon-success-inverse` | `color.green.400` |
 | `icon-caution-inverse` | `color.yellow.400` |
 | `icon-warning-inverse` | `color.red.400` |
@@ -1232,15 +1282,15 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-inverse-pressed` | `color.red.200` |
 | `icon-secondary` | `color.neutral.600` |
 | `icon-tertiary` | `color.neutral.500` |
-| `icon-brand` | `color.brand.700` |
-| `icon-brand-hover` | `color.brand.600` |
-| `icon-brand-pressed` | `color.brand.800` |
+| `icon-brand` | `color.azure.700` |
+| `icon-brand-hover` | `color.azure.600` |
+| `icon-brand-pressed` | `color.azure.800` |
 | `icon-brand-on-bg-fill` | `color.neutral.0` |
-| `icon-brand-on-bg-surface-hover` | `color.brand.800` |
-| `icon-brand-on-bg-surface-pressed` | `color.brand.900` |
-| `icon-brand-inverse` | `color.brand.400` |
-| `icon-brand-inverse-hover` | `color.brand.300` |
-| `icon-brand-inverse-pressed` | `color.brand.200` |
+| `icon-brand-on-bg-surface-hover` | `color.azure.800` |
+| `icon-brand-on-bg-surface-pressed` | `color.azure.900` |
+| `icon-brand-inverse` | `color.azure.400` |
+| `icon-brand-inverse-hover` | `color.azure.300` |
+| `icon-brand-inverse-pressed` | `color.azure.200` |
 | `icon-success` | `color.green.700` |
 | `icon-success-on-bg-fill-strong` | `color.neutral.0` |
 | `icon-success-on-bg-fill-subtle` | `color.green.700` |
@@ -1254,9 +1304,9 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-on-bg-surface-hover` | `color.red.800` |
 | `icon-warning-on-bg-surface-pressed` | `color.red.900` |
 | `icon-warning-on-bg-fill-subtle` | `color.red.700` |
-| `icon-info` | `color.brand.700` |
+| `icon-info` | `color.azure.700` |
 | `icon-info-on-bg-fill-strong` | `color.neutral.0` |
-| `icon-info-on-bg-fill-subtle` | `color.brand.700` |
+| `icon-info-on-bg-fill-subtle` | `color.azure.700` |
 | `transparent` | `color.alpha.transparent` |
 
 ### Radius mappings
@@ -1652,6 +1702,43 @@ Box(
 )
 ```
 
+### Brands
+
+The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 169 brandable tokens move. Everything else stays where it is.
+
+```html
+<!-- Web: everything inside switches, including nested components. -->
+<body data-brand="mybiz">…</body>
+```
+
+```ts
+// Web, in JavaScript: brands.ts holds the brandable values per brand.
+import { brands } from "./dist/web/brands.ts";
+brands.mybiz.tokens.colorBgFillBrand; // "#CA3500"
+```
+
+```swift
+// iOS: inject the brand once, read brandable tokens from the environment.
+MyBizHome().environment(\.cosmosBrand, .myBiz)
+
+struct PrimaryButton: View {
+  @Environment(\.cosmosBrand) private var brand
+  var body: some View {
+    Text("Book").foregroundStyle(CosmosTokens.colorTextBrandOnBgFill)
+      .background(brand.colorBgFillBrand)
+  }
+}
+```
+
+```kotlin
+// Android: provide the brand once, read brandable tokens from LocalCosmosBrand.
+CompositionLocalProvider(LocalCosmosBrand provides CosmosBrand.MyBiz) { MyBizHome() }
+
+Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
+```
+
+`CosmosTokens` still carries the brandable tokens as MakeMyTrip constants, so existing code keeps compiling. Code that should follow the brand must read them from `brand` (iOS), `LocalCosmosBrand` (Android) or the CSS custom property (web), never from `CosmosTokens`.
+
 ---
 
 ## File Reference
@@ -1672,6 +1759,10 @@ Box(
 | `dist/ios/CosmosTokens.swift` | Generated SwiftUI enum |
 | `dist/ios/LineHeight.swift` | Generated SwiftUI `.lineHeight` modifier (total line-box height → line spacing) |
 | `dist/android/CosmosTokens.kt` | Generated Compose object (`com.makemytrip.cosmos.tokens`) |
+| `dist/web/brands.ts` | Generated brandable token values per brand (`brands.mybiz.tokens.*`) |
+| `dist/ios/CosmosBrand.swift` | Generated `CosmosBrand` struct and the `\.cosmosBrand` environment value |
+| `dist/android/CosmosBrand.kt` | Generated `CosmosBrand` class and `LocalCosmosBrand` |
+| `scripts/lib/brands.mjs` | Reads brands from `$themes` and builds each brand's token tree, for the build and the linter |
 | `docs-site/` | Browsable documentation site for every token (see below) |
 | `storybook/` | Storybook for the foundations, every token tier and the React components (see below) |
 | `components/*.md` | Component specifications — uSpec-generated where noted, otherwise hand-authored (see below) |

@@ -3,7 +3,7 @@ import { create } from "storybook/theming";
 /**
  * One theme for the Storybook UI and the docs pages, so both are set in Lato (loaded
  * from Google Fonts in manager-head.html and preview-head.html). The manager cannot
- * read tokens.css, so the colour mirrors color.brand.700.
+ * read tokens.css, so the colour mirrors color.azure.700.
  */
 export const cosmosTheme = create({
   base: "light",

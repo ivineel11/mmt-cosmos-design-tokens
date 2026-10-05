@@ -7,7 +7,8 @@ import { composite, contrast, formatRatio, HEX, isFullyTransparent, luminance } 
 import { opacityProblems } from "../../lib/opacity.mjs";
 import { describePrimitives } from "../../describe-primitives.mjs";
 import { TOKENS_FILE } from "../lib/context.mjs";
-import { aliasTarget, isLeaf, isPlainObject, membersOf, referencesIn, TIERS } from "../lib/tokens.mjs";
+import { aliasTarget, buildTokenModel, isLeaf, isPlainObject, membersOf, referencesIn, TIERS } from "../lib/tokens.mjs";
+import { BASE_SETS, BRAND_SET, brandSetsIn, brandsOf, overridesIn, tokensForBrand } from "../../lib/brands.mjs";
 
 // ------------------------------------------------------------------ helpers --
 
@@ -164,7 +165,7 @@ const ALLOWED_LEAF_KEYS = new Set(["value", "type", "description"]);
 
 const structure = {
   id: "tokens/structure",
-  description: "Token sets, $metadata.tokenSetOrder and every token's shape follow the Tokens Studio export the build expects (README → Export to JSON).",
+  description: "Token sets, $metadata.tokenSetOrder and every token's shape follow the Tokens Studio export the build expects (README → Export to JSON). Brand sets sit between semantic and component, so a brand overrides semantic before component aliases it.",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -178,7 +179,7 @@ const structure = {
       return;
     }
     for (const key of Object.keys(root)) {
-      if (!ALLOWED_ROOT.has(key)) report([key], `Unknown top-level key "${key}". Expected only ${[...ALLOWED_ROOT].join(", ")}.`);
+      if (!ALLOWED_ROOT.has(key) && !BRAND_SET.test(key)) report([key], `Unknown top-level key "${key}". Expected only ${[...ALLOWED_ROOT].join(", ")}, or a brands/{id} set.`);
     }
     for (const tier of TIERS) {
       if (!isPlainObject(root[tier])) {
@@ -186,8 +187,9 @@ const structure = {
       }
     }
     const order = root.$metadata?.tokenSetOrder;
-    if (JSON.stringify(order) !== JSON.stringify(TIERS)) {
-      report(["$metadata"], `$metadata.tokenSetOrder must be ${JSON.stringify(TIERS)} so each tier resolves before the tier that references it; got ${JSON.stringify(order)}.`);
+    const expected = ["primitives", "semantic", ...brandSetsIn(root), "component"];
+    if (JSON.stringify(order) !== JSON.stringify(expected)) {
+      report(["$metadata"], `$metadata.tokenSetOrder must be ${JSON.stringify(expected)} so each tier resolves before the tier that references it, and each brand set overrides semantic before component aliases it; got ${JSON.stringify(order)}.`);
     }
     if (root.$themes !== undefined && !Array.isArray(root.$themes)) {
       report(["$themes"], "$themes must be an array.");
@@ -220,7 +222,104 @@ const structure = {
         walk(node[key], [...path, key]);
       }
     };
-    for (const tier of TIERS) if (isPlainObject(root[tier])) walk(root[tier], [tier]);
+    for (const set of [...TIERS, ...brandSetsIn(root)]) if (isPlainObject(root[set])) walk(root[set], [set]);
+  },
+};
+
+// ------------------------------------------------------------------ brands ---
+
+const THEME_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+const brandRule = {
+  id: "tokens/brand",
+  description: "Brands follow README → Brands: one $themes entry per brand, the default brand first and with no brand set; every other brand enables brands/{its id}; a brand set only overrides the value of existing semantic colour tokens, aliasing a primitive and carrying no description, the way a Figma extended collection overrides values and inherits everything else.",
+  check(api) {
+    const t = load(api);
+    if (!t) return;
+    const { value: root, locations, model } = t;
+    // Array items have no recorded position, so a theme reports at the closest parent that does.
+    const loc = (path) => {
+      for (let n = path.length; n > 0; n -= 1) {
+        const found = locations.get(JSON.stringify(path.slice(0, n)));
+        if (found) return found;
+      }
+      return {};
+    };
+    const report = (path, message) => api.report({ file: TOKENS_FILE, ...loc(path), subject: path.join("."), message });
+    const sets = brandSetsIn(root);
+    const themes = root.$themes;
+    if (!Array.isArray(themes) || !themes.length) {
+      for (const set of sets) report([set], `${set} is not used. Add a $themes entry per brand, the default brand first.`);
+      return;
+    }
+
+    const used = new Map();
+    themes.forEach((theme, i) => {
+      const path = ["$themes", String(i)];
+      if (!isPlainObject(theme)) {
+        report(path, "A theme must be an object with an id, a name and selectedTokenSets.");
+        return;
+      }
+      if (typeof theme.id !== "string" || !THEME_ID.test(theme.id)) {
+        report(path, `Theme id ${JSON.stringify(theme.id)} must be kebab-case. It is the data-brand value on web.`);
+      }
+      if (typeof theme.name !== "string" || !/^[A-Za-z][A-Za-z0-9 ]*$/.test(theme.name)) {
+        report(path, `Theme name ${JSON.stringify(theme.name)} must start with a letter and hold only letters, digits and spaces. It names the brand in Swift and Kotlin.`);
+      }
+      const enabled = Object.entries(theme.selectedTokenSets ?? {})
+        .filter(([, state]) => state !== "disabled")
+        .map(([set]) => set);
+      for (const set of BASE_SETS) {
+        if (!enabled.includes(set)) report(path, `Theme ${theme.id} must enable the ${set} set. Every brand builds on all three base sets.`);
+      }
+      for (const set of enabled) {
+        if (!BASE_SETS.includes(set) && !BRAND_SET.test(set)) report(path, `Theme ${theme.id} enables "${set}", which is neither a base set nor a brands/{id} set.`);
+        else if (BRAND_SET.test(set) && !(set in root)) report(path, `Theme ${theme.id} enables ${set}, which does not exist.`);
+      }
+      const own = enabled.filter((set) => BRAND_SET.test(set));
+      if (i === 0 && own.length) {
+        report(path, `The first theme is the default brand and must not enable a brand set; ${theme.id} enables ${own.join(", ")}.`);
+      }
+      if (i > 0 && own.length !== 1) {
+        report(path, `Theme ${theme.id} must enable exactly one brand set, brands/${theme.id}; it enables ${own.length ? own.join(", ") : "none"}.`);
+      } else if (i > 0 && own[0] !== `brands/${theme.id}`) {
+        report(path, `Theme ${theme.id} enables ${own[0]}. Name the set after the theme, brands/${theme.id}, so the set and the data-brand value agree.`);
+      }
+      for (const set of own) used.set(set, [...(used.get(set) ?? []), theme.id]);
+    });
+    for (const field of ["id", "name"]) {
+      const values = themes.map((theme) => theme?.[field]);
+      if (new Set(values).size !== values.length) report(["$themes"], `Two themes share a ${field}.`);
+    }
+
+    for (const set of sets) {
+      if (!used.has(set)) report([set], `${set} is not enabled by any theme, so no brand builds from it.`);
+      else if (used.get(set).length > 1) report([set], `${set} is enabled by ${used.get(set).join(" and ")}. Give each brand its own set.`);
+      for (const [path, node] of overridesIn(root[set])) {
+        const full = [set, ...path];
+        const id = path.join(".");
+        const base = model.byId.get(id);
+        if (!base || base.tier !== "semantic") {
+          report(full, `${set} overrides ${id}, which is not a semantic token. A brand only changes the value of an existing semantic token, so add the token to semantic first.`);
+          continue;
+        }
+        for (const key of Object.keys(node)) {
+          if (key === "description") report([...full, key], `${set} gives ${id} its own description. A brand override inherits the semantic description, as a Figma extended collection does.`);
+          else if (key !== "value" && key !== "type") report([...full, key], `Unexpected key "${key}" on a brand override. Overrides carry only value and type.`);
+        }
+        const type = node.type ?? node.$type;
+        if (type !== base.type) report(full, `${set} types ${id} as ${type}, but the semantic token is ${base.type}.`);
+        if (TYPE_FAMILY[base.type] !== "color") {
+          report(full, `${set} overrides ${id}, a ${base.type} token. Brands override colours only, which is all the per-brand Swift and Kotlin outputs carry.`);
+        }
+        const value = node.value ?? node.$value;
+        const target = aliasTarget(value);
+        const tier = target && model.tierOf(target);
+        if (!target) report([...full, "value"], `${set} sets ${id} to ${JSON.stringify(value)}. An override must alias a primitive, like the semantic token it replaces.`);
+        else if (tier !== "primitives") report([...full, "value"], `${set} points ${id} at {${target}}, which is ${tier ? `a ${tier} token` : "not a token"}. An override must alias a primitive.`);
+        else if (target === aliasTarget(base.value)) report([...full, "value"], `${set} sets ${id} to {${target}}, the value it already has. Remove the override.`);
+      }
+    }
   },
 };
 
@@ -342,7 +441,7 @@ const reference = {
       for (const [, s] of membersOf(leaf.value)) {
         if (typeof s !== "string" || !s.includes("{")) continue;
         if (!aliasTarget(s) && !GRADIENT.test(s)) {
-          report(`embeds a reference inside a longer string (${JSON.stringify(s)}). Only a whole-value alias like "{color.brand.700}" resolves on every platform (gradients excepted).`);
+          report(`embeds a reference inside a longer string (${JSON.stringify(s)}). Only a whole-value alias like "{color.azure.700}" resolves on every platform (gradients excepted).`);
         }
       }
       for (const ref of referencesIn(leaf.value)) {
@@ -639,7 +738,7 @@ const semanticColorRole = {
       if (!SEMANTIC_COLOR_ROLE.test(key)) {
         api.report({ ...at(leaf, "key"), message: `color.${key} does not fit the role taxonomy (bg, bg-secondary, bg-surface-*, bg-fill-*, text-*, border-*, icon-*, exp-{hue}-{step}). Name it by role, not by value.` });
       }
-      if (/(^|-)(neutral|brand|red|orange|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
+      if (/(^|-)(neutral|azure|brand|red|orange|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
         api.report({ ...at(leaf, "key"), message: `color.${key} is named after a palette value. Semantic names describe intent (text-caution, not text-yellow-700).` });
       }
     }
@@ -708,80 +807,89 @@ const contrastRule = {
   check(api) {
     const t = load(api);
     if (!t) return;
-    const { model } = t;
-    const hex = (id) => {
-      const v = model.resolve(id).value;
-      return typeof v === "string" && HEX.test(v) ? v : null;
-    };
-    const canvases = ["color.bg", "color.bg-secondary"].filter((id) => hex(id));
-
-    // A component key with an -inverse surface segment sits on the dark canvas instead.
-    const inverseCanvases = ["color.bg-surface-inverse"].filter((id) => hex(id));
-
-    /** bgIds are token ids, or { id, over, alpha } for a tint laid over a canvas at an opacity. */
-    const check = (fgLeaf, bgIds, threshold, criterion) => {
-      const fg = hex(fgLeaf.id);
-      if (!fg) return;
-      for (const entry of bgIds) {
-        const tint = typeof entry === "object" ? entry : null;
-        const bgId = tint ? `${tint.id} at ${Math.round(tint.alpha * 100)}% over ${tint.over}` : entry;
-        const bg = tint ? hex(tint.id) && hex(tint.over) && composite(hex(tint.id), tint.alpha, hex(tint.over)) : hex(entry);
-        if (!bg) continue;
-        const ratio = contrast(fg, bg);
-        if (ratio < threshold) {
-          api.report({
-            ...at(fgLeaf),
-            subject: `${fgLeaf.id} on ${tint ? tint.id : bgId}`,
-            message: `${label(fgLeaf)} (${fg}) on ${bgId} (${bg}) is ${formatRatio(ratio)}, below the ${threshold}:1 WCAG ${criterion} minimum.`,
-          });
-        }
-      }
-    };
-
-    for (const leaf of model.inTier("semantic")) {
-      if (leaf.path[0] !== "color") continue;
-      const key = leaf.path[1];
-      const m = /^text-([a-z]+)-on-(bg-fill|bg-surface)(-[a-z-]+)?$/.exec(key);
-      if (!m) continue;
-      const bgKey = `${m[2]}-${m[1]}${m[3] ?? ""}`;
-      // A background split into -strong/-subtle (bg-surface-brand-pressed-*) keeps one
-      // on-* text role, which must pass on every variant.
-      const bgIds = model.byId.has(`color.${bgKey}`)
-        ? [`color.${bgKey}`]
-        : ["strong", "subtle"].map((s) => `color.${bgKey}-${s}`).filter((id) => model.byId.has(id));
-      if (!bgIds.length) {
-        api.report({ ...at(leaf, "key"), message: `color.${key} is named for color.${bgKey}, which does not exist (nor a -strong or -subtle variant of it). An on-* text role needs the fill it pairs with.` });
-        continue;
-      }
-      check(leaf, bgIds, AA_TEXT, "1.4.3");
-    }
-
-    for (const leaf of model.inTier("component")) {
-      if (TYPE_FAMILY[leaf.type] !== "color" || leaf.path.length !== 2) continue;
-      const [group, key] = leaf.path;
-      const prop = Object.keys(COMPONENT_FOREGROUNDS).find((p) => key.startsWith(`${p}-`));
-      if (!prop || /(^|-)disabled(-|$)/.test(key)) continue;
-      const suffix = key.slice(prop.length + 1);
-      const candidates = [`bg-${suffix}`];
-      if (prop === "icon" || prop === "dot") candidates.push(`bg-${suffix.replace(/^(un)?selected-/, "")}`);
-      const bgKey = candidates.find((c) => model.byId.has(`${group}.${c}`));
-      const bgHex = bgKey && hex(`${group}.${bgKey}`);
-      const inverse = /(^|-)inverse(-|$)/.test(suffix) && inverseCanvases.length > 0;
-      const opacityId = bgKey && `${group}.${bgKey.replace(/^bg-/, "bg-opacity-")}`;
-      const alpha = opacityId && model.byId.has(opacityId) ? Number(model.resolve(opacityId).value) : null;
-      let bgIds;
-      if (bgKey && bgHex && !isFullyTransparent(bgHex) && alpha !== null && Number.isFinite(alpha)) {
-        // A translucent tint: what the viewer sees is the tint blended over the canvas beneath.
-        bgIds = (inverse ? inverseCanvases : canvases).map((over) => ({ id: `${group}.${bgKey}`, over, alpha }));
-      } else if (bgKey && bgHex && !isFullyTransparent(bgHex)) {
-        bgIds = [`${group}.${bgKey}`];
-      } else {
-        bgIds = inverse ? inverseCanvases : canvases;
-      }
-      check(leaf, bgIds, ...COMPONENT_FOREGROUNDS[prop]);
+    // Every brand is checked: a brand set changes semantic colours, and every component
+    // pairing built on them. The default brand reports as before; others name themselves.
+    for (const [i, brand] of brandsOf(t.value).entries()) {
+      const model = i === 0 ? t.model : buildTokenModel(tokensForBrand(t.value, brand.set), t.locations);
+      checkContrast(api, model, i === 0 ? null : brand);
     }
   },
 };
+
+/** One brand of tokens/contrast. `brand` is null for the default brand. */
+function checkContrast(api, model, brand) {
+  const hex = (id) => {
+    const v = model.resolve(id).value;
+    return typeof v === "string" && HEX.test(v) ? v : null;
+  };
+  const canvases = ["color.bg", "color.bg-secondary"].filter((id) => hex(id));
+
+  // A component key with an -inverse surface segment sits on the dark canvas instead.
+  const inverseCanvases = ["color.bg-surface-inverse"].filter((id) => hex(id));
+
+  /** bgIds are token ids, or { id, over, alpha } for a tint laid over a canvas at an opacity. */
+  const check = (fgLeaf, bgIds, threshold, criterion) => {
+    const fg = hex(fgLeaf.id);
+    if (!fg) return;
+    for (const entry of bgIds) {
+      const tint = typeof entry === "object" ? entry : null;
+      const bgId = tint ? `${tint.id} at ${Math.round(tint.alpha * 100)}% over ${tint.over}` : entry;
+      const bg = tint ? hex(tint.id) && hex(tint.over) && composite(hex(tint.id), tint.alpha, hex(tint.over)) : hex(entry);
+      if (!bg) continue;
+      const ratio = contrast(fg, bg);
+      if (ratio < threshold) {
+        api.report({
+          ...at(fgLeaf),
+          subject: `${fgLeaf.id} on ${tint ? tint.id : bgId}${brand ? ` in ${brand.id}` : ""}`,
+          message: `${brand ? `In ${brand.name}, ` : ""}${label(fgLeaf)} (${fg}) on ${bgId} (${bg}) is ${formatRatio(ratio)}, below the ${threshold}:1 WCAG ${criterion} minimum.`,
+        });
+      }
+    }
+  };
+
+  for (const leaf of model.inTier("semantic")) {
+    if (leaf.path[0] !== "color") continue;
+    const key = leaf.path[1];
+    const m = /^text-([a-z]+)-on-(bg-fill|bg-surface)(-[a-z-]+)?$/.exec(key);
+    if (!m) continue;
+    const bgKey = `${m[2]}-${m[1]}${m[3] ?? ""}`;
+    // A background split into -strong/-subtle (bg-surface-brand-pressed-*) keeps one
+    // on-* text role, which must pass on every variant.
+    const bgIds = model.byId.has(`color.${bgKey}`)
+      ? [`color.${bgKey}`]
+      : ["strong", "subtle"].map((s) => `color.${bgKey}-${s}`).filter((id) => model.byId.has(id));
+    if (!bgIds.length) {
+      api.report({ ...at(leaf, "key"), message: `color.${key} is named for color.${bgKey}, which does not exist (nor a -strong or -subtle variant of it). An on-* text role needs the fill it pairs with.` });
+      continue;
+    }
+    check(leaf, bgIds, AA_TEXT, "1.4.3");
+  }
+
+  for (const leaf of model.inTier("component")) {
+    if (TYPE_FAMILY[leaf.type] !== "color" || leaf.path.length !== 2) continue;
+    const [group, key] = leaf.path;
+    const prop = Object.keys(COMPONENT_FOREGROUNDS).find((p) => key.startsWith(`${p}-`));
+    if (!prop || /(^|-)disabled(-|$)/.test(key)) continue;
+    const suffix = key.slice(prop.length + 1);
+    const candidates = [`bg-${suffix}`];
+    if (prop === "icon" || prop === "dot") candidates.push(`bg-${suffix.replace(/^(un)?selected-/, "")}`);
+    const bgKey = candidates.find((c) => model.byId.has(`${group}.${c}`));
+    const bgHex = bgKey && hex(`${group}.${bgKey}`);
+    const inverse = /(^|-)inverse(-|$)/.test(suffix) && inverseCanvases.length > 0;
+    const opacityId = bgKey && `${group}.${bgKey.replace(/^bg-/, "bg-opacity-")}`;
+    const alpha = opacityId && model.byId.has(opacityId) ? Number(model.resolve(opacityId).value) : null;
+    let bgIds;
+    if (bgKey && bgHex && !isFullyTransparent(bgHex) && alpha !== null && Number.isFinite(alpha)) {
+      // A translucent tint: what the viewer sees is the tint blended over the canvas beneath.
+      bgIds = (inverse ? inverseCanvases : canvases).map((over) => ({ id: `${group}.${bgKey}`, over, alpha }));
+    } else if (bgKey && bgHex && !isFullyTransparent(bgHex)) {
+      bgIds = [`${group}.${bgKey}`];
+    } else {
+      bgIds = inverse ? inverseCanvases : canvases;
+    }
+    check(leaf, bgIds, ...COMPONENT_FOREGROUNDS[prop]);
+  }
+}
 
 // ----------------------------------------------------------- descriptions ---
 
@@ -873,6 +981,7 @@ export default [
   jsonSyntax,
   duplicateKey,
   structure,
+  brandRule,
   keyFormat,
   type,
   valueFormat,

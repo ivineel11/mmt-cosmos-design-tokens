@@ -107,7 +107,7 @@ function classify(code, idx) {
 
 const unknownToken = {
   id: "docs/unknown-token",
-  description: "Every token the docs name in code — color.text-primary, button/bg-primary-default, {color.brand.700}, --space-md, CosmosTokens.colorBgFillBrand, tokens.colorBgFillBrand — exists, so a rename or removal cannot leave dead references behind.",
+  description: "Every token the docs name in code — color.text-primary, button/bg-primary-default, {color.azure.700}, --space-md, CosmosTokens.colorBgFillBrand, tokens.colorBgFillBrand — exists, so a rename or removal cannot leave dead references behind.",
   check(api) {
     const idx = tokenIndex(api);
     if (!idx) return;
@@ -181,7 +181,7 @@ const tokenFacts = {
       for (const table of d.tables) {
         const headers = table.headers.map((h) => cellText(h).toLowerCase());
 
-        // Palette grid: | Step | Neutral | Brand | … |
+        // Palette grid: | Step | Neutral | Azure | … |
         if (headers[0] === "step" && headers.slice(1).every((h) => h in palettes)) {
           for (const row of table.rows) {
             const step = cellText(row.cells[0]);
