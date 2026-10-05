@@ -433,7 +433,7 @@ primitives (azure, orange, …)  →  semantic  →  component
                     brands/mybiz overrides 30 semantic values
 ```
 
-This is exactly what a **Figma extended collection** does. The semantic collection is the parent and MakeMyTrip. Its `myBiz` extension overrides the same 30 values and inherits everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → semantic: myBiz**.
+This is exactly what a **Figma extended collection** does. In Figma the semantic set is the collection named **MakeMyTrip**, the parent. Its **myBiz** extension overrides the same 30 values and inherits everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → myBiz** (or back to MakeMyTrip). The Figma collection is named after the default brand, while the JSON set keeps the tier name `semantic`. The build never reads Figma names, so the two can differ. Do not push variables to Figma from Tokens Studio: it matches collections by name, so it would recreate a `semantic` collection, and it models brands as modes, not extensions.
 
 **Only brand roles change.** Info, links and the focus ring stay azure in every brand, because they signal status and interactivity, not brand. `text-brand-on-bg-fill` and `icon-brand-on-bg-fill` stay white.
 
@@ -466,7 +466,7 @@ This is exactly what a **Figma extended collection** does. The semantic collecti
 1. Add `brands/goibibo` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
 2. Add a `$themes` entry with `id: "goibibo"` that enables the three base sets and `brands/goibibo`.
 3. Run `npm run build:tokens`. The outputs gain the brand on their own.
-4. In Figma, extend the semantic collection as `Goibibo` and set the same overrides.
+4. In Figma, extend the **MakeMyTrip** collection as `Goibibo` and set the same overrides.
 
 `tokens/brand` enforces the shape: an override must name an existing semantic colour, alias a primitive and differ from the default value, and each brand set must belong to exactly one theme.
 
