@@ -151,7 +151,13 @@ const palettes = Object.entries(source.primitives.color).map(([palette, steps]) 
 
 // Semantic colors split into role groups; `exp-*` aliases are their own section.
 const SEMANTIC_ROLES = [
-  { id: "bg", title: "Background", description: "Page-level background.", match: (k) => k === "bg" },
+  {
+    id: "bg",
+    title: "Background",
+    description: "Page canvases: white (bg) and grey (bg-secondary).",
+    // Every bg-* page canvas, which is any bg key that is not a surface or a fill.
+    match: (k) => k === "bg" || (k.startsWith("bg-") && !k.startsWith("bg-surface") && !k.startsWith("bg-fill")),
+  },
   {
     id: "surface",
     title: "Surface",
