@@ -69,6 +69,7 @@ body {
 }
 /* Storybook pins its own cell padding with nested selectors, so this one is deliberately specific. */
 .sbdocs.sbdocs-content table.docblock-argstable :is(thead, tbody) > tr > :is(th, td) { padding: var(--space-lg) var(--space-xl); }
+.sbdocs.sbdocs-content table.docblock-argstable tbody > tr > td { padding-block: var(--space-3xl); }
 /* The name column's left padding is !important in Storybook, so line it up with its header the same way. */
 .sbdocs.sbdocs-content table.docblock-argstable tbody > tr > td:first-child { padding-inline-start: var(--space-xl) !important; }
 .sbdocs.sbdocs-content .docblock-argstable td > div + div { margin-block-start: var(--space-xs); }
