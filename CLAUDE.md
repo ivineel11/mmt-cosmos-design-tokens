@@ -11,6 +11,9 @@ npm run test:lint                       # the linter's own tests
 node scripts/describe-primitives.mjs    # recompute primitive colour descriptions (contrast ratios)
 cd docs-site && npm install && npm run dev   # docs site; needs build:tokens to have run first
 cd storybook && npm install && npm run storybook   # Storybook on :6006; also needs build:tokens
+cd storybook && npx figma connect parse     # check the Code Connect templates offline
+cd storybook && npm run connect:icons       # regenerate the Icon templates from Icon/paths.ts
+cd storybook && npm run connect:publish     # upload every Code Connect template to Figma Dev Mode
 ```
 
 Before every commit, run `npm run build:tokens`, then `npm run lint` and `npm run test:lint`. CI runs both lint steps on every pull request, and both must pass. `npm run lint -- --only tokens` checks a single category while iterating. It does not replace the full run, and the linter tests catch things the lint does not, such as a test pinned to a token count. The build resolves every reference and runs the opacity validator. A `git diff` of `dist/` shows what a change emits.
@@ -41,6 +44,13 @@ Before every commit, run `npm run build:tokens`, then `npm run lint` and `npm ru
 - Put placeholder copy in variants and realistic copy only in the examples frame.
 - Grid Legend labels are meant to be SF Mono Medium. Scripts cannot load it, so write them in JetBrains Mono Medium and tell the designer to switch the font.
 - Bind every Grid Legend label to the `color/text-tertiary` variable, never a raw hex. Keep the row labels (the vertical legend) at least 80px apart, measured from the bottom of one label to the top of the next, and centre each row of variants on its label. Check both with a script before reporting a page as done.
+
+## Figma Code Connect
+
+- Every Storybook component and every `Icon / *` glyph has a Code Connect template (`*.figma.ts`, next to the component) that shows its React snippet in Figma Dev Mode. `storybook/README.md` → "Figma Code Connect" explains how Figma properties map to props.
+- Keep the templates in step with the components. When a change adds, renames or removes a component prop, changes a prop default, or adds a Figma property or variant, update the matching `.figma.ts` in the same PR. A new component gets its template in the PR that adds it. Check them with `npx figma connect parse`.
+- When glyphs are added to `storybook/src/components/Icon/paths.ts`, run `npm run connect:icons` and commit the generated templates.
+- Publishing is manual and runs from `main`. After a PR that touches a template, the icon set or a component prop merges, remind the designer to republish with `cd storybook && npm run connect:publish`, running `npm run connect:icons` first if glyphs were added. The token lives in the gitignored `storybook/.env`. Put the reminder in the reply that reports the change and in its Figma follow-up list.
 
 ## Working with the designer
 
