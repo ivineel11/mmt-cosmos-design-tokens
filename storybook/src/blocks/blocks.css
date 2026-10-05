@@ -129,7 +129,7 @@
 
 /* Elevation */
 .doc-shadows { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-5xl); padding: var(--space-6xl); background: var(--color-bg-secondary); border-radius: var(--radius-xl); }
-.doc-shadow-card { background: var(--color-bg-surface-secondary); border-radius: var(--radius-lg); padding: var(--space-xl); min-block-size: 160px; display: grid; gap: var(--space-xs); align-content: start; }
+.doc-shadow-card { background: var(--color-bg-surface-secondary); border-radius: var(--radius-xl); padding: var(--space-xl); min-block-size: 160px; display: grid; gap: var(--space-xs); align-content: start; }
 .doc-shadow-card strong { font-size: var(--font-size-16); }
 
 /* Opacity */
@@ -152,8 +152,8 @@
 .doc-sample-text { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-md); font-weight: var(--font-weight-bold); }
 
 .doc-pairs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-xl); }
-.doc-canvas { padding: var(--space-3xl); border-radius: var(--radius-lg); border: var(--stroke-default) solid var(--color-border-secondary); }
-.doc-container { padding: var(--space-xl); border-radius: var(--radius-md); display: grid; gap: var(--space-2xs); }
+.doc-canvas { padding: var(--space-3xl); border-radius: var(--radius-xl); border: var(--stroke-default) solid var(--color-border-secondary); }
+.doc-container { padding: var(--space-xl); border-radius: var(--radius-xl); display: grid; gap: var(--space-2xs); }
 
 .doc-inverse { background: var(--color-bg-surface-inverse); color: var(--color-text-inverse); border-radius: var(--radius-xl); padding: var(--space-5xl); display: grid; gap: var(--space-lg); }
 .doc-inverse-row { display: flex; justify-content: space-between; gap: var(--space-md); align-items: baseline; }

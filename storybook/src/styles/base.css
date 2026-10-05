@@ -64,8 +64,10 @@ body {
 .sbdocs.sbdocs-content .sbdocs-preview { margin-block: var(--space-xl) var(--space-3xl); }
 .sbdocs.sbdocs-content .docblock-argstable :where(td, th) { padding: var(--space-sm) var(--space-md); }
 
-/* Story containers and props tables: 16px corners (radius-xl) and no drop shadow; the hairline border stays. */
-.sbdocs.sbdocs-content .sbdocs-preview { border-radius: var(--radius-xl); box-shadow: none; }
+/* Every docs container (story canvases, props tables, code blocks): 16px corners (radius-xl) and no
+   drop shadow; the hairline border stays. A code block opened under a story keeps the story's frame. */
+.sbdocs.sbdocs-content .sbdocs-preview,
+.sbdocs.sbdocs-content .docblock-source:not(.sbdocs-preview *) { border-radius: var(--radius-xl); box-shadow: none; }
 .sbdocs.sbdocs-content .docblock-argstable tbody { filter: none; }
 .sbdocs.sbdocs-content .docblock-argstable tbody tr:first-child > :first-child { border-top-left-radius: var(--radius-xl); }
 .sbdocs.sbdocs-content .docblock-argstable tbody tr:first-child > :last-child { border-top-right-radius: var(--radius-xl); }
