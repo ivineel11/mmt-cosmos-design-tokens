@@ -32,7 +32,10 @@
 .doc-toolbar select {
   font: inherit;
   font-size: var(--font-size-16);
-  padding: var(--space-sm) var(--space-md);
+  /* Match the Medium Segmented control beside them. */
+  box-sizing: border-box;
+  block-size: var(--segmented-control-height-md);
+  padding: 0 var(--space-md);
   border: var(--stroke-default) solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg-fill);
@@ -40,9 +43,9 @@
 }
 .doc-toolbar input { flex: 1 1 220px; }
 /* The native select centres its label and draws its chevron differently in every browser,
-   so draw it: no native arrow, an explicit line height, and a Cosmos chevron centred on the box. */
+   so draw it: no native arrow, a line box that fills the field, and a Cosmos chevron centred on it. */
 .doc-toolbar input,
-.doc-toolbar select { line-height: var(--line-height-24); }
+.doc-toolbar select { line-height: calc(var(--segmented-control-height-md) - 2 * var(--stroke-default)); }
 .doc-select { position: relative; display: inline-flex; align-items: center; }
 .doc-select select {
   appearance: none;
