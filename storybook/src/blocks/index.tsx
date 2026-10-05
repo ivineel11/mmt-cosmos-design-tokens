@@ -1,5 +1,6 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { aliasLabel, cssVar, data, formatValue, groupsOf, select, type FlatToken, type Platform, type TokenSet } from "./data";
+import { Icon } from "../components/Icon/Icon";
 import "./blocks.css";
 
 const PLATFORMS: { id: Platform; label: string }[] = [
@@ -138,14 +139,17 @@ export function TokenTable({ set }: { set: TokenSet }) {
     <Doc>
       <div className="doc-toolbar">
         <input type="search" placeholder="Search names, values, aliases or descriptions" aria-label="Search tokens" value={query} onChange={(event) => setQuery(event.target.value)} />
-        <select aria-label="Group" value={group} onChange={(event) => setGroup(event.target.value)}>
-          <option value="all">All groups</option>
-          {groups.map((name) => (
-            <option key={name} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
+        <span className="doc-select">
+          <select aria-label="Group" value={group} onChange={(event) => setGroup(event.target.value)}>
+            <option value="all">All groups</option>
+            {groups.map((name) => (
+              <option key={name} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+          <Icon name="chevron-down" size="var(--icon-sm)" className="doc-select-icon" />
+        </span>
         <PlatformSwitch value={platform} onChange={setPlatform} />
       </div>
       <Rows tokens={tokens} platform={platform} />

@@ -39,6 +39,22 @@
   color: var(--color-text-primary);
 }
 .doc-toolbar input { flex: 1 1 220px; }
+/* The native select centres its label and draws its chevron differently in every browser,
+   so draw it: no native arrow, an explicit line height, and a Cosmos chevron centred on the box. */
+.doc-toolbar input,
+.doc-toolbar select { line-height: var(--line-height-24); }
+.doc-select { position: relative; display: inline-flex; align-items: center; }
+.doc-select select {
+  appearance: none;
+  padding-inline-end: calc(var(--space-md) + var(--icon-sm) + var(--space-xs));
+  cursor: pointer;
+}
+.doc-select-icon {
+  position: absolute;
+  inset-inline-end: var(--space-md);
+  color: var(--color-icon-secondary);
+  pointer-events: none;
+}
 .doc-toolbar input:focus-visible,
 .doc-toolbar select:focus-visible,
 .doc-platforms button:focus-visible,
