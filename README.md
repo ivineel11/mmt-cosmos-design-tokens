@@ -283,8 +283,8 @@ Chips follow the same rule, and their border toggle is what adapts them to the c
 
 ### 4. Color scale system
 
-- **15 palettes:** neutral, azure, red, rose, orange, tangerine, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
-- **Brand ramps:** `azure` (MakeMyTrip), `rose` (myBiz) and `tangerine` (Goibibo). Each step of `rose` and `tangerine` matches the azure step of the same number in contrast against white, so every brand pairing holds
+- **15 palettes:** neutral, azure, red, vermilion, orange, tangerine, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
+- **Brand ramps:** `azure` (MakeMyTrip), `vermilion` (myBiz) and `tangerine` (Goibibo). Each step of `vermilion` and `tangerine` matches the azure step of the same number in contrast against white, so every brand pairing holds
 - **11–12 steps per palette:** `50`, `100`–`900`, `950`, plus `0` on neutral only
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
 - **Brand primary (interactive):** semantic brand roles rest on `color.azure.700` = `#0067E8` (WCAG AA on white). The lighter `color.azure.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
@@ -425,12 +425,12 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 ### 14. Brands (MakeMyTrip, myBiz and Goibibo)
 
-Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: rose instead of azure. Goibibo differs in its brand colour, tangerine, and in its typeface: Rubik instead of Lato, with its own weights.
+Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: vermilion, a red-orange, instead of azure. Goibibo differs in its brand colour, tangerine, and in its typeface: Rubik instead of Lato, with its own weights.
 
 **A brand is a list of value overrides on semantic tokens.** It cannot add, rename or describe a token. The default brand is the plain `primitives` → `semantic` → `component` chain. Another brand adds a `brands/{id}` set that sets new values for a few semantic tokens. Component tokens alias semantic tokens, so every component follows without a component token changing.
 
 ```
-primitives (azure, rose, tangerine, …)  →  semantic  →  component
+primitives (azure, vermilion, tangerine, …)  →  semantic  →  component
                                      ↑
                     brands/mybiz overrides 30 semantic colours
                     brands/goibibo overrides the same 30 colours, typeface.default, weight.bold and weight.black
@@ -442,34 +442,34 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 
 | Semantic token | MakeMyTrip | myBiz | Goibibo |
 |---|---|---|---|
-| `bg-surface-brand` | `azure.50` | `rose.50` | `tangerine.50` |
-| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle` | `azure.100` | `rose.100` | `tangerine.100` |
-| `bg-surface-brand-pressed-strong` | `azure.200` | `rose.200` | `tangerine.200` |
-| `bg-surface-brand-inverse` | `azure.400` | `rose.400` | `tangerine.400` |
-| `bg-fill-brand` | `azure.700` | `rose.700` | `tangerine.700` |
-| `bg-fill-brand-hover` | `azure.800` | `rose.800` | `tangerine.800` |
-| `bg-fill-brand-pressed` | `azure.900` | `rose.900` | `tangerine.900` |
-| `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `rose.700` | `tangerine.700` |
-| `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `rose.600` | `tangerine.600` |
-| `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `rose.800` | `tangerine.800` |
-| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `rose.800` | `tangerine.800` |
-| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `rose.900` | `tangerine.900` |
-| `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `rose.300` | `tangerine.300` |
-| `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `rose.200` | `tangerine.200` |
-| `text-brand-inverse-pressed` | `azure.100` | `rose.100` | `tangerine.100` |
-| `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `rose.400` | `tangerine.400` |
+| `bg-surface-brand` | `azure.50` | `vermilion.50` | `tangerine.50` |
+| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle` | `azure.100` | `vermilion.100` | `tangerine.100` |
+| `bg-surface-brand-pressed-strong` | `azure.200` | `vermilion.200` | `tangerine.200` |
+| `bg-surface-brand-inverse` | `azure.400` | `vermilion.400` | `tangerine.400` |
+| `bg-fill-brand` | `azure.700` | `vermilion.700` | `tangerine.700` |
+| `bg-fill-brand-hover` | `azure.800` | `vermilion.800` | `tangerine.800` |
+| `bg-fill-brand-pressed` | `azure.900` | `vermilion.900` | `tangerine.900` |
+| `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `vermilion.700` | `tangerine.700` |
+| `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `vermilion.600` | `tangerine.600` |
+| `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `vermilion.800` | `tangerine.800` |
+| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `vermilion.800` | `tangerine.800` |
+| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `vermilion.900` | `tangerine.900` |
+| `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `vermilion.300` | `tangerine.300` |
+| `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `vermilion.200` | `tangerine.200` |
+| `text-brand-inverse-pressed` | `azure.100` | `vermilion.100` | `tangerine.100` |
+| `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `vermilion.400` | `tangerine.400` |
 
-**Contrast.** `rose` and `tangerine` were generated so that each step matches the azure step of the same number in contrast against white, within 0.03. Every pairing MakeMyTrip passes, the other brands pass too:
+**Contrast.** `vermilion` and `tangerine` were generated so that each step matches the azure step of the same number in contrast against white, within 0.03. Every pairing MakeMyTrip passes, the other brands pass too:
 
-| Pairing | MakeMyTrip (azure) | myBiz (rose) | Goibibo (tangerine) |
+| Pairing | MakeMyTrip (azure) | myBiz (vermilion) | Goibibo (tangerine) |
 |---|---|---|---|
-| White label on `bg-fill-brand` (700) | 5.11:1 | 5.08:1 | 5.12:1 |
-| `text-brand-hover` on white (600, non-text only) | 3.75:1 | 3.76:1 | 3.76:1 |
-| `text-brand-on-bg-surface-hover` on its tint (800 on 100) | 5.55:1 | 5.53:1 | 5.50:1 |
-| `text-brand-inverse` on `#0A0A0A` (300) | 12.09:1 | 12.10:1 | 12.11:1 |
-| Inverse Primary pressed fill on `#0A0A0A` (900, known gap) | 2.37:1 | 2.37:1 | 2.39:1 |
+| White label on `bg-fill-brand` (700) | 5.11:1 | 5.11:1 | 5.09:1 |
+| `text-brand-hover` on white (600, non-text only) | 3.75:1 | 3.75:1 | 3.77:1 |
+| `text-brand-on-bg-surface-hover` on its tint (800 on 100) | 5.55:1 | 5.54:1 | 5.60:1 |
+| `text-brand-inverse` on `#0A0A0A` (300) | 12.09:1 | 12.16:1 | 12.07:1 |
+| Inverse Primary pressed fill on `#0A0A0A` (900, known gap) | 2.37:1 | 2.36:1 | 2.39:1 |
 
-The previous brand colours, myBiz `#FF664B` and Goibibo `#FF6D38`, read at 2.89:1 and 2.80:1 with white text, so they failed. At that lightness they sit where step 500 sits in a ramp; the accessible primary is step 700. The two brands are also set apart by hue: myBiz moves toward rose red (OKLCH hue 16 at 700) and Goibibo toward a true orange (hue 45), about four times the colour difference the two old colours had. `tokens/contrast` checks every brand, and names the brand in its report.
+The previous brand colours, myBiz `#FF664B` and Goibibo `#FF6D38`, read at 2.89:1 and 2.80:1 with white text, so they failed. At that lightness they sit where step 500 sits in a ramp; the accessible primary is step 700. `vermilion.500` is the old myBiz colour `#FF664B` exactly, so it stays in the system as the bright step; the accessible primary is `vermilion.700` (`#CC3525`). Goibibo moves from hue 39 toward amber (OKLCH hue 52 at 500, `#EF7500`; primary `#B35200`), so the two oranges sit about three times further apart than the old colours did. `tokens/contrast` checks every brand, and names the brand in its report.
 
 **Typography per brand.** The 36 text styles share their sizes, line heights and roles across brands. Each style reads its family from `typeface.default` and its weight from `weight.regular`, `weight.bold` or `weight.black`, the only place a semantic token aliases another semantic token (README → Typography mappings). In Figma, the text styles bind to the same variables in the MakeMyTrip collection, so a brand extension swaps the font for every style at once.
 
@@ -482,7 +482,7 @@ The previous brand colours, myBiz `#FF664B` and Goibibo `#FF6D38`, read at 2.89:
 
 Rubik is wider than Lato and has a taller x-height, so the same size reads larger in Goibibo. The sizes stay shared on purpose. Apps load Rubik themselves, as they do Lato.
 
-**Watch the warning red.** myBiz `bg-fill-brand` (`#CF2D4C`) leans pink and Goibibo (`#B94C00`) leans orange, both further from `bg-fill-warning-strong` (`#C10007`) than the first orange myBiz used. myBiz is still a red, so keep destructive actions in their own confirmation step.
+**Watch the warning red.** myBiz `bg-fill-brand` (`#CC3525`) is a red-orange close to `bg-fill-warning-strong` (`#C10007`). In myBiz, a primary Button and a destructive one differ mainly by label, so keep destructive actions in their own confirmation step. Goibibo (`#B35200`) is clearly orange.
 
 **In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 232 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (36 families and 24 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
 
@@ -572,20 +572,20 @@ The emitted count exceeds the 1730 source tokens because the build expands each 
 
 Token path pattern: `color.{palette}.{step}`
 
-| Step | Neutral | Azure | Red | Rose | Orange | Tangerine | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
-|------|---------|-------|-----|------|--------|-----------|-------|--------|------|-------|------|--------|--------|--------|---------|
+| Step | Neutral | Azure | Red | Vermilion | Orange | Tangerine | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
+|------|---------|-------|-----|-----------|--------|-----------|-------|--------|------|-------|------|--------|--------|--------|---------|
 | `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — | — | — |
-| `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF4F1 | #FFF7ED | #FFF5ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
-| `100` | #F5F5F5 | #D6EFFF | #FFE2E2 | #FFE6E2 | #FFEDD4 | #FFE6D6 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
-| `200` | #E5E5E5 | #C2E8FF | #FFC9C9 | #FFDBD6 | #FFD6A8 | #FFDBC4 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
-| `300` | #D4D4D4 | #83D4FF | #FFA2A2 | #FFB9B3 | #FFB86A | #FFBC91 | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
-| `400` | #A1A1A1 | #48BBFF | #FF6467 | #FF9392 | #FF8904 | #FF975A | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
-| `500` | #737373 | #1E9CFF | #FB2C36 | #FF6371 | #FF6900 | #F86F0A | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
-| `600` | #525252 | #0681FF | #E7000B | #F13E5B | #F54900 | #DB5D00 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
-| `700` | #404040 | #0067E8 | #C10007 | #CF2D4C | #CA3500 | #B94C00 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
-| `800` | #262626 | #0857C5 | #9F0712 | #AC2C42 | #9F2D00 | #9F3F00 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
-| `900` | #171717 | #0D4C9B | #82181A | #8D2A39 | #7E2A0C | #873500 | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
-| `950` | #0A0A0A | #0E2F5D | #460809 | #551D23 | #441306 | #512209 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
+| `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF5F0 | #FFF7ED | #FEF4EC | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
+| `100` | #F5F5F5 | #D6EFFF | #FFE2E2 | #FFE7DD | #FFEDD4 | #FFE8D4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
+| `200` | #E5E5E5 | #C2E8FF | #FFC9C9 | #FFDBCE | #FFD6A8 | #FFDCC2 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
+| `300` | #D4D4D4 | #83D4FF | #FFA2A2 | #FFBBA5 | #FFB86A | #FFBC8A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
+| `400` | #A1A1A1 | #48BBFF | #FF6467 | #FF947A | #FF8904 | #FF9749 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
+| `500` | #737373 | #1E9CFF | #FB2C36 | #FF664B | #FF6900 | #EF7500 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
+| `600` | #525252 | #0681FF | #E7000B | #EF4630 | #F54900 | #D26400 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
+| `700` | #404040 | #0067E8 | #C10007 | #CC3525 | #CA3500 | #B35200 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
+| `800` | #262626 | #0857C5 | #9F0712 | #AB3124 | #9F2D00 | #974500 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
+| `900` | #171717 | #0D4C9B | #82181A | #8B2E23 | #7E2A0C | #813A00 | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
+| `950` | #0A0A0A | #0E2F5D | #460809 | #541E17 | #441306 | #512303 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
 
 The `alpha` palette holds the only translucent colours. Apart from `transparent`, each step is neutral 950 at a fixed alpha, for shadow layers only:
 
