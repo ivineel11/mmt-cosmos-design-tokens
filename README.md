@@ -55,7 +55,8 @@ Export or sync from Tokens Studio into `tokens/tokens.json`. This file is the **
 
 The export must preserve:
 
-- `$metadata.tokenSetOrder`: `["primitives", "semantic", "component"]` — each tier resolves before the one that references it
+- `$metadata.tokenSetOrder`: `["primitives", "semantic", "brands/mybiz", "component"]` — each tier resolves before the one that references it, and a brand set overrides semantic before component aliases it
+- `$themes`: one entry per brand, the default brand (MakeMyTrip) first — see [Brands](#14-brands-makemytrip-and-mybiz)
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
 - `description` on every semantic and component token, and on every primitive colour — see below
@@ -163,7 +164,7 @@ tokens/tokens.json
 dist/web · dist/ios · dist/android
 ```
 
-The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**. Each tier must resolve before the tier that references it — primitives before semantic aliases, semantic before component aliases.
+The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, semantic second, component third**, with any `brands/*` set between semantic and component. Each tier must resolve before the tier that references it — primitives before semantic aliases, semantic before component aliases. The build never merges a brand set into the default build: it builds each brand separately (see [Brands](#14-brands-makemytrip-and-mybiz)).
 
 ### Build pipeline internals
 
@@ -420,6 +421,55 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 - **Primary keeps its fill.** The brand and destructive fills are shared with light, so Primary is the same button on every surface. Its hover and pressed fills get darker, and the pressed fill is only 2.38:1 against `#0A0A0A`. The white label keeps it readable at 5.12:1 or more.
 - **Contrast is linted on the dark canvas.** `tokens/contrast` checks an `-inverse` key against `bg-surface-inverse`, blending a tint over it at its `bg-opacity-*` value first.
 
+### 14. Brands (MakeMyTrip and myBiz)
+
+Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: orange instead of azure. Goibibo will be the next brand.
+
+**A brand is a list of value overrides on semantic tokens.** It cannot add, rename or describe a token. The default brand is the plain `primitives` → `semantic` → `component` chain. Another brand adds a `brands/{id}` set that sets new values for a few semantic tokens. Component tokens alias semantic tokens, so every component follows without a component token changing.
+
+```
+primitives (azure, orange, …)  →  semantic  →  component
+                                     ↑
+                    brands/mybiz overrides 30 semantic values
+```
+
+This is exactly what a **Figma extended collection** does. The semantic collection is the parent and MakeMyTrip. Its `myBiz` extension overrides the same 30 values and inherits everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → semantic: myBiz**.
+
+**Only brand roles change.** Info, links and the focus ring stay azure in every brand, because they signal status and interactivity, not brand. `text-brand-on-bg-fill` and `icon-brand-on-bg-fill` stay white.
+
+| Semantic token | MakeMyTrip | myBiz |
+|---|---|---|
+| `bg-surface-brand` | `azure.50` | `orange.50` |
+| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle` | `azure.100` | `orange.100` |
+| `bg-surface-brand-pressed-strong` | `azure.200` | `orange.200` |
+| `bg-surface-brand-inverse` | `azure.400` | `orange.400` |
+| `bg-fill-brand` | `azure.700` | `orange.700` |
+| `bg-fill-brand-hover` | `azure.800` | `orange.800` |
+| `bg-fill-brand-pressed` | `azure.900` | `orange.900` |
+| `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `orange.700` |
+| `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `orange.600` |
+| `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `orange.800` |
+| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `orange.800` |
+| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `orange.900` |
+| `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `orange.300` |
+| `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `orange.200` |
+| `text-brand-inverse-pressed` | `azure.100` | `orange.100` |
+| `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `orange.400` |
+
+**Contrast.** The orange ramp tracks the azure ramp step for step, so the pairings hold. The primary fill `orange.700` (`#CA3500`) gives the white label 5.22:1, where MakeMyTrip gives 5.11:1. `text-brand-hover` at `orange.600` is 3.59:1 on white. It only backs non-text marks such as the Radio dot, so it clears the 3:1 graphics minimum. On the dark `bg-surface-inverse` (`#0A0A0A`), `text-brand-inverse` reads at 11.61:1 (MakeMyTrip 12.09:1). The Inverse Primary pressed fill, the gap already accepted for MakeMyTrip, drops from 2.37:1 to 2.09:1 against `#0A0A0A`. `tokens/contrast` checks every brand, and names the brand in its report.
+
+**Watch the warning red.** myBiz `bg-fill-brand` (`#CA3500`) sits close to `bg-fill-warning-strong` (`#C10007`). In myBiz, a primary Button and a destructive one differ mainly by label, so keep destructive actions in their own confirmation step.
+
+**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 169 tokens that differ (30 semantic and 139 component) get a runtime switch. Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
+
+**Adding a brand (Goibibo).**
+1. Add `brands/goibibo` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
+2. Add a `$themes` entry with `id: "goibibo"` that enables the three base sets and `brands/goibibo`.
+3. Run `npm run build:tokens`. The outputs gain the brand on their own.
+4. In Figma, extend the semantic collection as `Goibibo` and set the same overrides.
+
+`tokens/brand` enforces the shape: an override must name an existing semantic colour, alias a primitive and differ from the default value, and each brand set must belong to exactly one theme.
+
 ---
 
 ## Best Practices
@@ -436,7 +486,7 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 6. **Run the build and the linter after every token change.** `npm run build:tokens` regenerates all platform outputs; `npm run lint` checks the tier, naming, contrast and description rules and that `dist/` and the docs still match.
 
-7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic", "component"]`. Reordering or dropping a set breaks reference resolution at build time.
+7. **Keep token set order intact.** `$metadata.tokenSetOrder` must remain `["primitives", "semantic", …brand sets, "component"]`. Reordering or dropping a set breaks reference resolution at build time.
 
 8. **Name semantic tokens by role, not value.** Prefer `text-caution` over `text-yellow-700` in the semantic layer (the mapping to yellow happens internally).
 
@@ -1652,6 +1702,43 @@ Box(
 )
 ```
 
+### Brands
+
+The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 169 brandable tokens move. Everything else stays where it is.
+
+```html
+<!-- Web: everything inside switches, including nested components. -->
+<body data-brand="mybiz">…</body>
+```
+
+```ts
+// Web, in JavaScript: brands.ts holds the brandable values per brand.
+import { brands } from "./dist/web/brands.ts";
+brands.mybiz.tokens.colorBgFillBrand; // "#CA3500"
+```
+
+```swift
+// iOS: inject the brand once, read brandable tokens from the environment.
+MyBizHome().environment(\.cosmosBrand, .myBiz)
+
+struct PrimaryButton: View {
+  @Environment(\.cosmosBrand) private var brand
+  var body: some View {
+    Text("Book").foregroundStyle(CosmosTokens.colorTextBrandOnBgFill)
+      .background(brand.colorBgFillBrand)
+  }
+}
+```
+
+```kotlin
+// Android: provide the brand once, read brandable tokens from LocalCosmosBrand.
+CompositionLocalProvider(LocalCosmosBrand provides CosmosBrand.MyBiz) { MyBizHome() }
+
+Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
+```
+
+`CosmosTokens` still carries the brandable tokens as MakeMyTrip constants, so existing code keeps compiling. Code that should follow the brand must read them from `brand` (iOS), `LocalCosmosBrand` (Android) or the CSS custom property (web), never from `CosmosTokens`.
+
 ---
 
 ## File Reference
@@ -1672,6 +1759,10 @@ Box(
 | `dist/ios/CosmosTokens.swift` | Generated SwiftUI enum |
 | `dist/ios/LineHeight.swift` | Generated SwiftUI `.lineHeight` modifier (total line-box height → line spacing) |
 | `dist/android/CosmosTokens.kt` | Generated Compose object (`com.makemytrip.cosmos.tokens`) |
+| `dist/web/brands.ts` | Generated brandable token values per brand (`brands.mybiz.tokens.*`) |
+| `dist/ios/CosmosBrand.swift` | Generated `CosmosBrand` struct and the `\.cosmosBrand` environment value |
+| `dist/android/CosmosBrand.kt` | Generated `CosmosBrand` class and `LocalCosmosBrand` |
+| `scripts/lib/brands.mjs` | Reads brands from `$themes` and builds each brand's token tree, for the build and the linter |
 | `docs-site/` | Browsable documentation site for every token (see below) |
 | `storybook/` | Storybook for the foundations, every token tier and the React components (see below) |
 | `components/*.md` | Component specifications — uSpec-generated where noted, otherwise hand-authored (see below) |
