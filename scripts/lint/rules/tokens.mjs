@@ -698,13 +698,15 @@ const AA_GRAPHIC = 3;
 const COMPONENT_FOREGROUNDS = {
   label: [AA_TEXT, "1.4.3"],
   description: [AA_TEXT, "1.4.3"],
+  title: [AA_TEXT, "1.4.3"],
+  subtitle: [AA_TEXT, "1.4.3"],
   icon: [AA_GRAPHIC, "1.4.11"],
   dot: [AA_GRAPHIC, "1.4.11"],
 };
 
 const contrastRule = {
   id: "tokens/contrast",
-  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3).",
+  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description/title/subtitle (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3).",
   check(api) {
     const t = load(api);
     if (!t) return;

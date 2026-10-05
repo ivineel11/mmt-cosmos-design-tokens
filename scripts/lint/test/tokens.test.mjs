@@ -86,6 +86,8 @@ const cases = [
   ["tokens/contrast", (j) => { j.component.button["label-secondary-inverse-default"].value = "{color.text-brand}"; }, "on color.bg-surface-inverse"],
   // A tint with a bg-opacity-* companion is blended over the canvas, so a heavier tint can fail.
   ["tokens/contrast", (j) => { j.component.button["bg-opacity-tertiary-inverse-default"].value = "{opacity.90}"; }, "at 90% over color.bg-surface-inverse"],
+  // Titles and subtitles are text foregrounds too, paired with the bar fill of the same suffix.
+  ["tokens/contrast", (j) => { j.component["top-app-bar"]["title-inverse"].value = "{color.text-primary}"; }, "top-app-bar.title-inverse"],
   ["tokens/description-required", (j) => { delete j.semantic.color.bg.description; }, "has no description"],
   ["tokens/description-required", (j) => { delete j.primitives.color.red["500"].description; }, "describe-primitives"],
   ["tokens/description-style", (j) => { j.semantic.color.bg.description = "The page's white background canvas."; }, "apostrophe"],
