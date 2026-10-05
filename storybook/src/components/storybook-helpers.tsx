@@ -21,7 +21,8 @@ export function Matrix<R extends string, C extends string>({
     // Scrolls sideways instead of clipping when the grid is wider than the canvas. The
     // padding leaves room for focus rings and the Radio state layer, which overhang.
     <div style={{ maxWidth: "100%", overflowX: "auto", padding: "var(--space-sm)" }}>
-      <div style={{ display: "grid", gridTemplateColumns: `auto repeat(${columns.length}, auto)`, gap: "var(--space-3xl) var(--space-5xl)", alignItems: "center", justifyItems: "start", width: "max-content" }}>
+      {/* 44px between rows. The semantic space scale jumps from 40 to 48, so this uses the spacing-44 primitive. */}
+      <div style={{ display: "grid", gridTemplateColumns: `auto repeat(${columns.length}, auto)`, gap: "var(--spacing-44) var(--space-5xl)", alignItems: "center", justifyItems: "start", width: "max-content" }}>
         <span />
         {columns.map((column) => (
           <span key={column} style={label}>
