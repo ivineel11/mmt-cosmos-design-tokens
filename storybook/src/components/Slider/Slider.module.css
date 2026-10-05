@@ -102,11 +102,17 @@
 }
 .tick[data-active="true"] { background: var(--_tick-active); }
 
+/*
+ * Centred with the translate property, not transform: browsers apply translate after
+ * scale, so the grow press and the halo fade scale about the thumb centre and stay on
+ * the track. With transform: translate(), the scale runs about the unshifted box and the
+ * thumb drifts up and left (4px at Medium) as it grows.
+ */
 .thumb, .halo {
   position: absolute;
   top: 50%;
   border-radius: var(--slider-radius);
-  transform: translate(-50%, -50%);
+  translate: -50% -50%;
 }
 /* The halo sits under the track, so the track shows through it. */
 .halo {
