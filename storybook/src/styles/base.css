@@ -32,8 +32,10 @@ body {
   font-size: var(--headline-small-bold-font-size);
   line-height: var(--headline-small-bold-line-height);
   font-weight: var(--font-weight-bold);
-  margin-block: var(--space-7xl) var(--space-md);
-  padding-block-end: var(--space-sm);
+  margin-block: var(--space-7xl) var(--space-xl);
+  /* No rule under section headings. */
+  padding-block-end: 0;
+  border-block-end: 0;
 }
 .sbdocs.sbdocs-content h3:not(.sb-unstyled *) {
   font-size: var(--title-medium-bold-font-size);
