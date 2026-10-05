@@ -201,7 +201,8 @@ export function Palettes() {
 }
 
 /** Semantic colours for one role group (bg, surface, fill, text, border, icon). */
-export function ColorRole({ role }: { role: string }) {
+/** showPreview={false} drops the contrast sample column, for roles that are never text, such as surfaces. */
+export function ColorRole({ role, showPreview = true }: { role: string; showPreview?: boolean }) {
   const group = data.semantic.colorGroups.find((candidate) => candidate.id === role);
   const flat = new Map(select("semantic", "color.").map((token) => [token.path, token]));
   if (!group) return null;
@@ -210,7 +211,7 @@ export function ColorRole({ role }: { role: string }) {
   return (
     <TokenRows
       tokens={tokens}
-      preview={(token) => {
+      preview={showPreview ? (token) => {
         const ratio = contrast.get(token.path);
         if (!ratio) return null;
         const against = select("semantic", ratio.against)[0];
@@ -222,7 +223,7 @@ export function ColorRole({ role }: { role: string }) {
             <Pass ratio={ratio.ratio} />
           </span>
         );
-      }}
+      } : undefined}
     />
   );
 }

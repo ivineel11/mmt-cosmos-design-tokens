@@ -93,7 +93,7 @@
   display: inline-block;
   inline-size: var(--space-3xl);
   block-size: var(--space-3xl);
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius-md);
   border: var(--stroke-default) solid var(--color-border-secondary);
   vertical-align: middle;
   margin-inline-end: var(--space-sm);
@@ -149,7 +149,7 @@
 .doc-pass[data-pass="aaa"], .doc-pass[data-pass="aa"] { background: var(--color-bg-surface-success); color: var(--color-text-success); }
 .doc-pass[data-pass="large"] { background: var(--color-bg-surface-caution); color: var(--color-text-caution); }
 .doc-pass[data-pass="fail"] { background: var(--color-bg-surface-warning); color: var(--color-text-warning); }
-.doc-sample-text { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-xs); font-weight: var(--font-weight-bold); }
+.doc-sample-text { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-md); font-weight: var(--font-weight-bold); }
 
 .doc-pairs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-xl); }
 .doc-canvas { padding: var(--space-3xl); border-radius: var(--radius-lg); border: var(--stroke-default) solid var(--color-border-secondary); }
