@@ -1,0 +1,179 @@
+/*
+ * List: components/list.md. Every value is a list/* or semantic token.
+ * Motion is not tokenised: fills change in 100ms linear on web.
+ */
+
+.list {
+  --_min-height: var(--list-min-height-comfortable);
+  --_pad-x: var(--list-padding-x-comfortable);
+  --_pad-y: var(--list-padding-y-comfortable);
+  --_gap: var(--list-gap-comfortable);
+  --_gap-trailing-text: var(--list-gap-text-trailing-comfortable);
+  --_gap-trailing: var(--list-gap-trailing-comfortable);
+  --_icon: var(--list-leading-icon-size-comfortable);
+  --_container: var(--list-leading-container-size-comfortable);
+  --_container-icon: var(--list-leading-container-icon-size-comfortable);
+  --_image: var(--list-leading-image-size-comfortable);
+  --_chevron: var(--list-chevron-size-comfortable);
+  --_title-weight: var(--body-large-regular-font-weight);
+  --_title-size: var(--body-large-regular-font-size);
+  --_title-line: var(--body-large-regular-line-height);
+  --_text-weight: var(--body-medium-regular-font-weight);
+  --_text-size: var(--body-medium-regular-font-size);
+  --_text-line: var(--body-medium-regular-line-height);
+  --_header-top: var(--list-section-header-padding-top-comfortable);
+  --_header-bottom: var(--list-section-header-padding-bottom-comfortable);
+  --_title-nudge: 0px;
+  --_text-nudge: calc(var(--space-3xs) / -4);
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-lato), system-ui, sans-serif;
+}
+.list[data-density="compact"] {
+  --_min-height: var(--list-min-height-compact);
+  --_pad-x: var(--list-padding-x-compact);
+  --_pad-y: var(--list-padding-y-compact);
+  --_gap: var(--list-gap-compact);
+  --_gap-trailing-text: var(--list-gap-text-trailing-compact);
+  --_gap-trailing: var(--list-gap-trailing-compact);
+  --_icon: var(--list-leading-icon-size-compact);
+  --_container: var(--list-leading-container-size-compact);
+  --_container-icon: var(--list-leading-container-icon-size-compact);
+  --_image: var(--list-leading-image-size-compact);
+  --_chevron: var(--list-chevron-size-compact);
+  --_title-weight: var(--body-medium-regular-font-weight);
+  --_title-size: var(--body-medium-regular-font-size);
+  --_title-line: var(--body-medium-regular-line-height);
+  --_text-weight: var(--body-small-regular-font-weight);
+  --_text-size: var(--body-small-regular-font-size);
+  --_text-line: var(--body-small-regular-line-height);
+  --_header-top: var(--list-section-header-padding-top-compact);
+  --_header-bottom: var(--list-section-header-padding-bottom-compact);
+  --_title-nudge: calc(var(--space-3xs) / -4);
+  --_text-nudge: calc(var(--space-3xs) / 4);
+}
+
+/* Grouped rows sit in a white card that clips them, so edge rows take the card radius. */
+.list[data-variant="grouped"] { background: var(--list-bg-grouped); border-radius: var(--list-grouped-radius); overflow: hidden; }
+
+.section + .section { margin-top: var(--list-grouped-gap); }
+.header {
+  margin: 0;
+  padding: var(--_header-top) var(--_pad-x) var(--_header-bottom);
+  color: var(--list-section-header-text);
+  font-family: var(--font-family-lato), system-ui, sans-serif;
+  font-weight: var(--label-small-bold-font-weight);
+  font-size: var(--label-small-bold-font-size);
+  line-height: var(--label-small-bold-line-height);
+}
+
+/* ---------------------------------------------------------------- row */
+
+.row {
+  --_bg: var(--list-item-bg-default);
+  --_title: var(--list-title-default);
+  --_text: var(--list-supporting-text-default);
+  --_meta: var(--list-meta-text-default);
+  --_lead-icon: var(--list-leading-icon-default);
+  --_chev: var(--list-chevron-default);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--_gap);
+  width: 100%;
+  min-height: var(--_min-height);
+  margin: 0;
+  padding: 0 0 0 var(--_pad-x);
+  border: 0;
+  background: var(--_bg);
+  color: var(--_title);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  transition: background-color 100ms linear;
+  -webkit-tap-highlight-color: transparent;
+}
+.row[data-lines="3"] { align-items: flex-start; }
+.row[data-interactive="true"] { cursor: pointer; }
+.row[data-interactive="true"]:hover:not([data-disabled="true"]) { --_bg: var(--list-item-bg-hover); }
+.row[data-interactive="true"]:active:not([data-disabled="true"]) { --_bg: var(--list-item-bg-pressed); }
+.row[data-disabled="true"] {
+  --_bg: var(--list-item-bg-disabled);
+  --_title: var(--list-title-disabled);
+  --_text: var(--list-supporting-text-disabled);
+  --_meta: var(--list-meta-text-disabled);
+  --_lead-icon: var(--list-leading-icon-disabled);
+  --_chev: var(--list-chevron-disabled);
+  cursor: not-allowed;
+}
+
+/* Focus ring inside the row, since rows run edge to edge. */
+.row:focus { outline: none; }
+.row:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: var(--list-focus-ring-inset);
+  border: var(--list-focus-ring-width) solid var(--list-focus-ring);
+  border-radius: var(--list-focus-ring-radius);
+  pointer-events: none;
+}
+
+.leading { display: flex; flex: none; padding-block: var(--_pad-y); }
+.leadingIcon { color: var(--_lead-icon); }
+.container {
+  display: grid;
+  place-items: center;
+  width: var(--_container);
+  height: var(--_container);
+  border-radius: var(--list-leading-container-radius);
+  background: var(--list-leading-container-bg-neutral);
+  color: var(--list-leading-container-icon-neutral);
+}
+.container[data-tone="brand"] { background: var(--list-leading-container-bg-brand); color: var(--list-leading-container-icon-brand); }
+.row[data-disabled="true"] .container { background: var(--list-leading-container-bg-disabled); color: var(--list-leading-container-icon-disabled); }
+.image { display: block; width: var(--_image); height: var(--_image); object-fit: cover; border-radius: var(--list-image-radius); }
+.image[data-shape="square"] { border-radius: var(--list-image-radius-square); }
+
+.main {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: inherit;
+  gap: var(--_gap-trailing-text);
+  min-width: 0;
+  align-self: stretch;
+  padding: var(--_pad-y) var(--_pad-x) var(--_pad-y) 0;
+}
+.text { display: grid; flex: 1 1 auto; gap: var(--list-gap-text); min-width: 0; align-self: center; }
+.row[data-lines="3"] .text { align-self: flex-start; }
+.title, .supporting, .meta { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; }
+/* Half-pixel optical shifts for 12px and 14px text: see storybook/README.md, Component rules. */
+.title, .supporting, .meta { position: relative; }
+.title { top: var(--_title-nudge); }
+.supporting, .meta { top: var(--_text-nudge); }
+.title { -webkit-line-clamp: 2; color: var(--_title); font-weight: var(--_title-weight); font-size: var(--_title-size); line-height: var(--_title-line); }
+.supporting { -webkit-line-clamp: 2; color: var(--_text); font-weight: var(--_text-weight); font-size: var(--_text-size); line-height: var(--_text-line); }
+.third { -webkit-line-clamp: 1; }
+
+.trailing { display: flex; flex: none; align-items: center; gap: var(--_gap-trailing); max-width: 50%; }
+.meta { -webkit-line-clamp: 1; color: var(--_meta); font-weight: var(--_text-weight); font-size: var(--_text-size); line-height: var(--_text-line); }
+.chevron { color: var(--_chev); }
+
+/* The divider starts where the text starts and runs to the right edge. */
+.divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--list-divider-width);
+  background: var(--list-divider);
+  pointer-events: none;
+}
+.list > :last-child .divider, .list[data-dividers="false"] .divider { display: none; }
+
+/* Hidden input-free label rows use the Checkbox, Radio or Switch inside as the control. */
+.control { display: flex; }

@@ -1,0 +1,144 @@
+/*
+ * Menu: components/menu.md. Every value is a menu/* or semantic token; the panel shadow
+ * is shadow.overlay until a menu/shadow token exists (spec, Known gaps). Motion is not
+ * tokenised: open fades and scales from 0.96 over 150ms, close fades in 100ms.
+ */
+
+.panel {
+  --_pad: var(--menu-padding-comfortable);
+  --_radius: var(--menu-radius-comfortable);
+  --_item-min: var(--menu-item-min-height-comfortable);
+  --_item-pad-x: var(--menu-item-padding-x-comfortable);
+  --_item-pad-y: var(--menu-item-padding-y-comfortable);
+  --_item-radius: var(--menu-item-radius-comfortable);
+  --_gap: var(--menu-gap-comfortable);
+  --_gap-trailing: var(--menu-gap-text-trailing-comfortable);
+  --_lead: var(--menu-leading-icon-size-comfortable);
+  --_trail: var(--menu-trailing-icon-size-comfortable);
+  --_label-weight: var(--label-large-regular-font-weight);
+  --_label-size: var(--label-large-regular-font-size);
+  --_label-line: var(--label-large-regular-line-height);
+  --_text-weight: var(--body-medium-regular-font-weight);
+  --_text-size: var(--body-medium-regular-font-size);
+  --_text-line: var(--body-medium-regular-line-height);
+  --_header-top: var(--menu-section-header-padding-top-comfortable);
+  --_header-bottom: var(--menu-section-header-padding-bottom-comfortable);
+  --_divider-space: var(--menu-divider-spacing-comfortable);
+  --_origin: top left; /* set by the component to the corner nearest the trigger */
+  --_label-nudge: 0px;
+  --_text-nudge: calc(var(--space-3xs) / -4);
+
+  position: fixed;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: var(--menu-min-width);
+  max-width: var(--menu-max-width);
+  max-height: calc(100vh - 2 * var(--space-xs));
+  overflow-y: auto;
+  margin: 0;
+  padding: var(--_pad);
+  border: var(--menu-border-width) solid var(--menu-border);
+  border-radius: var(--_radius);
+  background: var(--menu-bg);
+  box-shadow: var(--shadow-overlay);
+  font-family: var(--font-family-lato), system-ui, sans-serif;
+  animation: open 150ms cubic-bezier(0.2, 0, 0, 1);
+  transform-origin: var(--_origin);
+}
+.panel[data-density="compact"] {
+  --_pad: var(--menu-padding-compact);
+  --_radius: var(--menu-radius-compact);
+  --_item-min: var(--menu-item-min-height-compact);
+  --_item-pad-x: var(--menu-item-padding-x-compact);
+  --_item-pad-y: var(--menu-item-padding-y-compact);
+  --_item-radius: var(--menu-item-radius-compact);
+  --_gap: var(--menu-gap-compact);
+  --_gap-trailing: var(--menu-gap-text-trailing-compact);
+  --_lead: var(--menu-leading-icon-size-compact);
+  --_trail: var(--menu-trailing-icon-size-compact);
+  --_label-weight: var(--label-medium-regular-font-weight);
+  --_label-size: var(--label-medium-regular-font-size);
+  --_label-line: var(--label-medium-regular-line-height);
+  --_text-weight: var(--body-small-regular-font-weight);
+  --_text-size: var(--body-small-regular-font-size);
+  --_text-line: var(--body-small-regular-line-height);
+  --_header-top: var(--menu-section-header-padding-top-compact);
+  --_header-bottom: var(--menu-section-header-padding-bottom-compact);
+  --_divider-space: var(--menu-divider-spacing-compact);
+  --_label-nudge: calc(var(--space-3xs) / -4);
+  --_text-nudge: calc(var(--space-3xs) / 4);
+}
+@keyframes open { from { opacity: 0; transform: scale(0.96); } }
+@media (prefers-reduced-motion: reduce) { .panel { animation: fade 150ms linear; } }
+@keyframes fade { from { opacity: 0; } }
+
+.group { display: flex; flex-direction: column; }
+
+.header {
+  padding: var(--_header-top) var(--_item-pad-x) var(--_header-bottom);
+  color: var(--menu-section-header-text);
+  font-weight: var(--label-small-bold-font-weight);
+  font-size: var(--label-small-bold-font-size);
+  line-height: var(--label-small-bold-line-height);
+}
+
+.divider { flex: none; height: var(--menu-divider-width); margin: var(--_divider-space) 0; border: 0; background: var(--menu-divider); }
+
+.item {
+  --_bg: var(--menu-item-bg-default);
+  --_label: var(--menu-label-default);
+  --_text: var(--menu-supporting-text-default);
+  --_meta: var(--menu-meta-text-default);
+  --_icon: var(--menu-leading-icon-default);
+  --_chevron: var(--menu-chevron-default);
+  --_check: var(--menu-check-default);
+
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--_gap);
+  min-height: var(--_item-min);
+  padding: var(--_item-pad-y) var(--_item-pad-x);
+  border-radius: var(--_item-radius);
+  background: var(--_bg);
+  color: var(--_label);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+/* One highlight, shared by the pointer and the keyboard: the focused row. */
+.item:focus { --_bg: var(--menu-item-bg-focus); }
+.item[aria-expanded="true"] { --_bg: var(--menu-item-bg-open); }
+.item:active { --_bg: var(--menu-item-bg-pressed); }
+/* A keyboard highlight adds the ring, because the grey fill alone is 1.09:1. */
+.item:focus-visible { outline: var(--menu-focus-ring-width) solid var(--menu-focus-ring); outline-offset: calc(-1 * var(--menu-focus-ring-width)); }
+
+.item[data-destructive="true"] { --_label: var(--menu-label-destructive-default); --_icon: var(--menu-leading-icon-destructive-default); }
+.item[data-destructive="true"]:focus { --_bg: var(--menu-item-bg-destructive-hover); --_label: var(--menu-label-destructive-hover); --_icon: var(--menu-leading-icon-destructive-hover); }
+.item[data-destructive="true"]:active { --_bg: var(--menu-item-bg-destructive-pressed); --_label: var(--menu-label-destructive-pressed); --_icon: var(--menu-leading-icon-destructive-pressed); }
+
+.item[aria-disabled="true"] {
+  --_label: var(--menu-label-disabled);
+  --_text: var(--menu-supporting-text-disabled);
+  --_meta: var(--menu-meta-text-disabled);
+  --_icon: var(--menu-leading-icon-disabled);
+  --_chevron: var(--menu-chevron-disabled);
+  --_check: var(--menu-check-disabled);
+  cursor: not-allowed;
+}
+.item[aria-disabled="true"]:focus, .item[aria-disabled="true"]:active { --_bg: var(--menu-item-bg-disabled); }
+
+.icon { flex: none; color: var(--_icon); }
+.main { display: flex; flex: 1 1 auto; align-items: center; gap: var(--_gap-trailing); min-width: 0; }
+.text { display: grid; flex: 1 1 auto; gap: var(--menu-gap-text); min-width: 0; }
+/* Half-pixel optical shifts for 12px and 14px text: see storybook/README.md, Component rules. */
+.label { position: relative; top: var(--_label-nudge); }
+.supporting, .meta { position: relative; top: var(--_text-nudge); }
+.label { font-weight: var(--_label-weight); font-size: var(--_label-size); line-height: var(--_label-line); overflow-wrap: anywhere; }
+.supporting { color: var(--_text); font-weight: var(--_text-weight); font-size: var(--_text-size); line-height: var(--_text-line); }
+.meta { flex: none; color: var(--_meta); font-weight: var(--_text-weight); font-size: var(--_text-size); line-height: var(--_text-line); }
+.chevron { flex: none; color: var(--_chevron); }
+.check { flex: none; color: var(--_check); }

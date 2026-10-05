@@ -1,0 +1,39 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Tooltip.stories";
+
+<Meta of={Stories} />
+
+# Tooltip
+
+A small bubble that explains the thing it points at. **Plain** is one short label that goes away by itself. **Rich** can hold media, an icon, a title, a message, a close button and a footer with a step count and text actions; it stays open until dismissed, and several in a row make an onboarding tour. Figma set `881:362`. Full spec: [components/tooltip.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/tooltip.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Surfaces
+
+**Dark** is the default. **Light** suits photos, maps and dark sections. **Info** is for friendly tips and feature hints, never errors.
+
+<Canvas of={Stories.Surfaces} />
+
+## Side and caret
+
+Side is where the bubble sits; the caret sits at the start, centre or end of the edge facing the trigger, or is hidden while the bubble stays in place. In product the tooltip flips when there is no room, shifts along the edge, and keeps the caret aimed at the trigger.
+
+<Canvas of={Stories.SideAndCaret} />
+
+## Examples
+
+Hover or focus an info icon for a Plain tooltip: hover waits 300 ms, focus opens at once, and the bubble stays while the pointer is over it. Click a trigger for a Rich tooltip. Only one tooltip is open at a time.
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- Plain: `role="tooltip"`, referenced by the trigger with `aria-describedby`. It never takes focus, never holds anything interactive, and Esc closes it.
+- Rich: a non-modal `role="dialog"` named by its title. Opened from its trigger, focus moves in; Esc, close or an action returns it to the trigger. Tab order is secondary action, primary action, close.
+- A tour step is part of the name, such as "1 of 3, New: Filter by airline".
+- The trigger is a real button with an accessible name, with a 48 hit area even when its icon is 16.
+- Never hide information the user needs to finish the task in a tooltip.
+
+<ArgTypes of={Stories} />

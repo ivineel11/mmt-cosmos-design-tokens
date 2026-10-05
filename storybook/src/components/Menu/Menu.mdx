@@ -1,0 +1,34 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Menu.stories";
+
+<Meta of={Stories} />
+
+# Menu
+
+A list of actions or options anchored to a trigger: an overflow menu on a booking card, a sort menu, a context menu with a submenu. Figma panels `781:3973` and `781:4046`, rows `781:231`. Full spec: [components/menu.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/menu.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Panel
+
+The panel opens 4 below the trigger, aligned to its start edge (or its end edge for an overflow menu), and flips above when there is no room. It hugs its widest row between 200 and 320. Destructive rows come last, after a divider, and take a red tint when highlighted.
+
+<Canvas of={Stories.Comfortable} />
+<Canvas of={Stories.Compact} />
+
+## Examples
+
+Choosing an action closes the whole menu and returns focus to the trigger. The sort menu shows a check on the current option. On the context menu, hover or Right arrow opens the submenu beside its row; Left arrow or Esc closes it.
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- The trigger is a button with `aria-haspopup="menu"` and `aria-expanded`. Enter, Space or Down arrow open the menu with focus on the first row; Up arrow focuses the last.
+- `role="menu"` with `menuitem` rows, or `menuitemradio` with `aria-checked` for single-select. Section headers label their `group`; dividers are separators.
+- One highlight, shared by the pointer and the keyboard. A keyboard highlight adds the focus ring, because the grey fill alone is 1.09:1.
+- Disabled rows stay reachable by arrow keys so they are announced. Shortcuts use `aria-keyshortcuts`.
+- Esc, Tab or a click outside closes the menu.
+
+<ArgTypes of={Stories} />

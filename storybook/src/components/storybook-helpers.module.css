@@ -1,0 +1,18 @@
+/* Storybook-only helpers, not part of any component. */
+
+/* An icon-only demo trigger: 48 hit area, the Cosmos focus ring. */
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  width: var(--space-6xl);
+  height: var(--space-6xl);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-icon-secondary);
+  cursor: pointer;
+  vertical-align: middle;
+}
+.iconButton:hover { background: var(--color-bg-fill-hover); }
+.iconButton:focus { outline: none; }
+.iconButton:focus-visible { outline: var(--stroke-focus) solid var(--color-border-focus); outline-offset: calc(-1 * var(--stroke-focus)); }

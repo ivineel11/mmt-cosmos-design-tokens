@@ -9,15 +9,21 @@ export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "s
   size?: "small" | "medium" | "large";
   /** Set on every member of the group: the error belongs to the group. */
   invalid?: boolean;
+  /**
+   * The wrapper element. Use "span" when the control sits inside another label, such as
+   * a List selection row, where the whole row is the label.
+   */
+  wrapper?: "label" | "span";
 };
 
 /** Radio: components/radio.md (Figma 442:415). A native radio under a drawn circle. */
-export function Radio({ label, description, size = "medium", invalid = false, disabled = false, className, id, ...rest }: RadioProps) {
+export function Radio({ label, description, size = "medium", invalid = false, disabled = false, wrapper = "label", className, id, ...rest }: RadioProps) {
   const autoId = useId();
   const inputId = id ?? autoId;
   const descriptionId = description ? `${inputId}-description` : undefined;
+  const Wrapper = wrapper;
   return (
-    <label className={[styles.root, className].filter(Boolean).join(" ")} data-size={size} data-invalid={invalid} data-disabled={disabled}>
+    <Wrapper className={[styles.root, className].filter(Boolean).join(" ")} data-size={size} data-invalid={invalid} data-disabled={disabled}>
       <input
         {...rest}
         id={inputId}
@@ -40,6 +46,6 @@ export function Radio({ label, description, size = "medium", invalid = false, di
           )}
         </span>
       )}
-    </label>
+    </Wrapper>
   );
 }

@@ -1,0 +1,137 @@
+/*
+ * Snackbar: components/snackbar.md. Every value is a snackbar/* or semantic token; the
+ * shadow is shadow.card, as the spec binds it. Appearance (inverse, tinted) is on trial.
+ * Motion is not tokenised: enter slides up 16 and fades over 250ms, exit fades in 200ms.
+ */
+
+.root {
+  --_border: transparent;
+  --_control-bg: var(--snackbar-bg-control-inverse-default);
+  --_control-bg-hover: var(--snackbar-bg-control-inverse-hover);
+  --_control-bg-pressed: var(--snackbar-bg-control-inverse-pressed);
+  --_action: var(--snackbar-label-control-inverse-default);
+  --_action-hover: var(--snackbar-label-control-inverse-hover);
+  --_action-pressed: var(--snackbar-label-control-inverse-pressed);
+  --_close: var(--snackbar-icon-control-inverse-default);
+  --_close-hover: var(--snackbar-icon-control-inverse-hover);
+  --_close-pressed: var(--snackbar-icon-control-inverse-pressed);
+  /* Half-pixel optical shift for 14px text: see storybook/README.md, Component rules. */
+  --_nudge: calc(var(--space-3xs) / -4);
+
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--snackbar-gap-controls);
+  min-height: var(--snackbar-min-height);
+  padding: var(--snackbar-padding-y) var(--snackbar-padding-end-control) var(--snackbar-padding-y) var(--snackbar-padding-x);
+  border-radius: var(--snackbar-radius);
+  background: var(--_bg);
+  /* Tinted draws a 1px border inside, so both appearances share one size. */
+  box-shadow: inset 0 0 0 var(--snackbar-border-width) var(--_border), var(--shadow-card);
+  color: var(--_label);
+  font-family: var(--font-family-lato), system-ui, sans-serif;
+  animation: enter 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+@keyframes enter { from { opacity: 0; transform: translateY(var(--space-md)); } }
+@media (prefers-reduced-motion: reduce) { .root { animation: fade 250ms linear; } }
+@keyframes fade { from { opacity: 0; } }
+
+.content { display: flex; flex: 1 1 auto; align-items: center; gap: var(--snackbar-gap); min-width: 0; padding-right: var(--snackbar-content-padding-end); }
+.icon { flex: none; color: var(--_icon); }
+.text { display: grid; gap: var(--snackbar-gap-text); min-width: 0; }
+.title, .message { position: relative; top: var(--_nudge); }
+.title { font-weight: var(--title-small-bold-font-weight); font-size: var(--title-small-bold-font-size); line-height: var(--title-small-bold-line-height); }
+.message { font-weight: var(--body-medium-regular-font-weight); font-size: var(--body-medium-regular-font-size); line-height: var(--body-medium-regular-line-height); }
+
+/* Stacked: the action gets its own row, right-aligned. */
+.root[data-layout="stacked"] { flex-direction: column; align-items: stretch; gap: var(--snackbar-stacked-gap); }
+.top { display: flex; align-items: flex-start; gap: var(--snackbar-gap-controls); }
+.root[data-layout="stacked"] .content { align-items: flex-start; padding-top: var(--snackbar-content-padding-top-stacked); }
+.actions { display: flex; justify-content: flex-end; }
+
+/* Action and close. At rest the fill equals the snackbar, so the action reads as text. */
+.control {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: var(--snackbar-control-height);
+  margin: 0;
+  border: 0;
+  border-radius: var(--snackbar-control-radius);
+  background: var(--_control-bg);
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.control::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--snackbar-min-touch-target));
+  height: max(100%, var(--snackbar-min-touch-target));
+  transform: translate(-50%, -50%);
+}
+.control:hover { background: var(--_control-bg-hover); }
+.control:active { background: var(--_control-bg-pressed); }
+.control:focus { outline: none; }
+.control:focus-visible { outline: var(--snackbar-focus-ring-width) solid var(--snackbar-focus-ring); outline-offset: var(--snackbar-focus-ring-offset); }
+
+.action { padding: 0 var(--snackbar-control-padding-x); color: var(--_action); font-weight: var(--label-medium-bold-font-weight); font-size: var(--label-medium-bold-font-size); line-height: var(--label-medium-bold-line-height); white-space: nowrap; }
+.action > span { position: relative; top: var(--_nudge); }
+.action:hover { color: var(--_action-hover); }
+.action:active { color: var(--_action-pressed); }
+.close { width: var(--snackbar-close-size); padding: 0; color: var(--_close); }
+.close:hover { color: var(--_close-hover); }
+.close:active { color: var(--_close-pressed); }
+
+/* The viewport: two live regions that exist before any message arrives. */
+.viewport {
+  position: fixed;
+  left: var(--snackbar-margin-mobile);
+  right: var(--snackbar-margin-mobile);
+  bottom: var(--snackbar-margin-mobile);
+  z-index: 1100;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.viewport > * { pointer-events: auto; }
+.root[data-appearance="inverse"][data-intent="neutral"] { --_bg: var(--snackbar-bg-inverse-neutral); --_label: var(--snackbar-label-inverse-neutral); --_icon: var(--snackbar-icon-inverse-neutral); }
+.root[data-appearance="tinted"][data-intent="neutral"] {
+  --_bg: var(--snackbar-bg-tinted-neutral); --_border: var(--snackbar-border-tinted-neutral); --_label: var(--snackbar-label-tinted-neutral); --_icon: var(--snackbar-icon-tinted-neutral);
+  --_control-bg: var(--snackbar-bg-control-tinted-neutral-default); --_control-bg-hover: var(--snackbar-bg-control-tinted-neutral-hover); --_control-bg-pressed: var(--snackbar-bg-control-tinted-neutral-pressed);
+  --_action: var(--snackbar-label-control-tinted-neutral-default); --_action-hover: var(--snackbar-label-control-tinted-neutral-hover); --_action-pressed: var(--snackbar-label-control-tinted-neutral-pressed);
+  --_close: var(--snackbar-icon-control-tinted-neutral-default); --_close-hover: var(--snackbar-icon-control-tinted-neutral-hover); --_close-pressed: var(--snackbar-icon-control-tinted-neutral-pressed);
+}
+.root[data-appearance="inverse"][data-intent="info"] { --_bg: var(--snackbar-bg-inverse-info); --_label: var(--snackbar-label-inverse-info); --_icon: var(--snackbar-icon-inverse-info); }
+.root[data-appearance="tinted"][data-intent="info"] {
+  --_bg: var(--snackbar-bg-tinted-info); --_border: var(--snackbar-border-tinted-info); --_label: var(--snackbar-label-tinted-info); --_icon: var(--snackbar-icon-tinted-info);
+  --_control-bg: var(--snackbar-bg-control-tinted-info-default); --_control-bg-hover: var(--snackbar-bg-control-tinted-info-hover); --_control-bg-pressed: var(--snackbar-bg-control-tinted-info-pressed);
+  --_action: var(--snackbar-label-control-tinted-info-default); --_action-hover: var(--snackbar-label-control-tinted-info-hover); --_action-pressed: var(--snackbar-label-control-tinted-info-pressed);
+  --_close: var(--snackbar-icon-control-tinted-info-default); --_close-hover: var(--snackbar-icon-control-tinted-info-hover); --_close-pressed: var(--snackbar-icon-control-tinted-info-pressed);
+}
+.root[data-appearance="inverse"][data-intent="success"] { --_bg: var(--snackbar-bg-inverse-success); --_label: var(--snackbar-label-inverse-success); --_icon: var(--snackbar-icon-inverse-success); }
+.root[data-appearance="tinted"][data-intent="success"] {
+  --_bg: var(--snackbar-bg-tinted-success); --_border: var(--snackbar-border-tinted-success); --_label: var(--snackbar-label-tinted-success); --_icon: var(--snackbar-icon-tinted-success);
+  --_control-bg: var(--snackbar-bg-control-tinted-success-default); --_control-bg-hover: var(--snackbar-bg-control-tinted-success-hover); --_control-bg-pressed: var(--snackbar-bg-control-tinted-success-pressed);
+  --_action: var(--snackbar-label-control-tinted-success-default); --_action-hover: var(--snackbar-label-control-tinted-success-hover); --_action-pressed: var(--snackbar-label-control-tinted-success-pressed);
+  --_close: var(--snackbar-icon-control-tinted-success-default); --_close-hover: var(--snackbar-icon-control-tinted-success-hover); --_close-pressed: var(--snackbar-icon-control-tinted-success-pressed);
+}
+.root[data-appearance="inverse"][data-intent="caution"] { --_bg: var(--snackbar-bg-inverse-caution); --_label: var(--snackbar-label-inverse-caution); --_icon: var(--snackbar-icon-inverse-caution); }
+.root[data-appearance="tinted"][data-intent="caution"] {
+  --_bg: var(--snackbar-bg-tinted-caution); --_border: var(--snackbar-border-tinted-caution); --_label: var(--snackbar-label-tinted-caution); --_icon: var(--snackbar-icon-tinted-caution);
+  --_control-bg: var(--snackbar-bg-control-tinted-caution-default); --_control-bg-hover: var(--snackbar-bg-control-tinted-caution-hover); --_control-bg-pressed: var(--snackbar-bg-control-tinted-caution-pressed);
+  --_action: var(--snackbar-label-control-tinted-caution-default); --_action-hover: var(--snackbar-label-control-tinted-caution-hover); --_action-pressed: var(--snackbar-label-control-tinted-caution-pressed);
+  --_close: var(--snackbar-icon-control-tinted-caution-default); --_close-hover: var(--snackbar-icon-control-tinted-caution-hover); --_close-pressed: var(--snackbar-icon-control-tinted-caution-pressed);
+}
+.root[data-appearance="inverse"][data-intent="warning"] { --_bg: var(--snackbar-bg-inverse-warning); --_label: var(--snackbar-label-inverse-warning); --_icon: var(--snackbar-icon-inverse-warning); }
+.root[data-appearance="tinted"][data-intent="warning"] {
+  --_bg: var(--snackbar-bg-tinted-warning); --_border: var(--snackbar-border-tinted-warning); --_label: var(--snackbar-label-tinted-warning); --_icon: var(--snackbar-icon-tinted-warning);
+  --_control-bg: var(--snackbar-bg-control-tinted-warning-default); --_control-bg-hover: var(--snackbar-bg-control-tinted-warning-hover); --_control-bg-pressed: var(--snackbar-bg-control-tinted-warning-pressed);
+  --_action: var(--snackbar-label-control-tinted-warning-default); --_action-hover: var(--snackbar-label-control-tinted-warning-hover); --_action-pressed: var(--snackbar-label-control-tinted-warning-pressed);
+  --_close: var(--snackbar-icon-control-tinted-warning-default); --_close-hover: var(--snackbar-icon-control-tinted-warning-hover); --_close-pressed: var(--snackbar-icon-control-tinted-warning-pressed);
+}

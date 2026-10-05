@@ -1,0 +1,168 @@
+/*
+ * Tooltip: components/tooltip.md. Every value is a tooltip/* or semantic token.
+ * Motion is not tokenised: enter fades and slides 4 from the trigger over 150ms.
+ */
+
+.bubble {
+  --_bg: var(--tooltip-bg-dark);
+  --_border: transparent;
+  --_shadow: 0 0 transparent;
+  --_label: var(--tooltip-label-dark);
+  --_desc: var(--tooltip-description-dark);
+  --_icon: var(--tooltip-icon-dark);
+  --_media: var(--tooltip-media-bg-dark);
+  --_primary: var(--tooltip-primary-label-dark);
+  --_primary-hover: var(--tooltip-primary-label-dark);
+  --_primary-pressed: var(--tooltip-primary-label-dark);
+  --_secondary: var(--tooltip-secondary-label-dark);
+  --_close: var(--tooltip-close-icon-dark);
+  --_control-hover: var(--tooltip-control-bg-dark-hover);
+  --_control-pressed: var(--tooltip-control-bg-dark-pressed);
+  --_caret-depth: calc(var(--tooltip-caret-width) / 2);
+  --_caret-pos: 50%;
+  /* Half-pixel optical shifts: see storybook/README.md, Component rules. */
+  --_nudge-12: calc(var(--space-3xs) / 4);
+  --_nudge-14: calc(var(--space-3xs) / -4);
+
+  position: relative;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--tooltip-max-width);
+  padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
+  border-radius: var(--tooltip-radius);
+  background: var(--_bg);
+  /* The border is drawn inside, as Figma's inside stroke, so every surface is the same size. */
+  box-shadow: inset 0 0 0 var(--tooltip-border-width) var(--_border), var(--_shadow);
+  color: var(--_label);
+  font-family: var(--font-family-lato), system-ui, sans-serif;
+}
+.bubble[data-surface="light"] {
+  --_bg: var(--tooltip-bg-light); --_border: var(--tooltip-border-light); --_shadow: var(--tooltip-shadow-light);
+  --_label: var(--tooltip-label-light); --_desc: var(--tooltip-description-light); --_icon: var(--tooltip-icon-light); --_media: var(--tooltip-media-bg-light);
+  --_primary: var(--tooltip-primary-label-light); --_primary-hover: var(--tooltip-primary-label-light-hover); --_primary-pressed: var(--tooltip-primary-label-light-pressed);
+  --_secondary: var(--tooltip-secondary-label-light); --_close: var(--tooltip-close-icon-light);
+  --_control-hover: var(--tooltip-control-bg-light-hover); --_control-pressed: var(--tooltip-control-bg-light-pressed);
+}
+.bubble[data-surface="info"] {
+  --_bg: var(--tooltip-bg-info); --_border: var(--tooltip-border-info); --_shadow: var(--tooltip-shadow-info);
+  --_label: var(--tooltip-label-info); --_desc: var(--tooltip-description-info); --_icon: var(--tooltip-icon-info); --_media: var(--tooltip-media-bg-info);
+  --_primary: var(--tooltip-primary-label-info); --_primary-hover: var(--tooltip-primary-label-info-hover); --_primary-pressed: var(--tooltip-primary-label-info-pressed);
+  --_secondary: var(--tooltip-secondary-label-info); --_close: var(--tooltip-close-icon-info);
+  --_control-hover: var(--tooltip-control-bg-info-hover); --_control-pressed: var(--tooltip-control-bg-info-pressed);
+}
+
+.label {
+  display: block;
+  position: relative;
+  top: var(--_nudge-12);
+  font-weight: var(--body-small-regular-font-weight);
+  font-size: var(--body-small-regular-font-size);
+  line-height: var(--body-small-regular-line-height);
+}
+
+/* ---------------------------------------------------------------- caret */
+
+/*
+ * A square turned 45° and half covered by the bubble: its free half is the caret, 12 wide
+ * and 6 deep. Light and Info draw the border on its two outer sides, so the outline never
+ * breaks.
+ */
+.caret {
+  --_edge: 0px; /* the bubble's outer edge; its border is drawn inside */
+  position: absolute;
+  box-sizing: border-box;
+  width: calc(var(--tooltip-caret-width) / 1.41421);
+  height: calc(var(--tooltip-caret-width) / 1.41421);
+  background: var(--_bg);
+  border: var(--tooltip-border-width) solid var(--_border);
+  pointer-events: none;
+}
+.bubble[data-surface="dark"] .caret { border-color: transparent; }
+.bubble[data-caret="none"] .caret { display: none; }
+/* Side is where the bubble sits, so a Top tooltip has its caret on the bottom edge. */
+.bubble[data-side="top"] .caret { bottom: var(--_edge); left: var(--_caret-pos); transform: translate(-50%, 50%) rotate(45deg); border-top-color: transparent; border-left-color: transparent; }
+.bubble[data-side="bottom"] .caret { top: var(--_edge); left: var(--_caret-pos); transform: translate(-50%, -50%) rotate(45deg); border-bottom-color: transparent; border-right-color: transparent; }
+.bubble[data-side="left"] .caret { right: var(--_edge); top: var(--_caret-pos); transform: translate(50%, -50%) rotate(45deg); border-bottom-color: transparent; border-left-color: transparent; }
+.bubble[data-side="right"] .caret { left: var(--_edge); top: var(--_caret-pos); transform: translate(-50%, -50%) rotate(45deg); border-top-color: transparent; border-right-color: transparent; }
+/* Start and End sit caret-inset from the bubble edge to the near side of the caret. */
+.bubble[data-caret="start"] { --_caret-pos: calc(var(--tooltip-caret-inset) + var(--tooltip-caret-width) / 2); }
+.bubble[data-caret="end"] { --_caret-pos: calc(100% - var(--tooltip-caret-inset) - var(--tooltip-caret-width) / 2); }
+
+/* ----------------------------------------------------------------- rich */
+
+.bubble[data-type="rich"] {
+  display: grid;
+  gap: var(--tooltip-rich-gap-section);
+  max-width: var(--tooltip-rich-max-width);
+  padding: var(--tooltip-rich-padding-y) var(--tooltip-rich-padding-x);
+  border-radius: var(--tooltip-rich-radius);
+}
+.bubble[data-type="rich"]:focus { outline: none; }
+.media { display: block; width: 100%; aspect-ratio: 2 / 1; object-fit: cover; border-radius: var(--tooltip-media-radius); background: var(--_media); }
+.body { display: grid; grid-template-columns: 1fr auto; row-gap: var(--tooltip-rich-gap-footer); column-gap: var(--tooltip-rich-gap-inline); align-items: start; }
+.body > .header { grid-row: 1; grid-column: 1; }
+.body > .footer { grid-row: 2; grid-column: 1 / -1; }
+.body > .close { grid-row: 1; grid-column: 2; }
+.header { display: flex; align-items: flex-start; gap: var(--tooltip-rich-gap-inline); }
+.icon { flex: none; color: var(--_icon); }
+.text { display: grid; flex: 1 1 auto; gap: var(--tooltip-rich-gap-text); min-width: 0; }
+.title { position: relative; top: var(--_nudge-14); color: var(--_label); font-weight: var(--title-small-bold-font-weight); font-size: var(--title-small-bold-font-size); line-height: var(--title-small-bold-line-height); }
+.message { position: relative; top: var(--_nudge-12); color: var(--_desc); font-weight: var(--body-small-regular-font-weight); font-size: var(--body-small-regular-font-size); line-height: var(--body-small-regular-line-height); }
+.footer { display: flex; align-items: center; justify-content: flex-end; gap: var(--tooltip-rich-gap-actions); }
+.step { flex: 1 1 auto; color: var(--_desc); font-weight: var(--label-small-regular-font-weight); font-size: var(--label-small-regular-font-size); line-height: var(--label-small-regular-line-height); }
+
+.control {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: 0;
+  border-radius: var(--tooltip-control-radius);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.control::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--tooltip-min-touch-target));
+  height: max(100%, var(--tooltip-min-touch-target));
+  transform: translate(-50%, -50%);
+}
+.control:hover { background: var(--_control-hover); }
+.control:active { background: var(--_control-pressed); }
+.control:focus { outline: none; }
+.control:focus-visible { outline: var(--tooltip-focus-ring-width) solid var(--tooltip-focus-ring); outline-offset: var(--tooltip-focus-ring-offset); }
+.action {
+  height: var(--tooltip-control-height);
+  padding: 0 var(--tooltip-control-padding-x);
+  font-weight: var(--label-small-bold-font-weight);
+  font-size: var(--label-small-bold-font-size);
+  line-height: var(--label-small-bold-line-height);
+  white-space: nowrap;
+}
+.action > span { position: relative; top: var(--_nudge-12); }
+.primary { color: var(--_primary); }
+.primary:hover { color: var(--_primary-hover); }
+.primary:active { color: var(--_primary-pressed); }
+.secondary { color: var(--_secondary); }
+.close { width: var(--tooltip-close-size); height: var(--tooltip-close-size); padding: 0; color: var(--_close); }
+
+/* ------------------------------------------------------------- floating */
+
+.floating {
+  --_enter-x: 0px; /* the enter slide, set by the component towards the trigger */
+  --_enter-y: 0px;
+  position: fixed;
+  z-index: 1200;
+  animation: enter 150ms ease-out;
+}
+.floating[hidden] { display: none; }
+@keyframes enter { from { opacity: 0; translate: var(--_enter-x) var(--_enter-y); } }
+@media (prefers-reduced-motion: reduce) { .floating { animation: fade 150ms linear; } }
+@keyframes fade { from { opacity: 0; } }

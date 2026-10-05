@@ -1,0 +1,42 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Snackbar.stories";
+
+<Meta of={Stories} />
+
+# Snackbar
+
+A brief, non-blocking message about something the app just did or could not do: "Booking confirmed", "Item removed from cart", "Payment failed". It appears at the bottom of the screen, never takes focus, and leaves on its own unless the user needs time to act. Figma set `637:3233`. Full spec: [components/snackbar.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/snackbar.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## Under trial: appearance
+
+**Inverse** is a near-black bar where intent changes only the glyph. **Tinted** is a light intent surface with a matching border. Both ship so the team can compare them; one will be retired.
+
+<Canvas of={Stories.AppearanceAndIntent} />
+
+## Layout
+
+Inline keeps the action beside the message. Stacked moves it to its own row for long labels. `auto` stacks when the action would squeeze the message below about 60% of the width.
+
+<Canvas of={Stories.Layouts} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Live queue
+
+One snackbar at a time, first in first out. A message alone leaves after 4 s, one with an action after 7 s, and hovering or focusing it pauses the timer. Esc dismisses it.
+
+<Canvas of={Stories.Queue} />
+
+## Accessibility
+
+- Snackbars render into live regions that exist before the message arrives: `role="status"` for most intents and `role="alert"` for warning (errors).
+- The glyph is decorative; the message carries the meaning. The close button is "Dismiss notification".
+- One action at most. Never "Dismiss" or "OK"; use the close button instead.
+- Action and close are 32 tall, with a 48 hit area that does not change their size.
+
+<ArgTypes of={Stories} />
