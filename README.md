@@ -459,7 +459,7 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 | `text-brand-inverse-pressed` | `azure.100` | `vermilion.100` | `tangerine.100` |
 | `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `vermilion.400` | `tangerine.400` |
 
-**Contrast.** `vermilion` and `tangerine` were generated so that each step matches the azure step of the same number in contrast against white, within 0.03. Every pairing MakeMyTrip passes, the other brands pass too:
+**Contrast.** `vermilion` and `tangerine` were generated so that each step matches the azure step of the same number in contrast against white, within 0.07. Every pairing MakeMyTrip passes, the other brands pass too:
 
 | Pairing | MakeMyTrip (azure) | myBiz (vermilion) | Goibibo (tangerine) |
 |---|---|---|---|
