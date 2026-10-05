@@ -1,0 +1,889 @@
+//
+// CosmosBrand.swift
+//
+
+// Do not edit directly, this file was auto-generated.
+
+import SwiftUI
+
+/// The tokens that change with the brand. Every other token is the same in every brand
+/// and stays on `CosmosTokens`. Read these from the environment, so one line switches a
+/// whole screen:
+///
+///     MyBizFlow().environment(\.cosmosBrand, .myBiz)
+///
+///     @Environment(\.cosmosBrand) private var brand
+///     Rectangle().fill(brand.colorBgFillBrand)
+public struct CosmosBrand: Identifiable, Sendable {
+    public let id: String
+    public let name: String
+
+    /// Brand-tinted container — tertiary button default, selected list rows, brand callouts. This is a background behind content; for a solid brand element such as a primary button use bg-fill-brand.
+    public let colorBgSurfaceBrand: Color
+
+    /// Hover state for bg-surface-brand, and the hover background for brand controls that are transparent at rest (secondary and text buttons).
+    public let colorBgSurfaceBrandHover: Color
+
+    /// Light pressed step for a brand-tinted surface, the same tint as bg-surface-brand-hover, for presses that should barely deepen. Pair the label with text-brand-on-bg-surface-hover. For the standard pressed state use bg-surface-brand-pressed-strong.
+    public let colorBgSurfaceBrandPressedSubtle: Color
+
+    /// Pressed state for bg-surface-brand and for brand controls that are transparent at rest — secondary and tertiary button presses, the selected chip. Pair the label with text-brand-on-bg-surface-pressed. For a lighter press use bg-surface-brand-pressed-subtle.
+    public let colorBgSurfaceBrandPressedStrong: Color
+
+    /// Brand tint for a control on an inverted or dark background, always laid at an opacity token (the inverse tertiary fill and the inverse hover and pressed layers of Button). Never used solid; on light backgrounds use bg-surface-brand.
+    public let colorBgSurfaceBrandInverse: Color
+
+    /// Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand.
+    public let colorBgFillBrand: Color
+
+    /// Hover state for bg-fill-brand — primary button hover.
+    public let colorBgFillBrandHover: Color
+
+    /// Pressed/active state for bg-fill-brand — primary button pressed.
+    public let colorBgFillBrandPressed: Color
+
+    /// Brand-coloured label on a neutral or brand-tinted background — secondary, tertiary and text button labels, selected tab labels. On a solid brand fill use text-brand-on-bg-fill.
+    public let colorTextBrand: Color
+
+    /// Hover state for text-brand.
+    public let colorTextBrandHover: Color
+
+    /// Pressed/active state for text-brand.
+    public let colorTextBrandPressed: Color
+
+    /// Brand label colour on a tinted brand surface while hovered — the secondary, tertiary and text button labels. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For a label on a solid brand fill use text-brand-on-bg-fill; for brand foreground marks such as the Radio dot use text-brand-hover, which tracks border-brand-hover instead.
+    public let colorTextBrandOnBgSurfaceHover: Color
+
+    /// Brand label colour on a tinted brand surface while pressed. One step darker than text-brand-on-bg-surface-hover, matching the deeper surface underneath.
+    public let colorTextBrandOnBgSurfacePressed: Color
+
+    /// Brand text on an inverted or dark background, such as the label of a secondary, tertiary or text button on a dark banner. Lighter than text-brand so it holds AA on near black and navy; on light backgrounds use text-brand. For inline links use text-link-inverse.
+    public let colorTextBrandInverse: Color
+
+    /// Brand text on an inverted or dark background while its control is hovered. One step lighter than text-brand-inverse, the mirror of light, where hover darkens.
+    public let colorTextBrandInverseHover: Color
+
+    /// Brand text on an inverted or dark background while its control is pressed. Two steps lighter than text-brand-inverse so the press reads against the deeper tint.
+    public let colorTextBrandInversePressed: Color
+
+    /// Brand border on an unfilled control — secondary button default, selected card outline.
+    public let colorBorderBrand: Color
+
+    /// Hover state for border-brand.
+    public let colorBorderBrandHover: Color
+
+    /// Pressed/active state for border-brand.
+    public let colorBorderBrandPressed: Color
+
+    /// Brand outline on an inverted or dark background, such as an inverse secondary button or the inverse focus ring. One step deeper than text-brand-inverse so the edge reads crisp; on light backgrounds use border-brand.
+    public let colorBorderBrandInverse: Color
+
+    /// Brand outline on an inverted or dark background while its control is hovered. One step lighter than border-brand-inverse.
+    public let colorBorderBrandInverseHover: Color
+
+    /// Brand outline on an inverted or dark background while its control is pressed. Two steps lighter than border-brand-inverse.
+    public let colorBorderBrandInversePressed: Color
+
+    /// Brand-coloured icon on a neutral or brand-tinted background. On a solid brand fill use icon-brand-on-bg-fill.
+    public let colorIconBrand: Color
+
+    /// Hovered brand icon on a neutral background, tracking text-brand-hover and border-brand-hover. On a tinted brand surface keep the icon in step with the label instead.
+    public let colorIconBrandHover: Color
+
+    /// Pressed brand icon on a neutral background, tracking text-brand-pressed and border-brand-pressed.
+    public let colorIconBrandPressed: Color
+
+    /// Brand icon on a tinted brand surface while hovered — the icons in secondary, tertiary and text buttons. Tracks text-brand-on-bg-surface-hover so icon and label stay one colour as the surface deepens. For a hovered brand icon on a neutral background use icon-brand-hover.
+    public let colorIconBrandOnBgSurfaceHover: Color
+
+    /// Brand icon on a tinted brand surface while pressed — the icons in secondary, tertiary and text buttons. Tracks text-brand-on-bg-surface-pressed so icon and label stay one colour as the surface deepens. For a pressed brand icon on a neutral background use icon-brand-pressed.
+    public let colorIconBrandOnBgSurfacePressed: Color
+
+    /// Brand icon on an inverted or dark background, such as the glyph of an inverse secondary, tertiary or text button. One step deeper than text-brand-inverse, like the other inverse icons; for an info status icon use icon-info-inverse.
+    public let colorIconBrandInverse: Color
+
+    /// Brand icon on an inverted or dark background while its control is hovered. One step lighter than icon-brand-inverse.
+    public let colorIconBrandInverseHover: Color
+
+    /// Brand icon on an inverted or dark background while its control is pressed. Two steps lighter than icon-brand-inverse.
+    public let colorIconBrandInversePressed: Color
+
+    /// Background of the primary (solid fill) button — default intent, at rest.
+    public let buttonBgPrimaryDefault: Color
+
+    /// Background of the primary (solid fill) button — default intent, on hover.
+    public let buttonBgPrimaryHover: Color
+
+    /// Background of the primary (solid fill) button — default intent, while pressed.
+    public let buttonBgPrimaryPressed: Color
+
+    /// Background of the primary (solid fill) button on an inverted or dark surface, default intent, at rest. The same fill as the light button; use button/bg-primary-default on light surfaces.
+    public let buttonBgPrimaryInverseDefault: Color
+
+    /// Background of the primary (solid fill) button on an inverted or dark surface, default intent, on hover. The same fill as the light button; use button/bg-primary-hover on light surfaces.
+    public let buttonBgPrimaryInverseHover: Color
+
+    /// Background of the primary (solid fill) button on an inverted or dark surface, default intent, while pressed. The same fill as the light button; use button/bg-primary-pressed on light surfaces.
+    public let buttonBgPrimaryInversePressed: Color
+
+    /// Background of the secondary (outlined) button — default intent, on hover.
+    public let buttonBgSecondaryHover: Color
+
+    /// Background of the secondary (outlined) button — default intent, while pressed.
+    public let buttonBgSecondaryPressed: Color
+
+    /// Background of the secondary (outlined) button on an inverted or dark surface, default intent, on hover. A translucent tint: render it at button/bg-opacity-secondary-inverse-hover so it works on near black, navy and photos under a scrim.
+    public let buttonBgSecondaryInverseHover: Color
+
+    /// Background of the secondary (outlined) button on an inverted or dark surface, default intent, while pressed. A translucent tint: render it at button/bg-opacity-secondary-inverse-pressed so it works on near black, navy and photos under a scrim.
+    public let buttonBgSecondaryInversePressed: Color
+
+    /// Background of the tertiary (tinted) button — default intent, at rest.
+    public let buttonBgTertiaryDefault: Color
+
+    /// Background of the tertiary (tinted) button — default intent, on hover.
+    public let buttonBgTertiaryHover: Color
+
+    /// Background of the tertiary (tinted) button — default intent, while pressed.
+    public let buttonBgTertiaryPressed: Color
+
+    /// Background of the tertiary (tinted) button on an inverted or dark surface, default intent, at rest. A translucent tint: render it at button/bg-opacity-tertiary-inverse-default so it works on near black, navy and photos under a scrim.
+    public let buttonBgTertiaryInverseDefault: Color
+
+    /// Background of the tertiary (tinted) button on an inverted or dark surface, default intent, on hover. A translucent tint: render it at button/bg-opacity-tertiary-inverse-hover so it works on near black, navy and photos under a scrim.
+    public let buttonBgTertiaryInverseHover: Color
+
+    /// Background of the tertiary (tinted) button on an inverted or dark surface, default intent, while pressed. A translucent tint: render it at button/bg-opacity-tertiary-inverse-pressed so it works on near black, navy and photos under a scrim.
+    public let buttonBgTertiaryInversePressed: Color
+
+    /// Background of the text (no fill or outline) button — default intent, on hover.
+    public let buttonBgTextHover: Color
+
+    /// Background of the text (no fill or outline) button — default intent, while pressed.
+    public let buttonBgTextPressed: Color
+
+    /// Background of the text (no fill or outline) button on an inverted or dark surface, default intent, on hover. A translucent tint: render it at button/bg-opacity-text-inverse-hover so it works on near black, navy and photos under a scrim.
+    public let buttonBgTextInverseHover: Color
+
+    /// Background of the text (no fill or outline) button on an inverted or dark surface, default intent, while pressed. A translucent tint: render it at button/bg-opacity-text-inverse-pressed so it works on near black, navy and photos under a scrim.
+    public let buttonBgTextInversePressed: Color
+
+    /// Outline of the secondary (outlined) button — default intent, at rest.
+    public let buttonBorderSecondaryDefault: Color
+
+    /// Outline of the secondary (outlined) button — default intent, on hover.
+    public let buttonBorderSecondaryHover: Color
+
+    /// Outline of the secondary (outlined) button — default intent, while pressed.
+    public let buttonBorderSecondaryPressed: Color
+
+    /// Outline of the secondary (outlined) button on an inverted or dark surface, default intent, at rest.
+    public let buttonBorderSecondaryInverseDefault: Color
+
+    /// Outline of the secondary (outlined) button on an inverted or dark surface, default intent, on hover.
+    public let buttonBorderSecondaryInverseHover: Color
+
+    /// Outline of the secondary (outlined) button on an inverted or dark surface, default intent, while pressed.
+    public let buttonBorderSecondaryInversePressed: Color
+
+    /// Colour of the keyboard focus ring. The ring is a separate rectangle outside the auto-layout of the button, not a border — the border-* tokens are a different slot.
+    public let buttonFocusRing: Color
+
+    /// Colour of the keyboard focus ring around a button on an inverted or dark surface. Lighter than button/focus-ring, which falls below 3:1 on navy; use it for every inverse hierarchy with the default intent.
+    public let buttonFocusRingInverse: Color
+
+    /// Colour of the leading, trailing and loading icons in the secondary (outlined) button — default intent. The icons keep this colour on focus. Matches button/label-secondary-default at every state, so glyphs and text read as one colour.
+    public let buttonIconSecondaryDefault: Color
+
+    /// Colour of the leading, trailing and loading icons in the secondary (outlined) button — default intent, on hover. Matches button/label-secondary-hover.
+    public let buttonIconSecondaryHover: Color
+
+    /// Colour of the leading, trailing and loading icons in the secondary (outlined) button — default intent, while pressed. Matches button/label-secondary-pressed.
+    public let buttonIconSecondaryPressed: Color
+
+    /// Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, default intent, at rest. One step deeper than the label, like the other inverse icons.
+    public let buttonIconSecondaryInverseDefault: Color
+
+    /// Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, default intent, on hover. One step deeper than the label, like the other inverse icons.
+    public let buttonIconSecondaryInverseHover: Color
+
+    /// Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, default intent, while pressed. One step deeper than the label, like the other inverse icons.
+    public let buttonIconSecondaryInversePressed: Color
+
+    /// Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — default intent. The icons keep this colour on focus. Matches button/label-tertiary-default at every state, so glyphs and text read as one colour.
+    public let buttonIconTertiaryDefault: Color
+
+    /// Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — default intent, on hover. Matches button/label-tertiary-hover.
+    public let buttonIconTertiaryHover: Color
+
+    /// Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — default intent, while pressed. Matches button/label-tertiary-pressed.
+    public let buttonIconTertiaryPressed: Color
+
+    /// Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, default intent, at rest. One step deeper than the label, like the other inverse icons.
+    public let buttonIconTertiaryInverseDefault: Color
+
+    /// Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, default intent, on hover. One step deeper than the label, like the other inverse icons.
+    public let buttonIconTertiaryInverseHover: Color
+
+    /// Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, default intent, while pressed. One step deeper than the label, like the other inverse icons.
+    public let buttonIconTertiaryInversePressed: Color
+
+    /// Colour of the leading, trailing and loading icons in the text (no fill or outline) button — default intent. The icons keep this colour on focus. Matches button/label-text-default at every state, so glyphs and text read as one colour.
+    public let buttonIconTextDefault: Color
+
+    /// Colour of the leading, trailing and loading icons in the text (no fill or outline) button — default intent, on hover. Matches button/label-text-hover.
+    public let buttonIconTextHover: Color
+
+    /// Colour of the leading, trailing and loading icons in the text (no fill or outline) button — default intent, while pressed. Matches button/label-text-pressed.
+    public let buttonIconTextPressed: Color
+
+    /// Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, default intent, at rest. One step deeper than the label, like the other inverse icons.
+    public let buttonIconTextInverseDefault: Color
+
+    /// Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, default intent, on hover. One step deeper than the label, like the other inverse icons.
+    public let buttonIconTextInverseHover: Color
+
+    /// Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, default intent, while pressed. One step deeper than the label, like the other inverse icons.
+    public let buttonIconTextInversePressed: Color
+
+    /// Colour of the text label in the secondary (outlined) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens.
+    public let buttonLabelSecondaryDefault: Color
+
+    /// Colour of the text label in the secondary (outlined) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens.
+    public let buttonLabelSecondaryHover: Color
+
+    /// Colour of the text label in the secondary (outlined) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens.
+    public let buttonLabelSecondaryPressed: Color
+
+    /// Colour of the text label in the secondary (outlined) button on an inverted or dark surface, default intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens.
+    public let buttonLabelSecondaryInverseDefault: Color
+
+    /// Colour of the text label in the secondary (outlined) button on an inverted or dark surface, default intent, on hover. Lighter than the resting label, the mirror of the light button, where hover and press darken.
+    public let buttonLabelSecondaryInverseHover: Color
+
+    /// Colour of the text label in the secondary (outlined) button on an inverted or dark surface, default intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken.
+    public let buttonLabelSecondaryInversePressed: Color
+
+    /// Colour of the text label in the tertiary (tinted) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens.
+    public let buttonLabelTertiaryDefault: Color
+
+    /// Colour of the text label in the tertiary (tinted) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens.
+    public let buttonLabelTertiaryHover: Color
+
+    /// Colour of the text label in the tertiary (tinted) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens.
+    public let buttonLabelTertiaryPressed: Color
+
+    /// Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, default intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens.
+    public let buttonLabelTertiaryInverseDefault: Color
+
+    /// Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, default intent, on hover. Lighter than the resting label, the mirror of the light button, where hover and press darken.
+    public let buttonLabelTertiaryInverseHover: Color
+
+    /// Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, default intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken.
+    public let buttonLabelTertiaryInversePressed: Color
+
+    /// Colour of the text label in the text (no fill or outline) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens.
+    public let buttonLabelTextDefault: Color
+
+    /// Colour of the text label in the text (no fill or outline) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens.
+    public let buttonLabelTextHover: Color
+
+    /// Colour of the text label in the text (no fill or outline) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens.
+    public let buttonLabelTextPressed: Color
+
+    /// Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, default intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens.
+    public let buttonLabelTextInverseDefault: Color
+
+    /// Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, default intent, on hover. Lighter than the resting label, the mirror of the light button, where hover and press darken.
+    public let buttonLabelTextInverseHover: Color
+
+    /// Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, default intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken.
+    public let buttonLabelTextInversePressed: Color
+
+    /// Fill of the checkbox box — unchecked, on hover.
+    public let checkboxBgUnselectedHover: Color
+
+    /// Fill of the checkbox box — unchecked, while pressed.
+    public let checkboxBgUnselectedPressed: Color
+
+    /// Fill of the checkbox box — checked, at rest.
+    public let checkboxBgSelectedDefault: Color
+
+    /// Fill of the checkbox box — checked, on hover.
+    public let checkboxBgSelectedHover: Color
+
+    /// Fill of the checkbox box — checked, while pressed.
+    public let checkboxBgSelectedPressed: Color
+
+    /// Outline of the checkbox box — unchecked, on hover.
+    public let checkboxBorderUnselectedHover: Color
+
+    /// Outline of the checkbox box — unchecked, while pressed.
+    public let checkboxBorderUnselectedPressed: Color
+
+    /// Outline of the checkbox box — checked, at rest.
+    public let checkboxBorderSelectedDefault: Color
+
+    /// Fill of the radio circle in both selected and unselected states — on hover.
+    public let radioBgHover: Color
+
+    /// Fill of the radio circle in both selected and unselected states — while pressed.
+    public let radioBgPressed: Color
+
+    /// Outline of the radio circle — unselected, on hover.
+    public let radioBorderUnselectedHover: Color
+
+    /// Outline of the radio circle — unselected, while pressed.
+    public let radioBorderUnselectedPressed: Color
+
+    /// Outline of the radio circle — selected, at rest.
+    public let radioBorderSelectedDefault: Color
+
+    /// Outline of the radio circle — selected, on hover.
+    public let radioBorderSelectedHover: Color
+
+    /// Outline of the radio circle — selected, while pressed.
+    public let radioBorderSelectedPressed: Color
+
+    /// Colour of the selected dot inside the circle — selected, at rest.
+    public let radioDotSelectedDefault: Color
+
+    /// Colour of the selected dot inside the circle — selected, on hover.
+    public let radioDotSelectedHover: Color
+
+    /// Colour of the selected dot inside the circle — selected, while pressed.
+    public let radioDotSelectedPressed: Color
+
+    /// Colour of the focus state layer while the radio is selected.
+    public let radioStateLayerSelected: Color
+
+    /// Fill of the chip container — selected, at rest and on keyboard focus. A tint rather than a solid brand fill, so a row of selected chips stays calm; the label and border carry the brand colour.
+    public let chipBgSelectedDefault: Color
+
+    /// Fill of the chip container — selected, on hover.
+    public let chipBgSelectedHover: Color
+
+    /// Fill of the chip container — selected, while pressed.
+    public let chipBgSelectedPressed: Color
+
+    /// Outline of the chip — selected, at rest and on keyboard focus. Painted only when the border is switched on.
+    public let chipBorderSelectedDefault: Color
+
+    /// Outline of the chip — selected, on hover. Painted only when the border is switched on.
+    public let chipBorderSelectedHover: Color
+
+    /// Outline of the chip — selected, while pressed. Painted only when the border is switched on.
+    public let chipBorderSelectedPressed: Color
+
+    /// Colour of the chip label — selected, at rest and on keyboard focus.
+    public let chipLabelSelectedDefault: Color
+
+    /// Colour of the chip label — selected, on hover. Darkens with the fill so it holds AA contrast on bg-selected-hover.
+    public let chipLabelSelectedHover: Color
+
+    /// Colour of the chip label — selected, while pressed. Darkens with the fill so it holds AA contrast on bg-selected-pressed.
+    public let chipLabelSelectedPressed: Color
+
+    /// Colour of the leading icon, trailing icon and remove glyph — selected, in every enabled state. Does not apply to the leading image.
+    public let chipIconSelectedDefault: Color
+
+    /// Circle behind the remove glyph of a removable chip — selected, when the remove button itself is hovered.
+    public let chipRemoveBgSelectedHover: Color
+
+    /// Circle behind the remove glyph of a removable chip — selected, while the remove button itself is pressed.
+    public let chipRemoveBgSelectedPressed: Color
+
+    /// Action label on a tinted neutral snackbar, at rest and on keyboard focus. Brand coloured, since a neutral message has no intent colour to follow.
+    public let snackbarLabelControlTintedNeutralDefault: Color
+
+    /// Action label on a tinted neutral snackbar, on hover. Brand coloured, since a neutral message has no intent colour to follow; darkens with the fill so it keeps AA contrast.
+    public let snackbarLabelControlTintedNeutralHover: Color
+
+    /// Action label on a tinted neutral snackbar, while pressed. Brand coloured, since a neutral message has no intent colour to follow; darkens with the fill so it keeps AA contrast.
+    public let snackbarLabelControlTintedNeutralPressed: Color
+
+    /// Solid fill of a strong brand badge, used for promotional tags such as New, Deal or MMT Exclusive. Count badges default to strong; for a calmer tag use bg-subtle-brand.
+    public let badgeBgStrongBrand: Color
+
+    /// Tinted fill of a subtle brand badge, the calm option for status tags beside content. Not used for dots, which are strong only.
+    public let badgeBgSubtleBrand: Color
+
+    /// Count or text colour on a subtle brand badge. Paired with bg-subtle-brand and holds AA contrast on it.
+    public let badgeLabelSubtleBrand: Color
+
+    /// Fill of a brand dot badge, a count-free marker for new or unread content. The same colour as bg-strong-brand, kept separate so it is checked for 3 to 1 contrast against both page canvases.
+    public let badgeDotBrand: Color
+
+    /// Label colour of the selected tab at rest and on keyboard focus. Pairs with the brand indicator.
+    public let tabLabelSelectedDefault: Color
+
+    /// Label colour of the selected tab on hover. Stays text-brand, which holds AA on the hover grey.
+    public let tabLabelSelectedHover: Color
+
+    /// Label colour of the selected tab while pressed. One step darker than text-brand, which falls below AA on the pressed grey.
+    public let tabLabelSelectedPressed: Color
+
+    /// Colour of the icon on the selected Primary tab, at rest and on keyboard focus. Matches label-selected-default.
+    public let tabIconSelectedDefault: Color
+
+    /// Colour of the icon on the selected Primary tab on hover.
+    public let tabIconSelectedHover: Color
+
+    /// Colour of the icon on the selected Primary tab while pressed, darkening with the label on the pressed grey.
+    public let tabIconSelectedPressed: Color
+
+    /// Colour of the underline under the selected tab in every enabled state. Only the selected tab draws it.
+    public let tabIndicatorDefault: Color
+
+    /// Fill of the light blue circle behind a leading icon, for a row that should stand out from its neutral neighbours. Use sparingly, at most one kind per list.
+    public let listLeadingContainerBgBrand: Color
+
+    /// Colour of the icon inside a brand leading circle. Pairs with leading-container-bg-brand.
+    public let listLeadingContainerIconBrand: Color
+
+    /// Track of a switch that is on, at rest. Also used by the Outlined backup style. Use track-on-disabled when the switch is disabled.
+    public let switchTrackOnDefault: Color
+
+    /// Track of a switch that is on, under the pointer. Web only.
+    public let switchTrackOnHover: Color
+
+    /// Track of a switch that is on, while held.
+    public let switchTrackOnPressed: Color
+
+    /// Check glyph inside the white thumb of a switch that is on, at rest and on focus. Tracks track-on-default so glyph and track read as one colour.
+    public let switchIconOnDefault: Color
+
+    /// Check glyph of a switch that is on, under the pointer. Tracks track-on-hover. Web only.
+    public let switchIconOnHover: Color
+
+    /// Check glyph of a switch that is on, while held. Tracks track-on-pressed.
+    public let switchIconOnPressed: Color
+
+    /// Outlined backup style only, not for product use. Check glyph inside the white thumb of a switch that is on, in every enabled state. Use outlined-icon-disabled when the switch is disabled.
+    public let switchOutlinedIconOn: Color
+
+    /// Neutral thumb style, under test against the Brand thumb. Brand label of the selected segment at rest and on keyboard focus. For the pressed thumb use neutral-label-selected-pressed, because this colour falls below AA on the pressed grey. For a disabled segment use label-disabled.
+    public let segmentedControlNeutralLabelSelectedDefault: Color
+
+    /// Neutral thumb style, under test against the Brand thumb. Brand label of the selected segment while the thumb is held. One step darker than neutral-label-selected-default so it keeps AA on the pressed grey.
+    public let segmentedControlNeutralLabelSelectedPressed: Color
+
+    /// Neutral thumb style, under test against the Brand thumb. Optional leading icon of the selected segment at rest and on keyboard focus. Matches neutral-label-selected-default.
+    public let segmentedControlNeutralIconSelectedDefault: Color
+
+    /// Neutral thumb style, under test against the Brand thumb. Optional leading icon of the selected segment while the thumb is held. Matches neutral-label-selected-pressed.
+    public let segmentedControlNeutralIconSelectedPressed: Color
+
+    /// Brand thumb style, under test against the Neutral thumb. Solid brand thumb under the selected segment at rest and on keyboard focus. Drawn without a shadow.
+    public let segmentedControlBrandThumbDefault: Color
+
+    /// Brand thumb style, under test against the Neutral thumb. Solid brand thumb while it is held, before a tap lands or while it is dragged.
+    public let segmentedControlBrandThumbPressed: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb under the selected segment at rest and on keyboard focus. The tint barely separates from the track, so tinted-thumb-border-default draws its edge.
+    public let segmentedControlTintedThumbDefault: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb while it is held, before a tap lands or while it is dragged.
+    public let segmentedControlTintedThumbPressed: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Outline of the tinted thumb at rest and on keyboard focus. Drawn inside the thumb so it does not change size, and it carries the selection against the track.
+    public let segmentedControlTintedThumbBorderDefault: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Outline of the tinted thumb while it is held.
+    public let segmentedControlTintedThumbBorderPressed: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Label on the tinted thumb at rest and on keyboard focus. For the pressed thumb use tinted-label-selected-pressed, because this colour falls below AA on the pressed tint.
+    public let segmentedControlTintedLabelSelectedDefault: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Label on the tinted thumb while it is held. One step darker than tinted-label-selected-default so it keeps AA on the pressed tint.
+    public let segmentedControlTintedLabelSelectedPressed: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Optional leading icon on the tinted thumb at rest and on keyboard focus. Matches tinted-label-selected-default.
+    public let segmentedControlTintedIconSelectedDefault: Color
+
+    /// Tinted thumb style, under test against the Neutral and Brand thumbs. Optional leading icon on the tinted thumb while it is held. Matches tinted-label-selected-pressed.
+    public let segmentedControlTintedIconSelectedPressed: Color
+
+    /// Part of the track between the start and the thumb, or between the two thumbs of a range. Stays the same while the thumb is hovered or held; the thumb and halo show the state. Use track-active-disabled when disabled.
+    public let sliderTrackActive: Color
+
+    /// Soft circle behind a thumb under the pointer, drawn under the track. Web only. Use halo-pressed while the thumb is held.
+    public let sliderHaloHover: Color
+
+    /// Soft circle behind a thumb while it is held or dragged, drawn under the track, so the touch point stays visible around a finger. Halo press only; the Grow press enlarges the thumb to thumb-size-pressed instead. Use halo-hover for the pointer.
+    public let sliderHaloPressed: Color
+
+    /// Trailing check on the selected row of a single-select menu, such as Sort by. It is the only mark of selection, so the label stays label-default.
+    public let menuCheckDefault: Color
+
+    /// Label of the primary text action, such as Next or Got it, on a Light Rich tooltip, at rest and on focus. Brand blue, so it reads as the main action beside the grey Skip. Use primary-label-light-hover and primary-label-light-pressed as the fill changes.
+    public let tooltipPrimaryLabelLight: Color
+
+    /// Label of the primary text action on a Light Rich tooltip under the pointer. Darkens with the control-bg-light-hover fill so it keeps AA contrast. Web only.
+    public let tooltipPrimaryLabelLightHover: Color
+
+    /// Label of the primary text action on a Light Rich tooltip while pressed. Darkens with the control-bg-light-pressed fill so it keeps AA contrast.
+    public let tooltipPrimaryLabelLightPressed: Color
+
+    public static let makeMyTrip = CosmosBrand(
+        id: "mmt",
+        name: "MakeMyTrip",
+        colorBgSurfaceBrand: Color(red: 0.929412, green: 0.972549, blue: 1),
+        colorBgSurfaceBrandHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        colorBgSurfaceBrandPressedSubtle: Color(red: 0.839216, green: 0.937255, blue: 1),
+        colorBgSurfaceBrandPressedStrong: Color(red: 0.760784, green: 0.909804, blue: 1),
+        colorBgSurfaceBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        colorBgFillBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorBgFillBrandHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorBgFillBrandPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        colorTextBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorTextBrandHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        colorTextBrandPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorTextBrandOnBgSurfaceHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorTextBrandOnBgSurfacePressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        colorTextBrandInverse: Color(red: 0.513725, green: 0.831373, blue: 1),
+        colorTextBrandInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        colorTextBrandInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        colorBorderBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorBorderBrandHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        colorBorderBrandPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorBorderBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        colorBorderBrandInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        colorBorderBrandInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        colorIconBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorIconBrandHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        colorIconBrandPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorIconBrandOnBgSurfaceHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorIconBrandOnBgSurfacePressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        colorIconBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        colorIconBrandInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        colorIconBrandInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonBgPrimaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonBgPrimaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonBgPrimaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonBgPrimaryInverseDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonBgPrimaryInverseHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonBgPrimaryInversePressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonBgSecondaryHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonBgSecondaryPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonBgSecondaryInverseHover: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgSecondaryInversePressed: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTertiaryDefault: Color(red: 0.929412, green: 0.972549, blue: 1),
+        buttonBgTertiaryHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonBgTertiaryPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonBgTertiaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTertiaryInverseHover: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTertiaryInversePressed: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTextHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        buttonBgTextPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonBgTextInverseHover: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTextInversePressed: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBorderSecondaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonBorderSecondaryHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        buttonBorderSecondaryPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonBorderSecondaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBorderSecondaryInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonBorderSecondaryInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonFocusRing: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonFocusRingInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconSecondaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonIconSecondaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonIconSecondaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonIconSecondaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconSecondaryInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonIconSecondaryInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonIconTertiaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonIconTertiaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonIconTertiaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonIconTertiaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconTertiaryInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonIconTertiaryInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonIconTextDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonIconTextHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonIconTextPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonIconTextInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconTextInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonIconTextInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelSecondaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonLabelSecondaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonLabelSecondaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonLabelSecondaryInverseDefault: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonLabelSecondaryInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelSecondaryInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonLabelTertiaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonLabelTertiaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonLabelTertiaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonLabelTertiaryInverseDefault: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonLabelTertiaryInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelTertiaryInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonLabelTextDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonLabelTextHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonLabelTextPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonLabelTextInverseDefault: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonLabelTextInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelTextInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        checkboxBgUnselectedHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        checkboxBgUnselectedPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        checkboxBgSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        checkboxBgSelectedHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        checkboxBgSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        checkboxBorderUnselectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        checkboxBorderUnselectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        checkboxBorderSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioBgHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        radioBgPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        radioBorderUnselectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioBorderUnselectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        radioBorderSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioBorderSelectedHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        radioBorderSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        radioDotSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioDotSelectedHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        radioDotSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        radioStateLayerSelected: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipBgSelectedDefault: Color(red: 0.929412, green: 0.972549, blue: 1),
+        chipBgSelectedHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        chipBgSelectedPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        chipBorderSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipBorderSelectedHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        chipBorderSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        chipLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipLabelSelectedHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        chipLabelSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        chipIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipRemoveBgSelectedHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        chipRemoveBgSelectedPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        snackbarLabelControlTintedNeutralDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        snackbarLabelControlTintedNeutralHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        snackbarLabelControlTintedNeutralPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        badgeBgStrongBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        badgeBgSubtleBrand: Color(red: 0.929412, green: 0.972549, blue: 1),
+        badgeLabelSubtleBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        badgeDotBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabLabelSelectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabLabelSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        tabIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabIconSelectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabIconSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        tabIndicatorDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        listLeadingContainerBgBrand: Color(red: 0.929412, green: 0.972549, blue: 1),
+        listLeadingContainerIconBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        switchTrackOnDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        switchTrackOnHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        switchTrackOnPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        switchIconOnDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        switchIconOnHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        switchIconOnPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        switchOutlinedIconOn: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlNeutralLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlNeutralLabelSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        segmentedControlNeutralIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlNeutralIconSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        segmentedControlBrandThumbDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlBrandThumbPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        segmentedControlTintedThumbDefault: Color(red: 0.929412, green: 0.972549, blue: 1),
+        segmentedControlTintedThumbPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        segmentedControlTintedThumbBorderDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlTintedThumbBorderPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        segmentedControlTintedLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlTintedLabelSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        segmentedControlTintedIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlTintedIconSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        sliderTrackActive: Color(red: 0, green: 0.403922, blue: 0.909804),
+        sliderHaloHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        sliderHaloPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        menuCheckDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tooltipPrimaryLabelLight: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tooltipPrimaryLabelLightHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        tooltipPrimaryLabelLightPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843)
+    )
+
+    public static let myBiz = CosmosBrand(
+        id: "mybiz",
+        name: "myBiz",
+        colorBgSurfaceBrand: Color(red: 1, green: 0.968627, blue: 0.929412),
+        colorBgSurfaceBrandHover: Color(red: 1, green: 0.929412, blue: 0.831373),
+        colorBgSurfaceBrandPressedSubtle: Color(red: 1, green: 0.929412, blue: 0.831373),
+        colorBgSurfaceBrandPressedStrong: Color(red: 1, green: 0.839216, blue: 0.658824),
+        colorBgSurfaceBrandInverse: Color(red: 1, green: 0.537255, blue: 0.015686),
+        colorBgFillBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        colorBgFillBrandHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        colorBgFillBrandPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        colorTextBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        colorTextBrandHover: Color(red: 0.960784, green: 0.286275, blue: 0),
+        colorTextBrandPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        colorTextBrandOnBgSurfaceHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        colorTextBrandOnBgSurfacePressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        colorTextBrandInverse: Color(red: 1, green: 0.721569, blue: 0.415686),
+        colorTextBrandInverseHover: Color(red: 1, green: 0.839216, blue: 0.658824),
+        colorTextBrandInversePressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        colorBorderBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        colorBorderBrandHover: Color(red: 0.960784, green: 0.286275, blue: 0),
+        colorBorderBrandPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        colorBorderBrandInverse: Color(red: 1, green: 0.537255, blue: 0.015686),
+        colorBorderBrandInverseHover: Color(red: 1, green: 0.721569, blue: 0.415686),
+        colorBorderBrandInversePressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        colorIconBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        colorIconBrandHover: Color(red: 0.960784, green: 0.286275, blue: 0),
+        colorIconBrandPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        colorIconBrandOnBgSurfaceHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        colorIconBrandOnBgSurfacePressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        colorIconBrandInverse: Color(red: 1, green: 0.537255, blue: 0.015686),
+        colorIconBrandInverseHover: Color(red: 1, green: 0.721569, blue: 0.415686),
+        colorIconBrandInversePressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonBgPrimaryDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonBgPrimaryHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonBgPrimaryPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonBgPrimaryInverseDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonBgPrimaryInverseHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonBgPrimaryInversePressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonBgSecondaryHover: Color(red: 1, green: 0.929412, blue: 0.831373),
+        buttonBgSecondaryPressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonBgSecondaryInverseHover: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBgSecondaryInversePressed: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBgTertiaryDefault: Color(red: 1, green: 0.968627, blue: 0.929412),
+        buttonBgTertiaryHover: Color(red: 1, green: 0.929412, blue: 0.831373),
+        buttonBgTertiaryPressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonBgTertiaryInverseDefault: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBgTertiaryInverseHover: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBgTertiaryInversePressed: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBgTextHover: Color(red: 1, green: 0.968627, blue: 0.929412),
+        buttonBgTextPressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        buttonBgTextInverseHover: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBgTextInversePressed: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBorderSecondaryDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonBorderSecondaryHover: Color(red: 0.960784, green: 0.286275, blue: 0),
+        buttonBorderSecondaryPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonBorderSecondaryInverseDefault: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonBorderSecondaryInverseHover: Color(red: 1, green: 0.721569, blue: 0.415686),
+        buttonBorderSecondaryInversePressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonFocusRing: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonFocusRingInverse: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonIconSecondaryDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonIconSecondaryHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonIconSecondaryPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonIconSecondaryInverseDefault: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonIconSecondaryInverseHover: Color(red: 1, green: 0.721569, blue: 0.415686),
+        buttonIconSecondaryInversePressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonIconTertiaryDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonIconTertiaryHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonIconTertiaryPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonIconTertiaryInverseDefault: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonIconTertiaryInverseHover: Color(red: 1, green: 0.721569, blue: 0.415686),
+        buttonIconTertiaryInversePressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonIconTextDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonIconTextHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonIconTextPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonIconTextInverseDefault: Color(red: 1, green: 0.537255, blue: 0.015686),
+        buttonIconTextInverseHover: Color(red: 1, green: 0.721569, blue: 0.415686),
+        buttonIconTextInversePressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonLabelSecondaryDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonLabelSecondaryHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonLabelSecondaryPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonLabelSecondaryInverseDefault: Color(red: 1, green: 0.721569, blue: 0.415686),
+        buttonLabelSecondaryInverseHover: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonLabelSecondaryInversePressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        buttonLabelTertiaryDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonLabelTertiaryHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonLabelTertiaryPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonLabelTertiaryInverseDefault: Color(red: 1, green: 0.721569, blue: 0.415686),
+        buttonLabelTertiaryInverseHover: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonLabelTertiaryInversePressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        buttonLabelTextDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        buttonLabelTextHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        buttonLabelTextPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        buttonLabelTextInverseDefault: Color(red: 1, green: 0.721569, blue: 0.415686),
+        buttonLabelTextInverseHover: Color(red: 1, green: 0.839216, blue: 0.658824),
+        buttonLabelTextInversePressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        checkboxBgUnselectedHover: Color(red: 1, green: 0.968627, blue: 0.929412),
+        checkboxBgUnselectedPressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        checkboxBgSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        checkboxBgSelectedHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        checkboxBgSelectedPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        checkboxBorderUnselectedHover: Color(red: 0.792157, green: 0.207843, blue: 0),
+        checkboxBorderUnselectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        checkboxBorderSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        radioBgHover: Color(red: 1, green: 0.968627, blue: 0.929412),
+        radioBgPressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        radioBorderUnselectedHover: Color(red: 0.792157, green: 0.207843, blue: 0),
+        radioBorderUnselectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        radioBorderSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        radioBorderSelectedHover: Color(red: 0.960784, green: 0.286275, blue: 0),
+        radioBorderSelectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        radioDotSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        radioDotSelectedHover: Color(red: 0.960784, green: 0.286275, blue: 0),
+        radioDotSelectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        radioStateLayerSelected: Color(red: 0.792157, green: 0.207843, blue: 0),
+        chipBgSelectedDefault: Color(red: 1, green: 0.968627, blue: 0.929412),
+        chipBgSelectedHover: Color(red: 1, green: 0.929412, blue: 0.831373),
+        chipBgSelectedPressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        chipBorderSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        chipBorderSelectedHover: Color(red: 0.960784, green: 0.286275, blue: 0),
+        chipBorderSelectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        chipLabelSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        chipLabelSelectedHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        chipLabelSelectedPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        chipIconSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        chipRemoveBgSelectedHover: Color(red: 1, green: 0.839216, blue: 0.658824),
+        chipRemoveBgSelectedPressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        snackbarLabelControlTintedNeutralDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        snackbarLabelControlTintedNeutralHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        snackbarLabelControlTintedNeutralPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        badgeBgStrongBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        badgeBgSubtleBrand: Color(red: 1, green: 0.968627, blue: 0.929412),
+        badgeLabelSubtleBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        badgeDotBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        tabLabelSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        tabLabelSelectedHover: Color(red: 0.792157, green: 0.207843, blue: 0),
+        tabLabelSelectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        tabIconSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        tabIconSelectedHover: Color(red: 0.792157, green: 0.207843, blue: 0),
+        tabIconSelectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        tabIndicatorDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        listLeadingContainerBgBrand: Color(red: 1, green: 0.968627, blue: 0.929412),
+        listLeadingContainerIconBrand: Color(red: 0.792157, green: 0.207843, blue: 0),
+        switchTrackOnDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        switchTrackOnHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        switchTrackOnPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        switchIconOnDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        switchIconOnHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        switchIconOnPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        switchOutlinedIconOn: Color(red: 0.792157, green: 0.207843, blue: 0),
+        segmentedControlNeutralLabelSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        segmentedControlNeutralLabelSelectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        segmentedControlNeutralIconSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        segmentedControlNeutralIconSelectedPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        segmentedControlBrandThumbDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        segmentedControlBrandThumbPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        segmentedControlTintedThumbDefault: Color(red: 1, green: 0.968627, blue: 0.929412),
+        segmentedControlTintedThumbPressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        segmentedControlTintedThumbBorderDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        segmentedControlTintedThumbBorderPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
+        segmentedControlTintedLabelSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        segmentedControlTintedLabelSelectedPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        segmentedControlTintedIconSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        segmentedControlTintedIconSelectedPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
+        sliderTrackActive: Color(red: 0.792157, green: 0.207843, blue: 0),
+        sliderHaloHover: Color(red: 1, green: 0.968627, blue: 0.929412),
+        sliderHaloPressed: Color(red: 1, green: 0.929412, blue: 0.831373),
+        menuCheckDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        tooltipPrimaryLabelLight: Color(red: 0.792157, green: 0.207843, blue: 0),
+        tooltipPrimaryLabelLightHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        tooltipPrimaryLabelLightPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059)
+    )
+
+    public static let all: [CosmosBrand] = [.makeMyTrip, .myBiz]
+}
+
+private struct CosmosBrandKey: EnvironmentKey {
+    static let defaultValue = CosmosBrand.makeMyTrip
+}
+
+public extension EnvironmentValues {
+    /// The brand of this part of the view hierarchy. Defaults to MakeMyTrip.
+    var cosmosBrand: CosmosBrand {
+        get { self[CosmosBrandKey.self] }
+        set { self[CosmosBrandKey.self] = newValue }
+    }
+}

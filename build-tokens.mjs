@@ -1,5 +1,7 @@
+import { readFileSync } from "node:fs";
 import StyleDictionary from "style-dictionary";
 import { register } from "@tokens-studio/sd-transforms";
+import { brandsOf, tokensForBrand } from "./scripts/lib/brands.mjs";
 import { opacityProblems } from "./scripts/lib/opacity.mjs";
 
 /**
@@ -15,7 +17,9 @@ import { opacityProblems } from "./scripts/lib/opacity.mjs";
  *                                  offsetX / offsetY / blur / color set per layer (web keeps
  *                                  them whole as a CSS box-shadow shorthand)
  *
- * Outputs: web (CSS vars + ESM), iOS (SwiftUI Swift enum), Android (Compose Kotlin object).
+ * Outputs: web (CSS vars + ESM), iOS (SwiftUI Swift enum), Android (Compose Kotlin object),
+ * plus a runtime brand switch on each (see "brands" at the end): a [data-brand] block in
+ * tokens.css, brands.ts, CosmosBrand.swift and CosmosBrand.kt.
  */
 
 await register(StyleDictionary, { excludeParentKeys: true });
@@ -525,8 +529,11 @@ StyleDictionary.registerTransform({
   },
 });
 
-const sd = new StyleDictionary({
-  source: ["tokens/tokens.json"],
+/** The Style Dictionary config for one brand. Each call returns fresh objects, because the
+ * comment transform keys its bookkeeping on the platform object. */
+const configFor = (tokens, log) => ({
+  tokens,
+  ...(log ? { log } : {}),
   preprocessors: [
     "mmt/validate-opacity",
     "tokens-studio",
@@ -552,7 +559,7 @@ const sd = new StyleDictionary({
       files: [
         {
           destination: "tokens.css",
-          format: "css/variables",
+          format: "mmt/css/variables-brands",
           // Descriptions are full sentences; keep them above the declaration rather
           // than trailing it, which would push lines past any sane wrap width.
           options: { formatting: { commentPosition: "above" } },
@@ -564,6 +571,7 @@ const sd = new StyleDictionary({
       buildPath: `${OUT_DIR}/web/`,
       files: [
         { destination: "tokens.ts", format: "javascript/esm", options: { minify: true } },
+        { destination: "brands.ts", format: "mmt/js/brands" },
       ],
     },
     ios: {
@@ -589,6 +597,7 @@ const sd = new StyleDictionary({
           destination: "LineHeight.swift",
           format: "mmt/ios-line-height-modifier",
         },
+        { destination: "CosmosBrand.swift", format: "mmt/ios/brands" },
       ],
     },
     android: {
@@ -619,10 +628,230 @@ const sd = new StyleDictionary({
             ],
           },
         },
+        { destination: "CosmosBrand.kt", format: "mmt/android/brands" },
       ],
     },
   },
 });
 
+// ---------------------------------------------------------------------- brands ---
+// Every brand builds from the same config. The default brand writes the files; the
+// others are resolved in memory and compared with it, platform by platform. A token whose
+// resolved value differs in any brand is brandable, and only brandable tokens get the
+// runtime switch below. The comparison decides, not a list: a brand set overrides a few
+// semantic tokens, and every component token that aliases one of them follows.
+
+const SOURCE = JSON.parse(readFileSync("tokens/tokens.json", "utf8"));
+const BRANDS = brandsOf(SOURCE);
+const DEFAULT_BRAND = BRANDS[0];
+const QUIET = { verbosity: "silent", warnings: "disabled" };
+
+/** platform → { tokens: default-brand tokens that vary, values: { brandId: { key: value } } }. */
+const brandable = {};
+
+/** A key per token: the path, plus a count for repeats. The layers of an expanded shadow
+ * share both name and path until the format numbers them; every brand lists them in the
+ * same order, so the count tells them apart. */
+const tokenKeys = new WeakMap();
+const idOf = (t) => tokenKeys.get(t);
+function keyTokens(tokens) {
+  const seen = new Map();
+  for (const t of tokens) {
+    const path = t.path.join(".");
+    const n = seen.get(path) ?? 0;
+    seen.set(path, n + 1);
+    tokenKeys.set(t, n ? `${path}#${n + 1}` : path);
+  }
+  return tokens;
+}
+/** Brandable tokens on iOS and Android must be solid colours: those are the only properties typed below. */
+function solidColors(platform, prefix) {
+  const { tokens, values } = brandable[platform];
+  for (const t of tokens) {
+    for (const brand of BRANDS) {
+      const v = values[brand.id][idOf(t)];
+      if (typeOf(t) !== "color" || typeof v !== "string" || !v.startsWith(prefix)) {
+        throw new Error(`${t.path.join(".")} differs between brands but is not a solid colour (${brand.id}: ${v}). Brand overrides support solid colours only.`);
+      }
+    }
+  }
+  return brandable[platform];
+}
+
+const lowerCamel = (name) =>
+  name.replace(/[^A-Za-z0-9]+(.)?/g, (_, c) => (c ? c.toUpperCase() : "")).replace(/^./, (c) => c.toLowerCase());
+const upperCamel = (name) => lowerCamel(name).replace(/^./, (c) => c.toUpperCase());
+const oneLine = (text) => (text ?? "").replace(/\s+/g, " ").trim();
+
+StyleDictionary.registerFormat({
+  name: "mmt/css/variables-brands",
+  format: async (args) => {
+    const base = await StyleDictionary.hooks.formats["css/variables"](args);
+    const { tokens, values } = brandable["web-css"];
+    if (!tokens.length) return base;
+    const blocks = BRANDS.map((brand) => {
+      const lines = tokens.map((t) => `  --${t.name}: ${values[brand.id][idOf(t)]};`);
+      return `
+/**
+ * ${brand.name}: the ${tokens.length} tokens that change with the brand. Set data-brand="${brand.id}"
+ * on any element to switch it and everything inside it.
+ */
+[data-brand="${brand.id}"] {
+${lines.join("\n")}
+}
+`;
+    });
+    return base + blocks.join("");
+  },
+});
+
+StyleDictionary.registerFormat({
+  name: "mmt/js/brands",
+  format: () => {
+    const { tokens, values } = brandable["web-js"];
+    const brands = BRANDS.map((brand) => {
+      const lines = tokens.map((t) => `      ${t.name}: ${JSON.stringify(values[brand.id][idOf(t)])},`);
+      return `  ${brand.id}: {\n    name: ${JSON.stringify(brand.name)},\n    tokens: {\n${lines.join("\n")}\n    },\n  },`;
+    });
+    return `/**
+ * Do not edit directly, this file was auto-generated.
+ *
+ * The tokens that change with the brand, per brand. Every other token is the same in
+ * every brand and lives in tokens.ts. In CSS, set data-brand on an element instead.
+ */
+
+export const brands = {
+${brands.join("\n")}
+} as const;
+
+export type BrandId = keyof typeof brands;
+
+export const defaultBrand: BrandId = ${JSON.stringify(DEFAULT_BRAND.id)};
+`;
+  },
+});
+
+StyleDictionary.registerFormat({
+  name: "mmt/ios/brands",
+  format: ({ file }) => {
+    const { tokens, values } = solidColors("ios", "Color(");
+    const properties = tokens.map((t) => `    /// ${oneLine(t.description)}\n    public let ${t.name}: Color`);
+    const instances = BRANDS.map((brand) => {
+      const args = [
+        `id: ${JSON.stringify(brand.id)}`,
+        `name: ${JSON.stringify(brand.name)}`,
+        ...tokens.map((t) => `${t.name}: ${values[brand.id][idOf(t)]}`),
+      ];
+      return `    public static let ${lowerCamel(brand.name)} = CosmosBrand(\n        ${args.join(",\n        ")}\n    )`;
+    });
+    return `//
+// ${file.destination}
+//
+
+// Do not edit directly, this file was auto-generated.
+
+import SwiftUI
+
+/// The tokens that change with the brand. Every other token is the same in every brand
+/// and stays on \`CosmosTokens\`. Read these from the environment, so one line switches a
+/// whole screen:
+///
+///     MyBizFlow().environment(\\.cosmosBrand, .${lowerCamel(BRANDS.at(-1).name)})
+///
+///     @Environment(\\.cosmosBrand) private var brand
+///     Rectangle().fill(brand.colorBgFillBrand)
+public struct CosmosBrand: Identifiable, Sendable {
+    public let id: String
+    public let name: String
+
+${properties.join("\n\n")}
+
+${instances.join("\n\n")}
+
+    public static let all: [CosmosBrand] = [${BRANDS.map((b) => `.${lowerCamel(b.name)}`).join(", ")}]
+}
+
+private struct CosmosBrandKey: EnvironmentKey {
+    static let defaultValue = CosmosBrand.${lowerCamel(DEFAULT_BRAND.name)}
+}
+
+public extension EnvironmentValues {
+    /// The brand of this part of the view hierarchy. Defaults to ${DEFAULT_BRAND.name}.
+    var cosmosBrand: CosmosBrand {
+        get { self[CosmosBrandKey.self] }
+        set { self[CosmosBrandKey.self] = newValue }
+    }
+}
+`;
+  },
+});
+
+StyleDictionary.registerFormat({
+  name: "mmt/android/brands",
+  format: () => {
+    const { tokens, values } = solidColors("android", "Color(");
+    const properties = tokens.map((t) => `  /** ${oneLine(t.description).replaceAll("*/", "* /")} */\n  val ${t.name}: Color,`);
+    const instances = BRANDS.map((brand) => {
+      const args = [
+        `id = ${JSON.stringify(brand.id)}`,
+        `name = ${JSON.stringify(brand.name)}`,
+        ...tokens.map((t) => `${t.name} = ${values[brand.id][idOf(t)]}`),
+      ];
+      return `    val ${upperCamel(brand.name)} = CosmosBrand(\n      ${args.join(",\n      ")},\n    )`;
+    });
+    return `
+// Do not edit directly, this file was auto-generated.
+
+package com.makemytrip.cosmos.tokens
+
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
+
+/**
+ * The tokens that change with the brand. Every other token is the same in every brand and
+ * stays on [CosmosTokens]. Read these from [LocalCosmosBrand], so one line switches a whole
+ * screen:
+ *
+ *     CompositionLocalProvider(LocalCosmosBrand provides CosmosBrand.${upperCamel(BRANDS.at(-1).name)}) { MyBizFlow() }
+ *
+ *     Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
+ */
+@Immutable
+data class CosmosBrand(
+  val id: String,
+  val name: String,
+${properties.join("\n")}
+) {
+  companion object {
+${instances.join("\n\n")}
+
+    val all = listOf(${BRANDS.map((b) => upperCamel(b.name)).join(", ")})
+  }
+}
+
+/** The brand of this part of the composition. Defaults to ${DEFAULT_BRAND.name}. */
+val LocalCosmosBrand = staticCompositionLocalOf { CosmosBrand.${upperCamel(DEFAULT_BRAND.name)} }
+`;
+  },
+});
+
+// Formats are registered above, before any instance exists to look them up.
+{
+  const resolved = await Promise.all(
+    BRANDS.map((brand) => new StyleDictionary(configFor(tokensForBrand(SOURCE, brand.set), QUIET))),
+  );
+  for (const platform of Object.keys(configFor().platforms)) {
+    const all = await Promise.all(resolved.map(async (sd) => keyTokens((await sd.getPlatformTokens(platform)).allTokens)));
+    const values = Object.fromEntries(
+      BRANDS.map((brand, i) => [brand.id, Object.fromEntries(all[i].map((t) => [idOf(t), t.value]))]),
+    );
+    const differs = (t) =>
+      BRANDS.some((brand) => JSON.stringify(values[brand.id][idOf(t)]) !== JSON.stringify(t.value));
+    brandable[platform] = { tokens: all[0].filter(differs), values };
+  }
+}
+
+const sd = new StyleDictionary(configFor(tokensForBrand(SOURCE, DEFAULT_BRAND.set)));
 await sd.cleanAllPlatforms();
 await sd.buildAllPlatforms();
