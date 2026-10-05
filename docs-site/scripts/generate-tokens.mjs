@@ -348,7 +348,9 @@ function backgroundFor(key) {
     const bg = `${on[2]}-${on[1]}${on[3] ?? ""}`;
     return source.semantic.color[bg] || !source.semantic.color[`${bg}-strong`] ? bg : `${bg}-strong`;
   }
-  if (key.startsWith("text-inverse") || key === "text-link-inverse") return "bg-surface-inverse";
+  // Any -inverse text role sits on the dark inverse surface, as in the tokens/contrast lint rule:
+  // text-inverse, text-link-inverse, text-brand-inverse-hover, text-warning-inverse.
+  if (/-inverse(-|$)/.test(key)) return "bg-surface-inverse";
   return "bg";
 }
 
