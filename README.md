@@ -215,7 +215,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1133 color tokens (150 primitive — 144 palette steps plus `alpha.transparent` and the five shadow alphas — + 287 semantic roles + 696 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1144 color tokens (161 primitive — 155 palette steps plus `alpha.transparent` and the five shadow alphas — + 287 semantic roles + 696 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -283,7 +283,8 @@ Chips follow the same rule, and their border toggle is what adapts them to the c
 
 ### 4. Color scale system
 
-- **13 palettes:** neutral, azure, red, orange, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
+- **14 palettes:** neutral, azure, red, orange, tangerine, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
+- **Brand ramps:** `azure` (MakeMyTrip), `orange` (myBiz) and `tangerine` (Goibibo). Each step of `tangerine` matches the azure step of the same number in contrast against white, so every brand pairing holds
 - **11–12 steps per palette:** `50`, `100`–`900`, `950`, plus `0` on neutral only
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
 - **Brand primary (interactive):** semantic brand roles rest on `color.azure.700` = `#0067E8` (WCAG AA on white). The lighter `color.azure.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
@@ -424,41 +425,51 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 ### 14. Brands (MakeMyTrip, myBiz and Goibibo)
 
-Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: orange instead of azure. Goibibo differs in its typeface: Rubik instead of Lato, with its own weights. Its brand colour is not decided yet, so it keeps azure for now.
+Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: orange instead of azure, with `orange.700` as its primary. Goibibo differs in its brand colour, tangerine, and in its typeface: Rubik instead of Lato, with its own weights.
 
 **A brand is a list of value overrides on semantic tokens.** It cannot add, rename or describe a token. The default brand is the plain `primitives` → `semantic` → `component` chain. Another brand adds a `brands/{id}` set that sets new values for a few semantic tokens. Component tokens alias semantic tokens, so every component follows without a component token changing.
 
 ```
-primitives (azure, orange, …)  →  semantic  →  component
+primitives (azure, orange, tangerine, …)  →  semantic  →  component
                                      ↑
                     brands/mybiz overrides 30 semantic colours
-                    brands/goibibo overrides typeface.default, weight.bold and weight.black
+                    brands/goibibo overrides the same 30 colours, typeface.default, weight.bold and weight.black
 ```
 
 This is exactly what a **Figma extended collection** does. In Figma the semantic set is the collection named **MakeMyTrip**, the parent. Its **myBiz** and **Goibibo** extensions override the same values as their brand sets and inherit everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → myBiz** or **Goibibo** (or back to MakeMyTrip). The Figma collection is named after the default brand, while the JSON set keeps the tier name `semantic`. The build never reads Figma names, so the two can differ. Do not push variables to Figma from Tokens Studio: it matches collections by name, so it would recreate a `semantic` collection, and it models brands as modes, not extensions.
 
 **Only brand roles change.** Info, links and the focus ring stay azure in every brand, because they signal status and interactivity, not brand. `text-brand-on-bg-fill` and `icon-brand-on-bg-fill` stay white.
 
-| Semantic token | MakeMyTrip | myBiz |
-|---|---|---|
-| `bg-surface-brand` | `azure.50` | `orange.50` |
-| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle` | `azure.100` | `orange.100` |
-| `bg-surface-brand-pressed-strong` | `azure.200` | `orange.200` |
-| `bg-surface-brand-inverse` | `azure.400` | `orange.400` |
-| `bg-fill-brand` | `azure.700` | `orange.700` |
-| `bg-fill-brand-hover` | `azure.800` | `orange.800` |
-| `bg-fill-brand-pressed` | `azure.900` | `orange.900` |
-| `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `orange.700` |
-| `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `orange.600` |
-| `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `orange.800` |
-| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `orange.800` |
-| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `orange.900` |
-| `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `orange.300` |
-| `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `orange.200` |
-| `text-brand-inverse-pressed` | `azure.100` | `orange.100` |
-| `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `orange.400` |
+| Semantic token | MakeMyTrip | myBiz | Goibibo |
+|---|---|---|---|
+| `bg-surface-brand` | `azure.50` | `orange.50` | `tangerine.50` |
+| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle` | `azure.100` | `orange.100` | `tangerine.100` |
+| `bg-surface-brand-pressed-strong` | `azure.200` | `orange.200` | `tangerine.200` |
+| `bg-surface-brand-inverse` | `azure.400` | `orange.400` | `tangerine.400` |
+| `bg-fill-brand` | `azure.700` | `orange.700` | `tangerine.700` |
+| `bg-fill-brand-hover` | `azure.800` | `orange.800` | `tangerine.800` |
+| `bg-fill-brand-pressed` | `azure.900` | `orange.900` | `tangerine.900` |
+| `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `orange.700` | `tangerine.700` |
+| `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `orange.600` | `tangerine.600` |
+| `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `orange.800` | `tangerine.800` |
+| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `orange.800` | `tangerine.800` |
+| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `orange.900` | `tangerine.900` |
+| `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `orange.300` | `tangerine.300` |
+| `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `orange.200` | `tangerine.200` |
+| `text-brand-inverse-pressed` | `azure.100` | `orange.100` | `tangerine.100` |
+| `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `orange.400` | `tangerine.400` |
 
-**Contrast.** The orange ramp tracks the azure ramp step for step, so the pairings hold. The primary fill `orange.700` (`#CA3500`) gives the white label 5.22:1, where MakeMyTrip gives 5.11:1. `text-brand-hover` at `orange.600` is 3.59:1 on white. It only backs non-text marks such as the Radio dot, so it clears the 3:1 graphics minimum. On the dark `bg-surface-inverse` (`#0A0A0A`), `text-brand-inverse` reads at 11.61:1 (MakeMyTrip 12.09:1). The Inverse Primary pressed fill, the gap already accepted for MakeMyTrip, drops from 2.37:1 to 2.09:1 against `#0A0A0A`. `tokens/contrast` checks every brand, and names the brand in its report.
+**Contrast.** myBiz uses the Tailwind `orange` ramp step for step, with `orange.700` as its primary. `tangerine` was generated so that each step matches the azure step of the same number in contrast against white, within 0.07. Every pairing MakeMyTrip passes, the other brands pass too:
+
+| Pairing | MakeMyTrip (azure) | myBiz (orange) | Goibibo (tangerine) |
+|---|---|---|---|
+| White label on `bg-fill-brand` (700) | 5.11:1 | 5.22:1 | 5.09:1 |
+| `text-brand-hover` on white (600, non-text only) | 3.75:1 | 3.59:1 | 3.77:1 |
+| `text-brand-on-bg-surface-hover` on its tint (800 on 100) | 5.55:1 | 6.42:1 | 5.60:1 |
+| `text-brand-inverse` on `#0A0A0A` (300) | 12.09:1 | 11.61:1 | 12.07:1 |
+| Inverse Primary pressed fill on `#0A0A0A` (900, known gap) | 2.37:1 | 2.09:1 | 2.39:1 |
+
+The previous brand colours, myBiz `#FF664B` and Goibibo `#FF6D38`, read at 2.89:1 and 2.80:1 with white text, so they failed. At that lightness they sit where step 500 sits in a ramp; the accessible primary is step 700. myBiz now uses `orange.700` (`#CA3500`) for its primary fill, brand text, borders and icons, and the other `orange` steps for tints, hover, pressed and dark surfaces. Goibibo moves from hue 39 toward amber (OKLCH hue 52 at 500, `#EF7500`; primary `#B35200`), so the two oranges sit about three times further apart than the old colours did. `tokens/contrast` checks every brand, and names the brand in its report.
 
 **Typography per brand.** The 36 text styles share their sizes, line heights and roles across brands. Each style reads its family from `typeface.default` and its weight from `weight.regular`, `weight.bold` or `weight.black`, the only place a semantic token aliases another semantic token (README → Typography mappings). In Figma, the text styles bind to the same variables in the MakeMyTrip collection, so a brand extension swaps the font for every style at once.
 
@@ -471,7 +482,7 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 
 Rubik is wider than Lato and has a taller x-height, so the same size reads larger in Goibibo. The sizes stay shared on purpose. Apps load Rubik themselves, as they do Lato.
 
-**Watch the warning red.** myBiz `bg-fill-brand` (`#CA3500`) sits close to `bg-fill-warning-strong` (`#C10007`). In myBiz, a primary Button and a destructive one differ mainly by label, so keep destructive actions in their own confirmation step.
+**Watch the warning red.** myBiz `bg-fill-brand` (`#CA3500`) is a red-orange close to `bg-fill-warning-strong` (`#C10007`). In myBiz, a primary Button and a destructive one differ mainly by label, so keep destructive actions in their own confirmation step. Goibibo (`#B35200`) is clearly orange.
 
 **In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 232 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (36 families and 24 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
 
@@ -480,8 +491,6 @@ Rubik is wider than Lato and has a taller x-height, so the same size reads large
 2. Add a `$themes` entry with that `id` that enables the three base sets and the brand set.
 3. Run `npm run build:tokens`. The outputs gain the brand on their own.
 4. In Figma, extend the **MakeMyTrip** collection with the brand name and set the same overrides.
-
-To give Goibibo its colour, add its 30 brand colour overrides to `brands/goibibo` and to the Figma Goibibo extension, the same way myBiz does it.
 
 `tokens/brand` enforces the shape: an override must name an existing semantic colour, font family or font weight, alias a primitive and differ from the default value, and each brand set must belong to exactly one theme.
 
@@ -553,30 +562,30 @@ To give Goibibo its colour, add its 30 brand colour overrides to `brands/goibibo
 
 ## Token Inventory
 
-**Totals:** 281 primitive tokens · 398 semantic tokens (287 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1029 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 69 `tooltip/*`) · **1816 values on web** · **1900 on iOS and Android** · **0 gradients**
+**Totals:** 292 primitive tokens · 398 semantic tokens (287 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1029 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 69 `tooltip/*`) · **1827 values on web** · **1911 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1708 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1719 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (281)
+### Primitive tokens (292)
 
-#### Color — 150 tokens (13 palettes, 144 steps, plus `alpha.transparent` and five shadow alphas)
+#### Color — 161 tokens (14 palettes, 155 steps, plus `alpha.transparent` and five shadow alphas)
 
 Token path pattern: `color.{palette}.{step}`
 
-| Step | Neutral | Azure | Red | Orange | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
-|------|---------|-------|-----|--------|-------|--------|------|-------|------|--------|--------|--------|---------|
-| `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — |
-| `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF7ED | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
-| `100` | #F5F5F5 | #D6EFFF | #FFE2E2 | #FFEDD4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
-| `200` | #E5E5E5 | #C2E8FF | #FFC9C9 | #FFD6A8 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
-| `300` | #D4D4D4 | #83D4FF | #FFA2A2 | #FFB86A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
-| `400` | #A1A1A1 | #48BBFF | #FF6467 | #FF8904 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
-| `500` | #737373 | #1E9CFF | #FB2C36 | #FF6900 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
-| `600` | #525252 | #0681FF | #E7000B | #F54900 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
-| `700` | #404040 | #0067E8 | #C10007 | #CA3500 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
-| `800` | #262626 | #0857C5 | #9F0712 | #9F2D00 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
-| `900` | #171717 | #0D4C9B | #82181A | #7E2A0C | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
-| `950` | #0A0A0A | #0E2F5D | #460809 | #441306 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
+| Step | Neutral | Azure | Red | Orange | Tangerine | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
+|------|---------|-------|-----|--------|-----------|-------|--------|------|-------|------|--------|--------|--------|---------|
+| `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — | — |
+| `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF7ED | #FEF4EC | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
+| `100` | #F5F5F5 | #D6EFFF | #FFE2E2 | #FFEDD4 | #FFE8D4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
+| `200` | #E5E5E5 | #C2E8FF | #FFC9C9 | #FFD6A8 | #FFDCC2 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
+| `300` | #D4D4D4 | #83D4FF | #FFA2A2 | #FFB86A | #FFBC8A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
+| `400` | #A1A1A1 | #48BBFF | #FF6467 | #FF8904 | #FF9749 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
+| `500` | #737373 | #1E9CFF | #FB2C36 | #FF6900 | #EF7500 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
+| `600` | #525252 | #0681FF | #E7000B | #F54900 | #D26400 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
+| `700` | #404040 | #0067E8 | #C10007 | #CA3500 | #B35200 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
+| `800` | #262626 | #0857C5 | #9F0712 | #9F2D00 | #974500 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
+| `900` | #171717 | #0D4C9B | #82181A | #7E2A0C | #813A00 | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
+| `950` | #0A0A0A | #0E2F5D | #460809 | #441306 | #512303 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
 
 The `alpha` palette holds the only translucent colours. Apart from `transparent`, each step is neutral 950 at a fixed alpha, for shadow layers only:
 
