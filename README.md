@@ -55,7 +55,7 @@ Export or sync from Tokens Studio into `tokens/tokens.json`. This file is the **
 
 The export must preserve:
 
-- `$metadata.tokenSetOrder`: `["primitives", "semantic", "brands/mybiz", "component"]` — each tier resolves before the one that references it, and a brand set overrides semantic before component aliases it
+- `$metadata.tokenSetOrder`: `["primitives", "semantic", "brands/mybiz", "brands/goibibo", "component"]` — each tier resolves before the one that references it, and a brand set overrides semantic before component aliases it
 - `$themes`: one entry per brand, the default brand (MakeMyTrip) first — see [Brands](#14-brands-makemytrip-mybiz-and-goibibo)
 - W3C DTCG format: each token has `value` and `type`
 - Cross-set references: `{fontSize.16}`, `{color.neutral.950}`, etc.
