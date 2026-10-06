@@ -5,6 +5,12 @@ import { Copyable } from "@/components/Copyable";
 import { Card } from "@/components/Section";
 import type { Platform, Token } from "@/lib/types";
 
+/**
+ * Families with a self-hosted face (app/layout.tsx), keyed by token value. Every other
+ * family loads from Google Fonts by name, so each specimen renders in its own typeface.
+ */
+const SELF_HOSTED_FACES: Record<string, string> = { Lato: "var(--font-lato)" };
+
 type ScaleTableProps = {
   tokens: Token[];
   platform: Platform;
@@ -121,7 +127,7 @@ export const previews = {
   ),
 
   fontFamily: (token: Token) => (
-    <span className="text-lg" style={{ fontFamily: `var(--font-lato), ${token.value}, sans-serif` }}>
+    <span className="text-lg" style={{ fontFamily: `${SELF_HOSTED_FACES[token.value] ?? `"${token.value}"`}, sans-serif` }}>
       The quick brown fox jumps
     </span>
   ),

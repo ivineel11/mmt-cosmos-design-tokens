@@ -38,7 +38,7 @@ Add the data in `scripts/generate-tokens.mjs`, extend `TokenData` in `lib/types.
 
 ## Fonts
 
-Lato 400/700/900 are self-hosted in `public/fonts` so builds work offline and specimens always render in the real typeface.
+Lato 400/700/900 are self-hosted in `public/fonts` so builds work offline and specimens always render in the real typeface. Rubik 400/600/700, the Goibibo typeface, loads from Google Fonts at runtime (`app/layout.tsx`) and only sets its own font-family specimen; offline, that one specimen falls back to the system sans.
 
 ## Shared with Storybook
 
