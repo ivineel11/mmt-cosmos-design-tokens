@@ -83,6 +83,15 @@ export type FlatToken = Omit<Token, "value" | "contrast"> & {
   description: string | null;
 };
 
+/** What one brand changes: the tokens whose value or alias differs from the default brand,
+ * keyed `set:path`, and every contrast pair measured in that brand. */
+export type BrandData = {
+  id: string;
+  name: string;
+  tokens: Record<string, { value: FlatToken["value"]; reference: string | null }>;
+  contrastPairs: ContrastPair[];
+};
+
 export type TokenData = {
   meta: {
     generatedAt: string;
@@ -109,4 +118,6 @@ export type TokenData = {
   };
   contrastPairs: ContrastPair[];
   all: FlatToken[];
+  /** Every brand, the default first. */
+  brands: BrandData[];
 };
