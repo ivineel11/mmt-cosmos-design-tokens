@@ -17,7 +17,7 @@ export type SliderProps = {
   minGap?: number;
   /** Names the slider in the header and for assistive tech. */
   label: string;
-  /** Formats the header, tooltip, limits and spoken value. Defaults to the number, rounded when there is no step. */
+  /** Formats the header, tooltip, limits and spoken value. Without a step it receives the value rounded to a whole number. Defaults to the number. */
   formatValue?: (value: number) => string;
   showHeader?: boolean;
   showLimits?: boolean;
@@ -57,7 +57,8 @@ export function Slider({
   onChange,
   onChangeEnd,
 }: SliderProps) {
-  const format = formatValue ?? ((v: number) => String(step ? v : Math.round(v)));
+  // A continuous drag lands between whole numbers, so every label shows the rounded value.
+  const format = (v: number) => (formatValue ?? String)(step ? v : Math.round(v));
   const [inner, setInner] = useState<Value>(defaultValue ?? min);
   const current = value ?? inner;
   const isRange = Array.isArray(current);
