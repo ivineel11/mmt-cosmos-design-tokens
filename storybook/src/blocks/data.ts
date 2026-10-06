@@ -3,14 +3,35 @@
  * (run by `npm run tokens` before every dev and build), so Storybook and the docs site
  * read the same resolved values, alias chains, contrast ratios and platform names.
  */
+import { useSyncExternalStore } from "react";
 import raw from "../../../docs-site/data/tokens.json";
-import type { FlatToken, Platform, TokenData } from "../../../docs-site/lib/types";
+import type { BrandData, FlatToken, Platform, TokenData } from "../../../docs-site/lib/types";
 
-export type { FlatToken, Platform };
+export type { BrandData, FlatToken, Platform };
 
 export const data = raw as unknown as TokenData;
 
 export type TokenSet = FlatToken["set"];
+
+/** The brand the Brand toolbar has set on the root, so blocks re-render when it changes.
+ * CSS variables follow data-brand on their own; this is for the values the blocks print. */
+const subscribe = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-brand"] });
+  return () => observer.disconnect();
+};
+const brandId = () => document.documentElement.dataset.brand ?? data.brands[0].id;
+
+export function useBrand(): BrandData {
+  const id = useSyncExternalStore(subscribe, brandId);
+  return data.brands.find((brand) => brand.id === id) ?? data.brands[0];
+}
+
+/** A token with the value and alias it has in `brand`. */
+export const inBrand = (token: FlatToken, brand: BrandData): FlatToken => {
+  const override = brand.tokens[`${token.set}:${token.path}`];
+  return override ? { ...token, ...override } : token;
+};
 
 /** Tokens in one set whose path starts with `prefix` (a group such as `space` or `color.text-`). */
 export const select = (set: TokenSet, prefix: string): FlatToken[] =>

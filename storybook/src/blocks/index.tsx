@@ -1,5 +1,5 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import { aliasLabel, cssVar, data, formatValue, groupsOf, select, type FlatToken, type Platform, type TokenSet } from "./data";
+import { aliasLabel, cssVar, data, formatValue, groupsOf, inBrand, select, useBrand, type FlatToken, type Platform, type TokenSet } from "./data";
 import { Icon } from "../components/Icon/Icon";
 import { SegmentedControl } from "../components/SegmentedControl/SegmentedControl";
 import "./blocks.css";
@@ -81,6 +81,7 @@ export function TokenRows({ tokens, preview, initialPlatform = "css" }: TablePro
 }
 
 function Rows({ tokens, preview, platform }: { tokens: FlatToken[]; preview?: TableProps["preview"]; platform: Platform }) {
+  const brand = useBrand();
   return (
     <table className="doc-table">
       <thead>
@@ -92,7 +93,7 @@ function Rows({ tokens, preview, platform }: { tokens: FlatToken[]; preview?: Ta
         </tr>
       </thead>
       <tbody>
-        {tokens.map((token) => (
+        {tokens.map((token) => inBrand(token, brand)).map((token) => (
           <tr key={`${token.set}:${token.path}`}>
             <td>
               <TokenName token={token} platform={platform} />
@@ -116,10 +117,11 @@ export function TokenTable({ set }: { set: TokenSet }) {
   const [group, setGroup] = useState("all");
   const [query, setQuery] = useState("");
   const [platform, setPlatform] = useState<Platform>("css");
+  const brand = useBrand();
 
   const tokens = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return data.all.filter(
+    return data.all.map((token) => inBrand(token, brand)).filter(
       (token) =>
         token.set === set &&
         (group === "all" || token.path.split(".")[0] === group) &&
@@ -130,7 +132,7 @@ export function TokenTable({ set }: { set: TokenSet }) {
           (token.reference ?? "").toLowerCase().includes(needle) ||
           (token.description ?? "").toLowerCase().includes(needle)),
     );
-  }, [set, group, query]);
+  }, [set, group, query, brand]);
 
   return (
     <Doc>
@@ -204,11 +206,12 @@ export function Palettes() {
 /** Semantic colours for one role group (bg, surface, fill, text, border, icon). */
 /** showPreview={false} drops the contrast sample column, for roles that are never text, such as surfaces. */
 export function ColorRole({ role, showPreview = true }: { role: string; showPreview?: boolean }) {
+  const brand = useBrand();
   const group = data.semantic.colorGroups.find((candidate) => candidate.id === role);
   const flat = new Map(select("semantic", "color.").map((token) => [token.path, token]));
   if (!group) return null;
   const tokens = group.tokens.map((token) => flat.get(token.path)).filter((token): token is FlatToken => Boolean(token));
-  const contrast = new Map(group.tokens.map((token) => [token.path, token.contrast]));
+  const contrast = new Map(brand.contrastPairs.map((pair) => [pair.text.path, { ratio: pair.ratio, against: pair.background.path }]));
   return (
     <TokenRows
       tokens={tokens}
@@ -241,6 +244,7 @@ function Pass({ ratio }: { ratio: number }) {
 
 /** Every text token against the background it is designed for. */
 export function ContrastTable() {
+  const brand = useBrand();
   return (
     <Doc>
       <table className="doc-table">
@@ -253,7 +257,7 @@ export function ContrastTable() {
           </tr>
         </thead>
         <tbody>
-          {data.contrastPairs.map((pair) => (
+          {brand.contrastPairs.map((pair) => (
             <tr key={pair.text.path}>
               <td className="mono">{pair.text.path.replace("color.", "")}</td>
               <td className="mono doc-muted">{pair.background.path.replace("color.", "")}</td>
@@ -306,6 +310,7 @@ export function CanvasPairing() {
 
 export function TypeScale() {
   const sample = "Flights to Goa from ₹3,499";
+  const brand = useBrand();
   return (
     <Doc>
       {data.semantic.typography.map((group) => (
@@ -324,6 +329,7 @@ export function TypeScale() {
               </div>
               <div className="doc-type-samples">
                 {size.variants.map((variant) => {
+                  const value = (brand.tokens[`semantic:${variant.path}`]?.value as typeof variant.value | undefined) ?? variant.value;
                   const base = variant.names.css.replace(/-\*$/, "");
                   const style: CSSProperties = {
                     fontFamily: `var(${base}-font-family)`,
@@ -335,7 +341,7 @@ export function TypeScale() {
                     <div key={variant.path} className="doc-type-sample">
                       <span style={style}>{sample}</span>
                       <span className="mono doc-muted doc-small">
-                        {variant.weightKey} {variant.value.fontWeight}
+                        {variant.weightKey} {value.fontWeight}
                       </span>
                     </div>
                   );

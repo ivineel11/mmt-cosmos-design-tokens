@@ -13,6 +13,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { brandsOf, tokensForBrand } from "../../scripts/lib/brands.mjs";
 
 const CHECK = process.argv.includes("--check");
 const here = dirname(fileURLToPath(import.meta.url));
@@ -22,18 +23,23 @@ const outDir = join(here, "..", "data");
 const source = JSON.parse(readFileSync(join(repoRoot, "tokens", "tokens.json"), "utf8"));
 
 /** The base sets in order. Brand sets (brands/*) hold another brand's overrides, so the
- * docs, which show the default brand, leave them out. */
+ * docs data is the default brand, and `data.brands` lists what each brand changes. */
 const baseSets = (source.$metadata?.tokenSetOrder ?? ["primitives", "semantic", "component"]).filter(
   (set) => !set.startsWith("brands/"),
 );
 
-/** The token sets are hoisted to the root so cross-set references resolve. */
-const root = {};
-for (const setName of baseSets) {
-  for (const [group, value] of Object.entries(source[setName])) {
-    root[group] = { ...(root[group] ?? {}), ...value };
+/** The token sets are hoisted to the root so cross-set references resolve. `hoist` swaps
+ * the root to another brand's file while that brand is measured. */
+let root = {};
+function hoist(file) {
+  root = {};
+  for (const setName of baseSets) {
+    for (const [group, value] of Object.entries(file[setName])) {
+      root[group] = { ...(root[group] ?? {}), ...value };
+    }
   }
 }
+hoist(source);
 
 const isToken = (node) => node && typeof node === "object" && "value" in node;
 const REFERENCE = /^\{([^}]+)\}$/;
@@ -342,11 +348,10 @@ const flatten = (set, node, prefix = []) =>
     return [token];
   });
 
-data.all = baseSets.flatMap((set) => flatten(set, source[set]));
+const flattenAll = (file) => baseSets.flatMap((set) => flatten(set, file[set]));
+data.all = flattenAll(source);
 
 // Contrast pairings: each text token against the surface it is designed for.
-const colorValue = (key) => resolve(source.semantic.color[key]?.value);
-
 function backgroundFor(key) {
   // text-{intent}-on-{bg-fill|bg-surface}{-suffix} names its background, the same
   // pairing the tokens/contrast lint rule checks: text-info-on-bg-surface-hover
@@ -364,24 +369,50 @@ function backgroundFor(key) {
   return "bg";
 }
 
-data.contrastPairs = roleEntries
-  .filter(([key]) => key.startsWith("text-"))
-  .map(([key]) => {
-    const backgroundKey = backgroundFor(key);
-    const foreground = colorValue(key);
-    const background = colorValue(backgroundKey);
-    if (!foreground || !background) return null;
-    const ratio = contrastRatio(foreground, background);
-    return {
-      text: { path: `color.${key}`, value: foreground },
-      background: { path: `color.${backgroundKey}`, value: background },
-      ratio,
-      aa: ratio >= 4.5,
-      aaLarge: ratio >= 3,
-      aaa: ratio >= 7,
-    };
-  })
-  .filter(Boolean);
+const contrastPairsOf = (file) => {
+  const colorValue = (key) => resolve(file.semantic.color[key]?.value);
+  return roleEntries
+    .filter(([key]) => key.startsWith("text-"))
+    .map(([key]) => {
+      const backgroundKey = backgroundFor(key);
+      const foreground = colorValue(key);
+      const background = colorValue(backgroundKey);
+      if (!foreground || !background) return null;
+      const ratio = contrastRatio(foreground, background);
+      return {
+        text: { path: `color.${key}`, value: foreground },
+        background: { path: `color.${backgroundKey}`, value: background },
+        ratio,
+        aa: ratio >= 4.5,
+        aaLarge: ratio >= 3,
+        aaa: ratio >= 7,
+      };
+    })
+    .filter(Boolean);
+};
+data.contrastPairs = contrastPairsOf(source);
+
+// Brands: everything above is the default brand. For every brand, the tokens whose value
+// or alias differs from the default, keyed `set:path`, and its contrast pairs, so Storybook
+// can follow its Brand toolbar.
+const sameJson = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const defaults = new Map(data.all.map((token) => [`${token.set}:${token.path}`, token]));
+data.brands = brandsOf(source).map((brand) => {
+  if (!brand.set) return { id: brand.id, name: brand.name, tokens: {}, contrastPairs: data.contrastPairs };
+  const file = tokensForBrand(source, brand.set);
+  hoist(file);
+  const tokens = {};
+  for (const token of flattenAll(file)) {
+    const key = `${token.set}:${token.path}`;
+    const base = defaults.get(key);
+    if (!sameJson(base.value, token.value) || base.reference !== token.reference) {
+      tokens[key] = { value: token.value, reference: token.reference };
+    }
+  }
+  const contrastPairs = contrastPairsOf(file);
+  hoist(source);
+  return { id: brand.id, name: brand.name, tokens, contrastPairs };
+});
 
 // Attach the ratio to text tokens so it can be shown inline on the swatch.
 const ratioByPath = new Map(data.contrastPairs.map((pair) => [pair.text.path, pair]));
