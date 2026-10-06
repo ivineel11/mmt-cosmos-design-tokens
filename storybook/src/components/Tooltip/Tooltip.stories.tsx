@@ -65,7 +65,7 @@ const infoTrigger = (name: string) => (props: TooltipTriggerProps) => (
   </button>
 );
 
-const row = { display: "flex", alignItems: "center", gap: "var(--space-2xs)", font: "var(--body-medium-regular-font-weight) var(--body-medium-regular-font-size)/var(--body-medium-regular-line-height) var(--font-family-lato)", color: "var(--color-text-primary)" } as const;
+const row = { display: "flex", alignItems: "center", gap: "var(--space-2xs)", font: "var(--body-medium-regular-font-weight) var(--body-medium-regular-font-size)/var(--body-medium-regular-line-height) var(--typeface-default)", color: "var(--color-text-primary)" } as const;
 
 function Tour() {
   const [step, setStep] = useState(1);

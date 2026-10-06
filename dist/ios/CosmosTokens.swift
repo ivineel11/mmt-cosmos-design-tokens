@@ -977,6 +977,7 @@ public enum CosmosTokens {
     public static let colorYellow900 = Color(red: 0.45098, green: 0.243137, blue: 0.039216)
     public static let colorYellow950 = Color(red: 0.262745, green: 0.12549, blue: 0.015686)
     public static let fontFamilyLato = "Lato"
+    public static let fontFamilyRubik = "Rubik"
     public static let fontSize10 = CGFloat(10)
     public static let fontSize11 = CGFloat(11)
     public static let fontSize12 = CGFloat(12)
@@ -998,6 +999,7 @@ public enum CosmosTokens {
     public static let fontWeightBlack = 900
     public static let fontWeightBold = 700
     public static let fontWeightRegular = 400
+    public static let fontWeightSemibold = 600
     public static let headlineLargeBlackFontFamily = "Lato"
     public static let headlineLargeBlackFontSize = CGFloat(32)
     public static let headlineLargeBlackFontWeight = 900
@@ -1903,4 +1905,8 @@ public enum CosmosTokens {
     public static let tooltipShadowLight2OffsetX = CGFloat(0)
     public static let tooltipShadowLight2OffsetY = CGFloat(8)
     public static let tooltipViewportMargin = CGFloat(8)
+    public static let typefaceDefault = "Lato"
+    public static let weightBlack = 900
+    public static let weightBold = 700
+    public static let weightRegular = 400
 }

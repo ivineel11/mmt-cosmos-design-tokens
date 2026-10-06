@@ -472,9 +472,11 @@ export default {
   },
   fontFamily: {
     lato: "Lato",
+    rubik: "Rubik",
   },
   fontWeight: {
     regular: 400,
+    semibold: 600,
     bold: 700,
     black: 900,
   },
@@ -620,6 +622,14 @@ export default {
     16: "16px",
     24: "24px",
     48: "48px",
+  },
+  typeface: {
+    default: "Lato",
+  },
+  weight: {
+    regular: 400,
+    bold: 700,
+    black: 900,
   },
   headline: {
     large: {

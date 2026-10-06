@@ -6,7 +6,7 @@
   --doc-swatch: 112px;
   --doc-specimen: 120px;
   --doc-name-col: 34%;
-  font-family: var(--font-family-lato), system-ui, sans-serif;
+  font-family: var(--typeface-default), system-ui, sans-serif;
   color: var(--color-text-primary);
   margin-block: var(--space-3xl) var(--space-6xl);
 }
@@ -70,7 +70,7 @@
 .doc-table { width: 100%; border-collapse: collapse; font-size: var(--body-large-regular-font-size); line-height: var(--body-large-regular-line-height); }
 .doc-table th {
   text-align: start;
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--weight-bold);
   font-size: var(--font-size-14);
   color: var(--color-text-secondary);
   padding: var(--space-sm) var(--space-md);
@@ -153,11 +153,11 @@
 .doc-opacity > span { display: block; inline-size: 100%; block-size: 100%; background: var(--color-bg-fill-brand); }
 
 /* Contrast and pairing */
-.doc-pass { font-size: var(--font-size-14); font-weight: var(--font-weight-bold); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-xs); }
+.doc-pass { font-size: var(--font-size-14); font-weight: var(--weight-bold); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-xs); }
 .doc-pass[data-pass="aaa"], .doc-pass[data-pass="aa"] { background: var(--color-bg-surface-success); color: var(--color-text-success); }
 .doc-pass[data-pass="large"] { background: var(--color-bg-surface-caution); color: var(--color-text-caution); }
 .doc-pass[data-pass="fail"] { background: var(--color-bg-surface-warning); color: var(--color-text-warning); }
-.doc-sample-text { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-md); font-weight: var(--font-weight-bold); }
+.doc-sample-text { padding: var(--space-xs) var(--space-md); border-radius: var(--radius-md); font-weight: var(--weight-bold); }
 
 .doc-pairs { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-xl); }
 .doc-canvas { padding: var(--space-3xl); border-radius: var(--radius-xl); border: var(--stroke-default) solid var(--color-border-secondary); }

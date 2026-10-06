@@ -45,9 +45,9 @@ function Row({ title, supporting, defaultOn = false, disabled = false, size = "m
     // The whole row toggles the switch (components/switch.md, Behaviour).
     <label htmlFor={id} style={{ display: "flex", alignItems: "center", gap: "var(--space-md)", padding: "var(--space-sm) var(--space-md)", cursor: disabled ? "not-allowed" : "pointer" }}>
       <span style={{ flex: 1, display: "grid", gap: "var(--space-3xs)" }}>
-        <span id={`${id}-title`} style={{ color: text ?? "var(--color-text-primary)", font: "var(--body-medium-regular-font-weight) var(--body-medium-regular-font-size)/var(--body-medium-regular-line-height) var(--font-family-lato)" }}>{title}</span>
+        <span id={`${id}-title`} style={{ color: text ?? "var(--color-text-primary)", font: "var(--body-medium-regular-font-weight) var(--body-medium-regular-font-size)/var(--body-medium-regular-line-height) var(--typeface-default)" }}>{title}</span>
         {supporting && (
-          <span id={`${id}-supporting`} style={{ color: text ?? "var(--color-text-secondary)", font: "var(--body-small-regular-font-weight) var(--body-small-regular-font-size)/var(--body-small-regular-line-height) var(--font-family-lato)" }}>{supporting}</span>
+          <span id={`${id}-supporting`} style={{ color: text ?? "var(--color-text-secondary)", font: "var(--body-small-regular-font-weight) var(--body-small-regular-font-size)/var(--body-small-regular-line-height) var(--typeface-default)" }}>{supporting}</span>
         )}
       </span>
       <Switch id={id} aria-labelledby={`${id}-title`} aria-describedby={supporting ? `${id}-supporting` : undefined} size={size} checked={on} onChange={setOn} disabled={disabled} />

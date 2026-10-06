@@ -980,6 +980,7 @@ object CosmosTokens {
   val colorYellow900 = Color(0xFF733E0A)
   val colorYellow950 = Color(0xFF432004)
   val fontFamilyLato = "Lato"
+  val fontFamilyRubik = "Rubik"
   val fontSize10 = 10.sp
   val fontSize11 = 11.sp
   val fontSize12 = 12.sp
@@ -1001,6 +1002,7 @@ object CosmosTokens {
   val fontWeightBlack = 900
   val fontWeightBold = 700
   val fontWeightRegular = 400
+  val fontWeightSemibold = 600
   val headlineLargeBlackFontFamily = "Lato"
   val headlineLargeBlackFontSize = 32.sp
   val headlineLargeBlackFontWeight = 900
@@ -1906,4 +1908,8 @@ object CosmosTokens {
   val tooltipShadowLight2OffsetX = 0.dp
   val tooltipShadowLight2OffsetY = 8.dp
   val tooltipViewportMargin = 8.dp
+  val typefaceDefault = "Lato"
+  val weightBlack = 900
+  val weightBold = 700
+  val weightRegular = 400
 }

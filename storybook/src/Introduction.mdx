@@ -10,7 +10,7 @@ Cosmos is the MakeMyTrip design system. One Tokens Studio file, `tokens/tokens.j
 
 | Tier | What it holds | Who uses it |
 |------|---------------|-------------|
-| **Primitives** | Raw values: hex colours, pixel sizes, the Lato family | Token authors only |
+| **Primitives** | Raw values: hex colours, pixel sizes, the Lato and Rubik families | Token authors only |
 | **Semantic** | Role names that describe intent, such as `text-primary` and `bg-fill-brand` | Product code and Figma |
 | **Component** | One key per property, variant and state, such as `button/bg-primary-hover` | Cosmos components and their Figma variable bindings |
 
@@ -35,4 +35,4 @@ Each tier only references the tier below it. Product code uses semantic tokens; 
 }
 ```
 
-Load Lato 400, 700 and 900 yourself; the token package does not ship font files.
+Load the fonts of the brands you serve yourself: Lato 400, 700 and 900, and Rubik 400, 600 and 700 for Goibibo. The token package does not ship font files.

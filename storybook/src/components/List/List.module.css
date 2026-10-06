@@ -29,7 +29,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: var(--font-family-lato), system-ui, sans-serif;
+  font-family: var(--typeface-default), system-ui, sans-serif;
 }
 .list[data-density="compact"] {
   --_min-height: var(--list-min-height-compact);
@@ -63,7 +63,7 @@
   margin: 0;
   padding: var(--_header-top) var(--_pad-x) var(--_header-bottom);
   color: var(--list-section-header-text);
-  font-family: var(--font-family-lato), system-ui, sans-serif;
+  font-family: var(--typeface-default), system-ui, sans-serif;
   font-weight: var(--label-small-bold-font-weight);
   font-size: var(--label-small-bold-font-size);
   line-height: var(--label-small-bold-line-height);

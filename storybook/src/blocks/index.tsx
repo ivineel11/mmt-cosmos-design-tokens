@@ -11,7 +11,7 @@ const PLATFORMS: { id: Platform; label: string }[] = [
   { id: "kotlin", label: "Kotlin" },
 ];
 
-/** `sb-unstyled` opts out of the Storybook docs typography so the blocks render in Lato with tokens. */
+/** `sb-unstyled` opts out of the Storybook docs typography so the blocks render in the brand typeface with tokens. */
 const Doc = ({ children }: { children: ReactNode }) => <div className="doc sb-unstyled">{children}</div>;
 
 function PlatformSwitch({ value, onChange }: { value: Platform; onChange: (platform: Platform) => void }) {
@@ -414,7 +414,7 @@ export function InverseSamples() {
               {isFill ? (
                 <span className="doc-chip" style={{ background: cssVar(token), borderColor: "var(--color-border-inverse)" }} />
               ) : (
-                <span style={{ color: cssVar(token), fontWeight: "var(--font-weight-bold)" as CSSProperties["fontWeight"] }}>{role.startsWith("icon") ? "●" : "View offer"}</span>
+                <span style={{ color: cssVar(token), fontWeight: "var(--weight-bold)" as CSSProperties["fontWeight"] }}>{role.startsWith("icon") ? "●" : "View offer"}</span>
               )}
               <span className="mono doc-small">{role}</span>
             </div>

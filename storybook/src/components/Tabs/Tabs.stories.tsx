@@ -66,7 +66,7 @@ const SECTIONS: TabItem[] = [
 
 function HotelPage() {
   const [value, setValue] = useState("overview");
-  const panel = { padding: "var(--space-md)", color: "var(--color-text-secondary)", font: "var(--body-medium-regular-font-weight) var(--body-medium-regular-font-size)/var(--body-medium-regular-line-height) var(--font-family-lato)" } as const;
+  const panel = { padding: "var(--space-md)", color: "var(--color-text-secondary)", font: "var(--body-medium-regular-font-weight) var(--body-medium-regular-font-size)/var(--body-medium-regular-line-height) var(--typeface-default)" } as const;
   return (
     <div>
       <Tabs items={SECTIONS} value={value} onChange={setValue} aria-label="Hotel sections" idPrefix="hotel" />

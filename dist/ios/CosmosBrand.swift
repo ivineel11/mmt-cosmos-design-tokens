@@ -10,7 +10,7 @@ import SwiftUI
 /// and stays on `CosmosTokens`. Read these from the environment, so one line switches a
 /// whole screen:
 ///
-///     MyBizFlow().environment(\.cosmosBrand, .myBiz)
+///     MyBizFlow().environment(\.cosmosBrand, .goibibo)
 ///
 ///     @Environment(\.cosmosBrand) private var brand
 ///     Rectangle().fill(brand.colorBgFillBrand)
@@ -107,6 +107,195 @@ public struct CosmosBrand: Identifiable, Sendable {
 
     /// Brand icon on an inverted or dark background while its control is pressed. Two steps lighter than icon-brand-inverse.
     public let colorIconBrandInversePressed: Color
+
+    /// Typeface of every text style, and the one token a brand changes to swap its font. Apply a text style rather than this token, so size, line height and weight come with it.
+    public let typefaceDefault: String
+
+    /// Weight of every bold text style, for emphasis in running text and every Button label. A brand sets its own emphasis weight here, so reach it through a bold text style. For promotional emphasis use the black styles, which read weight.black.
+    public let weightBold: Int
+
+    /// Weight of every black text style, the heaviest a brand offers, for promotional and marketing emphasis rather than routine UI. For everyday emphasis use the bold styles, which read weight.bold.
+    public let weightBlack: Int
+
+    /// Largest headline — page titles and hero headings; typically one per view. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineLargeRegularFontFamily: String
+
+    /// Largest headline — page titles and hero headings; typically one per view. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineLargeBoldFontFamily: String
+
+    /// Largest headline — page titles and hero headings; typically one per view. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineLargeBoldFontWeight: Int
+
+    /// Largest headline — page titles and hero headings; typically one per view. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineLargeBlackFontFamily: String
+
+    /// Largest headline — page titles and hero headings; typically one per view. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineLargeBlackFontWeight: Int
+
+    /// Headline for major section headings. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineMediumRegularFontFamily: String
+
+    /// Headline for major section headings. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineMediumBoldFontFamily: String
+
+    /// Headline for major section headings. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineMediumBoldFontWeight: Int
+
+    /// Headline for major section headings. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineMediumBlackFontFamily: String
+
+    /// Headline for major section headings. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineMediumBlackFontWeight: Int
+
+    /// Smallest headline — sub-section headings and modal titles. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineSmallRegularFontFamily: String
+
+    /// Smallest headline — sub-section headings and modal titles. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineSmallBoldFontFamily: String
+
+    /// Smallest headline — sub-section headings and modal titles. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineSmallBoldFontWeight: Int
+
+    /// Smallest headline — sub-section headings and modal titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineSmallBlackFontFamily: String
+
+    /// Smallest headline — sub-section headings and modal titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
+    public let headlineSmallBlackFontWeight: Int
+
+    /// Largest title — card, sheet and dialog titles. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleLargeRegularFontFamily: String
+
+    /// Largest title — card, sheet and dialog titles. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleLargeBoldFontFamily: String
+
+    /// Largest title — card, sheet and dialog titles. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleLargeBoldFontWeight: Int
+
+    /// Largest title — card, sheet and dialog titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleLargeBlackFontFamily: String
+
+    /// Largest title — card, sheet and dialog titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleLargeBlackFontWeight: Int
+
+    /// Title for sub-sections and list-group headers. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleMediumRegularFontFamily: String
+
+    /// Title for sub-sections and list-group headers. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleMediumBoldFontFamily: String
+
+    /// Title for sub-sections and list-group headers. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleMediumBoldFontWeight: Int
+
+    /// Title for sub-sections and list-group headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleMediumBlackFontFamily: String
+
+    /// Title for sub-sections and list-group headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleMediumBlackFontWeight: Int
+
+    /// Smallest title — compact card headers and table column groups. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleSmallRegularFontFamily: String
+
+    /// Smallest title — compact card headers and table column groups. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleSmallBoldFontFamily: String
+
+    /// Smallest title — compact card headers and table column groups. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleSmallBoldFontWeight: Int
+
+    /// Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleSmallBlackFontFamily: String
+
+    /// Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
+    public let titleSmallBlackFontWeight: Int
+
+    /// Body text for spacious reading layouts — article and detail copy. Regular weight, the default. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyLargeRegularFontFamily: String
+
+    /// Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyLargeBoldFontFamily: String
+
+    /// Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyLargeBoldFontWeight: Int
+
+    /// Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyLargeBlackFontFamily: String
+
+    /// Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyLargeBlackFontWeight: Int
+
+    /// Default body text — the running copy most content uses. Regular weight, the default. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyMediumRegularFontFamily: String
+
+    /// Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyMediumBoldFontFamily: String
+
+    /// Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyMediumBoldFontWeight: Int
+
+    /// Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyMediumBlackFontFamily: String
+
+    /// Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodyMediumBlackFontWeight: Int
+
+    /// Smallest body text — captions, helper text and legal copy. Regular weight, the default. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodySmallRegularFontFamily: String
+
+    /// Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodySmallBoldFontFamily: String
+
+    /// Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodySmallBoldFontWeight: Int
+
+    /// Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodySmallBlackFontFamily: String
+
+    /// Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body has looser leading than label because it runs over several lines; use body for prose the user reads and label for text that names a control.
+    public let bodySmallBlackFontWeight: Int
+
+    /// Label for large controls — large buttons and inputs. Regular weight, the default. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelLargeRegularFontFamily: String
+
+    /// Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelLargeBoldFontFamily: String
+
+    /// Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelLargeBoldFontWeight: Int
+
+    /// Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelLargeBlackFontFamily: String
+
+    /// Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelLargeBlackFontWeight: Int
+
+    /// Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelMediumRegularFontFamily: String
+
+    /// Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelMediumBoldFontFamily: String
+
+    /// Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelMediumBoldFontWeight: Int
+
+    /// Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelMediumBlackFontFamily: String
+
+    /// Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelMediumBlackFontWeight: Int
+
+    /// Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelSmallRegularFontFamily: String
+
+    /// Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelSmallBoldFontFamily: String
+
+    /// Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelSmallBoldFontWeight: Int
+
+    /// Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelSmallBlackFontFamily: String
+
+    /// Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label keeps tighter leading than body to fit single-line text in fixed-height controls; use label for text that names a control and body for prose the user reads.
+    public let labelSmallBlackFontWeight: Int
 
     /// Background of the primary (solid fill) button — default intent, at rest.
     public let buttonBgPrimaryDefault: Color
@@ -558,6 +747,69 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
         colorIconBrandInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
         colorIconBrandInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        typefaceDefault: "Lato",
+        weightBold: 700,
+        weightBlack: 900,
+        headlineLargeRegularFontFamily: "Lato",
+        headlineLargeBoldFontFamily: "Lato",
+        headlineLargeBoldFontWeight: 700,
+        headlineLargeBlackFontFamily: "Lato",
+        headlineLargeBlackFontWeight: 900,
+        headlineMediumRegularFontFamily: "Lato",
+        headlineMediumBoldFontFamily: "Lato",
+        headlineMediumBoldFontWeight: 700,
+        headlineMediumBlackFontFamily: "Lato",
+        headlineMediumBlackFontWeight: 900,
+        headlineSmallRegularFontFamily: "Lato",
+        headlineSmallBoldFontFamily: "Lato",
+        headlineSmallBoldFontWeight: 700,
+        headlineSmallBlackFontFamily: "Lato",
+        headlineSmallBlackFontWeight: 900,
+        titleLargeRegularFontFamily: "Lato",
+        titleLargeBoldFontFamily: "Lato",
+        titleLargeBoldFontWeight: 700,
+        titleLargeBlackFontFamily: "Lato",
+        titleLargeBlackFontWeight: 900,
+        titleMediumRegularFontFamily: "Lato",
+        titleMediumBoldFontFamily: "Lato",
+        titleMediumBoldFontWeight: 700,
+        titleMediumBlackFontFamily: "Lato",
+        titleMediumBlackFontWeight: 900,
+        titleSmallRegularFontFamily: "Lato",
+        titleSmallBoldFontFamily: "Lato",
+        titleSmallBoldFontWeight: 700,
+        titleSmallBlackFontFamily: "Lato",
+        titleSmallBlackFontWeight: 900,
+        bodyLargeRegularFontFamily: "Lato",
+        bodyLargeBoldFontFamily: "Lato",
+        bodyLargeBoldFontWeight: 700,
+        bodyLargeBlackFontFamily: "Lato",
+        bodyLargeBlackFontWeight: 900,
+        bodyMediumRegularFontFamily: "Lato",
+        bodyMediumBoldFontFamily: "Lato",
+        bodyMediumBoldFontWeight: 700,
+        bodyMediumBlackFontFamily: "Lato",
+        bodyMediumBlackFontWeight: 900,
+        bodySmallRegularFontFamily: "Lato",
+        bodySmallBoldFontFamily: "Lato",
+        bodySmallBoldFontWeight: 700,
+        bodySmallBlackFontFamily: "Lato",
+        bodySmallBlackFontWeight: 900,
+        labelLargeRegularFontFamily: "Lato",
+        labelLargeBoldFontFamily: "Lato",
+        labelLargeBoldFontWeight: 700,
+        labelLargeBlackFontFamily: "Lato",
+        labelLargeBlackFontWeight: 900,
+        labelMediumRegularFontFamily: "Lato",
+        labelMediumBoldFontFamily: "Lato",
+        labelMediumBoldFontWeight: 700,
+        labelMediumBlackFontFamily: "Lato",
+        labelMediumBlackFontWeight: 900,
+        labelSmallRegularFontFamily: "Lato",
+        labelSmallBoldFontFamily: "Lato",
+        labelSmallBoldFontWeight: 700,
+        labelSmallBlackFontFamily: "Lato",
+        labelSmallBlackFontWeight: 900,
         buttonBgPrimaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
         buttonBgPrimaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
         buttonBgPrimaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
@@ -732,6 +984,69 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrandInverse: Color(red: 1, green: 0.537255, blue: 0.015686),
         colorIconBrandInverseHover: Color(red: 1, green: 0.721569, blue: 0.415686),
         colorIconBrandInversePressed: Color(red: 1, green: 0.839216, blue: 0.658824),
+        typefaceDefault: "Lato",
+        weightBold: 700,
+        weightBlack: 900,
+        headlineLargeRegularFontFamily: "Lato",
+        headlineLargeBoldFontFamily: "Lato",
+        headlineLargeBoldFontWeight: 700,
+        headlineLargeBlackFontFamily: "Lato",
+        headlineLargeBlackFontWeight: 900,
+        headlineMediumRegularFontFamily: "Lato",
+        headlineMediumBoldFontFamily: "Lato",
+        headlineMediumBoldFontWeight: 700,
+        headlineMediumBlackFontFamily: "Lato",
+        headlineMediumBlackFontWeight: 900,
+        headlineSmallRegularFontFamily: "Lato",
+        headlineSmallBoldFontFamily: "Lato",
+        headlineSmallBoldFontWeight: 700,
+        headlineSmallBlackFontFamily: "Lato",
+        headlineSmallBlackFontWeight: 900,
+        titleLargeRegularFontFamily: "Lato",
+        titleLargeBoldFontFamily: "Lato",
+        titleLargeBoldFontWeight: 700,
+        titleLargeBlackFontFamily: "Lato",
+        titleLargeBlackFontWeight: 900,
+        titleMediumRegularFontFamily: "Lato",
+        titleMediumBoldFontFamily: "Lato",
+        titleMediumBoldFontWeight: 700,
+        titleMediumBlackFontFamily: "Lato",
+        titleMediumBlackFontWeight: 900,
+        titleSmallRegularFontFamily: "Lato",
+        titleSmallBoldFontFamily: "Lato",
+        titleSmallBoldFontWeight: 700,
+        titleSmallBlackFontFamily: "Lato",
+        titleSmallBlackFontWeight: 900,
+        bodyLargeRegularFontFamily: "Lato",
+        bodyLargeBoldFontFamily: "Lato",
+        bodyLargeBoldFontWeight: 700,
+        bodyLargeBlackFontFamily: "Lato",
+        bodyLargeBlackFontWeight: 900,
+        bodyMediumRegularFontFamily: "Lato",
+        bodyMediumBoldFontFamily: "Lato",
+        bodyMediumBoldFontWeight: 700,
+        bodyMediumBlackFontFamily: "Lato",
+        bodyMediumBlackFontWeight: 900,
+        bodySmallRegularFontFamily: "Lato",
+        bodySmallBoldFontFamily: "Lato",
+        bodySmallBoldFontWeight: 700,
+        bodySmallBlackFontFamily: "Lato",
+        bodySmallBlackFontWeight: 900,
+        labelLargeRegularFontFamily: "Lato",
+        labelLargeBoldFontFamily: "Lato",
+        labelLargeBoldFontWeight: 700,
+        labelLargeBlackFontFamily: "Lato",
+        labelLargeBlackFontWeight: 900,
+        labelMediumRegularFontFamily: "Lato",
+        labelMediumBoldFontFamily: "Lato",
+        labelMediumBoldFontWeight: 700,
+        labelMediumBlackFontFamily: "Lato",
+        labelMediumBlackFontWeight: 900,
+        labelSmallRegularFontFamily: "Lato",
+        labelSmallBoldFontFamily: "Lato",
+        labelSmallBoldFontWeight: 700,
+        labelSmallBlackFontFamily: "Lato",
+        labelSmallBlackFontWeight: 900,
         buttonBgPrimaryDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
         buttonBgPrimaryHover: Color(red: 0.623529, green: 0.176471, blue: 0),
         buttonBgPrimaryPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
@@ -873,7 +1188,244 @@ public struct CosmosBrand: Identifiable, Sendable {
         tooltipPrimaryLabelLightPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059)
     )
 
-    public static let all: [CosmosBrand] = [.makeMyTrip, .myBiz]
+    public static let goibibo = CosmosBrand(
+        id: "goibibo",
+        name: "Goibibo",
+        colorBgSurfaceBrand: Color(red: 0.929412, green: 0.972549, blue: 1),
+        colorBgSurfaceBrandHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        colorBgSurfaceBrandPressedSubtle: Color(red: 0.839216, green: 0.937255, blue: 1),
+        colorBgSurfaceBrandPressedStrong: Color(red: 0.760784, green: 0.909804, blue: 1),
+        colorBgSurfaceBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        colorBgFillBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorBgFillBrandHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorBgFillBrandPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        colorTextBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorTextBrandHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        colorTextBrandPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorTextBrandOnBgSurfaceHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorTextBrandOnBgSurfacePressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        colorTextBrandInverse: Color(red: 0.513725, green: 0.831373, blue: 1),
+        colorTextBrandInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        colorTextBrandInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        colorBorderBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorBorderBrandHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        colorBorderBrandPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorBorderBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        colorBorderBrandInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        colorBorderBrandInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        colorIconBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        colorIconBrandHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        colorIconBrandPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorIconBrandOnBgSurfaceHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        colorIconBrandOnBgSurfacePressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        colorIconBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        colorIconBrandInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        colorIconBrandInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        typefaceDefault: "Rubik",
+        weightBold: 600,
+        weightBlack: 700,
+        headlineLargeRegularFontFamily: "Rubik",
+        headlineLargeBoldFontFamily: "Rubik",
+        headlineLargeBoldFontWeight: 600,
+        headlineLargeBlackFontFamily: "Rubik",
+        headlineLargeBlackFontWeight: 700,
+        headlineMediumRegularFontFamily: "Rubik",
+        headlineMediumBoldFontFamily: "Rubik",
+        headlineMediumBoldFontWeight: 600,
+        headlineMediumBlackFontFamily: "Rubik",
+        headlineMediumBlackFontWeight: 700,
+        headlineSmallRegularFontFamily: "Rubik",
+        headlineSmallBoldFontFamily: "Rubik",
+        headlineSmallBoldFontWeight: 600,
+        headlineSmallBlackFontFamily: "Rubik",
+        headlineSmallBlackFontWeight: 700,
+        titleLargeRegularFontFamily: "Rubik",
+        titleLargeBoldFontFamily: "Rubik",
+        titleLargeBoldFontWeight: 600,
+        titleLargeBlackFontFamily: "Rubik",
+        titleLargeBlackFontWeight: 700,
+        titleMediumRegularFontFamily: "Rubik",
+        titleMediumBoldFontFamily: "Rubik",
+        titleMediumBoldFontWeight: 600,
+        titleMediumBlackFontFamily: "Rubik",
+        titleMediumBlackFontWeight: 700,
+        titleSmallRegularFontFamily: "Rubik",
+        titleSmallBoldFontFamily: "Rubik",
+        titleSmallBoldFontWeight: 600,
+        titleSmallBlackFontFamily: "Rubik",
+        titleSmallBlackFontWeight: 700,
+        bodyLargeRegularFontFamily: "Rubik",
+        bodyLargeBoldFontFamily: "Rubik",
+        bodyLargeBoldFontWeight: 600,
+        bodyLargeBlackFontFamily: "Rubik",
+        bodyLargeBlackFontWeight: 700,
+        bodyMediumRegularFontFamily: "Rubik",
+        bodyMediumBoldFontFamily: "Rubik",
+        bodyMediumBoldFontWeight: 600,
+        bodyMediumBlackFontFamily: "Rubik",
+        bodyMediumBlackFontWeight: 700,
+        bodySmallRegularFontFamily: "Rubik",
+        bodySmallBoldFontFamily: "Rubik",
+        bodySmallBoldFontWeight: 600,
+        bodySmallBlackFontFamily: "Rubik",
+        bodySmallBlackFontWeight: 700,
+        labelLargeRegularFontFamily: "Rubik",
+        labelLargeBoldFontFamily: "Rubik",
+        labelLargeBoldFontWeight: 600,
+        labelLargeBlackFontFamily: "Rubik",
+        labelLargeBlackFontWeight: 700,
+        labelMediumRegularFontFamily: "Rubik",
+        labelMediumBoldFontFamily: "Rubik",
+        labelMediumBoldFontWeight: 600,
+        labelMediumBlackFontFamily: "Rubik",
+        labelMediumBlackFontWeight: 700,
+        labelSmallRegularFontFamily: "Rubik",
+        labelSmallBoldFontFamily: "Rubik",
+        labelSmallBoldFontWeight: 600,
+        labelSmallBlackFontFamily: "Rubik",
+        labelSmallBlackFontWeight: 700,
+        buttonBgPrimaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonBgPrimaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonBgPrimaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonBgPrimaryInverseDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonBgPrimaryInverseHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonBgPrimaryInversePressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonBgSecondaryHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonBgSecondaryPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonBgSecondaryInverseHover: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgSecondaryInversePressed: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTertiaryDefault: Color(red: 0.929412, green: 0.972549, blue: 1),
+        buttonBgTertiaryHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonBgTertiaryPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonBgTertiaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTertiaryInverseHover: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTertiaryInversePressed: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTextHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        buttonBgTextPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonBgTextInverseHover: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBgTextInversePressed: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBorderSecondaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonBorderSecondaryHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        buttonBorderSecondaryPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonBorderSecondaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonBorderSecondaryInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonBorderSecondaryInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonFocusRing: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonFocusRingInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconSecondaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonIconSecondaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonIconSecondaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonIconSecondaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconSecondaryInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonIconSecondaryInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonIconTertiaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonIconTertiaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonIconTertiaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonIconTertiaryInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconTertiaryInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonIconTertiaryInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonIconTextDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonIconTextHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonIconTextPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonIconTextInverseDefault: Color(red: 0.282353, green: 0.733333, blue: 1),
+        buttonIconTextInverseHover: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonIconTextInversePressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelSecondaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonLabelSecondaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonLabelSecondaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonLabelSecondaryInverseDefault: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonLabelSecondaryInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelSecondaryInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonLabelTertiaryDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonLabelTertiaryHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonLabelTertiaryPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonLabelTertiaryInverseDefault: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonLabelTertiaryInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelTertiaryInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        buttonLabelTextDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        buttonLabelTextHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        buttonLabelTextPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        buttonLabelTextInverseDefault: Color(red: 0.513725, green: 0.831373, blue: 1),
+        buttonLabelTextInverseHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        buttonLabelTextInversePressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        checkboxBgUnselectedHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        checkboxBgUnselectedPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        checkboxBgSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        checkboxBgSelectedHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        checkboxBgSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        checkboxBorderUnselectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        checkboxBorderUnselectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        checkboxBorderSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioBgHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        radioBgPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        radioBorderUnselectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioBorderUnselectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        radioBorderSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioBorderSelectedHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        radioBorderSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        radioDotSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        radioDotSelectedHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        radioDotSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        radioStateLayerSelected: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipBgSelectedDefault: Color(red: 0.929412, green: 0.972549, blue: 1),
+        chipBgSelectedHover: Color(red: 0.839216, green: 0.937255, blue: 1),
+        chipBgSelectedPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        chipBorderSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipBorderSelectedHover: Color(red: 0.023529, green: 0.505882, blue: 1),
+        chipBorderSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        chipLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipLabelSelectedHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        chipLabelSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        chipIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        chipRemoveBgSelectedHover: Color(red: 0.760784, green: 0.909804, blue: 1),
+        chipRemoveBgSelectedPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        snackbarLabelControlTintedNeutralDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        snackbarLabelControlTintedNeutralHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        snackbarLabelControlTintedNeutralPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        badgeBgStrongBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        badgeBgSubtleBrand: Color(red: 0.929412, green: 0.972549, blue: 1),
+        badgeLabelSubtleBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        badgeDotBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabLabelSelectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabLabelSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        tabIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabIconSelectedHover: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tabIconSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        tabIndicatorDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        listLeadingContainerBgBrand: Color(red: 0.929412, green: 0.972549, blue: 1),
+        listLeadingContainerIconBrand: Color(red: 0, green: 0.403922, blue: 0.909804),
+        switchTrackOnDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        switchTrackOnHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        switchTrackOnPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        switchIconOnDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        switchIconOnHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        switchIconOnPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        switchOutlinedIconOn: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlNeutralLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlNeutralLabelSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        segmentedControlNeutralIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlNeutralIconSelectedPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        segmentedControlBrandThumbDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlBrandThumbPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        segmentedControlTintedThumbDefault: Color(red: 0.929412, green: 0.972549, blue: 1),
+        segmentedControlTintedThumbPressed: Color(red: 0.760784, green: 0.909804, blue: 1),
+        segmentedControlTintedThumbBorderDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlTintedThumbBorderPressed: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        segmentedControlTintedLabelSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlTintedLabelSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        segmentedControlTintedIconSelectedDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        segmentedControlTintedIconSelectedPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843),
+        sliderTrackActive: Color(red: 0, green: 0.403922, blue: 0.909804),
+        sliderHaloHover: Color(red: 0.929412, green: 0.972549, blue: 1),
+        sliderHaloPressed: Color(red: 0.839216, green: 0.937255, blue: 1),
+        menuCheckDefault: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tooltipPrimaryLabelLight: Color(red: 0, green: 0.403922, blue: 0.909804),
+        tooltipPrimaryLabelLightHover: Color(red: 0.031373, green: 0.341176, blue: 0.772549),
+        tooltipPrimaryLabelLightPressed: Color(red: 0.05098, green: 0.298039, blue: 0.607843)
+    )
+
+    public static let all: [CosmosBrand] = [.makeMyTrip, .myBiz, .goibibo]
 }
 
 private struct CosmosBrandKey: EnvironmentKey {

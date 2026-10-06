@@ -49,7 +49,7 @@ export const UnderTestDot: Story = {
 /** The spec examples: a fare group and an invalid seat group. */
 export const Examples: Story = {
   render: () => {
-    const legend = { marginBottom: "var(--space-sm)", font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--font-family-lato)" } as const;
+    const legend = { marginBottom: "var(--space-sm)", font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--typeface-default)" } as const;
     const group = { border: 0, padding: 0, margin: 0, display: "grid", gap: "var(--space-md)" } as const;
     return (
       <div style={{ display: "flex", gap: "var(--space-3xl)", alignItems: "flex-start", flexWrap: "wrap" }}>
@@ -63,7 +63,7 @@ export const Examples: Story = {
           <legend style={legend}>Seat preference</legend>
           <Radio name="seat" value="window" label="Window" invalid />
           <Radio name="seat" value="aisle" label="Aisle" invalid />
-          <span id="seat-error" style={{ color: "var(--color-text-warning)", font: "var(--label-small-regular-font-weight) var(--label-small-regular-font-size)/var(--label-small-regular-line-height) var(--font-family-lato)" }}>
+          <span id="seat-error" style={{ color: "var(--color-text-warning)", font: "var(--label-small-regular-font-weight) var(--label-small-regular-font-size)/var(--label-small-regular-line-height) var(--typeface-default)" }}>
             Pick a seat to continue.
           </span>
         </fieldset>

@@ -80,14 +80,14 @@ export const Examples: Story = {
         </button>
         <article style={card}>
           <div style={{ display: "flex", gap: "var(--space-xs)", alignItems: "center" }}>
-            <strong style={{ font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--font-family-lato)" }}>Taj Exotica, Goa</strong>
+            <strong style={{ font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--typeface-default)" }}>Taj Exotica, Goa</strong>
             <Badge type="text" label="New" intent="brand" size="medium" />
           </div>
           <div style={{ display: "flex", gap: "var(--space-xs)", flexWrap: "wrap" }}>
             <Badge type="text" label="Free cancellation" intent="success" emphasis="subtle" />
             <Badge type="text" label="Sold out" intent="neutral" emphasis="subtle" />
           </div>
-          <span style={{ display: "flex", gap: "var(--space-xs)", alignItems: "center", color: "var(--color-text-secondary)", font: "var(--body-small-regular-font-weight) var(--body-small-regular-font-size)/var(--body-small-regular-line-height) var(--font-family-lato)" }}>
+          <span style={{ display: "flex", gap: "var(--space-xs)", alignItems: "center", color: "var(--color-text-secondary)", font: "var(--body-small-regular-font-weight) var(--body-small-regular-font-size)/var(--body-small-regular-line-height) var(--typeface-default)" }}>
             Results <Badge count={128} intent="neutral" emphasis="subtle" />
           </span>
         </article>

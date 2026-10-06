@@ -34,7 +34,7 @@
   /* The border is drawn inside, as Figma's inside stroke, so every surface is the same size. */
   box-shadow: inset 0 0 0 var(--tooltip-border-width) var(--_border), var(--_shadow);
   color: var(--_label);
-  font-family: var(--font-family-lato), system-ui, sans-serif;
+  font-family: var(--typeface-default), system-ui, sans-serif;
 }
 .bubble[data-surface="light"] {
   --_bg: var(--tooltip-bg-light); --_border: var(--tooltip-border-light); --_shadow: var(--tooltip-shadow-light);

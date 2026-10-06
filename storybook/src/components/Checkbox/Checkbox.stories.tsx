@@ -59,7 +59,7 @@ function SelectAll() {
   const all = picked.length === options.length;
   return (
     <fieldset style={{ border: 0, padding: 0, margin: 0, display: "grid", gap: "var(--space-sm)" }}>
-      <legend style={{ marginBottom: "var(--space-sm)", font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--font-family-lato)" }}>Filters</legend>
+      <legend style={{ marginBottom: "var(--space-sm)", font: "var(--title-small-bold-font-weight) var(--title-small-bold-font-size)/var(--title-small-bold-line-height) var(--typeface-default)" }}>Filters</legend>
       <Checkbox label="Select all" checked={all} indeterminate={picked.length > 0 && !all} onChange={() => setPicked(all ? [] : options)} />
       <div style={{ display: "grid", gap: "var(--space-sm)", paddingInlineStart: "var(--space-xl)" }}>
         {options.map((option) => (

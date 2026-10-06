@@ -664,18 +664,32 @@ function keyTokens(tokens) {
   }
   return tokens;
 }
-/** Brandable tokens on iOS and Android must be solid colours: those are the only properties typed below. */
-function solidColors(platform, prefix) {
+/**
+ * The Swift or Kotlin type of each brandable token, read from its emitted value: a solid
+ * colour, a quoted font family or a whole-number font weight. Those are the only kinds a
+ * brand may change (tokens/brand), and every brand must emit the same kind.
+ */
+const BRAND_KINDS = [
+  { type: "Color", test: (v) => typeof v === "string" && v.startsWith("Color(") },
+  { type: "String", test: (v) => typeof v === "string" && /^".*"$/.test(v) },
+  { type: "Int", test: (v) => /^\d+$/.test(`${v}`) },
+];
+
+function typedBrandTokens(platform) {
   const { tokens, values } = brandable[platform];
-  for (const t of tokens) {
-    for (const brand of BRANDS) {
-      const v = values[brand.id][idOf(t)];
-      if (typeOf(t) !== "color" || typeof v !== "string" || !v.startsWith(prefix)) {
-        throw new Error(`${t.path.join(".")} differs between brands but is not a solid colour (${brand.id}: ${v}). Brand overrides support solid colours only.`);
-      }
-    }
-  }
-  return brandable[platform];
+  const typed = tokens.map((t) => {
+    const kinds = new Set(
+      BRANDS.map((brand) => {
+        const v = values[brand.id][idOf(t)];
+        const kind = BRAND_KINDS.find((k) => k.test(v));
+        if (!kind) throw new Error(`${t.path.join(".")} differs between brands but is not a solid colour, font family or font weight (${brand.id}: ${v}).`);
+        return kind.type;
+      }),
+    );
+    if (kinds.size > 1) throw new Error(`${t.path.join(".")} is a different kind of value in different brands: ${[...kinds].join(", ")}.`);
+    return { token: t, type: [...kinds][0] };
+  });
+  return { typed, values };
 }
 
 const lowerCamel = (name) =>
@@ -734,8 +748,9 @@ export const defaultBrand: BrandId = ${JSON.stringify(DEFAULT_BRAND.id)};
 StyleDictionary.registerFormat({
   name: "mmt/ios/brands",
   format: ({ file }) => {
-    const { tokens, values } = solidColors("ios", "Color(");
-    const properties = tokens.map((t) => `    /// ${oneLine(t.description)}\n    public let ${t.name}: Color`);
+    const { typed, values } = typedBrandTokens("ios");
+    const tokens = typed.map(({ token }) => token);
+    const properties = typed.map(({ token: t, type }) => `    /// ${oneLine(t.description)}\n    public let ${t.name}: ${type}`);
     const instances = BRANDS.map((brand) => {
       const args = [
         `id: ${JSON.stringify(brand.id)}`,
@@ -789,8 +804,9 @@ public extension EnvironmentValues {
 StyleDictionary.registerFormat({
   name: "mmt/android/brands",
   format: () => {
-    const { tokens, values } = solidColors("android", "Color(");
-    const properties = tokens.map((t) => `  /** ${oneLine(t.description).replaceAll("*/", "* /")} */\n  val ${t.name}: Color,`);
+    const { typed, values } = typedBrandTokens("android");
+    const tokens = typed.map(({ token }) => token);
+    const properties = typed.map(({ token: t, type }) => `  /** ${oneLine(t.description).replaceAll("*/", "* /")} */\n  val ${t.name}: ${type},`);
     const instances = BRANDS.map((brand) => {
       const args = [
         `id = ${JSON.stringify(brand.id)}`,

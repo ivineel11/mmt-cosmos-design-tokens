@@ -56,6 +56,12 @@ const SHADOW_MEMBERS = {
 };
 const MAX_SHADOW_LAYERS = 2;
 
+/**
+ * Typography composites read family and weight through semantic typeface.* and weight.* tokens, the
+ * one place a brand changes its font (Figma text styles bind to the same variables). Size
+ * and line height are shared by every brand and alias primitives directly.
+ */
+const TYPEFACE_FAMILY = "typeface.default";
 const TYPOGRAPHY_MEMBERS = {
   fontFamily: "fontFamily",
   fontWeight: "fontWeight",
@@ -229,10 +235,12 @@ const structure = {
 // ------------------------------------------------------------------ brands ---
 
 const THEME_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** The token families a brand may override: what CosmosBrand.swift and CosmosBrand.kt can type. */
+const BRANDABLE_FAMILIES = new Set(["color", "fontFamily", "fontWeight"]);
 
 const brandRule = {
   id: "tokens/brand",
-  description: "Brands follow README → Brands: one $themes entry per brand, the default brand first and with no brand set; every other brand enables brands/{its id}; a brand set only overrides the value of existing semantic colour tokens, aliasing a primitive and carrying no description, the way a Figma extended collection overrides values and inherits everything else.",
+  description: "Brands follow README → Brands: one $themes entry per brand, the default brand first and with no brand set; every other brand enables brands/{its id}; a brand set only overrides the value of existing semantic colour, font family or font weight tokens, aliasing a primitive and carrying no description, the way a Figma extended collection overrides values and inherits everything else.",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -309,8 +317,8 @@ const brandRule = {
         }
         const type = node.type ?? node.$type;
         if (type !== base.type) report(full, `${set} types ${id} as ${type}, but the semantic token is ${base.type}.`);
-        if (TYPE_FAMILY[base.type] !== "color") {
-          report(full, `${set} overrides ${id}, a ${base.type} token. Brands override colours only, which is all the per-brand Swift and Kotlin outputs carry.`);
+        if (!BRANDABLE_FAMILIES.has(TYPE_FAMILY[base.type])) {
+          report(full, `${set} overrides ${id}, a ${base.type} token. Brands override colours, font families and font weights only, which is all the per-brand Swift and Kotlin outputs carry.`);
         }
         const value = node.value ?? node.$value;
         const target = aliasTarget(value);
@@ -459,7 +467,7 @@ const reference = {
 
 const tierReference = {
   id: "tokens/tier-reference",
-  description: "Each tier references only the tier below it: primitives hold raw values, semantic aliases primitives, component aliases semantic (README → Three-tier token model). A component may reach a primitive only when no semantic token aliases it.",
+  description: "Each tier references only the tier below it: primitives hold raw values, semantic aliases primitives, component aliases semantic (README → Three-tier token model). A component may reach a primitive only when no semantic token aliases it. The one exception: a semantic typography composite reads its family and weight from semantic typeface.* and weight.* tokens.",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -479,6 +487,9 @@ const tierReference = {
         const report = (message) => api.report({ ...at(leaf), message: `${label(leaf)} ${message}` });
         if (leaf.tier === "primitives") {
           report(`references {${ref}}. Primitives hold raw values; aliases belong in the semantic tier.`);
+        } else if (leaf.tier === "semantic" && target === "semantic" && leaf.type === "typography" && (ref.startsWith("typeface.") || ref.startsWith("weight."))) {
+          // The one semantic → semantic link: text styles read family and weight through
+          // typeface.default and weight.*, so a brand swaps its font by overriding four tokens, not 36 styles.
         } else if (leaf.tier === "semantic" && target !== "primitives") {
           report(`references the ${target} token {${ref}}. Semantic tokens alias primitives only, so a palette change propagates in one step.`);
         } else if (leaf.tier === "component" && target === "component") {
@@ -576,7 +587,7 @@ const canvasAsFill = {
 
 const typography = {
   id: "tokens/typography",
-  description: "Typography composites are {group}.{size}.{weight}, alias exactly fontFamily/fontWeight/fontSize/lineHeight primitives, name their weight truthfully, and share metrics across the weights of a size.",
+  description: "Typography composites are {group}.{size}.{weight}, take their family from typeface.default and their weight from the weight.* token their name gives (the layer a brand overrides), alias fontSize/lineHeight primitives, and share metrics across the weights of a size.",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -591,13 +602,17 @@ const typography = {
       const extra = members.filter((m) => !(m in TYPOGRAPHY_MEMBERS));
       if (missing.length) report(`is missing ${missing.join(", ")}. Every style needs all four, and a size never ships without its line height.`);
       if (extra.length) report(`has ${extra.join(", ")}, which Cosmos does not use (there are no letter-spacing tokens).`);
-      for (const [member, root] of Object.entries(TYPOGRAPHY_MEMBERS)) {
+      for (const member of ["fontSize", "lineHeight"]) {
         const ref = aliasTarget(leaf.value[member]);
-        if (ref && ref.split(".")[0] !== root) report(`.${member} aliases {${ref}}; it should alias a ${root}.* primitive.`);
+        if (ref && ref.split(".")[0] !== TYPOGRAPHY_MEMBERS[member]) report(`.${member} aliases {${ref}}; it should alias a ${TYPOGRAPHY_MEMBERS[member]}.* primitive.`);
+      }
+      const familyRef = aliasTarget(leaf.value.fontFamily);
+      if (familyRef && familyRef !== TYPEFACE_FAMILY) {
+        report(`.fontFamily aliases {${familyRef}}; it should alias {${TYPEFACE_FAMILY}}, the one family token a brand overrides.`);
       }
       const weightRef = aliasTarget(leaf.value.fontWeight);
-      if (weightRef && leaf.path.length === 3 && weightRef !== `fontWeight.${leaf.path[2]}`) {
-        report(`is named "${leaf.path[2]}" but uses {${weightRef}}.`);
+      if (weightRef && leaf.path.length === 3 && weightRef !== `weight.${leaf.path[2]}`) {
+        report(`is named "${leaf.path[2]}" but uses {${weightRef}}. Its weight should be {weight.${leaf.path[2]}}, which each brand sets.`);
       }
       const r = model.resolve(leaf.id).value;
       const size = r && PX.exec(r.fontSize ?? "");
