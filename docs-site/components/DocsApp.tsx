@@ -207,7 +207,7 @@ export function DocsApp({ data }: { data: TokenData }) {
             <Section
               id="font-family"
               title="Font family"
-              description="Cosmos is a single-family system. Every type style resolves to this family."
+              description="One family per brand. Every type style resolves to typeface.default: Lato in MakeMyTrip and myBiz, Rubik in Goibibo."
             >
               <ScaleTable
                 tokens={primitives.fontFamily}
@@ -221,7 +221,7 @@ export function DocsApp({ data }: { data: TokenData }) {
             <Section
               id="font-weight"
               title="Font weight"
-              description="Three weights carry the whole system: regular for reading, bold for emphasis, black for display moments."
+              description="Three weight roles carry every brand: regular for reading, bold for emphasis, black for display moments. Lato uses 400, 700 and 900; Goibibo sets Rubik at 400, 600 and 700."
             >
               <ScaleTable
                 tokens={primitives.fontWeight}
