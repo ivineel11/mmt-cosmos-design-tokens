@@ -153,7 +153,7 @@
 .root[data-press="grow"] .thumb[data-state="pressed"] { scale: calc(var(--_thumb-pressed) / var(--_thumb)); }
 .root[data-disabled="true"] .thumb { background: var(--slider-thumb-disabled); box-shadow: none; }
 .thumb:focus { outline: none; }
-.thumb:focus-visible { outline: var(--slider-focus-ring-width) solid var(--slider-focus-ring); outline-offset: var(--slider-focus-ring-offset); }
+.thumb[data-focus-visible="true"] { outline: var(--slider-focus-ring-width) solid var(--slider-focus-ring); outline-offset: var(--slider-focus-ring-offset); }
 
 .tooltip {
   position: absolute;

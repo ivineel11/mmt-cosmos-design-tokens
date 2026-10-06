@@ -69,7 +69,10 @@ export function Slider({
   const rowRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<number | null>(null); // thumb being dragged
   const [hovered, setHovered] = useState<number | null>(null);
-  const [focused, setFocused] = useState<number | null>(null);
+  const [focused, setFocused] = useState<number | null>(null); // thumb showing the focus ring
+  // A press focuses its thumb from script, which some browsers count as :focus-visible.
+  // The slider tracks the input itself so a press never shows the keyboard focus ring.
+  const pointerFocus = useRef(false);
   const latest = useRef<Value>(current);
 
   const pct = (v: number) => (max === min ? 0 : (v - min) / (max - min));
@@ -106,12 +109,15 @@ export function Slider({
     setActive(index);
     latest.current = current;
     update(index, target);
+    pointerFocus.current = true;
+    setFocused(null); // a press hides a ring the keyboard left, as :focus-visible does
     (rowRef.current?.querySelectorAll<HTMLElement>('[role="slider"]')[index])?.focus({ preventScroll: true });
   };
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (active !== null) update(active, valueAt(event.clientX));
   };
   const onPointerUp = () => {
+    pointerFocus.current = false;
     if (active === null) return;
     setActive(null);
     onChangeEnd?.(latest.current);
@@ -132,6 +138,7 @@ export function Slider({
                   : null;
     if (next === null) return;
     event.preventDefault();
+    setFocused(index); // the keyboard took over from a press, as :focus-visible does
     latest.current = current;
     update(index, next);
     onChangeEnd?.(latest.current);
@@ -183,11 +190,12 @@ export function Slider({
                   aria-disabled={disabled || undefined}
                   className={styles.thumb}
                   data-state={state}
+                  data-focus-visible={focused === index}
                   style={{ left: at(pct(v)) } as CSSProperties}
                   onKeyDown={onKeyDown(index)}
                   onPointerEnter={() => setHovered(index)}
                   onPointerLeave={() => setHovered((h) => (h === index ? null : h))}
-                  onFocus={(event) => setFocused(event.currentTarget.matches(":focus-visible") ? index : null)}
+                  onFocus={(event) => setFocused(!pointerFocus.current && event.currentTarget.matches(":focus-visible") ? index : null)}
                   onBlur={() => setFocused((f) => (f === index ? null : f))}
                 />
                 {showTooltip && !disabled && (active === index || focused === index) && (
