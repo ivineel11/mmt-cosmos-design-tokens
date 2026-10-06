@@ -59,7 +59,7 @@ Four variant axes drive Slider:
 | `showTicks` | boolean | true \| false | `false` | Draws a mark at each step. Use it only when there are 12 steps or fewer, such as a 1 to 5 rating or 6-hour blocks of the day. |
 | `minGap` | number | – | one `step` | Range only. The closest the two thumbs can get. |
 | `label` | string | (string) | – | Required. It names the slider in the header row and is the accessible name. |
-| `formatValue` | function | `(v) => string` | `String(v)` | Formats the header value, the tooltip, the limit labels and the spoken value, such as "₹2,000" or "06:00". |
+| `formatValue` | function | `(v) => string` | `String(v)` | Formats the header value, the tooltip, the limit labels and the spoken value, such as "₹2,000" or "06:00". Without a step it receives the value rounded to a whole number, so no label shows decimals. |
 | `showHeader` | boolean | true \| false | `true` | Hides the header row visually. The label stays the accessible name. |
 | `showLimits` | boolean | true \| false | `false` | Shows the formatted `min` and `max` under the ends of the track. |
 | `showTooltip` | boolean | true \| false | `true` on web, `false` on touch | Shows the value over a thumb while it is held or focused. |
