@@ -820,8 +820,7 @@ const AZURE_TEXT_FLOOR = 3;
  * The myBiz brand-role exception (README → Azure contrast exception). The myBiz primary
  * sits on pomegranate.400, and white on it reads at 3.37:1. In the brands listed here,
  * text in a pairing where either side resolves through a semantic *-brand* role needs
- * 3:1 too. It is scoped by role, not by ramp: myBiz warning roles also use pomegranate
- * and keep 4.5:1.
+ * 3:1 too. It is scoped by role, not by ramp: a status role on pomegranate keeps 4.5:1.
  */
 const BRAND_ROLE_EXCEPTION_BRANDS = new Set(["mybiz"]);
 

@@ -425,20 +425,20 @@ Cosmos has one light theme, but products still place controls on dark sections: 
 
 ### 14. Brands (MakeMyTrip, myBiz and Goibibo)
 
-Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its colours: pomegranate instead of azure, with `pomegranate.400` as its primary, and its warning roles on pomegranate too. Goibibo differs in its brand colour, tangerine, and in its typeface: Rubik instead of Lato, with its own weights.
+Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the corporate travel brand inside the MakeMyTrip app, differs only in its brand colour: pomegranate instead of azure, with `pomegranate.400` as its primary. Goibibo differs in its brand colour, tangerine, and in its typeface: Rubik instead of Lato, with its own weights.
 
 **A brand is a list of value overrides on semantic tokens.** It cannot add, rename or describe a token. The default brand is the plain `primitives` → `semantic` → `component` chain. Another brand adds a `brands/{id}` set that sets new values for a few semantic tokens. Component tokens alias semantic tokens, so every component follows without a component token changing.
 
 ```
 primitives (azure, pomegranate, tangerine, …)  →  semantic  →  component
                                      ↑
-                    brands/mybiz overrides the 30 brand colours and 29 warning colours
-                    brands/goibibo overrides the 30 brand colours, typeface.default, weight.bold and weight.black
+                    brands/mybiz overrides 30 semantic colours
+                    brands/goibibo overrides the same 30 colours, typeface.default, weight.bold and weight.black
 ```
 
 This is exactly what a **Figma extended collection** does. In Figma the semantic set is the collection named **MakeMyTrip**, the parent. Its **myBiz** and **Goibibo** extensions override the same values as their brand sets and inherit everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → myBiz** or **Goibibo** (or back to MakeMyTrip). The Figma collection is named after the default brand, while the JSON set keeps the tier name `semantic`. The build never reads Figma names, so the two can differ. Do not push variables to Figma from Tokens Studio: it matches collections by name, so it would recreate a `semantic` collection, and it models brands as modes, not extensions.
 
-**Brand roles change; status roles mostly do not.** Info, links and the focus ring stay azure in every brand, because they signal status and interactivity, not brand. `text-brand-on-bg-fill` and `icon-brand-on-bg-fill` stay white. myBiz is the one exception for status: its warning roles move from `red.N` to `pomegranate.N` step for step, so its whole red family comes from one ramp (see Watch the warning red below).
+**Only brand roles change.** Info, links and the focus ring stay azure in every brand, and warning stays red, because they signal status and interactivity, not brand. `text-brand-on-bg-fill` and `icon-brand-on-bg-fill` stay white.
 
 | Semantic token | MakeMyTrip | myBiz | Goibibo |
 |---|---|---|---|
@@ -482,9 +482,9 @@ myBiz has changed brand colour several times. `#FF664B` failed with white text, 
 
 Rubik is wider than Lato and has a taller x-height, so the same size reads larger in Goibibo. The sizes stay shared on purpose. Apps load Rubik themselves, as they do Lato.
 
-**Watch the warning red.** `pomegranate` is a red ramp: `pomegranate.700` (`#C6080A`) is almost the same colour as `red.700` (`#C10007`). So myBiz separates primary from destructive by lightness, not hue. The primary fill sits on `pomegranate.400` (`#FF4929`), and the destructive fill on `pomegranate.700`, because myBiz aliases its warning roles to `pomegranate.N` step for step. The four warning hover tokens (`bg-fill-warning-strong-hover`, `text-warning-hover`, `border-warning-strong-hover`, `icon-warning-hover`) are the exception and stay on `red.600` (`#E7000B`): white on `pomegranate.600` reads at 4.41:1, under the 4.5:1 a destructive label needs, while `red.600` gives 4.76:1 and looks nearly the same. Keep destructive actions in their own confirmation step all the same. Goibibo (`#B35200`) is clearly orange.
+**Watch the warning red.** `pomegranate` is a red ramp, and myBiz keeps the shared `red` warning roles. So myBiz separates primary from destructive by lightness, not hue. The primary fill sits on `pomegranate.400` (`#FF4929`) and the destructive fill on `red.700` (`#C10007`). The interaction states come closer: the myBiz Primary pressed fill (`pomegranate.600`, `#EF1107`) looks almost the same as the destructive hover fill (`red.600`, `#E7000B`). Keep destructive actions in their own confirmation step. Goibibo (`#B35200`) is clearly orange.
 
-**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 363 tokens that differ in any brand get a runtime switch: the 59 semantic and 241 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (36 families and 24 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
+**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 232 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (36 families and 24 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
 
 **Adding a brand.**
 1. Add `brands/{id}` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
@@ -502,7 +502,7 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - **Inline links are not covered.** Links sit in small running text, so `text-link` moved to `azure.800` (`#0868C5`, 5.53:1 on white), with hover on 900 and pressed on 950.
 - **Focus moved to 700.** `border-focus` reads at 3.52:1 on white and 3.22:1 on `bg-secondary`. On `azure.600` it would have been 3.02:1 and about 2.8:1.
 - **Hover stays on 600.** `text-brand-hover`, `icon-brand-hover` and `border-brand-hover` stay on `azure.600` (`#0698FF`, 3.02:1 on white). The Radio hover dot on its `azure.50` tint reads at **2.84:1**, below the 3:1 graphics minimum. It is accepted by name.
-- **The myBiz brand-role exception.** On 2026-10-07 the myBiz primary moved to `pomegranate.400` (`#FF4929`), and white on it reads at **3.36:1**. The same 3:1 floor covers myBiz text pairings where either side resolves through a semantic `*-brand*` role: the brand Buttons, selected Tab and Chip labels, brand Badges and the tinted neutral Snackbar action. The lowest is 3.07:1 (`pomegranate.400` on its `pomegranate.50` tint). It is scoped by role, not by ramp, so the myBiz warning roles on `pomegranate` keep 4.5:1.
+- **The myBiz brand-role exception.** On 2026-10-07 the myBiz primary moved to `pomegranate.400` (`#FF4929`), and white on it reads at **3.36:1**. The same 3:1 floor covers myBiz text pairings where either side resolves through a semantic `*-brand*` role: the brand Buttons, selected Tab and Chip labels, brand Badges and the tinted neutral Snackbar action. The lowest is 3.07:1 (`pomegranate.400` on its `pomegranate.50` tint). It is scoped by role, not by ramp, so any status role that used `pomegranate` would keep 4.5:1.
 - **How it is linted.** `tokens/contrast` applies the 3:1 floor to azure pairings and to brand-role pairings in the brands listed in `BRAND_ROLE_EXCEPTION_BRANDS` (myBiz), and lists the accepted Radio pairing in `ACCEPTED_BELOW_FLOOR`. A pairing that drops below these floors still fails.
 
 ---
@@ -1755,7 +1755,7 @@ Box(
 
 ### Brands
 
-The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 363 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
+The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 232 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
 
 ```html
 <!-- Web: everything inside switches, including nested components. -->
