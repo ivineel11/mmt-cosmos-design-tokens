@@ -164,7 +164,9 @@ Token names follow `chip/{property}-{selection}-{state}`. `State=Focus` reuses t
 | `chip/secondary-text-default` | `color.text-secondary` | Secondary line, every enabled state |
 | `chip/secondary-text-disabled` | `color.text-disabled` | Secondary line, Disabled |
 | `chip/icon-unselected-default` | `color.icon-secondary` | Leading icon, trailing icon, remove glyph — unselected |
-| `chip/icon-selected-default` | `color.icon-brand` | The same, selected |
+| `chip/icon-selected-default` | `color.icon-brand` | The same, selected: Default and Focus |
+| `chip/icon-selected-hover` | `color.icon-brand-on-bg-surface-hover` | The same, selected, on hover. Darkens with the label |
+| `chip/icon-selected-pressed` | `color.icon-brand-on-bg-surface-pressed` | The same, selected, while pressed. Also the remove glyph while the remove button itself is hovered or pressed |
 | `chip/icon-disabled` | `color.icon-disabled` | The same, Disabled |
 | `chip/focus-ring` | `color.border-focus` | Chip ring and remove-button ring |
 
@@ -192,20 +194,21 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed.
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
 | Label and icons `#525252` on white / hover and pressed `#F5F5F5` | 7.81 / 7.16:1 | 4.5:1 (1.4.3) | Pass |
-| Selected label `#0067E8` on `#EDF8FF` | 4.74:1 | 4.5:1 (1.4.3) | Pass |
-| Selected hover label `#0857C5` on `#D6EFFF` | 5.55:1 | 4.5:1 (1.4.3) | Pass |
-| Selected pressed label `#0D4C9B` on `#C2E8FF` | 6.44:1 | 4.5:1 (1.4.3) | Pass |
-| Secondary `#525252`, lowest pair (on `#C2E8FF`) | 6.05:1 | 4.5:1 (1.4.3) | Pass |
-| Selected icon `#0067E8`, lowest pair (on `#C2E8FF`) | 3.96:1 | 3:1 (1.4.11) | Pass |
-| Selected border `#0067E8` on white / grey canvas | 5.11 / 4.69:1 | 3:1 (1.4.11) | Pass |
-| Focus ring `#0681FF` on white / grey canvas | 3.75 / 3.44:1 | 3:1 (1.4.11) | Pass |
+| Selected label `#0088FF` on `#EDFAFF` | 3.30:1 | 3:1 (azure exception) | Pass |
+| Selected hover label `#0868C5` on `#D6F3FF` | 4.77:1 | 4.5:1 (1.4.3) | Pass |
+| Selected pressed label `#0D589B` on `#B5EAFF` | 5.60:1 | 4.5:1 (1.4.3) | Pass |
+| Secondary `#525252`, lowest pair (on `#B5EAFF`) | 6.01:1 | 4.5:1 (1.4.3) | Pass |
+| Selected icon on the hover / pressed fill, `#0868C5` on `#D6F3FF` / `#0D589B` on `#B5EAFF` | 4.77 / 5.60:1 | 3:1 (1.4.11) | Pass |
+| Selected remove glyph on its hover and pressed circle, `#0D589B` on `#B5EAFF` | 5.60:1 | 3:1 (1.4.11) | Pass. `icon-selected-default` would be 2.71:1 here |
+| Selected border `#0088FF` on white / grey canvas | 3.52 / 3.22:1 | 3:1 (1.4.11) | Pass |
+| Focus ring `#0088FF` on white / grey canvas | 3.52 / 3.22:1 | 3:1 (1.4.11) | Pass |
 | Unselected border `#D4D4D4` on white | 1.48:1 | – | See below |
 
 The unselected border is a divider-weight grey on purpose. A chip is identified by its label, not its edge, so 1.4.11 does not require the boundary to reach 3:1 — the same reasoning that lets a white card sit on the grey page at 1.09:1. If research shows chips are being missed, `color.border-strong` (`neutral.500`, 4.74:1) is the stronger edge to switch to. The border keeps this grey on hover and darkens to `border-strong` only while pressed.
 
 ### Selection must not rely on colour alone
 
-With the border on, a selected chip changes fill, border and label colour together. With the border off on the grey canvas, the selected fill `#EDF8FF` is 1.01:1 against `#F5F5F5`, so **only the label colour** signals selection — grey `#525252` to blue `#0067E8`, just 1.52:1 apart, well under the 3:1 difference that colour alone would need (WCAG 1.4.1). **A borderless selected filter chip must therefore show a non-colour cue: a check in the leading icon slot** (example 2). With the border on, the blue outline carries the change and the check is recommended rather than required. The token set cannot enforce this; it is a usage rule.
+With the border on, a selected chip changes fill, border and label colour together. With the border off on the grey canvas, the selected fill `#EDFAFF` is 1.02:1 against `#F5F5F5`, so **only the label colour** signals selection — grey `#525252` to blue `#0088FF`, just 2.21:1 apart, well under the 3:1 difference that colour alone would need (WCAG 1.4.1). **A borderless selected filter chip must therefore show a non-colour cue: a check in the leading icon slot** (example 2). With the border on, the blue outline carries the change and the check is recommended rather than required. The token set cannot enforce this; it is a usage rule.
 
 ### Semantics
 
@@ -242,14 +245,14 @@ The secondary text joins the accessible name after the label ("Fri, 12 Dec, Rs 4
 
 ## Token reference
 
-61 tokens under `component.chip` in `tokens/tokens.json` are used by this set, mirrored 1:1 as `chip/*` in the Figma `component` collection. The remaining 16 `chip/vertical-*` tokens belong to [Chip / Vertical](chip-vertical.md).
+63 tokens under `component.chip` in `tokens/tokens.json` are used by this set, mirrored 1:1 as `chip/*` in the Figma `component` collection. The remaining 16 `chip/vertical-*` tokens belong to [Chip / Vertical](chip-vertical.md).
 
 | Group | Count |
 |---|---|
 | `bg-*` | 8 |
 | `border-*` (colour) | 8 |
 | `label-*` / `secondary-text-*` | 7 |
-| `icon-*` (colour) | 3 |
+| `icon-*` (colour) | 5 |
 | `remove-bg-*` | 4 |
 | `focus-ring` (colour) | 1 |
 | dimensions (`min-height`, `padding-x`, `padding-y`, `gap`, `icon-size`, `image-size`, `radius`, `image-radius`, `image-radius-square`, `gap-text`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `min-touch-target`, `remove-min-touch-target`) | 30 |

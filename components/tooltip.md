@@ -19,7 +19,7 @@ Each type comes in three surfaces:
 
 - **Dark** is a near-black bubble with no border or shadow. It is the default.
 - **Light** is a white bubble with a hairline border and the overlay shadow. Use it over photos, maps and dark sections, or beside a strong brand surface where a near-black bubble would compete.
-- **Info** is a light brand tint (`bg-surface-info`) with an info border and the overlay shadow. Use it for friendly tips and feature hints, such as a shortcut the user may not know. It is not for errors or warnings. On a grey page the tint all but disappears (1.01:1), so the border and shadow carry the edge.
+- **Info** is a light brand tint (`bg-surface-info`) with an info border and the overlay shadow. Use it for friendly tips and feature hints, such as a shortcut the user may not know. It is not for errors or warnings. On a grey page the tint all but disappears (1.02:1), so the border and shadow carry the edge.
 
 The bubble sits on any **Side** of its trigger, with the **Caret** at the Start, Center or End of the edge that faces the trigger, or with no caret at all.
 
@@ -209,21 +209,21 @@ Token names follow `tooltip/{part}-{surface}[-{state}]`, with `dark`, `light` or
 
 | Element | Dark | Light | Info |
 |---|---|---|---|
-| Bubble and caret | `bg-dark` → `bg-surface-inverse` #0A0A0A | `bg-light` → `bg-surface-secondary` #FFFFFF | `bg-info` → `bg-surface-info` #EDF8FF |
-| Border | none | `border-light` → `border-secondary` #E5E5E5 | `border-info` → `border-info` #83D4FF |
+| Bubble and caret | `bg-dark` → `bg-surface-inverse` #0A0A0A | `bg-light` → `bg-surface-secondary` #FFFFFF | `bg-info` → `bg-surface-info` #EDFAFF |
+| Border | none | `border-light` → `border-secondary` #E5E5E5 | `border-info` → `border-info` #83DFFF |
 | Shadow | none | `shadow-light` → `shadow.overlay` | `shadow-info` → `shadow.overlay` |
 | Plain label and Rich title | `label-dark` → `text-inverse` #FFFFFF | `label-light` → `text-primary` #0A0A0A | `label-info` → `text-primary` #0A0A0A |
 | Rich message and step | `description-dark` → `text-inverse-secondary` #A1A1A1 | `description-light` → `text-secondary` #525252 | `description-info` → `text-secondary` #525252 |
-| Leading icon | `icon-dark` → `icon-inverse` #FFFFFF | `icon-light` → `icon` #0A0A0A | `icon-info` → `icon-info` #0067E8 |
+| Leading icon | `icon-dark` → `icon-inverse` #FFFFFF | `icon-light` → `icon` #0A0A0A | `icon-info` → `icon-info` #0088FF |
 | Media placeholder | `media-bg-dark` → `bg-fill-inverse-pressed` #262626 | `media-bg-light` → `bg-surface` #F5F5F5 | `media-bg-info` → `bg-surface-secondary` #FFFFFF |
-| Primary action label | `primary-label-dark` → `text-link-inverse` #83D4FF, every state | `primary-label-light` → `text-brand` #0067E8; Hover `-hover` → `text-brand-on-bg-surface-hover` #0857C5; Pressed `-pressed` → `text-brand-on-bg-surface-pressed` #0D4C9B | `primary-label-info` → `text-info` #0067E8; Hover `-hover` → `text-info-on-bg-surface-hover` #0857C5; Pressed `-pressed` → `text-info-on-bg-surface-pressed` #0D4C9B |
+| Primary action label | `primary-label-dark` → `text-link-inverse` #83DFFF, every state | `primary-label-light` → `text-brand` #0088FF; Hover `-hover` → `text-brand-on-bg-surface-hover` #0868C5; Pressed `-pressed` → `text-brand-on-bg-surface-pressed` #0D589B | `primary-label-info` → `text-info` #0088FF; Hover `-hover` → `text-info-on-bg-surface-hover` #0868C5; Pressed `-pressed` → `text-info-on-bg-surface-pressed` #0D589B |
 | Secondary action label | `secondary-label-dark` → `text-inverse-secondary` #A1A1A1 | `secondary-label-light` → `text-secondary` #525252 | `secondary-label-info` → `text-secondary` #525252 |
 | Close glyph | `close-icon-dark` → `icon-inverse-secondary` #A1A1A1 | `close-icon-light` → `icon-secondary` #525252 | `close-icon-info` → `icon-secondary` #525252 |
-| Text actions and close, Hover | `control-bg-dark-hover` → `bg-fill-inverse-hover` #171717 | `control-bg-light-hover` → `bg-surface-secondary-hover` #FAFAFA | `control-bg-info-hover` → `bg-surface-info-hover` #D6EFFF |
-| Text actions and close, Pressed | `control-bg-dark-pressed` → `bg-fill-inverse-pressed` #262626 | `control-bg-light-pressed` → `bg-surface-secondary-pressed` #F5F5F5 | `control-bg-info-pressed` → `bg-surface-info-pressed` #C2E8FF |
-| Focus ring | `focus-ring` → `border-focus` #0681FF | same | same |
+| Text actions and close, Hover | `control-bg-dark-hover` → `bg-fill-inverse-hover` #171717 | `control-bg-light-hover` → `bg-surface-secondary-hover` #FAFAFA | `control-bg-info-hover` → `bg-surface-info-hover` #D6F3FF |
+| Text actions and close, Pressed | `control-bg-dark-pressed` → `bg-fill-inverse-pressed` #262626 | `control-bg-light-pressed` → `bg-surface-secondary-pressed` #F5F5F5 | `control-bg-info-pressed` → `bg-surface-info-pressed` #B5EAFF |
+| Focus ring | `focus-ring` → `border-focus` #0088FF | same | same |
 
-At rest and on focus the text actions and close button have no fill; only hover and press add one. On Light and Info the primary label darkens with the fill, because the brand and info blues drop below 4.5:1 on the tinted Info fills (4.30 and 3.97:1); on Dark the light blue passes on every fill, so it stays the same. The message keeps the description colour with or without a title.
+At rest and on focus the text actions and close button have no fill; only hover and press add one. On Light and Info the primary label darkens with the fill, because the brand and info blues fall to 3.03 and 2.71:1 on the tinted Info hover and pressed fills; on Dark the light blue passes on every fill, so it stays the same. The message keeps the description colour with or without a title.
 
 This component adds no semantic roles.
 
@@ -239,21 +239,21 @@ This component adds no semantic roles.
 | Dark: message, step and Skip #A1A1A1 on #0A0A0A | 7.66:1 | 4.5:1 | Pass |
 | Dark: Skip on Hover #171717 / Pressed #262626 | 6.94 / 5.86:1 | 4.5:1 | Pass |
 | Dark: close glyph #A1A1A1 on #0A0A0A / #171717 / #262626 | 7.66 / 6.94 / 5.86:1 | 3:1 (1.4.11) | Pass |
-| Dark: primary action #83D4FF on #0A0A0A / Hover #171717 / Pressed #262626 | 12.09 / 10.95 / 9.24:1 | 4.5:1 | Pass |
-| Light: primary action #0067E8 on #FFFFFF / Hover #0857C5 on #FAFAFA / Pressed #0D4C9B on #F5F5F5 | 5.12 / 6.33 / 7.63:1 | 4.5:1 | Pass |
+| Dark: primary action #83DFFF on #0A0A0A / Hover #171717 / Pressed #262626 | 13.16 / 11.92 / 10.06:1 | 4.5:1 | Pass |
+| Light: primary action #0088FF on #FFFFFF / Hover #0868C5 on #FAFAFA / Pressed #0D589B on #F5F5F5 | 3.52 / 5.29 / 6.67:1 | 3:1 (azure exception) | Pass |
 | Dark bubble #0A0A0A on a white or grey page | 19.80 / 18.16:1 | 3:1 | Pass |
 | Light: label and title #0A0A0A on #FFFFFF | 19.80:1 | 4.5:1 | Pass |
 | Light: message, step and Skip #525252 on #FFFFFF | 7.81:1 | 4.5:1 | Pass |
 | Light: Skip and close on Hover #FAFAFA / Pressed #F5F5F5 | 7.49 / 7.17:1 | 4.5:1 | Pass |
 | Light: border #E5E5E5 on white | 1.26:1 | – | Decorative. The overlay shadow carries the edge, as on Menu |
-| Info: label and title #0A0A0A on #EDF8FF | 18.36:1 | 4.5:1 | Pass |
-| Info: message, step and Skip #525252 on #EDF8FF | 7.25:1 | 4.5:1 | Pass |
-| Info: Skip and close on Hover #D6EFFF / Pressed #C2E8FF | 6.57 / 6.06:1 | 4.5:1 | Pass |
-| Info: leading icon #0067E8 on #EDF8FF | 4.74:1 | 3:1 | Pass |
-| Info: primary action #0067E8 on #EDF8FF / Hover #0857C5 on #D6EFFF / Pressed #0D4C9B on #C2E8FF | 4.74 / 5.55 / 6.45:1 | 4.5:1 | Pass |
-| Info: bubble #EDF8FF on a white / grey page | 1.08 / 1.01:1 | – | The tint alone does not separate; the border and the overlay shadow carry the edge |
-| Info: border #83D4FF on white / grey / the tint | 1.64 / 1.50 / 1.52:1 | – | Decorative, with the shadow, as on Light |
-| Focus ring #0681FF on #0A0A0A / #FFFFFF / #EDF8FF | 5.27 / 3.76 / 3.48:1 | 3:1 | Pass |
+| Info: label and title #0A0A0A on #EDFAFF | 18.59:1 | 4.5:1 | Pass |
+| Info: message, step and Skip #525252 on #EDFAFF | 7.33:1 | 4.5:1 | Pass |
+| Info: Skip and close on Hover #D6F3FF / Pressed #B5EAFF | 6.74 / 6.01:1 | 4.5:1 | Pass |
+| Info: leading icon #0088FF on #EDFAFF | 3.30:1 | 3:1 | Pass |
+| Info: primary action #0088FF on #EDFAFF / Hover #0868C5 on #D6F3FF / Pressed #0D589B on #B5EAFF | 3.30 / 4.77 / 5.60:1 | 3:1 (azure exception) | Pass |
+| Info: bubble #EDFAFF on a white / grey page | 1.06 / 1.02:1 | – | The tint alone does not separate; the border and the overlay shadow carry the edge |
+| Info: border #83DFFF on white / grey / the tint | 1.50 / 1.37 / 1.41:1 | – | Decorative, with the shadow, as on Light |
+| Focus ring #0088FF on #0A0A0A / #FFFFFF / #EDFAFF | 5.62 / 3.52 / 3.30:1 | 3:1 | Pass |
 
 ### Semantics
 

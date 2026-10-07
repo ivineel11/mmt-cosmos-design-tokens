@@ -154,7 +154,7 @@ The vertical chip uses the Chip colour tokens unchanged. See [Chip, Color](chip.
 | Border | `chip/border-{unselected,selected}-{default,hover,pressed,disabled}` |
 | Label | `chip/label-unselected-default`, `chip/label-selected-{default,hover,pressed}`, `chip/label-disabled` |
 | Secondary text | `chip/secondary-text-default`, `chip/secondary-text-disabled` |
-| Leading icon, both trailing icons | `chip/icon-unselected-default`, `chip/icon-selected-default`, `chip/icon-disabled` |
+| Leading icon, both trailing icons | `chip/icon-unselected-default`, `chip/icon-selected-default`, `chip/icon-selected-hover`, `chip/icon-selected-pressed`, `chip/icon-disabled` |
 | Focus ring | `chip/focus-ring` |
 
 The leading image is never recoloured. The secondary trailing icon follows the icon tokens, not the secondary text: on a selected chip it turns brand blue while the secondary line stays grey.
@@ -169,7 +169,7 @@ Every colour pair is identical to Chip. See [Chip, Contrast](chip.md#contrast).
 
 ### Selection must not rely on colour alone
 
-On the grey canvas with the border off, a selected fill (`#EDF8FF`) is 1.01:1 against `#F5F5F5`, and the label colours are only 1.52:1 apart, which fails WCAG 1.4.1. Chip solves this with a check in the leading icon slot, but here that slot holds the content icon. **So a selected vertical chip always draws its border** (`#0067E8`, 4.69:1 on the grey canvas and 5.11:1 on white), and the edge appearing is the non-colour cue. This is built into the Figma variants; in code, ignore `bordered` when `selected` is true.
+On the grey canvas with the border off, a selected fill (`#EDFAFF`) is 1.02:1 against `#F5F5F5`, and the label colours are only 2.21:1 apart, which fails WCAG 1.4.1. Chip solves this with a check in the leading icon slot, but here that slot holds the content icon. **So a selected vertical chip always draws its border** (`#0088FF`, 3.22:1 on the grey canvas and 3.52:1 on white), and the edge appearing is the non-colour cue. This is built into the Figma variants; in code, ignore `bordered` when `selected` is true.
 
 ### Semantics
 

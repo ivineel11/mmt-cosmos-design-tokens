@@ -2312,8 +2312,12 @@
   --chip-secondary-text-disabled: #A1A1A1;
   /** Colour of the leading icon, trailing icon and remove glyph — unselected, in every enabled state. Does not apply to the leading image, which keeps its own colours. */
   --chip-icon-unselected-default: #525252;
-  /** Colour of the leading icon, trailing icon and remove glyph — selected, in every enabled state. Does not apply to the leading image. */
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, Default and Focus. Hover and pressed have their own tokens so the icons darken with the label. Does not apply to the leading image. */
   --chip-icon-selected-default: #0088FF;
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, on hover. Matches chip/label-selected-hover so icons and label darken together as the fill deepens. */
+  --chip-icon-selected-hover: #0868C5;
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, while pressed. Matches chip/label-selected-pressed. Also colours the remove glyph while the remove button itself is hovered or pressed, because its circle uses the pressed tint and icon-selected-default is too light on it. */
+  --chip-icon-selected-pressed: #0D589B;
   /** Colour of the leading icon, trailing icon and remove glyph when the chip is disabled. The leading image is not recoloured; desaturate it in code if needed. */
   --chip-icon-disabled: #A1A1A1;
   /** Circle behind the remove glyph of a removable chip — unselected, when the remove button itself is hovered. Transparent at rest. */
@@ -3132,7 +3136,7 @@
   --segmented-control-focus-ring-offset: 2px;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Width of the outline of the tinted thumb, drawn inside it. */
   --segmented-control-tinted-thumb-border-width: 1px;
-  /** Part of the track outside the selected value or range, in every enabled state. Below 3:1 against the canvas by choice; the active track carries the value at 3.45:1 against it. Use track-inactive-disabled when the slider is disabled. */
+  /** Part of the track outside the selected value or range, in every enabled state. Below 3:1 against the canvas and against track-active by choice; the thumb marks the value. Use track-inactive-disabled when the slider is disabled. */
   --slider-track-inactive: #D4D4D4;
   /** Part of the track outside the selected value or range when the slider is disabled. Lighter than track-active-disabled so the value still reads. */
   --slider-track-inactive-disabled: #E5E5E5;
@@ -3290,8 +3294,10 @@
   --menu-chevron-default: #737373;
   /** Trailing chevron of a disabled submenu row. */
   --menu-chevron-disabled: #A1A1A1;
-  /** Trailing check on the selected row of a single-select menu, such as Sort by. It is the only mark of selection, so the label stays label-default. */
+  /** Trailing check on the selected row of a single-select menu, such as Sort by, at rest, on hover and with focus. It is the only mark of selection, so the label stays label-default. Use check-pressed while the row is pressed. */
   --menu-check-default: #0088FF;
+  /** Trailing check on the selected row while the row is pressed. One step darker than check-default, which is too light on item-bg-pressed. */
+  --menu-check-pressed: #0868C5;
   /** Trailing check on a selected row that is disabled. */
   --menu-check-disabled: #A1A1A1;
   /** Small header that names a group of menu rows. It is not interactive and never takes a fill. */
@@ -3487,7 +3493,7 @@
 }
 
 /**
- * MakeMyTrip: the 232 tokens that change with the brand. Set data-brand="mmt"
+ * MakeMyTrip: the 235 tokens that change with the brand. Set data-brand="mmt"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mmt"] {
@@ -3677,6 +3683,8 @@
   --chip-label-selected-hover: #0868C5;
   --chip-label-selected-pressed: #0D589B;
   --chip-icon-selected-default: #0088FF;
+  --chip-icon-selected-hover: #0868C5;
+  --chip-icon-selected-pressed: #0D589B;
   --chip-remove-bg-selected-hover: #B5EAFF;
   --chip-remove-bg-selected-pressed: #B5EAFF;
   --snackbar-label-control-tinted-neutral-default: #0088FF;
@@ -3720,13 +3728,14 @@
   --slider-halo-hover: #EDFAFF;
   --slider-halo-pressed: #D6F3FF;
   --menu-check-default: #0088FF;
+  --menu-check-pressed: #0868C5;
   --tooltip-primary-label-light: #0088FF;
   --tooltip-primary-label-light-hover: #0868C5;
   --tooltip-primary-label-light-pressed: #0D589B;
 }
 
 /**
- * myBiz: the 232 tokens that change with the brand. Set data-brand="mybiz"
+ * myBiz: the 235 tokens that change with the brand. Set data-brand="mybiz"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mybiz"] {
@@ -3916,6 +3925,8 @@
   --chip-label-selected-hover: #EF1107;
   --chip-label-selected-pressed: #C6080A;
   --chip-icon-selected-default: #FF4929;
+  --chip-icon-selected-hover: #EF1107;
+  --chip-icon-selected-pressed: #C6080A;
   --chip-remove-bg-selected-hover: #FFBCA8;
   --chip-remove-bg-selected-pressed: #FFBCA8;
   --snackbar-label-control-tinted-neutral-default: #FF4929;
@@ -3959,13 +3970,14 @@
   --slider-halo-hover: #FFF2ED;
   --slider-halo-pressed: #FFE0D4;
   --menu-check-default: #FF4929;
+  --menu-check-pressed: #EF1107;
   --tooltip-primary-label-light: #FF4929;
   --tooltip-primary-label-light-hover: #EF1107;
   --tooltip-primary-label-light-pressed: #C6080A;
 }
 
 /**
- * Goibibo: the 232 tokens that change with the brand. Set data-brand="goibibo"
+ * Goibibo: the 235 tokens that change with the brand. Set data-brand="goibibo"
  * on any element to switch it and everything inside it.
  */
 [data-brand="goibibo"] {
@@ -4155,6 +4167,8 @@
   --chip-label-selected-hover: #974500;
   --chip-label-selected-pressed: #813A00;
   --chip-icon-selected-default: #B35200;
+  --chip-icon-selected-hover: #974500;
+  --chip-icon-selected-pressed: #813A00;
   --chip-remove-bg-selected-hover: #FFDCC2;
   --chip-remove-bg-selected-pressed: #FFDCC2;
   --snackbar-label-control-tinted-neutral-default: #B35200;
@@ -4198,6 +4212,7 @@
   --slider-halo-hover: #FEF4EC;
   --slider-halo-pressed: #FFE8D4;
   --menu-check-default: #B35200;
+  --menu-check-pressed: #974500;
   --tooltip-primary-label-light: #B35200;
   --tooltip-primary-label-light-hover: #974500;
   --tooltip-primary-label-light-pressed: #813A00;

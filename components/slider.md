@@ -204,11 +204,11 @@ Token names follow `slider/{part}-{active|inactive}-{state}`. Focus uses the Def
 | Element | Default, Hover, Pressed, Focus | Disabled |
 |---|---|---|
 | Inactive track | `track-inactive` → `bg-fill-neutral-strong` #D4D4D4 | `track-inactive-disabled` → `bg-fill-disabled-subtle` #E5E5E5 |
-| Active track | `track-active` → `bg-fill-brand` #0067E8 | `track-active-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
+| Active track | `track-active` → `bg-fill-brand` #0088FF | `track-active-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
 | Tick on the active track | `tick-active` → `bg-fill` #FFFFFF | `tick-active-disabled` → `bg-fill` #FFFFFF |
 | Tick on the inactive track | `tick-inactive` → `bg-fill-neutral-strong-pressed` #737373 | `tick-inactive-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
-| Halo | Hover: `halo-hover` → `bg-surface-brand` #EDF8FF · Pressed: `halo-pressed` → `bg-surface-brand-hover` #D6EFFF | – |
-| Focus ring | Focus: `focus-ring` → `border-focus` #0681FF | – |
+| Halo | Hover: `halo-hover` → `bg-surface-brand` #EDFAFF · Pressed: `halo-pressed` → `bg-surface-brand-hover` #D6F3FF | – |
+| Focus ring | Focus: `focus-ring` → `border-focus` #0088FF | – |
 | Label and value | `label-text`, `value-text` → `text-primary` #0A0A0A | `text-disabled` → `text-disabled` #A1A1A1 |
 | Min and max | `limit-text` → `text-secondary` #525252 | `text-disabled` #A1A1A1 |
 | Tooltip bubble and caret | `tooltip-bg` → `bg-fill-inverse` #0A0A0A, `tooltip-text` → `text-inverse` #FFFFFF | – |
@@ -233,14 +233,14 @@ This component adds no semantic roles.
 
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
-| Active track #0067E8 against the inactive track #D4D4D4 | 3.45:1 | 3:1 (1.4.11) | Pass. This edge shows the value |
-| Active track #0067E8 on the white canvas / on #F5F5F5 | 5.11 / 4.69:1 | 3:1 | Pass |
+| Active track #0088FF against the inactive track #D4D4D4 | 2.37:1 | 3:1 (1.4.11) | **Below, accepted.** The thumb marks the value. Only neutral.100 or lighter would pass, and it disappears on the grey canvas |
+| Active track #0088FF on the white canvas / on #F5F5F5 | 3.52 / 3.22:1 | 3:1 | Pass |
 | Inactive track #D4D4D4 on the white canvas | 1.48:1 | – | Below 3:1 by choice, as on Switch. The active track and the thumb carry the value |
-| Thumb #FFFFFF on the active track | 5.11:1 | 3:1 | Pass |
+| Thumb #FFFFFF on the active track | 3.52:1 | 3:1 | Pass |
 | Thumb #FFFFFF on the inactive track / on the canvas | 1.48 / 1:1 | 3:1 | **Below.** The shadow carries the edge. See Known gaps |
-| Hover thumb #F5F5F5 on the active track / on the inactive track | 4.69 / 1.35:1 | 3:1 | Pass on the active track; below on the inactive track, where the halo and raised shadow carry it (web only) |
-| Tick #737373 on the inactive track / #FFFFFF on the active track | 3.19 / 5.11:1 | 3:1 | Pass |
-| Focus ring #0681FF on the canvas | 3.75:1 | 3:1 | Pass. Where it crosses the track it is 2.53:1 on grey and 1.36:1 on brand, but most of the ring sits on the canvas |
+| Hover thumb #F5F5F5 on the active track / on the inactive track | 3.22 / 1.35:1 | 3:1 | Pass on the active track; below on the inactive track, where the halo and raised shadow carry it (web only) |
+| Tick #737373 on the inactive track / #FFFFFF on the active track | 3.19 / 3.52:1 | 3:1 | Pass |
+| Focus ring #0088FF on the canvas | 3.52:1 | 3:1 | Pass. Where it crosses the track it is 2.37:1 on grey and 1.00:1 on brand, but most of the ring sits on the canvas |
 | Label and value #0A0A0A / limits #525252 on white | 19.79 / 7.81:1 | 4.5:1 (1.4.3) | Pass |
 | Tooltip text #FFFFFF on #0A0A0A | 19.79:1 | 4.5:1 | Pass |
 | Disabled text #A1A1A1 on white | 2.58:1 | – | Exempt (1.4.3 excludes inactive controls) |
@@ -275,7 +275,8 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 - **No histogram.** A price distribution above the track is left for later.
 - **Linear scale only.** Wide price ranges usually need a non-linear scale so cheap prices are not crammed at one end. The consumer maps values for now.
 - **Horizontal only.** There is no vertical slider.
-- **Thumb contrast.** The white thumb is 1.48:1 on the inactive track and 1:1 on the canvas, below 3:1. The shadow carries it, as on the system iOS slider. It passes against the active track (5.11:1), which the thumb always touches.
+- **Thumb contrast.** The white thumb is 1.48:1 on the inactive track and 1:1 on the canvas, below 3:1. The shadow carries it, as on the system iOS slider. It passes against the active track (3.52:1), which the thumb always touches.
+- **Active track edge, accepted.** Since the azure change of 2026-10-07 the active track is 2.37:1 against the inactive track, below 3:1. No darker grey fixes it (neutral.400 to neutral.700 sit between 1.34 and 2.94:1), and neutral.100 passes at 3.22:1 but matches the grey canvas. The thumb sits on the boundary and marks the value, so the edge was accepted on 2026-10-07.
 - **No motion tokens.** The spring, fades and haptics are documented above, not tokenised.
 - **`focus-ring-offset` and `tooltip-gap` are not bound in Figma.** They are geometry: the ring and tooltip are placed at those distances. The focus ring size (thumb plus 8) and the active track length are not bound either, because they follow the value.
 - **Thumb positions come in 5% steps and assume the default width.** Figma has no number property and does not allow resizing layers inside an instance, so positions are presets on the exposed .Slider / Position spacers. They are sized for the 320 Medium and 280 Small widths; on a resized slider, the grey ticks stretch but the thumbs keep their pixel positions. For another width or an exact value, detach the instance.

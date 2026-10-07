@@ -112,7 +112,8 @@
 /* One highlight, shared by the pointer and the keyboard: the focused row. */
 .item:focus { --_bg: var(--menu-item-bg-focus); }
 .item[aria-expanded="true"] { --_bg: var(--menu-item-bg-open); }
-.item:active { --_bg: var(--menu-item-bg-pressed); }
+/* The check darkens on the pressed grey, where check-default is too light. */
+.item:active { --_bg: var(--menu-item-bg-pressed); --_check: var(--menu-check-pressed); }
 /* A keyboard highlight adds the ring, because the grey fill alone is 1.09:1. */
 .item:focus-visible { outline: var(--menu-focus-ring-width) solid var(--menu-focus-ring); outline-offset: calc(-1 * var(--menu-focus-ring-width)); }
 
