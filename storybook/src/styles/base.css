@@ -22,17 +22,18 @@ body {
 .sbdocs.sbdocs-content :where(ul, ol):not(.sb-unstyled *, .docs-story *) { margin-block: 0 var(--space-xl); }
 .sbdocs.sbdocs-content :where(li):not(.sb-unstyled *, .docs-story *) { margin-block-end: var(--space-xs); }
 
+/* Every heading sits 8px (space-xs) above the body text that follows it. */
 .sbdocs.sbdocs-content h1:not(.sb-unstyled *) {
   font-size: var(--headline-large-black-font-size);
   line-height: var(--headline-large-black-line-height);
   font-weight: var(--weight-black);
-  margin-block: 0 var(--space-xl);
+  margin-block: 0 var(--space-xs);
 }
 .sbdocs.sbdocs-content h2:not(.sb-unstyled *) {
   font-size: var(--headline-small-bold-font-size);
   line-height: var(--headline-small-bold-line-height);
   font-weight: var(--weight-bold);
-  margin-block: var(--space-7xl) var(--space-xl);
+  margin-block: var(--space-7xl) var(--space-xs);
   /* No rule under section headings. */
   padding-block-end: 0;
   border-block-end: 0;
@@ -41,7 +42,7 @@ body {
   font-size: var(--title-medium-bold-font-size);
   line-height: var(--title-medium-bold-line-height);
   font-weight: var(--weight-bold);
-  margin-block: var(--space-5xl) var(--space-sm);
+  margin-block: var(--space-5xl) var(--space-xs);
 }
 
 /* Markdown tables in docs prose: a 16px card with row dividers, spaced like the props tables. */

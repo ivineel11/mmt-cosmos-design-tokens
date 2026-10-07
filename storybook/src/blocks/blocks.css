@@ -65,6 +65,27 @@
   outline-offset: var(--space-3xs);
 }
 .doc-platforms { flex: 0 0 320px; }
+/*
+ * A block with a heading of its own shows its switch in two places, and the docs column
+ * width picks one. From 768px the switch floats at the right of the heading, top-aligned
+ * with it, and the intro text between them (data-beside-switch) stops a 32px gap (space-3xl) short of
+ * the switch, so no line runs under it. Below 768px that would squeeze the intro too much,
+ * so the heading copy hides and the switch keeps its row above the table.
+ */
+.sbdocs.sbdocs-content { container-type: inline-size; }
+.doc-heading-switch {
+  display: none;
+  float: inline-end;
+  inline-size: 320px;
+  margin-inline-start: var(--space-xl);
+  font-family: var(--typeface-default), system-ui, sans-serif;
+}
+@container (min-width: 768px) {
+  .doc-heading-switch { display: block; }
+  .doc-toolbar-fallback,
+  .doc-platforms-fallback { display: none; }
+  [data-beside-switch] { max-inline-size: calc(100% - 320px - var(--space-3xl)); }
+}
 
 /* Tables */
 .doc-table { width: 100%; border-collapse: collapse; font-size: var(--body-large-regular-font-size); line-height: var(--body-large-regular-line-height); }
