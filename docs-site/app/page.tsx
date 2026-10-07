@@ -3,5 +3,5 @@ import tokens from "@/data/tokens.json";
 import type { TokenData } from "@/lib/types";
 
 export default function Home() {
-  return <DocsApp data={tokens as TokenData} />;
+  return <DocsApp data={tokens as unknown as TokenData} />;
 }

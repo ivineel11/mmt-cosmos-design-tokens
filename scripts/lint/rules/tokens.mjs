@@ -753,7 +753,7 @@ const semanticColorRole = {
       if (!SEMANTIC_COLOR_ROLE.test(key)) {
         api.report({ ...at(leaf, "key"), message: `color.${key} does not fit the role taxonomy (bg, bg-secondary, bg-surface-*, bg-fill-*, text-*, border-*, icon-*, exp-{hue}-{step}). Name it by role, not by value.` });
       }
-      if (/(^|-)(neutral|azure|brand|red|orange|tangerine|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
+      if (/(^|-)(neutral|azure|brand|red|pomegranate|orange|tangerine|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
         api.report({ ...at(leaf, "key"), message: `color.${key} is named after a palette value. Semantic names describe intent (text-caution, not text-yellow-700).` });
       }
     }
@@ -816,6 +816,14 @@ const AA_GRAPHIC = 3;
  */
 const AZURE_TEXT_FLOOR = 3;
 
+/**
+ * The myBiz brand-role exception (README → Azure contrast exception). The myBiz primary
+ * sits on pomegranate.400, and white on it reads at 3.37:1. In the brands listed here,
+ * text in a pairing where either side resolves through a semantic *-brand* role needs
+ * 3:1 too. It is scoped by role, not by ramp: a status role on pomegranate keeps 4.5:1.
+ */
+const BRAND_ROLE_EXCEPTION_BRANDS = new Set(["mybiz"]);
+
 /** Pairings accepted below their floor by design decision: component token → lowest ratio allowed. */
 const ACCEPTED_BELOW_FLOOR = {
   // The lightened azure.600 hover dot on its azure.50 tint reads at 2.84:1; the hover step was kept by design decision (2026-10-07).
@@ -832,7 +840,7 @@ const COMPONENT_FOREGROUNDS = {
 
 const contrastRule = {
   id: "tokens/contrast",
-  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3). Text paired with an azure step needs 3:1 (the azure exception, README → Azure contrast exception), and a few component pairings are accepted below their floor by name.",
+  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3). Text paired with an azure step, or with a brand role in myBiz, needs 3:1 (README → Azure contrast exception), and a few component pairings are accepted below their floor by name.",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -863,6 +871,18 @@ function checkContrast(api, model, brand) {
   );
   const isAzure = (h) => typeof h === "string" && azure.has(h.toUpperCase());
 
+  /** True when the token, or anything it aliases on the way down, is a semantic *-brand* colour role. */
+  const brandRoleException = brand !== null && BRAND_ROLE_EXCEPTION_BRANDS.has(brand.id);
+  const isBrandRole = (id) => {
+    for (const seen = new Set(); id && !seen.has(id); id = aliasTarget(model.byId.get(id)?.value)) {
+      seen.add(id);
+      const leaf = model.byId.get(id);
+      if (!leaf) return false;
+      if (leaf.tier === "semantic" && leaf.path[0] === "color" && /(^|-)brand(-|$)/.test(leaf.path[1])) return true;
+    }
+    return false;
+  };
+
   /** bgIds are token ids, or { id, over, alpha } for a tint laid over a canvas at an opacity. */
   const check = (fgLeaf, bgIds, threshold, criterion) => {
     const fg = hex(fgLeaf.id);
@@ -874,13 +894,18 @@ function checkContrast(api, model, brand) {
       if (!bg) continue;
       const ratio = contrast(fg, bg);
       let floor = threshold;
+      let exception = "azure exception";
       if (criterion === "1.4.3" && (isAzure(fg) || isAzure(tint ? hex(tint.id) : bg))) floor = Math.min(floor, AZURE_TEXT_FLOOR);
+      else if (criterion === "1.4.3" && brandRoleException && (isBrandRole(fgLeaf.id) || isBrandRole(tint ? tint.id : entry))) {
+        floor = Math.min(floor, AZURE_TEXT_FLOOR);
+        exception = `${brand.name} brand-role exception`;
+      }
       if (fgLeaf.tier === "component" && fgLeaf.id in ACCEPTED_BELOW_FLOOR) floor = Math.min(floor, ACCEPTED_BELOW_FLOOR[fgLeaf.id]);
       if (ratio < floor) {
         api.report({
           ...at(fgLeaf),
           subject: `${fgLeaf.id} on ${tint ? tint.id : bgId}${brand ? ` in ${brand.id}` : ""}`,
-          message: `${brand ? `In ${brand.name}, ` : ""}${label(fgLeaf)} (${fg}) on ${bgId} (${bg}) is ${formatRatio(ratio)}, below the ${floor}:1 ${floor < threshold ? `floor of the azure exception (WCAG ${criterion} asks ${threshold}:1)` : `WCAG ${criterion} minimum`}.`,
+          message: `${brand ? `In ${brand.name}, ` : ""}${label(fgLeaf)} (${fg}) on ${bgId} (${bg}) is ${formatRatio(ratio)}, below the ${floor}:1 ${floor < threshold ? `floor of the ${exception} (WCAG ${criterion} asks ${threshold}:1)` : `WCAG ${criterion} minimum`}.`,
         });
       }
     }
