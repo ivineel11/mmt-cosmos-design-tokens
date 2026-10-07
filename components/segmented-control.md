@@ -156,7 +156,7 @@ In Figma each selected segment paints its own thumb, so a mock can show any sele
 
 On the Rounded shape the track radius is the thumb radius plus the 4 px padding, so the corners are concentric at both sizes. On the Pill shape every radius is full, and full semicircles are always concentric.
 
-The focus ring sits **outside** the segment: a 2 px gap, then the 2 px ring, which together fill the 4 px track padding exactly. Drawn inside, the #0681FF ring would be 1.36:1 against the Brand thumb and practically invisible. Outside, it always sits on the grey track, uses the track radius so it is concentric with the thumb, and reads the same around every style. Between segments it overlaps the neighbour by 4 px, which only reaches the neighbour's padding, never its label. Neither track reaches 48, so extend the hit area 4 px (Medium) or 8 px (Small) above and below the track, without drawing it.
+The focus ring sits **outside** the segment: a 2 px gap, then the 2 px ring, which together fill the 4 px track padding exactly. Drawn inside, the #0088FF ring would be the same colour as the Brand thumb (1.00:1) and invisible. Outside, it always sits on the grey track, uses the track radius so it is concentric with the thumb, and reads the same around every style. Between segments it overlaps the neighbour by 4 px, which only reaches the neighbour's padding, never its label. Neither track reaches 48, so extend the hit area 4 px (Medium) or 8 px (Small) above and below the track, without drawing it.
 
 ---
 
@@ -167,7 +167,7 @@ Token names follow `segmented-control/{property}-{selected|unselected}-{state}`.
 - Tinted uses `icon-brand` then `icon-brand-on-bg-surface-pressed`, the Button tertiary pattern.
 - Neutral uses `icon-brand` then `icon-brand-pressed` on its grey pressed thumb.
 
-On Brand the label and icon keep their white while pressed, and only the thumb darkens. Neutral and Tinted also darken the brand label and icon one step, because `text-brand` falls below AA on their pressed thumbs: 4.06:1 on the Neutral grey #E5E5E5 and 3.96:1 on the pressed tint. Tinted darkens its outline too.
+On Brand the label and icon keep their white while pressed, and only the thumb darkens. Neutral and Tinted also darken the brand label and icon one step, because `text-brand` falls below even the 3:1 azure exception on their pressed thumbs: 2.79:1 on the Neutral grey #E5E5E5 and 2.71:1 on the pressed tint. Tinted darkens its outline too.
 
 ### Shared
 
@@ -179,7 +179,7 @@ On Brand the label and icon keep their white while pressed, and only the thumb d
 | Unselected icon | `icon-unselected-default` → `icon-secondary` #525252 | `icon-unselected-pressed` → `icon` #0A0A0A | `icon-disabled` → `icon-disabled` #A1A1A1 |
 | Selected thumb, disabled | – | – | `thumb-disabled` → `bg-surface-disabled` #E5E5E5, no shadow |
 | Selected label and icon, disabled | – | – | `label-disabled`, `icon-disabled` #A1A1A1 |
-| Focus ring, drawn outside the segment | `focus-ring` → `border-focus` #0681FF | – | – |
+| Focus ring, drawn outside the segment | `focus-ring` → `border-focus` #0088FF | – | – |
 
 ### Neutral thumb (under test)
 
@@ -187,14 +187,14 @@ On Brand the label and icon keep their white while pressed, and only the thumb d
 |---|---|---|
 | Thumb | `neutral-thumb-default` → `bg-fill` #FFFFFF | `neutral-thumb-pressed` → `bg-fill-pressed-strong` #E5E5E5 |
 | Thumb shadow | `neutral-thumb-shadow` → `shadow.card` | same |
-| Label | `neutral-label-selected-default` → `text-brand` #0067E8 | `neutral-label-selected-pressed` → `text-brand-pressed` #0857C5 |
-| Icon | `neutral-icon-selected-default` → `icon-brand` #0067E8 | `neutral-icon-selected-pressed` → `icon-brand-pressed` #0857C5 |
+| Label | `neutral-label-selected-default` → `text-brand` #0088FF | `neutral-label-selected-pressed` → `text-brand-pressed` #0868C5 |
+| Icon | `neutral-icon-selected-default` → `icon-brand` #0088FF | `neutral-icon-selected-pressed` → `icon-brand-pressed` #0868C5 |
 
 ### Brand thumb (under test)
 
 | Element | Default, Focus | Pressed |
 |---|---|---|
-| Thumb | `brand-thumb-default` → `bg-fill-brand` #0067E8 | `brand-thumb-pressed` → `bg-fill-brand-pressed` #0D4C9B |
+| Thumb | `brand-thumb-default` → `bg-fill-brand` #0088FF | `brand-thumb-pressed` → `bg-fill-brand-pressed` #0D589B |
 | Label | `brand-label-selected-default` → `text-brand-on-bg-fill` #FFFFFF | same |
 | Icon | `brand-icon-selected-default` → `icon-brand-on-bg-fill` #FFFFFF | `brand-icon-selected-pressed` → `icon-brand-on-bg-fill` #FFFFFF |
 
@@ -206,10 +206,10 @@ The same treatment as a selected Chip.
 
 | Element | Default, Focus | Pressed |
 |---|---|---|
-| Thumb | `tinted-thumb-default` → `bg-surface-brand` #EDF8FF | `tinted-thumb-pressed` → `bg-surface-brand-pressed-strong` #C2E8FF |
-| Thumb outline, 1 px inside | `tinted-thumb-border-default` → `border-brand` #0067E8 | `tinted-thumb-border-pressed` → `border-brand-pressed` #0857C5 |
-| Label | `tinted-label-selected-default` → `text-brand` #0067E8 | `tinted-label-selected-pressed` → `text-brand-on-bg-surface-pressed` #0D4C9B |
-| Icon | `tinted-icon-selected-default` → `icon-brand` #0067E8 | `tinted-icon-selected-pressed` → `icon-brand-on-bg-surface-pressed` #0D4C9B |
+| Thumb | `tinted-thumb-default` → `bg-surface-brand` #EDFAFF | `tinted-thumb-pressed` → `bg-surface-brand-pressed-strong` #B5EAFF |
+| Thumb outline, 1 px inside | `tinted-thumb-border-default` → `border-brand` #0088FF | `tinted-thumb-border-pressed` → `border-brand-pressed` #0868C5 |
+| Label | `tinted-label-selected-default` → `text-brand` #0088FF | `tinted-label-selected-pressed` → `text-brand-on-bg-surface-pressed` #0D589B |
+| Icon | `tinted-icon-selected-default` → `icon-brand` #0088FF | `tinted-icon-selected-pressed` → `icon-brand-on-bg-surface-pressed` #0D589B |
 
 This component adds no semantic roles.
 
@@ -223,18 +223,18 @@ This component adds no semantic roles.
 |---|---|---|---|
 | Unselected label #525252 on the track #F5F5F5 | 7.16:1 | 4.5:1 (1.4.3) | Pass |
 | Unselected pressed label #0A0A0A on #E5E5E5 | 15.71:1 | 4.5:1 | Pass |
-| Neutral selected label #0067E8 on the white thumb / pressed #0857C5 on #E5E5E5 | 5.11 / 5.24:1 | 4.5:1 | Pass. `text-brand` on the pressed grey would be 4.06:1, hence the pressed label token |
-| Brand selected label #FFFFFF on #0067E8 / on pressed #0D4C9B | 5.11 / 8.31:1 | 4.5:1 | Pass |
-| Tinted selected label #0067E8 on #EDF8FF / pressed #0D4C9B on #C2E8FF | 4.74 / 6.44:1 | 4.5:1 | Pass. `text-brand` on the pressed tint would be 3.96:1, hence the pressed label token |
-| Brand thumb #0067E8 against the track | 4.69:1 | 3:1 (1.4.11) | Pass |
-| Tinted thumb outline #0067E8 against the track | 4.69:1 | 3:1 | Pass. The tint itself is 1.01:1, so the outline carries the thumb edge |
+| Neutral selected label #0088FF on the white thumb / pressed #0868C5 on #E5E5E5 | 3.52 / 4.39:1 | 3:1 (azure exception) | Pass. `text-brand` on the pressed grey would be 2.79:1, hence the pressed label token |
+| Brand selected label #FFFFFF on #0088FF / on pressed #0D589B | 3.52 / 7.27:1 | 3:1 (azure exception) | Pass |
+| Tinted selected label #0088FF on #EDFAFF / pressed #0D589B on #B5EAFF | 3.30 / 5.60:1 | 3:1 (azure exception) | Pass. `text-brand` on the pressed tint would be 2.71:1, hence the pressed label token |
+| Brand thumb #0088FF against the track | 3.22:1 | 3:1 (1.4.11) | Pass |
+| Tinted thumb outline #0088FF against the track | 3.22:1 | 3:1 | Pass. The tint itself is 1.02:1, so the outline carries the thumb edge |
 | Neutral thumb #FFFFFF against the track | 1.09:1 | 3:1 | **Below.** The shadow and the darker label carry it. See Known gaps |
-| Focus ring #0681FF on the track | 3.44:1 | 3:1 | Pass. The ring sits outside the segment, so it never lands on the Brand thumb, where it would be 1.36:1 |
+| Focus ring #0088FF on the track | 3.22:1 | 3:1 | Pass. The ring sits outside the segment, so it never lands on the Brand thumb, where it would be 1.00:1 |
 | Disabled label #A1A1A1 on #F5F5F5 / on #E5E5E5 | 2.36 / 2.05:1 | – | Exempt (1.4.3 excludes inactive controls) |
 
 ### Selection is never colour alone
 
-The selected segment has a thumb behind it, a shape that the others lack. With the Neutral thumb the shape is carried mostly by its shadow and the label change from grey #525252 to brand #0067E8. With the Brand thumb the shape itself passes 3:1. With the Tinted thumb the brand outline passes 3:1, and the label also turns brand blue.
+The selected segment has a thumb behind it, a shape that the others lack. With the Neutral thumb the shape is carried mostly by its shadow and the label change from grey #525252 to brand #0088FF. With the Brand thumb the shape itself passes 3:1. With the Tinted thumb the brand outline passes 3:1, and the label also turns brand blue.
 
 ### Semantics
 
@@ -270,7 +270,7 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 - **`focus-ring-offset` is not bound in Figma.** As on Tab and Chip, the ring position is geometry: the Focus ring rectangle sits 4 px outside the segment with stretch constraints. It binds its width, radius and colour.
 - **Figma cannot show the slide.** Each selected Segment paints its own thumb, so the drag interaction exists only in code and in prototypes.
 - **Three styles and two shapes live side by side** until one of each is chosen. Only one of the `neutral-*`, `brand-*` and `tinted-*` groups is meant to ship, and either `pill-radius` or the Rounded `track-radius-*` and `thumb-radius-*`.
-- **The Tinted fill is 1.01:1 against the track.** The 1 px brand outline draws the edge.
+- **The Tinted fill is 1.02:1 against the track.** The 1 px brand outline draws the edge.
 - **The Segment Grid Legend uses four-line row labels** (Style, Shape, Selected, Size), one more than the page checklist allows. This is temporary, until the Style and Shape axes are removed.
 - **No dark mode.** All variable collections are single-mode.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.

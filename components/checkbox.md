@@ -158,11 +158,11 @@ Measured against `#ffffff`. Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 a
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
 | Unchecked border `#737373` | 4.74:1 | 3:1 (1.4.11) | Pass |
-| Checked box `#0067E8` | 5.12:1 | 3:1 (1.4.11) | Pass |
-| Check glyph on brand | 5.12:1 | 3:1 (1.4.11) | Pass |
+| Checked box `#0088FF` | 3.52:1 | 3:1 (1.4.11) | Pass |
+| Check glyph on brand | 3.52:1 | 3:1 (1.4.11) | Pass |
 | Check glyph on error `#C10007` | 6.42:1 | 3:1 (1.4.11) | Pass |
 | Error border `#C10007` | 6.42:1 | 3:1 (1.4.11) | Pass |
-| Focus ring `#0681FF` | 3.76:1 | 3:1 (1.4.11) | Pass |
+| Focus ring `#0088FF` | 3.52:1 | 3:1 (1.4.11) | Pass |
 | Label `#0A0A0A` | 19.80:1 | 4.5:1 (1.4.3) | Pass |
 | Description `#525252` | 7.81:1 | 4.5:1 (1.4.3) | Pass |
 | Error description `#C10007` | 6.42:1 | 4.5:1 (1.4.3) | Pass |

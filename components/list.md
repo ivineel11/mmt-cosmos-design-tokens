@@ -251,12 +251,12 @@ Token names follow `list/{element}-{state}`. Hover, Pressed and Focus only chang
 | Element | Token | Value |
 |---|---|---|
 | Neutral circle / icon | `list/leading-container-bg-neutral` → `bg-fill-secondary`, `list/leading-container-icon-neutral` → `icon` | #F5F5F5 / #0A0A0A |
-| Brand circle / icon | `list/leading-container-bg-brand` → `bg-surface-brand`, `list/leading-container-icon-brand` → `icon-brand` | #EDF8FF / #0067E8 |
+| Brand circle / icon | `list/leading-container-bg-brand` → `bg-surface-brand`, `list/leading-container-icon-brand` → `icon-brand` | #EDFAFF / #0088FF |
 | Disabled circle / icon | `list/leading-container-bg-disabled` → `bg-surface-disabled-subtle`, `list/leading-container-icon-disabled` → `icon-disabled` | #FAFAFA / #A1A1A1 |
 | Grouped card | `list/bg-grouped` → `bg-surface-secondary` | #FFFFFF |
 | Divider | `list/divider` → `border-secondary` | #E5E5E5 |
 | Section header | `list/section-header-text` → `text-secondary` | #525252 |
-| Focus ring | `list/focus-ring` → `border-focus` | #0681FF |
+| Focus ring | `list/focus-ring` → `border-focus` | #0088FF |
 
 Pressed uses `bg-fill-pressed-strong`, not `bg-fill-pressed-subtle`, because the subtle pressed grey is the same #F5F5F5 as hover and a press would show no change. A plain list has no background token: it takes the page colour.
 
@@ -275,8 +275,8 @@ This component adds no semantic roles.
 | Leading icon #525252 on white / pressed | 7.81 / 6.20:1 | 3:1 (1.4.11) | Pass |
 | Chevron #737373 on white / hover / pressed | 4.74 / 4.35 / 3.76:1 | 3:1 | Pass |
 | Icon in neutral circle #0A0A0A on #F5F5F5 | 18.16:1 | 3:1 | Pass |
-| Icon in brand circle #0067E8 on #EDF8FF | 4.74:1 | 3:1 | Pass |
-| Focus ring #0681FF on white | 3.76:1 | 3:1 | Pass |
+| Icon in brand circle #0088FF on #EDFAFF | 3.30:1 | 3:1 | Pass |
+| Focus ring #0088FF on white | 3.52:1 | 3:1 | Pass |
 | Divider #E5E5E5 on white | 1.26:1 | – | Decorative; spacing and text separate the rows |
 | Disabled text #A1A1A1 on white | 2.58:1 | – | Exempt: inactive (1.4.3) |
 

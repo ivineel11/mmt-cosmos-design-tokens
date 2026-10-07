@@ -200,12 +200,12 @@ A focus indicator must reach 3:1 against what surrounds it. The state layer does
 | State layer | Colour | At 10% over white | Opacity needed for 3:1 |
 |---|---|---|---|
 | Unselected | `#737373` | 1.13:1 | ~77% |
-| Selected | `#0067E8` | 1.15:1 | ~69% |
+| Selected | `#0088FF` | 1.12:1 | ~87% |
 | Error | `#C10007` | 1.20:1 | ~54% |
 
-The gap cannot be closed by tuning `state-layer-opacity-focus`: the opacities that would satisfy 1.4.11 are 5–8× Material's value and would render as a solid disc, which is no longer a state layer.
+The gap cannot be closed by tuning `state-layer-opacity-focus`: the opacities that would satisfy 1.4.11 are 5–9× Material's value and would render as a solid disc, which is no longer a state layer.
 
-**What this means in practice.** Radio is the only Cosmos control whose focus state is inaccessible — Button and Checkbox both keep a 2 px ring at 3.76:1, so a form mixing them focuses inconsistently. Implementers who need an accessible focus indicator should not fight this component: leave the platform's native focus outline in place rather than suppressing it, or re-add a ring using `color.border-focus` (the system focus colour, still available and still used by Button and Checkbox). Restoring it here is a four-token change — `focus-ring`, `focus-ring-error`, `focus-ring-width`, `focus-ring-offset` — plus a `borderWidth.3` primitive if Material's 3 px width is wanted again.
+**What this means in practice.** Radio is the only Cosmos control whose focus state is inaccessible — Button and Checkbox both keep a 2 px ring at 3.52:1, so a form mixing them focuses inconsistently. Implementers who need an accessible focus indicator should not fight this component: leave the platform's native focus outline in place rather than suppressing it, or re-add a ring using `color.border-focus` (the system focus colour, still available and still used by Button and Checkbox). Restoring it here is a four-token change — `focus-ring`, `focus-ring-error`, `focus-ring-width`, `focus-ring-offset` — plus a `borderWidth.3` primitive if Material's 3 px width is wanted again.
 
 ---
 
@@ -218,19 +218,19 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed. The dot i
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
 | Unselected ring `#737373` on `#FFFFFF` | 4.74:1 | 3:1 (1.4.11) | Pass |
-| Selected ring `#0067E8` on `#FFFFFF` | 5.12:1 | 3:1 (1.4.11) | Pass |
-| Dot `#0067E8` on interior `#FFFFFF` | 5.12:1 | 3:1 (1.4.11) | Pass |
-| Dot hover `#0681FF` on interior `#EDF8FF` | 3.48:1 | 3:1 (1.4.11) | Pass |
-| Dot pressed `#0857C5` on interior `#D6EFFF` | 5.55:1 | 3:1 (1.4.11) | Pass |
+| Selected ring `#0088FF` on `#FFFFFF` | 3.52:1 | 3:1 (1.4.11) | Pass |
+| Dot `#0088FF` on interior `#FFFFFF` | 3.52:1 | 3:1 (1.4.11) | Pass |
+| Dot hover `#0698FF` on interior `#EDFAFF` | 2.84:1 | 3:1 (1.4.11) | **Below, accepted** (README → Azure contrast exception) |
+| Dot pressed `#0868C5` on interior `#D6F3FF` | 4.77:1 | 3:1 (1.4.11) | Pass |
 | Error ring / dot `#C10007` on `#FFFFFF` | 6.42:1 | 3:1 (1.4.11) | Pass |
 | Error dot hover `#E7000B` on interior `#FEF2F2` | 4.36:1 | 3:1 (1.4.11) | Pass |
 | Error dot pressed `#9F0712` on interior `#FFE2E2` | 6.85:1 | 3:1 (1.4.11) | Pass |
-| Focus state layer at 10% on `#FFFFFF` | 1.13–1.20:1 | 3:1 (1.4.11) | **Fail — accepted deviation, see Focus** |
+| Focus state layer at 10% on `#FFFFFF` | 1.12–1.20:1 | 3:1 (1.4.11) | **Fail — accepted deviation, see Focus** |
 | Label `#0A0A0A` | 19.80:1 | 4.5:1 (1.4.3) | Pass |
 | Description `#525252` | 7.81:1 | 4.5:1 (1.4.3) | Pass |
 | Error description `#C10007` | 6.42:1 | 4.5:1 (1.4.3) | Pass |
 
-Hover is the tightest pair at 3.48:1 — the dot darkens one step less than the interior lightens. It clears 1.4.11, but it is the pair to re-measure first if the brand ramp is ever re-tinted.
+Hover is the tightest pair at 2.84:1, below the 3:1 of 1.4.11. The azure ramp was re-tinted on 2026-10-07 to match the MakeMyTrip primary, which lightened the hover dot (`azure.600`). The hover step was kept, and the pair is accepted by name (README → Azure contrast exception).
 
 Radio adds no new semantic colours; `color.border-strong` (added by Checkbox as the interactive-control boundary colour) carries the unselected ring here too. It is `neutral.500` (`#737373`), so the unselected ring measures 4.74:1 on white and 4.35:1 on the grey canvas and meets 1.4.11. A brief lightening to `neutral.400` (2.58:1) on 2026-09-28 was reverted to restore compliance (see `components/checkbox.md`).
 
@@ -258,7 +258,7 @@ The control, the dot and the ring are presentational; the label supplies the acc
 
 ## Known gaps
 
-- **Keyboard focus does not meet WCAG 1.4.11.** The focus ring was removed by design decision, leaving the 10% state layer as the only focus affordance at 1.13–1.20:1 against a required 3:1. Button and Checkbox keep their rings, so a mixed form focuses inconsistently. Fully documented under Focus, including what it would take to restore.
+- **Keyboard focus does not meet WCAG 1.4.11.** The focus ring was removed by design decision, leaving the 10% state layer as the only focus affordance at 1.12–1.20:1 against a required 3:1. Button and Checkbox keep their rings, so a mixed form focuses inconsistently. Fully documented under Focus, including what it would take to restore.
 - **`radio/dot-size-md` aliases a primitive, not a semantic token.** Material's 50% dot needs 10 px at the Medium control, and the semantic space scale steps `xs` (8) → `sm` (12) with no room for a step between them that would not need an invented t-shirt name every future consumer inherits. So `spacing.10` was added to primitives and the component token points straight at it. The linter allows this because no semantic token aliases `spacing.10`. It is the only radio token that skips the semantic tier; stroke weights, which once did the same, now alias `stroke.*`.
 - **The state layer's position is not bound in Figma.** Its diameter binds to `radio/state-layer-size-*`, but the absolute offset that centres it on the control (half the control size) is not a variable-bindable property, so it is baked as geometry on each variant. Changing a control size in Figma means re-centring the layer by hand.
 - **`radio/min-touch-target` is not represented in the component.** It is an implementation concern only — expanding the Figma component would have broken the control/line-height alignment that the layout depends on.
