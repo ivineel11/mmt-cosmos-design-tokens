@@ -279,15 +279,15 @@ State is structural rather than visual-only: the Focus Ring rectangle is hidden 
 
 _Confidence: high._
 
-> Color tokens are driven by the Hierarchy and Intent axes; the Size axis is color-irrelevant (identical tokens at Small, Medium and Large), so only Medium is used as the representative value. Container border tokens for Primary, Tertiary and Text resolve at zero opacity, so the border token is bound but paints nothing; Secondary is the only hierarchy with a visible container stroke. Secondary and Text container fills are transparent at Default, Focus and Disabled and only paint on Hover and Pressed. The focus ring always binds the single token var(--button-focus-ring); for Destructive intent its resolved value shifts from #0067E8 to the destructive red at the Focus state. Leading, trailing and loading icons are three distinct referenced icon instances (Icon / plus, Icon / chevron-right, Icon / spinner) whose fills are owned by this parent and are documented here; their fills are read independently per slot and are not assumed to be identical. No component-scoped variable mode collections, no composite (multi-layer) paint styles and no hard-coded colors were found.
+> Color tokens are driven by the Hierarchy and Intent axes; the Size axis is color-irrelevant (identical tokens at Small, Medium and Large), so only Medium is used as the representative value. Container border tokens for Primary, Tertiary and Text resolve at zero opacity, so the border token is bound but paints nothing; Secondary is the only hierarchy with a visible container stroke. Secondary and Text container fills are transparent at Default, Focus and Disabled and only paint on Hover and Pressed. The focus ring always binds the single token var(--button-focus-ring); for Destructive intent its resolved value shifts from #0088FF to the destructive red at the Focus state. Leading, trailing and loading icons are three distinct referenced icon instances (Icon / plus, Icon / chevron-right, Icon / spinner) whose fills are owned by this parent and are documented here; their fills are read independently per slot and are not assumed to be identical. No component-scoped variable mode collections, no composite (multi-layer) paint styles and no hard-coded colors were found.
 
 ### Primary / Default
 
 | Element | rest | hovered (platform-driven) | pressed (platform-driven) | focus-visible (platform-driven) | isDisabled === true | Notes |
 |---|---|---|---|---|---|---|
-| Container fill | var(--button-bg-primary-default) (#0067E8) | var(--button-bg-primary-hover) (#0681FF) | var(--button-bg-primary-pressed) (#0857C5) | var(--button-bg-primary-default) (#0067E8) | var(--button-bg-primary-disabled) (#E5E5E5) | Button surface fill |
+| Container fill | var(--button-bg-primary-default) (#0088FF) | var(--button-bg-primary-hover) (#0868C5) | var(--button-bg-primary-pressed) (#0D589B) | var(--button-bg-primary-default) (#0088FF) | var(--button-bg-primary-disabled) (#E5E5E5) | Button surface fill |
 | Container stroke | var(--button-border-primary-default) | var(--button-border-primary-hover) | var(--button-border-primary-pressed) | var(--button-border-primary-default) | var(--button-border-primary-disabled) | Border token renders fully transparent |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
 | Leading icon fill | var(--button-icon-primary-default) (#FFFFFF) | var(--button-icon-primary-hover) (#FFFFFF) | var(--button-icon-primary-pressed) (#FFFFFF) | var(--button-icon-primary-default) (#FFFFFF) | var(--button-icon-primary-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
 | Label | var(--button-label-primary-default) (#FFFFFF) | var(--button-label-primary-default) (#FFFFFF) | var(--button-label-primary-default) (#FFFFFF) | var(--button-label-primary-default) (#FFFFFF) | var(--button-label-primary-disabled) (#A1A1A1) | Button text label fill |
 | Trailing icon fill | var(--button-icon-primary-default) (#FFFFFF) | var(--button-icon-primary-hover) (#FFFFFF) | var(--button-icon-primary-pressed) (#FFFFFF) | var(--button-icon-primary-default) (#FFFFFF) | var(--button-icon-primary-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
@@ -299,7 +299,7 @@ _Confidence: high._
 |---|---|---|---|---|---|---|
 | Container fill | var(--button-bg-primary-destructive-default) (#C10007) | var(--button-bg-primary-destructive-hover) (#E7000B) | var(--button-bg-primary-destructive-pressed) (#9F0712) | var(--button-bg-primary-destructive-default) (#C10007) | var(--button-bg-primary-destructive-disabled) (#E5E5E5) | Button surface fill |
 | Container stroke | var(--button-border-primary-destructive-default) | var(--button-border-primary-destructive-hover) | var(--button-border-primary-destructive-pressed) | var(--button-border-primary-destructive-default) | var(--button-border-primary-destructive-disabled) | Border token renders fully transparent |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#C10007) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring-destructive) (#C10007) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
 | Leading icon fill | var(--button-icon-primary-destructive-default) (#FFFFFF) | var(--button-icon-primary-destructive-hover) (#FFFFFF) | var(--button-icon-primary-destructive-pressed) (#FFFFFF) | var(--button-icon-primary-destructive-default) (#FFFFFF) | var(--button-icon-primary-destructive-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
 | Label | var(--button-label-primary-destructive-default) (#FFFFFF) | var(--button-label-primary-destructive-default) (#FFFFFF) | var(--button-label-primary-destructive-default) (#FFFFFF) | var(--button-label-primary-destructive-default) (#FFFFFF) | var(--button-label-primary-destructive-disabled) (#A1A1A1) | Button text label fill |
 | Trailing icon fill | var(--button-icon-primary-destructive-default) (#FFFFFF) | var(--button-icon-primary-destructive-hover) (#FFFFFF) | var(--button-icon-primary-destructive-pressed) (#FFFFFF) | var(--button-icon-primary-destructive-default) (#FFFFFF) | var(--button-icon-primary-destructive-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
@@ -309,13 +309,13 @@ _Confidence: high._
 
 | Element | rest | hovered (platform-driven) | pressed (platform-driven) | focus-visible (platform-driven) | isDisabled === true | Notes |
 |---|---|---|---|---|---|---|
-| Container fill | var(--button-bg-secondary-default) | var(--button-bg-secondary-hover) (#D6EFFF) | var(--button-bg-secondary-pressed) (#C2E8FF) | var(--button-bg-secondary-default) | var(--button-bg-secondary-disabled) | Surface fill. Transparent at rest. |
-| Container stroke | var(--button-border-secondary-default) (#0067E8) | var(--button-border-secondary-hover) (#0681FF) | var(--button-border-secondary-pressed) (#0857C5) | var(--button-border-secondary-default) (#0067E8) | var(--button-border-secondary-disabled) (#A1A1A1) | Visible outline border stroke |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
-| Leading icon fill | var(--button-icon-secondary-default) (#0067E8) | var(--button-icon-secondary-hover) (#0857C5) | var(--button-icon-secondary-pressed) (#0D4C9B) | var(--button-icon-secondary-default) (#0067E8) | var(--button-icon-secondary-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
-| Label | var(--button-label-secondary-default) (#0067E8) | var(--button-label-secondary-default) (#0067E8) | var(--button-label-secondary-default) (#0067E8) | var(--button-label-secondary-default) (#0067E8) | var(--button-label-secondary-disabled) (#A1A1A1) | Button text label fill |
-| Trailing icon fill | var(--button-icon-secondary-default) (#0067E8) | var(--button-icon-secondary-hover) (#0857C5) | var(--button-icon-secondary-pressed) (#0D4C9B) | var(--button-icon-secondary-default) (#0067E8) | var(--button-icon-secondary-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
-| Loading spinner fill | var(--button-icon-secondary-default) (#0067E8) | var(--button-icon-secondary-hover) (#0857C5) | var(--button-icon-secondary-pressed) (#0D4C9B) | var(--button-icon-secondary-default) (#0067E8) | var(--button-icon-secondary-disabled) (#A1A1A1) | Loading spinner (Icon / spinner) |
+| Container fill | var(--button-bg-secondary-default) | var(--button-bg-secondary-hover) (#D6F3FF) | var(--button-bg-secondary-pressed) (#B5EAFF) | var(--button-bg-secondary-default) | var(--button-bg-secondary-disabled) | Surface fill. Transparent at rest. |
+| Container stroke | var(--button-border-secondary-default) (#0088FF) | var(--button-border-secondary-hover) (#0698FF) | var(--button-border-secondary-pressed) (#0868C5) | var(--button-border-secondary-default) (#0088FF) | var(--button-border-secondary-disabled) (#A1A1A1) | Visible outline border stroke |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
+| Leading icon fill | var(--button-icon-secondary-default) (#0088FF) | var(--button-icon-secondary-hover) (#0868C5) | var(--button-icon-secondary-pressed) (#0D589B) | var(--button-icon-secondary-default) (#0088FF) | var(--button-icon-secondary-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
+| Label | var(--button-label-secondary-default) (#0088FF) | var(--button-label-secondary-default) (#0088FF) | var(--button-label-secondary-default) (#0088FF) | var(--button-label-secondary-default) (#0088FF) | var(--button-label-secondary-disabled) (#A1A1A1) | Button text label fill |
+| Trailing icon fill | var(--button-icon-secondary-default) (#0088FF) | var(--button-icon-secondary-hover) (#0868C5) | var(--button-icon-secondary-pressed) (#0D589B) | var(--button-icon-secondary-default) (#0088FF) | var(--button-icon-secondary-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
+| Loading spinner fill | var(--button-icon-secondary-default) (#0088FF) | var(--button-icon-secondary-hover) (#0868C5) | var(--button-icon-secondary-pressed) (#0D589B) | var(--button-icon-secondary-default) (#0088FF) | var(--button-icon-secondary-disabled) (#A1A1A1) | Loading spinner (Icon / spinner) |
 
 ### Secondary / Destructive
 
@@ -323,7 +323,7 @@ _Confidence: high._
 |---|---|---|---|---|---|---|
 | Container fill | var(--button-bg-secondary-destructive-default) | var(--button-bg-secondary-destructive-hover) (#FFE2E2) | var(--button-bg-secondary-destructive-pressed) (#FFC9C9) | var(--button-bg-secondary-destructive-default) | var(--button-bg-secondary-destructive-disabled) | Surface fill. Transparent at rest. |
 | Container stroke | var(--button-border-secondary-destructive-default) (#C10007) | var(--button-border-secondary-destructive-hover) (#E7000B) | var(--button-border-secondary-destructive-pressed) (#9F0712) | var(--button-border-secondary-destructive-default) (#C10007) | var(--button-border-secondary-destructive-disabled) (#A1A1A1) | Visible outline border stroke |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#C10007) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring-destructive) (#C10007) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
 | Leading icon fill | var(--button-icon-secondary-destructive-default) (#C10007) | var(--button-icon-secondary-destructive-hover) (#9F0712) | var(--button-icon-secondary-destructive-pressed) (#82181A) | var(--button-icon-secondary-destructive-default) (#C10007) | var(--button-icon-secondary-destructive-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
 | Label | var(--button-label-secondary-destructive-default) (#C10007) | var(--button-label-secondary-destructive-default) (#C10007) | var(--button-label-secondary-destructive-default) (#C10007) | var(--button-label-secondary-destructive-default) (#C10007) | var(--button-label-secondary-destructive-disabled) (#A1A1A1) | Button text label fill |
 | Trailing icon fill | var(--button-icon-secondary-destructive-default) (#C10007) | var(--button-icon-secondary-destructive-hover) (#9F0712) | var(--button-icon-secondary-destructive-pressed) (#82181A) | var(--button-icon-secondary-destructive-default) (#C10007) | var(--button-icon-secondary-destructive-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
@@ -333,13 +333,13 @@ _Confidence: high._
 
 | Element | rest | hovered (platform-driven) | pressed (platform-driven) | focus-visible (platform-driven) | isDisabled === true | Notes |
 |---|---|---|---|---|---|---|
-| Container fill | var(--button-bg-tertiary-default) (#EDF8FF) | var(--button-bg-tertiary-hover) (#D6EFFF) | var(--button-bg-tertiary-pressed) (#C2E8FF) | var(--button-bg-tertiary-default) (#EDF8FF) | var(--button-bg-tertiary-disabled) (#E5E5E5) | Button surface fill |
+| Container fill | var(--button-bg-tertiary-default) (#EDFAFF) | var(--button-bg-tertiary-hover) (#D6F3FF) | var(--button-bg-tertiary-pressed) (#B5EAFF) | var(--button-bg-tertiary-default) (#EDFAFF) | var(--button-bg-tertiary-disabled) (#E5E5E5) | Button surface fill |
 | Container stroke | var(--button-border-tertiary-default) | var(--button-border-tertiary-hover) | var(--button-border-tertiary-pressed) | var(--button-border-tertiary-default) | var(--button-border-tertiary-disabled) | Border token renders fully transparent |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
-| Leading icon fill | var(--button-icon-tertiary-default) (#0067E8) | var(--button-icon-tertiary-hover) (#0857C5) | var(--button-icon-tertiary-pressed) (#0D4C9B) | var(--button-icon-tertiary-default) (#0067E8) | var(--button-icon-tertiary-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
-| Label | var(--button-label-tertiary-default) (#0067E8) | var(--button-label-tertiary-default) (#0067E8) | var(--button-label-tertiary-default) (#0067E8) | var(--button-label-tertiary-default) (#0067E8) | var(--button-label-tertiary-disabled) (#A1A1A1) | Button text label fill |
-| Trailing icon fill | var(--button-icon-tertiary-default) (#0067E8) | var(--button-icon-tertiary-hover) (#0857C5) | var(--button-icon-tertiary-pressed) (#0D4C9B) | var(--button-icon-tertiary-default) (#0067E8) | var(--button-icon-tertiary-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
-| Loading spinner fill | var(--button-icon-tertiary-default) (#0067E8) | var(--button-icon-tertiary-hover) (#0857C5) | var(--button-icon-tertiary-pressed) (#0D4C9B) | var(--button-icon-tertiary-default) (#0067E8) | var(--button-icon-tertiary-disabled) (#A1A1A1) | Loading spinner (Icon / spinner) |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
+| Leading icon fill | var(--button-icon-tertiary-default) (#0088FF) | var(--button-icon-tertiary-hover) (#0868C5) | var(--button-icon-tertiary-pressed) (#0D589B) | var(--button-icon-tertiary-default) (#0088FF) | var(--button-icon-tertiary-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
+| Label | var(--button-label-tertiary-default) (#0088FF) | var(--button-label-tertiary-default) (#0088FF) | var(--button-label-tertiary-default) (#0088FF) | var(--button-label-tertiary-default) (#0088FF) | var(--button-label-tertiary-disabled) (#A1A1A1) | Button text label fill |
+| Trailing icon fill | var(--button-icon-tertiary-default) (#0088FF) | var(--button-icon-tertiary-hover) (#0868C5) | var(--button-icon-tertiary-pressed) (#0D589B) | var(--button-icon-tertiary-default) (#0088FF) | var(--button-icon-tertiary-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
+| Loading spinner fill | var(--button-icon-tertiary-default) (#0088FF) | var(--button-icon-tertiary-hover) (#0868C5) | var(--button-icon-tertiary-pressed) (#0D589B) | var(--button-icon-tertiary-default) (#0088FF) | var(--button-icon-tertiary-disabled) (#A1A1A1) | Loading spinner (Icon / spinner) |
 
 ### Tertiary / Destructive
 
@@ -347,7 +347,7 @@ _Confidence: high._
 |---|---|---|---|---|---|---|
 | Container fill | var(--button-bg-tertiary-destructive-default) (#FEF2F2) | var(--button-bg-tertiary-destructive-hover) (#FFE2E2) | var(--button-bg-tertiary-destructive-pressed) (#FFC9C9) | var(--button-bg-tertiary-destructive-default) (#FEF2F2) | var(--button-bg-tertiary-destructive-disabled) (#E5E5E5) | Button surface fill |
 | Container stroke | var(--button-border-tertiary-destructive-default) | var(--button-border-tertiary-destructive-hover) | var(--button-border-tertiary-destructive-pressed) | var(--button-border-tertiary-destructive-default) | var(--button-border-tertiary-destructive-disabled) | Border token renders fully transparent |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#C10007) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring-destructive) (#C10007) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
 | Leading icon fill | var(--button-icon-tertiary-destructive-default) (#C10007) | var(--button-icon-tertiary-destructive-hover) (#9F0712) | var(--button-icon-tertiary-destructive-pressed) (#82181A) | var(--button-icon-tertiary-destructive-default) (#C10007) | var(--button-icon-tertiary-destructive-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
 | Label | var(--button-label-tertiary-destructive-default) (#C10007) | var(--button-label-tertiary-destructive-default) (#C10007) | var(--button-label-tertiary-destructive-default) (#C10007) | var(--button-label-tertiary-destructive-default) (#C10007) | var(--button-label-tertiary-destructive-disabled) (#A1A1A1) | Button text label fill |
 | Trailing icon fill | var(--button-icon-tertiary-destructive-default) (#C10007) | var(--button-icon-tertiary-destructive-hover) (#9F0712) | var(--button-icon-tertiary-destructive-pressed) (#82181A) | var(--button-icon-tertiary-destructive-default) (#C10007) | var(--button-icon-tertiary-destructive-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
@@ -357,13 +357,13 @@ _Confidence: high._
 
 | Element | rest | hovered (platform-driven) | pressed (platform-driven) | focus-visible (platform-driven) | isDisabled === true | Notes |
 |---|---|---|---|---|---|---|
-| Container fill | var(--button-bg-text-default) | var(--button-bg-text-hover) (#EDF8FF) | var(--button-bg-text-pressed) (#D6EFFF) | var(--button-bg-text-default) | var(--button-bg-text-disabled) | Surface fill. Transparent at rest. |
+| Container fill | var(--button-bg-text-default) | var(--button-bg-text-hover) (#EDFAFF) | var(--button-bg-text-pressed) (#D6F3FF) | var(--button-bg-text-default) | var(--button-bg-text-disabled) | Surface fill. Transparent at rest. |
 | Container stroke | var(--button-border-text-default) | var(--button-border-text-hover) | var(--button-border-text-pressed) | var(--button-border-text-default) | var(--button-border-text-disabled) | Border token renders fully transparent |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
-| Leading icon fill | var(--button-icon-text-default) (#0067E8) | var(--button-icon-text-hover) (#0857C5) | var(--button-icon-text-pressed) (#0D4C9B) | var(--button-icon-text-default) (#0067E8) | var(--button-icon-text-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
-| Label | var(--button-label-text-default) (#0067E8) | var(--button-label-text-default) (#0067E8) | var(--button-label-text-default) (#0067E8) | var(--button-label-text-default) (#0067E8) | var(--button-label-text-disabled) (#A1A1A1) | Button text label fill |
-| Trailing icon fill | var(--button-icon-text-default) (#0067E8) | var(--button-icon-text-hover) (#0857C5) | var(--button-icon-text-pressed) (#0D4C9B) | var(--button-icon-text-default) (#0067E8) | var(--button-icon-text-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
-| Loading spinner fill | var(--button-icon-text-default) (#0067E8) | var(--button-icon-text-hover) (#0857C5) | var(--button-icon-text-pressed) (#0D4C9B) | var(--button-icon-text-default) (#0067E8) | var(--button-icon-text-disabled) (#A1A1A1) | Loading spinner (Icon / spinner) |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
+| Leading icon fill | var(--button-icon-text-default) (#0088FF) | var(--button-icon-text-hover) (#0868C5) | var(--button-icon-text-pressed) (#0D589B) | var(--button-icon-text-default) (#0088FF) | var(--button-icon-text-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
+| Label | var(--button-label-text-default) (#0088FF) | var(--button-label-text-default) (#0088FF) | var(--button-label-text-default) (#0088FF) | var(--button-label-text-default) (#0088FF) | var(--button-label-text-disabled) (#A1A1A1) | Button text label fill |
+| Trailing icon fill | var(--button-icon-text-default) (#0088FF) | var(--button-icon-text-hover) (#0868C5) | var(--button-icon-text-pressed) (#0D589B) | var(--button-icon-text-default) (#0088FF) | var(--button-icon-text-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
+| Loading spinner fill | var(--button-icon-text-default) (#0088FF) | var(--button-icon-text-hover) (#0868C5) | var(--button-icon-text-pressed) (#0D589B) | var(--button-icon-text-default) (#0088FF) | var(--button-icon-text-disabled) (#A1A1A1) | Loading spinner (Icon / spinner) |
 
 ### Text / Destructive
 
@@ -371,7 +371,7 @@ _Confidence: high._
 |---|---|---|---|---|---|---|
 | Container fill | var(--button-bg-text-destructive-default) | var(--button-bg-text-destructive-hover) (#FEF2F2) | var(--button-bg-text-destructive-pressed) (#FFE2E2) | var(--button-bg-text-destructive-default) | var(--button-bg-text-destructive-disabled) | Surface fill. Transparent at rest. |
 | Container stroke | var(--button-border-text-destructive-default) | var(--button-border-text-destructive-hover) | var(--button-border-text-destructive-pressed) | var(--button-border-text-destructive-default) | var(--button-border-text-destructive-disabled) | Border token renders fully transparent |
-| Focus ring stroke | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#0067E8) | var(--button-focus-ring) (#C10007) | var(--button-focus-ring) (#0067E8) | Keyboard focus outline ring |
+| Focus ring stroke | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring) (#0088FF) | var(--button-focus-ring-destructive) (#C10007) | var(--button-focus-ring) (#0088FF) | Keyboard focus outline ring |
 | Leading icon fill | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-hover) (#9F0712) | var(--button-icon-text-destructive-pressed) (#82181A) | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-disabled) (#A1A1A1) | Leading slot icon (Icon / plus) |
 | Label | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-default) (#C10007) | var(--button-label-text-destructive-disabled) (#A1A1A1) | Button text label fill |
 | Trailing icon fill | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-hover) (#9F0712) | var(--button-icon-text-destructive-pressed) (#82181A) | var(--button-icon-text-destructive-default) (#C10007) | var(--button-icon-text-destructive-disabled) (#A1A1A1) | Trailing slot icon (Icon / chevron-right) |
@@ -383,8 +383,8 @@ _Confidence: high._
 
 `surface=inverse` puts the button on a dark section: a hero banner, an offer card on navy, a dark tooltip or snackbar, or a photo under a scrim. Every element binds a `button/*-inverse-*` token. The surface comes after the hierarchy in the key: `button/{part}-{hierarchy}-inverse[-destructive]-{state}`.
 
-- **Primary** keeps the light fills (`#0067E8`, destructive `#C10007`), so it is the same button on every surface. Only disabled changes, to a solid `#262626` fill with a `#737373` label.
-- **Secondary, Tertiary and Text** use light brand blue. Labels sit at step 300 (`#83D4FF`, destructive `#FFA2A2`). Icons and outlines sit one step deeper, at 400 (`#48BBFF`, `#FF6467`). Hover and pressed get one step lighter each, the mirror of light, where they get darker.
+- **Primary** keeps the light fills (`#0088FF`, destructive `#C10007`), so it is the same button on every surface. Only disabled changes, to a solid `#262626` fill with a `#737373` label.
+- **Secondary, Tertiary and Text** use light brand blue. Labels sit at step 300 (`#83DFFF`, destructive `#FFA2A2`). Icons and outlines sit one step deeper, at 400 (`#48BBFF`, `#FF6467`). Hover and pressed get one step lighter each, the mirror of light, where they get darker.
 - **Translucent fills.** The Tertiary fill and the hover and pressed fills of Secondary and Text are a tint colour rendered at `button/bg-opacity-*`, so they work on near-black, navy and photos alike.
   - CSS: `color-mix(in srgb, var(--button-bg-tertiary-inverse-default) calc(var(--button-bg-opacity-tertiary-inverse-default) * 100%), transparent)`
   - SwiftUI: `.opacity()` on the fill
@@ -392,26 +392,26 @@ _Confidence: high._
   - Figma: a `Tint` layer whose layer opacity binds the variable.
 
   A fill with no `bg-opacity-*` companion is solid or transparent.
-- **Focus ring** is `button/focus-ring-inverse` (`#48BBFF`) or `button/focus-ring-inverse-destructive` (`#FF6467`). The light ring (`#0067E8`) drops to 2.59:1 on navy.
+- **Focus ring** is `button/focus-ring-inverse` (`#48BBFF`) or `button/focus-ring-inverse-destructive` (`#FF6467`). The light ring (`#0088FF`) reads 5.62:1 on near-black but only 3.50:1 on navy.
 
-**Contrast** (each pair on `#0A0A0A`, then on navy `#0E2F5D`, tints blended at their opacity):
+**Contrast** (each pair on `#0A0A0A`, then on navy `#0E365D`, tints blended at their opacity):
 
 | Pair | Worst case | Ratio | Minimum |
 |---|---|---|---|
-| Brand label on its fill | Tertiary at rest, `#83D4FF` on the 10% tint | 10.59 / 6.69:1 | 4.5:1 |
-| Destructive label on its fill | Tertiary at rest, `#FFA2A2` on the 10% tint | 9.35 / 6.31:1 | 4.5:1 |
-| Icons | Destructive Tertiary at rest, `#FF6467` on the 10% tint | 6.21 / 4.19:1 | 3:1 |
-| Outline and focus ring | `#48BBFF` / `#FF6467` on the surface | 9.27 / 6.21:1, 6.85 / 4.59:1 | 3:1 |
-| Primary label | `#FFFFFF` on `#0067E8` | 5.12:1 | 4.5:1 |
-| Primary fill against the surface | Pressed `#0D4C9B` on `#0A0A0A` | 2.38:1 | Known gap, see below |
+| Brand label on its fill | Tertiary at rest, `#83DFFF` on the 10% tint | 11.54 / 6.77:1 | 4.5:1 |
+| Destructive label on its fill | Tertiary at rest, `#FFA2A2` on the 10% tint | 9.35 / 5.87:1 | 4.5:1 |
+| Icons | Destructive Tertiary at rest, `#FF6467` on the 10% tint | 6.21 / 3.90:1 | 3:1 |
+| Outline and focus ring | `#48BBFF` / `#FF6467` on the surface | 9.27 / 5.76:1, 6.85 / 4.26:1 | 3:1 |
+| Primary label | `#FFFFFF` on `#0088FF` | 3.52:1 | 3:1 (azure exception) |
+| Primary fill against the surface | Pressed `#0D589B` on `#0A0A0A` | 2.72:1 | Known gap, see below |
 
-**Known gap.** Primary hover and pressed reuse the light fills, which get darker, so the pressed fill is only 2.38:1 against near-black. The white label keeps the button readable (5.12:1 or more), and the fill is a momentary state. This was accepted so Primary stays one button on every surface.
+**Known gap.** Primary hover and pressed reuse the light fills, which get darker, so the pressed fill is only 2.72:1 against near-black. The white label keeps the button readable (3.52:1 at rest under the azure exception, 5.53:1 or more on hover and press), and the fill is a momentary state. This was accepted so Primary stays one button on every surface.
 
 #### Primary / Inverse / Default
 
 | Element | rest | hovered | pressed | focus-visible | isDisabled === true |
 |---|---|---|---|---|---|
-| Container fill | `button/bg-primary-inverse-default` (#0067E8) | `button/bg-primary-inverse-hover` (#0857C5) | `button/bg-primary-inverse-pressed` (#0D4C9B) | `button/bg-primary-inverse-default` (#0067E8) | `button/bg-primary-inverse-disabled` (#262626) |
+| Container fill | `button/bg-primary-inverse-default` (#0088FF) | `button/bg-primary-inverse-hover` (#0868C5) | `button/bg-primary-inverse-pressed` (#0D589B) | `button/bg-primary-inverse-default` (#0088FF) | `button/bg-primary-inverse-disabled` (#262626) |
 | Container stroke | `button/border-primary-inverse-default` (transparent) | `button/border-primary-inverse-hover` (transparent) | `button/border-primary-inverse-pressed` (transparent) | `button/border-primary-inverse-default` (transparent) | `button/border-primary-inverse-disabled` (transparent) |
 | Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
 | Label | `button/label-primary-inverse-default` (#FFFFFF) | `button/label-primary-inverse-hover` (#FFFFFF) | `button/label-primary-inverse-pressed` (#FFFFFF) | `button/label-primary-inverse-default` (#FFFFFF) | `button/label-primary-inverse-disabled` (#737373) |
@@ -432,10 +432,10 @@ _Confidence: high._
 | Element | rest | hovered | pressed | focus-visible | isDisabled === true |
 |---|---|---|---|---|---|
 | Container fill | `button/bg-secondary-inverse-default` (transparent) | `button/bg-secondary-inverse-hover` (#48BBFF at 15%) | `button/bg-secondary-inverse-pressed` (#48BBFF at 20%) | `button/bg-secondary-inverse-default` (transparent) | `button/bg-secondary-inverse-disabled` (transparent) |
-| Container stroke | `button/border-secondary-inverse-default` (#48BBFF) | `button/border-secondary-inverse-hover` (#83D4FF) | `button/border-secondary-inverse-pressed` (#C2E8FF) | `button/border-secondary-inverse-default` (#48BBFF) | `button/border-secondary-inverse-disabled` (#525252) |
+| Container stroke | `button/border-secondary-inverse-default` (#48BBFF) | `button/border-secondary-inverse-hover` (#83DFFF) | `button/border-secondary-inverse-pressed` (#B5EAFF) | `button/border-secondary-inverse-default` (#48BBFF) | `button/border-secondary-inverse-disabled` (#525252) |
 | Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
-| Label | `button/label-secondary-inverse-default` (#83D4FF) | `button/label-secondary-inverse-hover` (#C2E8FF) | `button/label-secondary-inverse-pressed` (#D6EFFF) | `button/label-secondary-inverse-default` (#83D4FF) | `button/label-secondary-inverse-disabled` (#737373) |
-| Leading, trailing and loading icons | `button/icon-secondary-inverse-default` (#48BBFF) | `button/icon-secondary-inverse-hover` (#83D4FF) | `button/icon-secondary-inverse-pressed` (#C2E8FF) | `button/icon-secondary-inverse-default` (#48BBFF) | `button/icon-secondary-inverse-disabled` (#737373) |
+| Label | `button/label-secondary-inverse-default` (#83DFFF) | `button/label-secondary-inverse-hover` (#B5EAFF) | `button/label-secondary-inverse-pressed` (#D6F3FF) | `button/label-secondary-inverse-default` (#83DFFF) | `button/label-secondary-inverse-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-secondary-inverse-default` (#48BBFF) | `button/icon-secondary-inverse-hover` (#83DFFF) | `button/icon-secondary-inverse-pressed` (#B5EAFF) | `button/icon-secondary-inverse-default` (#48BBFF) | `button/icon-secondary-inverse-disabled` (#737373) |
 
 #### Secondary / Inverse / Destructive
 
@@ -454,8 +454,8 @@ _Confidence: high._
 | Container fill | `button/bg-tertiary-inverse-default` (#48BBFF at 10%) | `button/bg-tertiary-inverse-hover` (#48BBFF at 15%) | `button/bg-tertiary-inverse-pressed` (#48BBFF at 20%) | `button/bg-tertiary-inverse-default` (#48BBFF at 10%) | `button/bg-tertiary-inverse-disabled` (#262626) |
 | Container stroke | `button/border-tertiary-inverse-default` (transparent) | `button/border-tertiary-inverse-hover` (transparent) | `button/border-tertiary-inverse-pressed` (transparent) | `button/border-tertiary-inverse-default` (transparent) | `button/border-tertiary-inverse-disabled` (transparent) |
 | Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
-| Label | `button/label-tertiary-inverse-default` (#83D4FF) | `button/label-tertiary-inverse-hover` (#C2E8FF) | `button/label-tertiary-inverse-pressed` (#D6EFFF) | `button/label-tertiary-inverse-default` (#83D4FF) | `button/label-tertiary-inverse-disabled` (#737373) |
-| Leading, trailing and loading icons | `button/icon-tertiary-inverse-default` (#48BBFF) | `button/icon-tertiary-inverse-hover` (#83D4FF) | `button/icon-tertiary-inverse-pressed` (#C2E8FF) | `button/icon-tertiary-inverse-default` (#48BBFF) | `button/icon-tertiary-inverse-disabled` (#737373) |
+| Label | `button/label-tertiary-inverse-default` (#83DFFF) | `button/label-tertiary-inverse-hover` (#B5EAFF) | `button/label-tertiary-inverse-pressed` (#D6F3FF) | `button/label-tertiary-inverse-default` (#83DFFF) | `button/label-tertiary-inverse-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-tertiary-inverse-default` (#48BBFF) | `button/icon-tertiary-inverse-hover` (#83DFFF) | `button/icon-tertiary-inverse-pressed` (#B5EAFF) | `button/icon-tertiary-inverse-default` (#48BBFF) | `button/icon-tertiary-inverse-disabled` (#737373) |
 
 #### Tertiary / Inverse / Destructive
 
@@ -474,8 +474,8 @@ _Confidence: high._
 | Container fill | `button/bg-text-inverse-default` (transparent) | `button/bg-text-inverse-hover` (#48BBFF at 10%) | `button/bg-text-inverse-pressed` (#48BBFF at 15%) | `button/bg-text-inverse-default` (transparent) | `button/bg-text-inverse-disabled` (transparent) |
 | Container stroke | `button/border-text-inverse-default` (transparent) | `button/border-text-inverse-hover` (transparent) | `button/border-text-inverse-pressed` (transparent) | `button/border-text-inverse-default` (transparent) | `button/border-text-inverse-disabled` (transparent) |
 | Focus ring stroke | – | – | – | `button/focus-ring-inverse` (#48BBFF) | – |
-| Label | `button/label-text-inverse-default` (#83D4FF) | `button/label-text-inverse-hover` (#C2E8FF) | `button/label-text-inverse-pressed` (#D6EFFF) | `button/label-text-inverse-default` (#83D4FF) | `button/label-text-inverse-disabled` (#737373) |
-| Leading, trailing and loading icons | `button/icon-text-inverse-default` (#48BBFF) | `button/icon-text-inverse-hover` (#83D4FF) | `button/icon-text-inverse-pressed` (#C2E8FF) | `button/icon-text-inverse-default` (#48BBFF) | `button/icon-text-inverse-disabled` (#737373) |
+| Label | `button/label-text-inverse-default` (#83DFFF) | `button/label-text-inverse-hover` (#B5EAFF) | `button/label-text-inverse-pressed` (#D6F3FF) | `button/label-text-inverse-default` (#83DFFF) | `button/label-text-inverse-disabled` (#737373) |
+| Leading, trailing and loading icons | `button/icon-text-inverse-default` (#48BBFF) | `button/icon-text-inverse-hover` (#83DFFF) | `button/icon-text-inverse-pressed` (#B5EAFF) | `button/icon-text-inverse-default` (#48BBFF) | `button/icon-text-inverse-disabled` (#737373) |
 
 #### Text / Inverse / Destructive
 

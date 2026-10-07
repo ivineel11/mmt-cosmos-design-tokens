@@ -208,7 +208,7 @@ Every foreground has a same-suffix `bg-*` token, even where the value repeats (f
 | Intent | Inverse fill | Inverse icon | Tinted fill | Tinted border | Tinted icon |
 |---|---|---|---|---|---|
 | Neutral | `bg-fill-inverse` #0A0A0A | `icon-inverse` #FFFFFF | `bg-surface-secondary` #FFFFFF | `border` #D4D4D4 | `icon` #0A0A0A |
-| Info | `bg-fill-inverse` | `icon-info-inverse` #48BBFF | `bg-surface-info` #EDF8FF | `border-info` #83D4FF | `icon-info` #0067E8 |
+| Info | `bg-fill-inverse` | `icon-info-inverse` #48BBFF | `bg-surface-info` #EDFAFF | `border-info` #83DFFF | `icon-info` #0088FF |
 | Success | `bg-fill-inverse` | `icon-success-inverse` #05DF72 | `bg-surface-success` #F0FDF4 | `border-success` #7BF1A8 | `icon-success` #008236 |
 | Caution | `bg-fill-inverse` | `icon-caution-inverse` #FDC700 | `bg-surface-caution` #FEFCE8 | `border-caution` #FFDF20 | `icon-caution` #A65F00 |
 | Warning | `bg-fill-inverse` | `icon-warning-inverse` #FF6467 | `bg-surface-warning` #FEF2F2 | `border-warning` #FFA2A2 | `icon-warning` #C10007 |
@@ -219,7 +219,7 @@ Title and message use `text-inverse` (#FFFFFF) on Inverse and `text-primary` (#0
 
 | Tone | Fill: default / hover / pressed | Action label: default / hover / pressed | Close glyph |
 |---|---|---|---|
-| Inverse | `bg-fill-inverse` / `bg-fill-inverse-hover` / `bg-fill-inverse-pressed` | `text-link-inverse` #83D4FF in all states | `icon-inverse-secondary` #A1A1A1 |
+| Inverse | `bg-fill-inverse` / `bg-fill-inverse-hover` / `bg-fill-inverse-pressed` | `text-link-inverse` #83DFFF in all states | `icon-inverse-secondary` #A1A1A1 |
 | Tinted Neutral | `bg-surface-secondary` / `-hover` / `-pressed` | `text-brand` / `text-brand-on-bg-surface-hover` / `-pressed` | `icon-secondary` #525252 |
 | Tinted Info | `bg-surface-info` / `-hover` / `-pressed` | `text-info` / `text-info-on-bg-surface-hover` / `-pressed` | `icon-secondary` |
 | Tinted Success | `bg-surface-success` / `-hover` / `-pressed` | `text-success` / `text-success-on-bg-surface-hover` / `-pressed` | `icon-secondary` |
@@ -228,9 +228,9 @@ Title and message use `text-inverse` (#FFFFFF) on Inverse and `text-primary` (#0
 
 At rest, the control fill equals the snackbar fill, so the action reads as text. It is a real colour rather than transparent, so the lint can check the label against it. On Tinted, the action follows the intent colour and darkens one step on hover and press, as the Chip selected label does.
 
-The focus ring is `snackbar/focus-ring` (`border-focus`, #0681FF) on both appearances.
+The focus ring is `snackbar/focus-ring` (`border-focus`, #0088FF) on both appearances.
 
-This component added four semantic roles: **`color.icon-info-inverse`**, **`color.icon-success-inverse`**, **`color.icon-caution-inverse`** and **`color.icon-warning-inverse`**, all at step 400. The existing `icon-{intent}` roles are step 700. On near black they reach only 3.08 to 4.01:1, with warning barely over the 3:1 floor, and they read as muddy. The 400 steps give 6.85 to 12.58:1. Reuse the new roles for any status glyph on a dark surface, such as a tooltip or a dark badge.
+This component added four semantic roles: **`color.icon-info-inverse`**, **`color.icon-success-inverse`**, **`color.icon-caution-inverse`** and **`color.icon-warning-inverse`**, all at step 400. The existing `icon-{intent}` roles are step 700. On near black success, caution and warning reach only 3.08 to 4.01:1 (info, on the lighter `azure.700`, reaches 5.62:1), with warning barely over the 3:1 floor, and they read as muddy. The 400 steps give 6.85 to 12.58:1. Reuse the new roles for any status glyph on a dark surface, such as a tooltip or a dark badge.
 
 ---
 
@@ -242,15 +242,16 @@ This component added four semantic roles: **`color.icon-info-inverse`**, **`colo
 |---|---|---|---|
 | Inverse text #FFFFFF on #0A0A0A | 19.79:1 | 4.5:1 (1.4.3) | Pass |
 | Inverse status icons on #0A0A0A (lowest: warning #FF6467) | 6.85:1 | 3:1 (1.4.11) | Pass |
-| Inverse action #83D4FF on rest / hover / pressed | 12.09 / 10.95 / 9.24:1 | 4.5:1 | Pass |
+| Inverse action #83DFFF on rest / hover / pressed | 13.16 / 11.92 / 10.06:1 | 4.5:1 | Pass |
 | Inverse close #A1A1A1, lowest (on pressed #262626) | 5.85:1 | 3:1 | Pass |
 | Tinted text #0A0A0A, lowest (on #FEF2F2) | 18.09:1 | 4.5:1 | Pass |
-| Tinted status icons, lowest (success #008236 on #F0FDF4) | 4.72:1 | 3:1 | Pass |
-| Tinted action at rest, lowest (success #008236 on #F0FDF4) | 4.72:1 | 4.5:1 | Pass |
-| Tinted action hover, lowest (info #0857C5 on #D6EFFF) | 5.55:1 | 4.5:1 | Pass |
-| Tinted action pressed, lowest (info #0D4C9B on #C2E8FF) | 6.44:1 | 4.5:1 | Pass |
+| Tinted status icons, lowest (info #0088FF on #EDFAFF) | 3.30:1 | 3:1 | Pass |
+| Tinted action at rest, lowest (info #0088FF on #EDFAFF) | 3.30:1 | 3:1 (azure exception) | Pass |
+| Tinted action at rest, lowest outside azure (success #008236 on #F0FDF4) | 4.72:1 | 4.5:1 | Pass |
+| Tinted action hover, lowest (info #0868C5 on #D6F3FF) | 4.77:1 | 3:1 (azure exception) | Pass |
+| Tinted action pressed, lowest (info #0D589B on #B5EAFF) | 5.60:1 | 3:1 (azure exception) | Pass |
 | Tinted close #525252, lowest (on #FFC9C9) | 5.37:1 | 3:1 | Pass |
-| Focus ring #0681FF on #0A0A0A / lowest tint (#FEF2F2) | 5.27 / 3.43:1 | 3:1 | Pass |
+| Focus ring #0088FF on #0A0A0A / lowest tint (#FEF2F2) | 5.62 / 3.21:1 | 3:1 | Pass |
 | Tinted border on its tint (lowest: caution) | 1.28:1 | – | Decorative; see below |
 
 The Tinted border is decorative. The snackbar floats over content on the `shadow/card` shadow, and it is identified by its text, not its edge. So 1.4.11 does not require the boundary to reach 3:1, the same reasoning as the Chip border.

@@ -123,9 +123,9 @@ Token names follow `switch/{part}-{off|on}-{state}`. Focus uses the Default colo
 
 | State | Track | Glyph |
 |---|---|---|
-| Default, Focus | `track-on-default` → `bg-fill-brand` #0067E8 | `icon-on-default` → `icon-brand` #0067E8 |
-| Hover | `track-on-hover` → `bg-fill-brand-hover` #0857C5 | `icon-on-hover` → `icon-brand-on-bg-surface-hover` #0857C5 |
-| Pressed | `track-on-pressed` → `bg-fill-brand-pressed` #0D4C9B | `icon-on-pressed` → `icon-brand-on-bg-surface-pressed` #0D4C9B |
+| Default, Focus | `track-on-default` → `bg-fill-brand` #0088FF | `icon-on-default` → `icon-brand` #0088FF |
+| Hover | `track-on-hover` → `bg-fill-brand-hover` #0868C5 | `icon-on-hover` → `icon-brand-on-bg-surface-hover` #0868C5 |
+| Pressed | `track-on-pressed` → `bg-fill-brand-pressed` #0D589B | `icon-on-pressed` → `icon-brand-on-bg-surface-pressed` #0D589B |
 | Disabled | `track-on-disabled` → `bg-fill-disabled-subtle` #E5E5E5 | `icon-on-disabled` → `icon-disabled` #A1A1A1 |
 
 ### Off
@@ -139,7 +139,7 @@ Token names follow `switch/{part}-{off|on}-{state}`. Focus uses the Default colo
 
 | Element | Token | Value |
 |---|---|---|
-| Focus ring | `switch/focus-ring` → `border-focus` | #0681FF |
+| Focus ring | `switch/focus-ring` → `border-focus` | #0088FF |
 
 The glyph has one token per state, the way Button icons do. The check glyph tracks the brand track at every state, so glyph and track read as one colour. Hover and pressed use the same roles as the Button text-button icons, which also sit on white. The close glyph cannot match the grey track and still keep 3:1 on the white thumb, so it stays darker than the track and deepens with it. Cosmos has no semantic icon role at `neutral.700`, so pressed repeats `icon-secondary`.
 
@@ -159,12 +159,12 @@ A disabled switch always has the lightest track, `bg-fill-disabled-subtle` #E5E5
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
 | Off track #D4D4D4 on white / grey canvas | 1.48 / 1.36:1 | 3:1 (1.4.11) | **Below, accepted.** The thumb position carries the value |
-| On track #0067E8 on white / grey canvas | 5.12 / 4.69:1 | 3:1 | Pass |
+| On track #0088FF on white / grey canvas | 3.52 / 3.22:1 | 3:1 | Pass |
 | White thumb on off track #D4D4D4 / #A1A1A1 / #737373 | 1.48 / 2.58 / 4.74:1 | 3:1 | **Below at rest and on hover, accepted**; pressed passes |
-| White thumb on on track #0067E8 / #0857C5 / #0D4C9B | 5.12 / 6.60 / 8.32:1 | 3:1 | Pass |
-| Check glyph on the white thumb, #0067E8 / #0857C5 / #0D4C9B | 5.12 / 6.60 / 8.32:1 | 3:1 | Pass |
+| White thumb on on track #0088FF / #0868C5 / #0D589B | 3.52 / 5.53 / 7.27:1 | 3:1 | Pass |
+| Check glyph on the white thumb, #0088FF / #0868C5 / #0D589B | 3.52 / 5.53 / 7.27:1 | 3:1 | Pass |
 | Close glyph on the white thumb, #737373 / #525252 | 4.74 / 7.81:1 | 3:1 | Pass |
-| Focus ring #0681FF on white / grey canvas | 3.76 / 3.44:1 | 3:1 | Pass |
+| Focus ring #0088FF on white / grey canvas | 3.52 / 3.22:1 | 3:1 | Pass |
 | Disabled tracks, thumbs and glyphs | – | – | Exempt: inactive (1.4.11) |
 
 The value never depends on colour alone: the thumb position changes with it, and `Icon=True` adds a glyph for users who want more than position (1.4.1).

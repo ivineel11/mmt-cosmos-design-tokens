@@ -238,7 +238,7 @@ Token names follow `menu/{element}-{intent}-{state}`, with the intent left out f
 
 | State | Row fill | Label | Supporting, meta | Leading icon | Chevron | Check |
 |---|---|---|---|---|---|---|
-| Default | transparent | `text-primary` #0A0A0A | `text-secondary` #525252 | `icon-secondary` #525252 | `icon-tertiary` #737373 | `icon-brand` #0067E8 |
+| Default | transparent | `text-primary` #0A0A0A | `text-secondary` #525252 | `icon-secondary` #525252 | `icon-tertiary` #737373 | `icon-brand` #0088FF |
 | Hover, Open | `bg-fill-hover` #F5F5F5 | same | same | same | same | same |
 | Focus | `bg-fill-hover` #F5F5F5, plus the ring | same | same | same | same | same |
 | Pressed | `bg-fill-pressed-strong` #E5E5E5 | same | same | same | same | same |
@@ -264,7 +264,7 @@ Supporting text and meta on a destructive row keep the neutral `text-secondary`.
 | Panel shadow | `shadow.overlay` (Figma effect style `shadow/overlay`) | 0 4 8 and 0 8 24, neutral 950 at 8% and 12% |
 | Section header | `menu/section-header-text` → `text-secondary` | #525252 |
 | Divider | `menu/divider` → `border-secondary` | #E5E5E5 |
-| Focus ring | `menu/focus-ring` → `border-focus` | #0681FF |
+| Focus ring | `menu/focus-ring` → `border-focus` | #0088FF |
 
 The panel is `bg-surface-secondary`, the white container that the README pairs with menus. On a white page it is the same colour as the canvas, and the border and shadow separate it. Pressed uses `bg-fill-pressed-strong`, the same as List, because the subtle pressed grey matches hover and a press would show no change.
 
@@ -282,11 +282,11 @@ This component adds no semantic roles. It adds two primitive widths, `spacing.20
 | Supporting text, meta and section header #525252 on white / hover / pressed | 7.81 / 7.17 / 6.20:1 | 4.5:1 | Pass |
 | Leading icon #525252 on white / pressed | 7.81 / 6.20:1 | 3:1 (1.4.11) | Pass |
 | Chevron #737373 on white / hover / pressed | 4.74 / 4.35 / 3.76:1 | 3:1 | Pass |
-| Check #0067E8 on white / hover / pressed | 5.12 / 4.69 / 4.06:1 | 3:1 | Pass |
+| Check #0088FF on white / hover / pressed | 3.52 / 3.22 / 2.79:1 | 3:1 | Pass at rest and on hover; **below when pressed** since the azure change of 2026-10-07 |
 | Destructive label and icon #C10007 on white | 6.42:1 | 4.5:1 | Pass |
 | Destructive hover #9F0712 on #FFE2E2 | 6.85:1 | 4.5:1 | Pass |
 | Destructive pressed #82181A on #FFC9C9 | 6.90:1 | 4.5:1 | Pass |
-| Focus ring #0681FF on white / on the hover grey | 3.76 / 3.44:1 | 3:1 | Pass |
+| Focus ring #0088FF on white / on the hover grey | 3.52 / 3.22:1 | 3:1 | Pass |
 | Panel border #E5E5E5 on white | 1.26:1 | – | Decorative; the shadow and the content separate the panel |
 | Hover fill #F5F5F5 on white | 1.09:1 | – | Not relied on: keyboard focus adds the ring |
 | Disabled text #A1A1A1 on white | 2.58:1 | – | Exempt: inactive (1.4.3) |

@@ -192,20 +192,20 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed.
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
 | Label and icons `#525252` on white / hover and pressed `#F5F5F5` | 7.81 / 7.16:1 | 4.5:1 (1.4.3) | Pass |
-| Selected label `#0067E8` on `#EDF8FF` | 4.74:1 | 4.5:1 (1.4.3) | Pass |
-| Selected hover label `#0857C5` on `#D6EFFF` | 5.55:1 | 4.5:1 (1.4.3) | Pass |
-| Selected pressed label `#0D4C9B` on `#C2E8FF` | 6.44:1 | 4.5:1 (1.4.3) | Pass |
-| Secondary `#525252`, lowest pair (on `#C2E8FF`) | 6.05:1 | 4.5:1 (1.4.3) | Pass |
-| Selected icon `#0067E8`, lowest pair (on `#C2E8FF`) | 3.96:1 | 3:1 (1.4.11) | Pass |
-| Selected border `#0067E8` on white / grey canvas | 5.11 / 4.69:1 | 3:1 (1.4.11) | Pass |
-| Focus ring `#0681FF` on white / grey canvas | 3.75 / 3.44:1 | 3:1 (1.4.11) | Pass |
+| Selected label `#0088FF` on `#EDFAFF` | 3.30:1 | 3:1 (azure exception) | Pass |
+| Selected hover label `#0868C5` on `#D6F3FF` | 4.77:1 | 4.5:1 (1.4.3) | Pass |
+| Selected pressed label `#0D589B` on `#B5EAFF` | 5.60:1 | 4.5:1 (1.4.3) | Pass |
+| Secondary `#525252`, lowest pair (on `#B5EAFF`) | 6.01:1 | 4.5:1 (1.4.3) | Pass |
+| Selected icon on the pressed fill `#B5EAFF` | Figma 5.60:1 (a Figma-only pressed icon variable, `#0D589B`); code 2.71:1 (`#0088FF`) | 3:1 (1.4.11) | Figma passes. **Code below**: tokens.json lacks the hover and pressed icon variables that Figma binds |
+| Selected border `#0088FF` on white / grey canvas | 3.52 / 3.22:1 | 3:1 (1.4.11) | Pass |
+| Focus ring `#0088FF` on white / grey canvas | 3.52 / 3.22:1 | 3:1 (1.4.11) | Pass |
 | Unselected border `#D4D4D4` on white | 1.48:1 | – | See below |
 
 The unselected border is a divider-weight grey on purpose. A chip is identified by its label, not its edge, so 1.4.11 does not require the boundary to reach 3:1 — the same reasoning that lets a white card sit on the grey page at 1.09:1. If research shows chips are being missed, `color.border-strong` (`neutral.500`, 4.74:1) is the stronger edge to switch to. The border keeps this grey on hover and darkens to `border-strong` only while pressed.
 
 ### Selection must not rely on colour alone
 
-With the border on, a selected chip changes fill, border and label colour together. With the border off on the grey canvas, the selected fill `#EDF8FF` is 1.01:1 against `#F5F5F5`, so **only the label colour** signals selection — grey `#525252` to blue `#0067E8`, just 1.52:1 apart, well under the 3:1 difference that colour alone would need (WCAG 1.4.1). **A borderless selected filter chip must therefore show a non-colour cue: a check in the leading icon slot** (example 2). With the border on, the blue outline carries the change and the check is recommended rather than required. The token set cannot enforce this; it is a usage rule.
+With the border on, a selected chip changes fill, border and label colour together. With the border off on the grey canvas, the selected fill `#EDFAFF` is 1.02:1 against `#F5F5F5`, so **only the label colour** signals selection — grey `#525252` to blue `#0088FF`, just 2.21:1 apart, well under the 3:1 difference that colour alone would need (WCAG 1.4.1). **A borderless selected filter chip must therefore show a non-colour cue: a check in the leading icon slot** (example 2). With the border on, the blue outline carries the change and the check is recommended rather than required. The token set cannot enforce this; it is a usage rule.
 
 ### Semantics
 

@@ -145,7 +145,7 @@ The indicator and focus ring are absolutely positioned, so selecting or focusing
 
 A Primary tab is 8 + 24 + 4 + 20 + 8 = 64 tall, exactly its min height. A Secondary tab is 12 + 20 + 12 = 44 of content, so the 48 min height governs.
 
-The focus ring sits inside the tab rather than outside, because neighbouring tabs and a scrolling row would clip an outer ring. It is inset 2 px at the top and sides and runs down to the bottom edge, so on a selected tab it encloses the indicator instead of stacking a second line on it. The indicator is drawn above the ring, so the brand underline still shows as a darker section of the ring bottom edge (#0067E8 over #0681FF). Its radius matches the 8 px tab radius; at the inset top corners a concentric curve would be 6 px, which the radius scale does not have.
+The focus ring sits inside the tab rather than outside, because neighbouring tabs and a scrolling row would clip an outer ring. It is inset 2 px at the top and sides and runs down to the bottom edge, so on a selected tab it encloses the indicator instead of stacking a second line on it. The indicator is drawn above the ring. Since the azure change of 2026-10-07 both are #0088FF, so on a selected tab the underline merges into the ring bottom edge and reads as a thicker bottom stroke. Its radius matches the 8 px tab radius; at the inset top corners a concentric curve would be 6 px, which the radius scale does not have.
 
 ---
 
@@ -155,17 +155,17 @@ Token names follow `tab/{property}-{selected|unselected}-{state}`. Focus uses th
 
 | State | Fill | Label unselected / selected | Icon unselected / selected |
 |---|---|---|---|
-| Default, Focus | transparent | `text-secondary` #525252 / `text-brand` #0067E8 | `icon-secondary` #525252 / `icon-brand` #0067E8 |
-| Hover | `bg-fill-hover` #F5F5F5 | `text-primary` #0A0A0A / `text-brand` #0067E8 | `icon` #0A0A0A / `icon-brand` #0067E8 |
-| Pressed | `bg-fill-pressed-strong` #E5E5E5 | `text-primary` #0A0A0A / `text-brand-pressed` #0857C5 | `icon` #0A0A0A / `icon-brand-pressed` #0857C5 |
+| Default, Focus | transparent | `text-secondary` #525252 / `text-brand` #0088FF | `icon-secondary` #525252 / `icon-brand` #0088FF |
+| Hover | `bg-fill-hover` #F5F5F5 | `text-primary` #0A0A0A / `text-brand` #0088FF | `icon` #0A0A0A / `icon-brand` #0088FF |
+| Pressed | `bg-fill-pressed-strong` #E5E5E5 | `text-primary` #0A0A0A / `text-brand-pressed` #0868C5 | `icon` #0A0A0A / `icon-brand-pressed` #0868C5 |
 | Disabled | transparent | `text-disabled` #A1A1A1 | `icon-disabled` #A1A1A1 |
 
 | Element | Token | Value |
 |---|---|---|
-| Indicator | `tab/indicator-default` → `bg-fill-brand` | #0067E8 |
+| Indicator | `tab/indicator-default` → `bg-fill-brand` | #0088FF |
 | Indicator, disabled | `tab/indicator-disabled` → `bg-fill-disabled-strong` | #A1A1A1 |
 | Track, under either row | `tab/track` → `border-secondary` | #E5E5E5 |
-| Focus ring | `tab/focus-ring` → `border-focus` | #0681FF |
+| Focus ring | `tab/focus-ring` → `border-focus` | #0088FF |
 
 Pressed uses `bg-fill-pressed-strong`, not `bg-fill-pressed-subtle`, because the subtle pressed grey is the same #F5F5F5 as hover and a press would show no change. Selected and unselected tabs share one neutral state layer, so hover reads the same across the row.
 
@@ -180,11 +180,11 @@ This component adds no semantic roles.
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
 | Unselected label #525252 on white / on #F5F5F5 | 7.81 / 7.17:1 | 4.5:1 (1.4.3) | Pass |
-| Selected label #0067E8 on white / on hover #F5F5F5 | 5.12 / 4.69:1 | 4.5:1 | Pass |
-| Selected pressed label #0857C5 on #E5E5E5 | 5.24:1 | 4.5:1 | Pass. `text-brand` would be 4.06:1 here and fail |
+| Selected label #0088FF on white / on hover #F5F5F5 | 3.52 / 3.22:1 | 3:1 (azure exception) | Pass |
+| Selected pressed label #0868C5 on #E5E5E5 | 4.39:1 | 3:1 (azure exception) | Pass. `text-brand` would be 2.79:1 here and fail |
 | Unselected hover and pressed label #0A0A0A on #E5E5E5 | 15.72:1 | 4.5:1 | Pass |
-| Indicator #0067E8 on white / on #F5F5F5 | 5.12 / 4.69:1 | 3:1 (1.4.11) | Pass |
-| Focus ring #0681FF on white | 3.76:1 | 3:1 | Pass |
+| Indicator #0088FF on white / on #F5F5F5 | 3.52 / 3.22:1 | 3:1 (1.4.11) | Pass |
+| Focus ring #0088FF on white | 3.52:1 | 3:1 | Pass |
 | Track #E5E5E5 | 1.26:1 | – | Decorative; the labels identify the tabs |
 
 ### Selection is never colour alone
