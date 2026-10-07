@@ -87,7 +87,7 @@ const cases = [
   ["tokens/contrast", (j) => { j.semantic.color["text-teal-on-bg-fill-strong"] = { ...j.semantic.color["text-info-on-bg-fill-strong"] }; }, "does not exist"],
   ["tokens/contrast", (j) => { j.semantic.color["bg-surface-brand-pressed-subtle"].value = "{color.azure.800}"; }, "on color.bg-surface-brand-pressed-subtle"],
   // An -inverse key over a transparent fill is checked on the dark canvas, not on white.
-  ["tokens/contrast", (j) => { j.component.button["label-secondary-inverse-default"].value = "{color.text-brand}"; }, "on color.bg-surface-inverse"],
+  ["tokens/contrast", (j) => { j.component.button["label-secondary-inverse-default"].value = "{color.text-primary}"; }, "on color.bg-surface-inverse"],
   // A tint with a bg-opacity-* companion is blended over the canvas, so a heavier tint can fail.
   ["tokens/contrast", (j) => { j.component.button["bg-opacity-tertiary-inverse-default"].value = "{opacity.90}"; }, "at 90% over color.bg-surface-inverse"],
   // Each brand is checked on its own values: a myBiz fill too light for the white label.

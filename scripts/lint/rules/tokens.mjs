@@ -753,7 +753,7 @@ const semanticColorRole = {
       if (!SEMANTIC_COLOR_ROLE.test(key)) {
         api.report({ ...at(leaf, "key"), message: `color.${key} does not fit the role taxonomy (bg, bg-secondary, bg-surface-*, bg-fill-*, text-*, border-*, icon-*, exp-{hue}-{step}). Name it by role, not by value.` });
       }
-      if (/(^|-)(neutral|azure|brand|red|pomegranate|orange|tangerine|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
+      if (/(^|-)(neutral|azure|brand|red|pomegranate|orange|thunderbird|amber|yellow|lime|green|blue|indigo|violet|purple|fuchsia)-\d+$/.test(key) && !key.startsWith("exp-")) {
         api.report({ ...at(leaf, "key"), message: `color.${key} is named after a palette value. Semantic names describe intent (text-caution, not text-yellow-700).` });
       }
     }
@@ -817,12 +817,13 @@ const AA_GRAPHIC = 3;
 const AZURE_TEXT_FLOOR = 3;
 
 /**
- * The myBiz brand-role exception (README → Azure contrast exception). The myBiz primary
- * sits on pomegranate.400, and white on it reads at 3.37:1. In the brands listed here,
- * text in a pairing where either side resolves through a semantic *-brand* role needs
- * 3:1 too. It is scoped by role, not by ramp: a status role on pomegranate keeps 4.5:1.
+ * The brand-role exception (README → Azure contrast exception). The myBiz primary sits
+ * on pomegranate.400 and the Goibibo primary on thunderbird.600, and white on them reads
+ * at 3.37:1 and 3.34:1. In the brands listed here, text in a pairing where either side
+ * resolves through a semantic *-brand* role needs 3:1 too. It is scoped by role, not by
+ * ramp: a status role on pomegranate or thunderbird keeps 4.5:1.
  */
-const BRAND_ROLE_EXCEPTION_BRANDS = new Set(["mybiz"]);
+const BRAND_ROLE_EXCEPTION_BRANDS = new Set(["mybiz", "goibibo"]);
 
 /** Pairings accepted below their floor by design decision: component token → lowest ratio allowed. */
 const ACCEPTED_BELOW_FLOOR = {
@@ -840,7 +841,7 @@ const COMPONENT_FOREGROUNDS = {
 
 const contrastRule = {
   id: "tokens/contrast",
-  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3). Text paired with an azure step, or with a brand role in myBiz, needs 3:1 (README → Azure contrast exception), and a few component pairings are accepted below their floor by name.",
+  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3). Text paired with an azure step, or with a brand role in myBiz or Goibibo, needs 3:1 (README → Azure contrast exception), and a few component pairings are accepted below their floor by name.",
   check(api) {
     const t = load(api);
     if (!t) return;
