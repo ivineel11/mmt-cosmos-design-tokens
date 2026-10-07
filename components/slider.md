@@ -233,7 +233,7 @@ This component adds no semantic roles.
 
 | Pair | Ratio | Required | Result |
 |---|---|---|---|
-| Active track #0088FF against the inactive track #D4D4D4 | 2.37:1 | 3:1 (1.4.11) | **Below** since the azure change of 2026-10-07. This edge shows the value; the thumb also marks it |
+| Active track #0088FF against the inactive track #D4D4D4 | 2.37:1 | 3:1 (1.4.11) | **Below, accepted.** The thumb marks the value. Only neutral.100 or lighter would pass, and it disappears on the grey canvas |
 | Active track #0088FF on the white canvas / on #F5F5F5 | 3.52 / 3.22:1 | 3:1 | Pass |
 | Inactive track #D4D4D4 on the white canvas | 1.48:1 | – | Below 3:1 by choice, as on Switch. The active track and the thumb carry the value |
 | Thumb #FFFFFF on the active track | 3.52:1 | 3:1 | Pass |
@@ -276,7 +276,7 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 - **Linear scale only.** Wide price ranges usually need a non-linear scale so cheap prices are not crammed at one end. The consumer maps values for now.
 - **Horizontal only.** There is no vertical slider.
 - **Thumb contrast.** The white thumb is 1.48:1 on the inactive track and 1:1 on the canvas, below 3:1. The shadow carries it, as on the system iOS slider. It passes against the active track (3.52:1), which the thumb always touches.
-- **Active track edge.** Since the azure change of 2026-10-07 the active track is 2.37:1 against the inactive track, below 3:1. The thumb sits on the boundary and marks the value.
+- **Active track edge, accepted.** Since the azure change of 2026-10-07 the active track is 2.37:1 against the inactive track, below 3:1. No darker grey fixes it (neutral.400 to neutral.700 sit between 1.34 and 2.94:1), and neutral.100 passes at 3.22:1 but matches the grey canvas. The thumb sits on the boundary and marks the value, so the edge was accepted on 2026-10-07.
 - **No motion tokens.** The spring, fades and haptics are documented above, not tokenised.
 - **`focus-ring-offset` and `tooltip-gap` are not bound in Figma.** They are geometry: the ring and tooltip are placed at those distances. The focus ring size (thumb plus 8) and the active track length are not bound either, because they follow the value.
 - **Thumb positions come in 5% steps and assume the default width.** Figma has no number property and does not allow resizing layers inside an instance, so positions are presets on the exposed .Slider / Position spacers. They are sized for the 320 Medium and 280 Small widths; on a resized slider, the grey ticks stretch but the thumbs keep their pixel positions. For another width or an exact value, detach the instance.

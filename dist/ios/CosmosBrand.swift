@@ -573,8 +573,14 @@ public struct CosmosBrand: Identifiable, Sendable {
     /// Colour of the chip label — selected, while pressed. Darkens with the fill so it holds AA contrast on bg-selected-pressed.
     public let chipLabelSelectedPressed: Color
 
-    /// Colour of the leading icon, trailing icon and remove glyph — selected, in every enabled state. Does not apply to the leading image.
+    /// Colour of the leading icon, trailing icon and remove glyph — selected, Default and Focus. Hover and pressed have their own tokens so the icons darken with the label. Does not apply to the leading image.
     public let chipIconSelectedDefault: Color
+
+    /// Colour of the leading icon, trailing icon and remove glyph — selected, on hover. Matches chip/label-selected-hover so icons and label darken together as the fill deepens.
+    public let chipIconSelectedHover: Color
+
+    /// Colour of the leading icon, trailing icon and remove glyph — selected, while pressed. Matches chip/label-selected-pressed. Also colours the remove glyph while the remove button itself is hovered or pressed, because its circle uses the pressed tint and icon-selected-default is too light on it.
+    public let chipIconSelectedPressed: Color
 
     /// Circle behind the remove glyph of a removable chip — selected, when the remove button itself is hovered.
     public let chipRemoveBgSelectedHover: Color
@@ -702,8 +708,11 @@ public struct CosmosBrand: Identifiable, Sendable {
     /// Soft circle behind a thumb while it is held or dragged, drawn under the track, so the touch point stays visible around a finger. Halo press only; the Grow press enlarges the thumb to thumb-size-pressed instead. Use halo-hover for the pointer.
     public let sliderHaloPressed: Color
 
-    /// Trailing check on the selected row of a single-select menu, such as Sort by. It is the only mark of selection, so the label stays label-default.
+    /// Trailing check on the selected row of a single-select menu, such as Sort by, at rest, on hover and with focus. It is the only mark of selection, so the label stays label-default. Use check-pressed while the row is pressed.
     public let menuCheckDefault: Color
+
+    /// Trailing check on the selected row while the row is pressed. One step darker than check-default, which is too light on item-bg-pressed.
+    public let menuCheckPressed: Color
 
     /// Label of the primary text action, such as Next or Got it, on a Light Rich tooltip, at rest and on focus. Brand blue, so it reads as the main action beside the grey Skip. Use primary-label-light-hover and primary-label-light-pressed as the fill changes.
     public let tooltipPrimaryLabelLight: Color
@@ -903,6 +912,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         chipLabelSelectedHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         chipLabelSelectedPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
         chipIconSelectedDefault: Color(red: 0, green: 0.533333, blue: 1),
+        chipIconSelectedHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
+        chipIconSelectedPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
         chipRemoveBgSelectedHover: Color(red: 0.709804, green: 0.917647, blue: 1),
         chipRemoveBgSelectedPressed: Color(red: 0.709804, green: 0.917647, blue: 1),
         snackbarLabelControlTintedNeutralDefault: Color(red: 0, green: 0.533333, blue: 1),
@@ -946,6 +957,7 @@ public struct CosmosBrand: Identifiable, Sendable {
         sliderHaloHover: Color(red: 0.929412, green: 0.980392, blue: 1),
         sliderHaloPressed: Color(red: 0.839216, green: 0.952941, blue: 1),
         menuCheckDefault: Color(red: 0, green: 0.533333, blue: 1),
+        menuCheckPressed: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         tooltipPrimaryLabelLight: Color(red: 0, green: 0.533333, blue: 1),
         tooltipPrimaryLabelLightHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         tooltipPrimaryLabelLightPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843)
@@ -1140,6 +1152,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         chipLabelSelectedHover: Color(red: 0.623529, green: 0.176471, blue: 0),
         chipLabelSelectedPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
         chipIconSelectedDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        chipIconSelectedHover: Color(red: 0.623529, green: 0.176471, blue: 0),
+        chipIconSelectedPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059),
         chipRemoveBgSelectedHover: Color(red: 1, green: 0.839216, blue: 0.658824),
         chipRemoveBgSelectedPressed: Color(red: 1, green: 0.839216, blue: 0.658824),
         snackbarLabelControlTintedNeutralDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
@@ -1183,6 +1197,7 @@ public struct CosmosBrand: Identifiable, Sendable {
         sliderHaloHover: Color(red: 1, green: 0.968627, blue: 0.929412),
         sliderHaloPressed: Color(red: 1, green: 0.929412, blue: 0.831373),
         menuCheckDefault: Color(red: 0.792157, green: 0.207843, blue: 0),
+        menuCheckPressed: Color(red: 0.623529, green: 0.176471, blue: 0),
         tooltipPrimaryLabelLight: Color(red: 0.792157, green: 0.207843, blue: 0),
         tooltipPrimaryLabelLightHover: Color(red: 0.623529, green: 0.176471, blue: 0),
         tooltipPrimaryLabelLightPressed: Color(red: 0.494118, green: 0.164706, blue: 0.047059)
@@ -1377,6 +1392,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         chipLabelSelectedHover: Color(red: 0.592157, green: 0.270588, blue: 0),
         chipLabelSelectedPressed: Color(red: 0.505882, green: 0.227451, blue: 0),
         chipIconSelectedDefault: Color(red: 0.701961, green: 0.321569, blue: 0),
+        chipIconSelectedHover: Color(red: 0.592157, green: 0.270588, blue: 0),
+        chipIconSelectedPressed: Color(red: 0.505882, green: 0.227451, blue: 0),
         chipRemoveBgSelectedHover: Color(red: 1, green: 0.862745, blue: 0.760784),
         chipRemoveBgSelectedPressed: Color(red: 1, green: 0.862745, blue: 0.760784),
         snackbarLabelControlTintedNeutralDefault: Color(red: 0.701961, green: 0.321569, blue: 0),
@@ -1420,6 +1437,7 @@ public struct CosmosBrand: Identifiable, Sendable {
         sliderHaloHover: Color(red: 0.996078, green: 0.956863, blue: 0.92549),
         sliderHaloPressed: Color(red: 1, green: 0.909804, blue: 0.831373),
         menuCheckDefault: Color(red: 0.701961, green: 0.321569, blue: 0),
+        menuCheckPressed: Color(red: 0.592157, green: 0.270588, blue: 0),
         tooltipPrimaryLabelLight: Color(red: 0.701961, green: 0.321569, blue: 0),
         tooltipPrimaryLabelLightHover: Color(red: 0.592157, green: 0.270588, blue: 0),
         tooltipPrimaryLabelLightPressed: Color(red: 0.505882, green: 0.227451, blue: 0)

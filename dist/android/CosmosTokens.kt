@@ -492,6 +492,8 @@ object CosmosTokens {
   val chipGapText = 0.dp
   val chipIconDisabled = Color(0xFFA1A1A1)
   val chipIconSelectedDefault = Color(0xFF0088FF)
+  val chipIconSelectedHover = Color(0xFF0868C5)
+  val chipIconSelectedPressed = Color(0xFF0D589B)
   val chipIconSizeLg = 24.dp
   val chipIconSizeMd = 20.dp
   val chipIconSizeSm = 16.dp
@@ -1186,6 +1188,7 @@ object CosmosTokens {
   val menuBorderWidth = 1.dp
   val menuCheckDefault = Color(0xFF0088FF)
   val menuCheckDisabled = Color(0xFFA1A1A1)
+  val menuCheckPressed = Color(0xFF0868C5)
   val menuChevronDefault = Color(0xFF737373)
   val menuChevronDisabled = Color(0xFFA1A1A1)
   val menuDivider = Color(0xFFE5E5E5)

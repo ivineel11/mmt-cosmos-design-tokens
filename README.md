@@ -215,7 +215,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1144 color tokens (161 primitive — 155 palette steps plus `alpha.transparent` and the five shadow alphas — + 287 semantic roles + 696 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1147 color tokens (161 primitive — 155 palette steps plus `alpha.transparent` and the five shadow alphas — + 287 semantic roles + 699 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -502,6 +502,8 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - **Inline links are not covered.** Links sit in small running text, so `text-link` moved to `azure.800` (`#0868C5`, 5.53:1 on white), with hover on 900 and pressed on 950.
 - **Focus moved to 700.** `border-focus` reads at 3.52:1 on white and 3.22:1 on `bg-secondary`. On `azure.600` it would have been 3.02:1 and about 2.8:1.
 - **Hover stays on 600.** `text-brand-hover`, `icon-brand-hover` and `border-brand-hover` stay on `azure.600` (`#0698FF`, 3.02:1 on white). The Radio hover dot on its `azure.50` tint reads at **2.84:1**, below the 3:1 graphics minimum. It is accepted by name.
+- **Graphics still need 3:1.** The exception is for text. Icons that fell below 3:1 on pressed fills were given darker pressed tokens instead: `chip/icon-selected-pressed` (also the remove glyph on its own hover and pressed circle) and `menu/check-pressed`.
+- **Slider track edge accepted.** The active track is 2.37:1 against the inactive track. No darker grey passes, and `neutral.100` (3.22:1) disappears on `bg-secondary`. The thumb marks the value.
 - **How it is linted.** `tokens/contrast` applies the 3:1 floor to azure pairings and lists the accepted Radio pairing in `ACCEPTED_BELOW_FLOOR`. A pairing that drops below these floors still fails.
 
 ---
@@ -572,9 +574,9 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 
 ## Token Inventory
 
-**Totals:** 292 primitive tokens · 398 semantic tokens (287 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1029 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 77 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 64 `menu/*` + 69 `tooltip/*`) · **1827 values on web** · **1911 on iOS and Android** · **0 gradients**
+**Totals:** 292 primitive tokens · 398 semantic tokens (287 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1032 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*`) · **1830 values on web** · **1914 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1719 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1722 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (292)
 
@@ -1130,7 +1132,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (1029)
+### Component tokens (1032)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -1139,7 +1141,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `button/*` | 297 | Button (`58:202`, 240 variants: Hierarchy x State x Size x Intent x Surface, with the Inverse surface for dark sections) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
-| `chip/*` | 77 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
+| `chip/*` | 79 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
 | `snackbar/*` | 114 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
 | `badge/*` | 42 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
 | `tab/*` | 43 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
@@ -1147,7 +1149,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `switch/*` | 51 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
 | `segmented-control/*` | 47 | Segmented control (`765:186`, 48 variants) and Segmented control / Segment (`764:131`, 96 variants). Three thumb styles (`neutral-*`, `brand-*`, `tinted-*`) and two shapes (Rounded, `pill-radius`) are under test; the losing options will be deleted | [`components/segmented-control.md`](components/segmented-control.md) |
 | `slider/*` | 43 | Slider (`811:1622`, 48 variants), Slider / Thumb (`809:83`, 12 variants) and Slider / Tooltip (`870:538`, 2 variants), with the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. A Pressed grow state (the thumb enlarges instead of showing a halo) is under test beside Pressed | [`components/slider.md`](components/slider.md) |
-| `menu/*` | 64 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
+| `menu/*` | 65 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
 | `tooltip/*` | 69 | Tooltip (`881:362`, 96 variants: Type x Surface x Side x Caret, with Dark, Light and the Info surface under test) and Tooltip / Control (`876:95`, 36 variants) for the primary and secondary text actions and the close button | [`components/tooltip.md`](components/tooltip.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp. Button adds a surface after the variant for its Inverse surface (`{property}-{hierarchy}-inverse-{intent}-{state}`):

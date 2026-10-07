@@ -390,8 +390,12 @@ data class CosmosBrand(
   val chipLabelSelectedHover: Color,
   /** Colour of the chip label — selected, while pressed. Darkens with the fill so it holds AA contrast on bg-selected-pressed. */
   val chipLabelSelectedPressed: Color,
-  /** Colour of the leading icon, trailing icon and remove glyph — selected, in every enabled state. Does not apply to the leading image. */
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, Default and Focus. Hover and pressed have their own tokens so the icons darken with the label. Does not apply to the leading image. */
   val chipIconSelectedDefault: Color,
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, on hover. Matches chip/label-selected-hover so icons and label darken together as the fill deepens. */
+  val chipIconSelectedHover: Color,
+  /** Colour of the leading icon, trailing icon and remove glyph — selected, while pressed. Matches chip/label-selected-pressed. Also colours the remove glyph while the remove button itself is hovered or pressed, because its circle uses the pressed tint and icon-selected-default is too light on it. */
+  val chipIconSelectedPressed: Color,
   /** Circle behind the remove glyph of a removable chip — selected, when the remove button itself is hovered. */
   val chipRemoveBgSelectedHover: Color,
   /** Circle behind the remove glyph of a removable chip — selected, while the remove button itself is pressed. */
@@ -476,8 +480,10 @@ data class CosmosBrand(
   val sliderHaloHover: Color,
   /** Soft circle behind a thumb while it is held or dragged, drawn under the track, so the touch point stays visible around a finger. Halo press only; the Grow press enlarges the thumb to thumb-size-pressed instead. Use halo-hover for the pointer. */
   val sliderHaloPressed: Color,
-  /** Trailing check on the selected row of a single-select menu, such as Sort by. It is the only mark of selection, so the label stays label-default. */
+  /** Trailing check on the selected row of a single-select menu, such as Sort by, at rest, on hover and with focus. It is the only mark of selection, so the label stays label-default. Use check-pressed while the row is pressed. */
   val menuCheckDefault: Color,
+  /** Trailing check on the selected row while the row is pressed. One step darker than check-default, which is too light on item-bg-pressed. */
+  val menuCheckPressed: Color,
   /** Label of the primary text action, such as Next or Got it, on a Light Rich tooltip, at rest and on focus. Brand blue, so it reads as the main action beside the grey Skip. Use primary-label-light-hover and primary-label-light-pressed as the fill changes. */
   val tooltipPrimaryLabelLight: Color,
   /** Label of the primary text action on a Light Rich tooltip under the pointer. Darkens with the control-bg-light-hover fill so it keeps AA contrast. Web only. */
@@ -675,6 +681,8 @@ data class CosmosBrand(
       chipLabelSelectedHover = Color(0xFF0868C5),
       chipLabelSelectedPressed = Color(0xFF0D589B),
       chipIconSelectedDefault = Color(0xFF0088FF),
+      chipIconSelectedHover = Color(0xFF0868C5),
+      chipIconSelectedPressed = Color(0xFF0D589B),
       chipRemoveBgSelectedHover = Color(0xFFB5EAFF),
       chipRemoveBgSelectedPressed = Color(0xFFB5EAFF),
       snackbarLabelControlTintedNeutralDefault = Color(0xFF0088FF),
@@ -718,6 +726,7 @@ data class CosmosBrand(
       sliderHaloHover = Color(0xFFEDFAFF),
       sliderHaloPressed = Color(0xFFD6F3FF),
       menuCheckDefault = Color(0xFF0088FF),
+      menuCheckPressed = Color(0xFF0868C5),
       tooltipPrimaryLabelLight = Color(0xFF0088FF),
       tooltipPrimaryLabelLightHover = Color(0xFF0868C5),
       tooltipPrimaryLabelLightPressed = Color(0xFF0D589B),
@@ -912,6 +921,8 @@ data class CosmosBrand(
       chipLabelSelectedHover = Color(0xFF9F2D00),
       chipLabelSelectedPressed = Color(0xFF7E2A0C),
       chipIconSelectedDefault = Color(0xFFCA3500),
+      chipIconSelectedHover = Color(0xFF9F2D00),
+      chipIconSelectedPressed = Color(0xFF7E2A0C),
       chipRemoveBgSelectedHover = Color(0xFFFFD6A8),
       chipRemoveBgSelectedPressed = Color(0xFFFFD6A8),
       snackbarLabelControlTintedNeutralDefault = Color(0xFFCA3500),
@@ -955,6 +966,7 @@ data class CosmosBrand(
       sliderHaloHover = Color(0xFFFFF7ED),
       sliderHaloPressed = Color(0xFFFFEDD4),
       menuCheckDefault = Color(0xFFCA3500),
+      menuCheckPressed = Color(0xFF9F2D00),
       tooltipPrimaryLabelLight = Color(0xFFCA3500),
       tooltipPrimaryLabelLightHover = Color(0xFF9F2D00),
       tooltipPrimaryLabelLightPressed = Color(0xFF7E2A0C),
@@ -1149,6 +1161,8 @@ data class CosmosBrand(
       chipLabelSelectedHover = Color(0xFF974500),
       chipLabelSelectedPressed = Color(0xFF813A00),
       chipIconSelectedDefault = Color(0xFFB35200),
+      chipIconSelectedHover = Color(0xFF974500),
+      chipIconSelectedPressed = Color(0xFF813A00),
       chipRemoveBgSelectedHover = Color(0xFFFFDCC2),
       chipRemoveBgSelectedPressed = Color(0xFFFFDCC2),
       snackbarLabelControlTintedNeutralDefault = Color(0xFFB35200),
@@ -1192,6 +1206,7 @@ data class CosmosBrand(
       sliderHaloHover = Color(0xFFFEF4EC),
       sliderHaloPressed = Color(0xFFFFE8D4),
       menuCheckDefault = Color(0xFFB35200),
+      menuCheckPressed = Color(0xFF974500),
       tooltipPrimaryLabelLight = Color(0xFFB35200),
       tooltipPrimaryLabelLightHover = Color(0xFF974500),
       tooltipPrimaryLabelLightPressed = Color(0xFF813A00),

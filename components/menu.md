@@ -241,7 +241,7 @@ Token names follow `menu/{element}-{intent}-{state}`, with the intent left out f
 | Default | transparent | `text-primary` #0A0A0A | `text-secondary` #525252 | `icon-secondary` #525252 | `icon-tertiary` #737373 | `icon-brand` #0088FF |
 | Hover, Open | `bg-fill-hover` #F5F5F5 | same | same | same | same | same |
 | Focus | `bg-fill-hover` #F5F5F5, plus the ring | same | same | same | same | same |
-| Pressed | `bg-fill-pressed-strong` #E5E5E5 | same | same | same | same | same |
+| Pressed | `bg-fill-pressed-strong` #E5E5E5 | same | same | same | same | `icon-brand-pressed` #0868C5 |
 | Disabled | transparent | `text-disabled` #A1A1A1 | `text-disabled` #A1A1A1 | `icon-disabled` #A1A1A1 | `icon-disabled` #A1A1A1 | `icon-disabled` #A1A1A1 |
 
 **Destructive rows**
@@ -282,7 +282,7 @@ This component adds no semantic roles. It adds two primitive widths, `spacing.20
 | Supporting text, meta and section header #525252 on white / hover / pressed | 7.81 / 7.17 / 6.20:1 | 4.5:1 | Pass |
 | Leading icon #525252 on white / pressed | 7.81 / 6.20:1 | 3:1 (1.4.11) | Pass |
 | Chevron #737373 on white / hover / pressed | 4.74 / 4.35 / 3.76:1 | 3:1 | Pass |
-| Check #0088FF on white / hover / pressed | 3.52 / 3.22 / 2.79:1 | 3:1 | Pass at rest and on hover; **below when pressed** since the azure change of 2026-10-07 |
+| Check #0088FF on white / hover, #0868C5 on pressed #E5E5E5 | 3.52 / 3.22 / 4.39:1 | 3:1 | Pass. `check-default` would be 2.79:1 on the pressed grey, hence `check-pressed` |
 | Destructive label and icon #C10007 on white | 6.42:1 | 4.5:1 | Pass |
 | Destructive hover #9F0712 on #FFE2E2 | 6.85:1 | 4.5:1 | Pass |
 | Destructive pressed #82181A on #FFC9C9 | 6.90:1 | 4.5:1 | Pass |
@@ -351,7 +351,7 @@ Destructive meaning is carried by the label text ("Cancel booking"), not by the 
 
 ## Token reference
 
-64 tokens under `component.menu` in `tokens/tokens.json`, mirrored 1:1 as `menu/*` in the Figma `component` collection (variables `777:4` to `777:65`, plus `785:290` and `785:291`):
+65 tokens under `component.menu` in `tokens/tokens.json`, mirrored 1:1 as `menu/*` in the Figma `component` collection (variables `777:4` to `777:65`, plus `785:290`, `785:291` and `992:2`):
 
 | Group | Count |
 |---|---|
@@ -359,7 +359,7 @@ Destructive meaning is carried by the label text ("Cancel booking"), not by the 
 | Row fills: `item-bg-{default,hover,pressed,focus,open,disabled}`, `item-bg-destructive-{hover,pressed}`, and `item-radius-{comfortable,compact}` | 10 |
 | Label: `label-{default,disabled}`, `label-destructive-{default,hover,pressed}` | 5 |
 | `supporting-text-*`, `meta-text-*` (`default`, `disabled`) | 4 |
-| Icons: `leading-icon-{default,disabled}`, `leading-icon-destructive-{default,hover,pressed}`, `chevron-*`, `check-*` | 9 |
+| Icons: `leading-icon-{default,disabled}`, `leading-icon-destructive-{default,hover,pressed}`, `chevron-*`, `check-*` | 10 |
 | `section-header-text`, `divider`, `divider-width`, `focus-ring`, `focus-ring-width` | 5 |
 | density pairs (`item-min-height`, `item-padding-x`, `item-padding-y`, `gap`, `gap-text-trailing`, `leading-icon-size`, `trailing-icon-size`, `section-header-padding-top`, `section-header-padding-bottom`, `divider-spacing`, each `-comfortable` and `-compact`) | 20 |
 | `gap-text` | 1 |
