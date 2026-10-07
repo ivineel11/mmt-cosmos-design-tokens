@@ -12,7 +12,7 @@ export function MobileNav({
 }) {
   return (
     <div
-      className="sticky top-0 z-20 flex gap-2 border-b px-4 py-3 backdrop-blur lg:hidden"
+      className="sticky top-[var(--site-topbar)] z-20 flex gap-2 border-b px-4 py-3 backdrop-blur lg:hidden"
       style={{
         borderColor: "var(--color-border)",
         background: "color-mix(in srgb, var(--color-bg) 88%, transparent)",

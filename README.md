@@ -1816,7 +1816,7 @@ Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
 | `dist/ios/CosmosBrand.swift` | Generated `CosmosBrand` struct and the `\.cosmosBrand` environment value |
 | `dist/android/CosmosBrand.kt` | Generated `CosmosBrand` class and `LocalCosmosBrand` |
 | `scripts/lib/brands.mjs` | Reads brands from `$themes` and builds each brand's token tree, for the build and the linter |
-| `docs-site/` | Browsable documentation site for every token (see below) |
+| `docs-site/` | The Cosmos guidelines site: foundations, component guidelines and the token reference (see below) |
 | `storybook/` | Storybook for the foundations, every token tier and the React components (see below) |
 | `components/*.md` | Component specifications — uSpec-generated where noted, otherwise hand-authored (see below) |
 | `uspecs.config.json` | uSpec CLI configuration (agent, Figma MCP provider, pinned CLI version) |
@@ -1855,7 +1855,13 @@ To accept a specific finding, add an entry to `ignores` in `lint.config.mjs` nam
 
 ## Documentation site
 
-`docs-site/` is a Next.js app that renders every token in `tokens/tokens.json` as a browsable reference: primitive palettes, semantic roles, expressive ramps, WCAG contrast pairs, type specimens, and the spacing, radius, and sizing scales. Each token can be copied as a CSS variable, JS accessor, Swift, or Kotlin symbol.
+`docs-site/` is the Cosmos guidelines site, modelled on material.io. It has three parts:
+
+- **Foundations**: how tokens work, colour, typography, spacing, shape, elevation and iconography, each with live visuals drawn from the tokens.
+- **Components**: a live preview of every component, and full guideline pages (Overview, Guidelines, Specs, Accessibility) starting with Button. The examples are the real React components from `storybook/`.
+- **Tokens**: every token in `tokens/tokens.json` as a searchable reference: primitive palettes, semantic roles, expressive ramps, WCAG contrast pairs, type specimens, and the spacing, radius, and sizing scales. Each token can be copied as a CSS variable, JS accessor, Swift, or Kotlin symbol.
+
+A brand switcher in the top bar re-skins the whole site as MakeMyTrip, myBiz or Goibibo. `docs-site/README.md` explains the structure and how to add a component page.
 
 ```bash
 cd docs-site

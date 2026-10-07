@@ -105,9 +105,12 @@ export function Sidebar({
     <>
       {/* Spacer owns width for main recenter; rail moves on transform/opacity. */}
       <div
-        className="sticky top-0 z-20 hidden h-screen shrink-0 overflow-hidden lg:block"
+        className="sticky z-20 hidden shrink-0 overflow-hidden lg:block"
         data-open={open ? "true" : "false"}
         style={{
+          // Sits under the site's top app bar.
+          top: "var(--site-topbar)",
+          height: "calc(100vh - var(--site-topbar))",
           width: open ? "var(--sidebar-width)" : 0,
           transition: open
             ? `width var(--motion-duration-panel) var(--motion-ease-standard)`
@@ -131,12 +134,12 @@ export function Sidebar({
           <div className="px-5 py-6">
             <div className="flex items-start justify-between gap-3">
               <a href="#top" className="block min-w-0">
-                <div className="text-base font-black tracking-tight">Cosmos</div>
+                <div className="text-base font-black tracking-tight">Tokens</div>
                 <div
                   className="mt-0.5 text-[11px] font-bold tracking-[0.14em] uppercase"
                   style={{ color: "var(--color-text-tertiary)" }}
                 >
-                  Design Tokens
+                  Full reference
                 </div>
               </a>
               <button
@@ -218,7 +221,7 @@ export function Sidebar({
         onClick={onToggle}
         aria-label="Expand sidebar"
         aria-expanded={open}
-        className="fixed top-6 left-4 z-30 hidden h-9 w-9 items-center justify-center rounded-lg border bg-[var(--color-bg)] text-[var(--color-text-primary)] shadow-sm transition-colors hover:bg-[var(--color-bg-surface)] lg:flex"
+        className="fixed top-[calc(var(--site-topbar)+var(--space-xl))] left-[calc(var(--site-rail)+var(--space-md))] z-30 hidden h-9 w-9 items-center justify-center rounded-lg border bg-[var(--color-bg)] text-[var(--color-text-primary)] shadow-sm transition-colors hover:bg-[var(--color-bg-surface)] lg:flex"
         style={{
           borderColor: "var(--color-border)",
           opacity: open ? 0 : 1,
