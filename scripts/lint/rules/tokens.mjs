@@ -808,6 +808,20 @@ const namespaceCollision = {
 const AA_TEXT = 4.5;
 const AA_GRAPHIC = 3;
 
+/**
+ * The azure exception (README → Azure contrast exception). The MakeMyTrip azure.700 is
+ * matched to the product primary, and white on it reads at 3.52:1. Following Apple's
+ * guidance rather than WCAG 1.4.3, text in a pairing where either side is an azure step
+ * needs 3:1, not 4.5:1. It covers brand and info roles; other ramps keep 4.5:1.
+ */
+const AZURE_TEXT_FLOOR = 3;
+
+/** Pairings accepted below their floor by design decision: component token → lowest ratio allowed. */
+const ACCEPTED_BELOW_FLOOR = {
+  // The lightened azure.600 hover dot on its azure.50 tint reads at 2.84:1; the hover step was kept by design decision (2026-10-07).
+  "radio.dot-selected-hover": 2.8,
+};
+
 /** Foreground property → [WCAG threshold, criterion]. */
 const COMPONENT_FOREGROUNDS = {
   label: [AA_TEXT, "1.4.3"],
@@ -818,7 +832,7 @@ const COMPONENT_FOREGROUNDS = {
 
 const contrastRule = {
   id: "tokens/contrast",
-  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3).",
+  description: "Paired foregrounds meet WCAG AA against their background: text-*-on-bg-fill*/on-bg-surface* against the matching fill (4.5:1), and each component's enabled label/description (4.5:1) and icon/dot (3:1) against the fill it sits on, or against both canvases when that fill is transparent. An -inverse component key uses bg-surface-inverse as its canvas, and a fill with a bg-opacity-* companion is blended over the canvas at that opacity first. Disabled states are exempt (WCAG 1.4.3). Text paired with an azure step needs 3:1 (the azure exception, README → Azure contrast exception), and a few component pairings are accepted below their floor by name.",
   check(api) {
     const t = load(api);
     if (!t) return;
@@ -842,6 +856,13 @@ function checkContrast(api, model, brand) {
   // A component key with an -inverse surface segment sits on the dark canvas instead.
   const inverseCanvases = ["color.bg-surface-inverse"].filter((id) => hex(id));
 
+  const azure = new Set(
+    model.inTier("primitives")
+      .filter((leaf) => leaf.path[0] === "color" && leaf.path[1] === "azure")
+      .map((leaf) => hex(leaf.id)?.toUpperCase()),
+  );
+  const isAzure = (h) => typeof h === "string" && azure.has(h.toUpperCase());
+
   /** bgIds are token ids, or { id, over, alpha } for a tint laid over a canvas at an opacity. */
   const check = (fgLeaf, bgIds, threshold, criterion) => {
     const fg = hex(fgLeaf.id);
@@ -852,11 +873,14 @@ function checkContrast(api, model, brand) {
       const bg = tint ? hex(tint.id) && hex(tint.over) && composite(hex(tint.id), tint.alpha, hex(tint.over)) : hex(entry);
       if (!bg) continue;
       const ratio = contrast(fg, bg);
-      if (ratio < threshold) {
+      let floor = threshold;
+      if (criterion === "1.4.3" && (isAzure(fg) || isAzure(tint ? hex(tint.id) : bg))) floor = Math.min(floor, AZURE_TEXT_FLOOR);
+      if (fgLeaf.tier === "component" && fgLeaf.id in ACCEPTED_BELOW_FLOOR) floor = Math.min(floor, ACCEPTED_BELOW_FLOOR[fgLeaf.id]);
+      if (ratio < floor) {
         api.report({
           ...at(fgLeaf),
           subject: `${fgLeaf.id} on ${tint ? tint.id : bgId}${brand ? ` in ${brand.id}` : ""}`,
-          message: `${brand ? `In ${brand.name}, ` : ""}${label(fgLeaf)} (${fg}) on ${bgId} (${bg}) is ${formatRatio(ratio)}, below the ${threshold}:1 WCAG ${criterion} minimum.`,
+          message: `${brand ? `In ${brand.name}, ` : ""}${label(fgLeaf)} (${fg}) on ${bgId} (${bg}) is ${formatRatio(ratio)}, below the ${floor}:1 ${floor < threshold ? `floor of the azure exception (WCAG ${criterion} asks ${threshold}:1)` : `WCAG ${criterion} minimum`}.`,
         });
       }
     }

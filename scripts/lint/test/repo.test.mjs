@@ -68,7 +68,7 @@ describe("docs rules", () => {
       "| Step | Neutral | Azure |",
       "|---|---|---|",
       "| `0` | #FFFFFF | #000000 |",
-      "| `50` | #FAFAFA | #EDF8FF |",
+      "| `50` | #FAFAFA | #EDFAFF |",
       "",
       "| Group | Tokens |",
       "|---|---|",
@@ -79,7 +79,7 @@ describe("docs rules", () => {
     const hits = ofRule(await lint(root, "docs/token-facts"), "docs/token-facts");
     const text = hits.map((h) => h.message).join("\n");
     assert.equal(hits.length, 5, text);
-    assert.match(text, /border-focus aliases color\.azure\.400; tokens\.json has \{color\.azure\.600\}/);
+    assert.match(text, /border-focus aliases color\.azure\.400; tokens\.json has \{color\.azure\.700\}/);
     assert.match(text, /fontSize\.14 is 15px; it resolves to 14px/);
     assert.match(text, /color\.azure\.0 \(#000000\), which does not exist/);
     assert.match(text, new RegExp(`button/\\* has 104 tokens; tokens\\.json has ${BUTTON_TOKENS}`));

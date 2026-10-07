@@ -27,28 +27,28 @@
   --color-neutral-900: #171717;
   /** Neutral ramp, step 950. Safe text on top: text-inverse at 19.79:1 (passes AA and AAA); text-primary fails at 1.00:1. */
   --color-neutral-950: #0A0A0A;
-  /** Azure ramp, step 50. Safe text on top: text-primary at 18.35:1 (passes AA and AAA); text-inverse fails at 1.07:1. */
-  --color-azure-50: #EDF8FF;
-  /** Azure ramp, step 100. Safe text on top: text-primary at 16.63:1 (passes AA and AAA); text-inverse fails at 1.18:1. */
-  --color-azure-100: #D6EFFF;
-  /** Azure ramp, step 200. Safe text on top: text-primary at 15.34:1 (passes AA and AAA); text-inverse fails at 1.28:1. */
-  --color-azure-200: #C2E8FF;
-  /** Azure ramp, step 300. Safe text on top: text-primary at 12.09:1 (passes AA and AAA); text-inverse fails at 1.63:1. */
-  --color-azure-300: #83D4FF;
+  /** Azure ramp, step 50. Safe text on top: text-primary at 18.59:1 (passes AA and AAA); text-inverse fails at 1.06:1. */
+  --color-azure-50: #EDFAFF;
+  /** Azure ramp, step 100. Safe text on top: text-primary at 17.08:1 (passes AA and AAA); text-inverse fails at 1.15:1. */
+  --color-azure-100: #D6F3FF;
+  /** Azure ramp, step 200. Safe text on top: text-primary at 15.25:1 (passes AA and AAA); text-inverse fails at 1.29:1. */
+  --color-azure-200: #B5EAFF;
+  /** Azure ramp, step 300. Safe text on top: text-primary at 13.16:1 (passes AA and AAA); text-inverse fails at 1.50:1. */
+  --color-azure-300: #83DFFF;
   /** Azure ramp, step 400. Safe text on top: text-primary at 9.26:1 (passes AA and AAA); text-inverse fails at 2.13:1. */
   --color-azure-400: #48BBFF;
-  /** Azure ramp, step 500. Safe text on top: text-primary at 6.83:1 (passes AA); text-inverse fails at 2.89:1. */
-  --color-azure-500: #1E9CFF;
-  /** Azure ramp, step 600. Safe text on top: text-primary at 5.27:1 (passes AA); text-inverse fails at 3.75:1. Too weak for text: it fails AA on white at 3.75:1, which is why text-link and bg-fill-brand-hover were moved off it. It still backs border-focus and border-brand-hover, and text-brand-hover for the Radio dot — all non-text graphics under the 3:1 rule of WCAG 1.4.11, which it clears. */
-  --color-azure-600: #0681FF;
-  /** Azure ramp, step 700. Safe text on top: text-inverse at 5.11:1 (passes AA); text-primary fails at 3.87:1. */
-  --color-azure-700: #0067E8;
-  /** Azure ramp, step 800. Safe text on top: text-inverse at 6.60:1 (passes AA); text-primary fails at 2.99:1. */
-  --color-azure-800: #0857C5;
-  /** Azure ramp, step 900. Safe text on top: text-inverse at 8.31:1 (passes AA and AAA); text-primary fails at 2.37:1. */
-  --color-azure-900: #0D4C9B;
-  /** Azure ramp, step 950. Safe text on top: text-inverse at 13.26:1 (passes AA and AAA); text-primary fails at 1.49:1. */
-  --color-azure-950: #0E2F5D;
+  /** Azure ramp, step 500. Safe text on top: text-primary at 8.21:1 (passes AA and AAA); text-inverse fails at 2.41:1. */
+  --color-azure-500: #1EB0FF;
+  /** Azure ramp, step 600. Safe text on top: text-primary at 6.54:1 (passes AA); text-inverse fails at 3.02:1. Too weak for text: it reads at 3.02:1 on white. It backs the brand hover steps (text-, icon- and border-brand-hover). The Radio hover dot on its azure.50 tint reads at 2.84:1, below the 3:1 rule of WCAG 1.4.11, and is accepted by design decision (README, Azure contrast exception). */
+  --color-azure-600: #0698FF;
+  /** Azure ramp, step 700. Safe text on top: text-primary at 5.62:1 (passes AA); text-inverse fails at 3.52:1. The MakeMyTrip primary. White text on it reads at 3.52:1, below AA for normal text; brand and info roles accept that under the azure exception, which follows Apple guidance with a 3:1 floor (README, Azure contrast exception). Inline links use azure.800 instead. */
+  --color-azure-700: #0088FF;
+  /** Azure ramp, step 800. Safe text on top: text-inverse at 5.53:1 (passes AA); text-primary fails at 3.57:1. */
+  --color-azure-800: #0868C5;
+  /** Azure ramp, step 900. Safe text on top: text-inverse at 7.27:1 (passes AA and AAA); text-primary fails at 2.72:1. */
+  --color-azure-900: #0D589B;
+  /** Azure ramp, step 950. Safe text on top: text-inverse at 12.32:1 (passes AA and AAA); text-primary fails at 1.60:1. */
+  --color-azure-950: #0E365D;
   /** Red ramp, step 50. Safe text on top: text-primary at 18.09:1 (passes AA and AAA); text-inverse fails at 1.09:1. */
   --color-red-50: #FEF2F2;
   /** Red ramp, step 100. Safe text on top: text-primary at 16.24:1 (passes AA and AAA); text-inverse fails at 1.21:1. */
@@ -346,19 +346,19 @@
   /** Pressed state for a tappable white card, sheet row or menu item on the grey page (bg-surface-secondary). The same grey as bg-secondary, so on the grey canvas a pressed card keeps its edge only through its border or shadow. */
   --color-bg-surface-secondary-pressed: #F5F5F5;
   /** Brand-tinted container — tertiary button default, selected list rows, brand callouts. This is a background behind content; for a solid brand element such as a primary button use bg-fill-brand. */
-  --color-bg-surface-brand: #EDF8FF;
+  --color-bg-surface-brand: #EDFAFF;
   /** Hover state for bg-surface-brand, and the hover background for brand controls that are transparent at rest (secondary and text buttons). */
-  --color-bg-surface-brand-hover: #D6EFFF;
+  --color-bg-surface-brand-hover: #D6F3FF;
   /** Light pressed step for a brand-tinted surface, the same tint as bg-surface-brand-hover, for presses that should barely deepen. Pair the label with text-brand-on-bg-surface-hover. For the standard pressed state use bg-surface-brand-pressed-strong. */
-  --color-bg-surface-brand-pressed-subtle: #D6EFFF;
+  --color-bg-surface-brand-pressed-subtle: #D6F3FF;
   /** Pressed state for bg-surface-brand and for brand controls that are transparent at rest — secondary and tertiary button presses, the selected chip. Pair the label with text-brand-on-bg-surface-pressed. For a lighter press use bg-surface-brand-pressed-subtle. */
-  --color-bg-surface-brand-pressed-strong: #C2E8FF;
+  --color-bg-surface-brand-pressed-strong: #B5EAFF;
   /** Informational container — info banners, inline info messages. Pair with text-info, border-info and icon-info. For a solid info element such as a badge use bg-fill-info-strong. */
-  --color-bg-surface-info: #EDF8FF;
+  --color-bg-surface-info: #EDFAFF;
   /** Hover state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-hover. */
-  --color-bg-surface-info-hover: #D6EFFF;
+  --color-bg-surface-info-hover: #D6F3FF;
   /** Pressed state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-pressed. */
-  --color-bg-surface-info-pressed: #C2E8FF;
+  --color-bg-surface-info-pressed: #B5EAFF;
   /** Success container — confirmation banners, completed-state panels. Pair with text-success, border-success and icon-success. */
   --color-bg-surface-success: #F0FDF4;
   /** Hover state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-hover. */
@@ -406,19 +406,19 @@
   /** Pressed state for bg-fill-secondary — an interactive segmented track or low-emphasis neutral control. */
   --color-bg-fill-secondary-pressed: #D4D4D4;
   /** Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand. */
-  --color-bg-fill-brand: #0067E8;
+  --color-bg-fill-brand: #0088FF;
   /** Hover state for bg-fill-brand — primary button hover. */
-  --color-bg-fill-brand-hover: #0857C5;
+  --color-bg-fill-brand-hover: #0868C5;
   /** Pressed/active state for bg-fill-brand — primary button pressed. */
-  --color-bg-fill-brand-pressed: #0D4C9B;
+  --color-bg-fill-brand-pressed: #0D589B;
   /** Solid informational fill — info badges, counters, status dots. Pair the label with text-info-on-bg-fill-strong. */
-  --color-bg-fill-info-strong: #0067E8;
+  --color-bg-fill-info-strong: #0088FF;
   /** Hover state for bg-fill-info-strong on an interactive info element. The label stays text-info-on-bg-fill-strong. */
-  --color-bg-fill-info-strong-hover: #0857C5;
+  --color-bg-fill-info-strong-hover: #0868C5;
   /** Pressed state for bg-fill-info-strong on an interactive info element. The label stays text-info-on-bg-fill-strong. */
-  --color-bg-fill-info-strong-pressed: #0D4C9B;
+  --color-bg-fill-info-strong-pressed: #0D589B;
   /** Tinted informational fill — low-emphasis info badges and tags. Pair the label with text-info-on-bg-fill-subtle. */
-  --color-bg-fill-info-subtle: #EDF8FF;
+  --color-bg-fill-info-subtle: #EDFAFF;
   /** Solid success fill — success badges and status dots. Pair the label with text-success-on-bg-fill-strong. */
   --color-bg-fill-success-strong: #008236;
   /** Hover state for bg-fill-success-strong on an interactive success element. Darker than the rest step, because a lighter green would drop the white label below AA. */
@@ -472,41 +472,41 @@
   /** Disabled text on an inverted background. Dimmer than text-inverse-secondary so a disabled item never reads as supporting copy. */
   --color-text-inverse-disabled: #737373;
   /** Inline hyperlink inside body copy, with text-link-hover and text-link-pressed for its states. For a brand-coloured control label (secondary, tertiary or text button) use text-brand; on dark backgrounds use text-link-inverse. */
-  --color-text-link: #0067E8;
+  --color-text-link: #0868C5;
   /** Hovered inline hyperlink inside body copy. Darker than text-link so the change reads without relying on the underline alone. */
-  --color-text-link-hover: #0857C5;
+  --color-text-link-hover: #0D589B;
   /** Pressed inline hyperlink inside body copy. */
-  --color-text-link-pressed: #0D4C9B;
+  --color-text-link-pressed: #0E365D;
   /** Inline hyperlink on an inverted background (bg-surface-inverse, bg-fill-inverse) — links inside dark toasts and tooltips. On light backgrounds use text-link. */
-  --color-text-link-inverse: #83D4FF;
+  --color-text-link-inverse: #83DFFF;
   /** Brand-coloured label on a neutral or brand-tinted background — secondary, tertiary and text button labels, selected tab labels. On a solid brand fill use text-brand-on-bg-fill. */
-  --color-text-brand: #0067E8;
+  --color-text-brand: #0088FF;
   /** Hover state for text-brand. */
-  --color-text-brand-hover: #0681FF;
+  --color-text-brand-hover: #0698FF;
   /** Pressed/active state for text-brand. */
-  --color-text-brand-pressed: #0857C5;
+  --color-text-brand-pressed: #0868C5;
   /** Label colour on bg-fill-brand — primary button content. For an icon on the same fill use icon-brand-on-bg-fill. Do not use on tinted brand surfaces, where it will not have contrast. */
   --color-text-brand-on-bg-fill: #FFFFFF;
   /** Brand label colour on a tinted brand surface while hovered — the secondary, tertiary and text button labels. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For a label on a solid brand fill use text-brand-on-bg-fill; for brand foreground marks such as the Radio dot use text-brand-hover, which tracks border-brand-hover instead. */
-  --color-text-brand-on-bg-surface-hover: #0857C5;
+  --color-text-brand-on-bg-surface-hover: #0868C5;
   /** Brand label colour on a tinted brand surface while pressed. One step darker than text-brand-on-bg-surface-hover, matching the deeper surface underneath. */
-  --color-text-brand-on-bg-surface-pressed: #0D4C9B;
+  --color-text-brand-on-bg-surface-pressed: #0D589B;
   /** Brand text on an inverted or dark background, such as the label of a secondary, tertiary or text button on a dark banner. Lighter than text-brand so it holds AA on near black and navy; on light backgrounds use text-brand. For inline links use text-link-inverse. */
-  --color-text-brand-inverse: #83D4FF;
+  --color-text-brand-inverse: #83DFFF;
   /** Brand text on an inverted or dark background while its control is hovered. One step lighter than text-brand-inverse, the mirror of light, where hover darkens. */
-  --color-text-brand-inverse-hover: #C2E8FF;
+  --color-text-brand-inverse-hover: #B5EAFF;
   /** Brand text on an inverted or dark background while its control is pressed. Two steps lighter than text-brand-inverse so the press reads against the deeper tint. */
-  --color-text-brand-inverse-pressed: #D6EFFF;
+  --color-text-brand-inverse-pressed: #D6F3FF;
   /** Informational text on a neutral or info-tinted surface (bg-surface-info). On a solid info fill use the text-info-on-bg-fill-* variants. */
-  --color-text-info: #0067E8;
+  --color-text-info: #0088FF;
   /** Label colour on bg-fill-info-strong and its hover and pressed steps. For an icon on the same fill use icon-info-on-bg-fill-strong. */
   --color-text-info-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-info-subtle. */
-  --color-text-info-on-bg-fill-subtle: #0067E8;
+  --color-text-info-on-bg-fill-subtle: #0088FF;
   /** Info label colour on bg-surface-info-hover. Darker than text-info so the label keeps AA as the surface deepens beneath it. */
-  --color-text-info-on-bg-surface-hover: #0857C5;
+  --color-text-info-on-bg-surface-hover: #0868C5;
   /** Info label colour on bg-surface-info-pressed. Darker than text-info so the label keeps AA as the surface deepens beneath it. */
-  --color-text-info-on-bg-surface-pressed: #0D4C9B;
+  --color-text-info-on-bg-surface-pressed: #0D589B;
   /** Success text on a neutral or success-tinted surface (bg-surface-success). On a solid success fill use the text-success-on-bg-fill-* variants. */
   --color-text-success: #008236;
   /** Label colour on bg-fill-success-strong and its hover and pressed steps. For an icon on the same fill use icon-success-on-bg-fill-strong. */
@@ -560,15 +560,15 @@
   /** Border of a disabled low-emphasis control — disabled input field. */
   --color-border-disabled-subtle: #D4D4D4;
   /** Keyboard focus ring. Apply on :focus-visible rather than :focus so the ring does not appear on pointer interaction. */
-  --color-border-focus: #0681FF;
+  --color-border-focus: #0088FF;
   /** Brand border on an unfilled control — secondary button default, selected card outline. */
-  --color-border-brand: #0067E8;
+  --color-border-brand: #0088FF;
   /** Hover state for border-brand. */
-  --color-border-brand-hover: #0681FF;
+  --color-border-brand-hover: #0698FF;
   /** Pressed/active state for border-brand. */
-  --color-border-brand-pressed: #0857C5;
+  --color-border-brand-pressed: #0868C5;
   /** Border of an informational container (bg-surface-info). */
-  --color-border-info: #83D4FF;
+  --color-border-info: #83DFFF;
   /** Border of a success container (bg-surface-success). For the outline of a validated control use border-success-strong. */
   --color-border-success: #7BF1A8;
   /** Strong green outline for a control in a success state — a validated input field or a confirmed selection. For the edge of a success banner use border-success. */
@@ -586,9 +586,9 @@
   /** Brand outline on an inverted or dark background, such as an inverse secondary button or the inverse focus ring. One step deeper than text-brand-inverse so the edge reads crisp; on light backgrounds use border-brand. */
   --color-border-brand-inverse: #48BBFF;
   /** Brand outline on an inverted or dark background while its control is hovered. One step lighter than border-brand-inverse. */
-  --color-border-brand-inverse-hover: #83D4FF;
+  --color-border-brand-inverse-hover: #83DFFF;
   /** Brand outline on an inverted or dark background while its control is pressed. Two steps lighter than border-brand-inverse. */
-  --color-border-brand-inverse-pressed: #C2E8FF;
+  --color-border-brand-inverse-pressed: #B5EAFF;
   /** Destructive outline on an inverted or dark background, such as an inverse destructive secondary button or its focus ring. On light backgrounds use border-warning-strong. */
   --color-border-warning-inverse: #FF6467;
   /** Destructive outline on an inverted or dark background while its control is hovered. One step lighter than border-warning-inverse. */
@@ -628,23 +628,23 @@
   /** Lowest-emphasis icon — decorative affordances, input adornments, chevrons. Matches text-tertiary; for an icon inside a disabled control use icon-disabled. */
   --color-icon-tertiary: #737373;
   /** Brand-coloured icon on a neutral or brand-tinted background. On a solid brand fill use icon-brand-on-bg-fill. */
-  --color-icon-brand: #0067E8;
+  --color-icon-brand: #0088FF;
   /** Hovered brand icon on a neutral background, tracking text-brand-hover and border-brand-hover. On a tinted brand surface keep the icon in step with the label instead. */
-  --color-icon-brand-hover: #0681FF;
+  --color-icon-brand-hover: #0698FF;
   /** Pressed brand icon on a neutral background, tracking text-brand-pressed and border-brand-pressed. */
-  --color-icon-brand-pressed: #0857C5;
+  --color-icon-brand-pressed: #0868C5;
   /** Icon on bg-fill-brand and its hover and pressed steps — the primary button icon and the selected Checkbox tick. For brand icons on neutral or tinted backgrounds use icon-brand. */
   --color-icon-brand-on-bg-fill: #FFFFFF;
   /** Brand icon on a tinted brand surface while hovered — the icons in secondary, tertiary and text buttons. Tracks text-brand-on-bg-surface-hover so icon and label stay one colour as the surface deepens. For a hovered brand icon on a neutral background use icon-brand-hover. */
-  --color-icon-brand-on-bg-surface-hover: #0857C5;
+  --color-icon-brand-on-bg-surface-hover: #0868C5;
   /** Brand icon on a tinted brand surface while pressed — the icons in secondary, tertiary and text buttons. Tracks text-brand-on-bg-surface-pressed so icon and label stay one colour as the surface deepens. For a pressed brand icon on a neutral background use icon-brand-pressed. */
-  --color-icon-brand-on-bg-surface-pressed: #0D4C9B;
+  --color-icon-brand-on-bg-surface-pressed: #0D589B;
   /** Brand icon on an inverted or dark background, such as the glyph of an inverse secondary, tertiary or text button. One step deeper than text-brand-inverse, like the other inverse icons; for an info status icon use icon-info-inverse. */
   --color-icon-brand-inverse: #48BBFF;
   /** Brand icon on an inverted or dark background while its control is hovered. One step lighter than icon-brand-inverse. */
-  --color-icon-brand-inverse-hover: #83D4FF;
+  --color-icon-brand-inverse-hover: #83DFFF;
   /** Brand icon on an inverted or dark background while its control is pressed. Two steps lighter than icon-brand-inverse. */
-  --color-icon-brand-inverse-pressed: #C2E8FF;
+  --color-icon-brand-inverse-pressed: #B5EAFF;
   /** Status icon in a success message or container. */
   --color-icon-success: #008236;
   /** Icon on bg-fill-success-strong — success badges. For a success icon on a neutral or tinted background use icon-success. */
@@ -672,11 +672,11 @@
   /** Icon on bg-fill-warning-subtle — subtle error badges and tags. */
   --color-icon-warning-on-bg-fill-subtle: #C10007;
   /** Status icon in an informational message or container. */
-  --color-icon-info: #0067E8;
+  --color-icon-info: #0088FF;
   /** Icon on bg-fill-info-strong — info badges and counters. For an info icon on a neutral or tinted background use icon-info. */
   --color-icon-info-on-bg-fill-strong: #FFFFFF;
   /** Icon on bg-fill-info-subtle — subtle info badges and tags. */
-  --color-icon-info-on-bg-fill-subtle: #0067E8;
+  --color-icon-info-on-bg-fill-subtle: #0088FF;
   /** Explicit no-fill. Use where a colour token is required but the element must be see-through — the resting background of secondary and text buttons — so the value stays swappable instead of hard-coded to `transparent`. */
   --color-transparent: #FFFFFF00;
   /** Experimental pass-through to the raw amber 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
@@ -1405,7 +1405,7 @@
   /** Highest elevation, for layers that block the page: dialogs and bottom sheets, always shown over the scrim. Nothing in the product sits above it. */
   --shadow-modal: 0px 8px 16px #0A0A0A1F, 0px 16px 48px #0A0A0A29;
   /** Background of the primary (solid fill) button — default intent, at rest. */
-  --button-bg-primary-default: #0067E8;
+  --button-bg-primary-default: #0088FF;
   /** Background of the primary (solid fill) button — destructive intent, at rest. */
   --button-bg-primary-destructive-default: #C10007;
   /** Background of the primary (solid fill) button — destructive intent, when disabled. */
@@ -1417,17 +1417,17 @@
   /** Background of the primary (solid fill) button — default intent, when disabled. */
   --button-bg-primary-disabled: #E5E5E5;
   /** Background of the primary (solid fill) button — default intent, on hover. */
-  --button-bg-primary-hover: #0857C5;
+  --button-bg-primary-hover: #0868C5;
   /** Background of the primary (solid fill) button — default intent, while pressed. */
-  --button-bg-primary-pressed: #0D4C9B;
+  --button-bg-primary-pressed: #0D589B;
   /** Background of the primary (solid fill) button on an inverted or dark surface, default intent, at rest. The same fill as the light button; use button/bg-primary-default on light surfaces. */
-  --button-bg-primary-inverse-default: #0067E8;
+  --button-bg-primary-inverse-default: #0088FF;
   /** Background of the primary (solid fill) button on an inverted or dark surface, default intent, when disabled. Solid, never an opacity, so the disabled state reads on any dark surface. */
   --button-bg-primary-inverse-disabled: #262626;
   /** Background of the primary (solid fill) button on an inverted or dark surface, default intent, on hover. The same fill as the light button; use button/bg-primary-hover on light surfaces. */
-  --button-bg-primary-inverse-hover: #0857C5;
+  --button-bg-primary-inverse-hover: #0868C5;
   /** Background of the primary (solid fill) button on an inverted or dark surface, default intent, while pressed. The same fill as the light button; use button/bg-primary-pressed on light surfaces. */
-  --button-bg-primary-inverse-pressed: #0D4C9B;
+  --button-bg-primary-inverse-pressed: #0D589B;
   /** Background of the primary (solid fill) button on an inverted or dark surface, destructive intent, at rest. The same fill as the light button; use button/bg-primary-destructive-default on light surfaces. */
   --button-bg-primary-inverse-destructive-default: #C10007;
   /** Background of the primary (solid fill) button on an inverted or dark surface, destructive intent, when disabled. Solid, never an opacity, so the disabled state reads on any dark surface. */
@@ -1449,9 +1449,9 @@
   /** Background of the secondary (outlined) button — default intent, when disabled. */
   --button-bg-secondary-disabled: #FFFFFF00;
   /** Background of the secondary (outlined) button — default intent, on hover. */
-  --button-bg-secondary-hover: #D6EFFF;
+  --button-bg-secondary-hover: #D6F3FF;
   /** Background of the secondary (outlined) button — default intent, while pressed. */
-  --button-bg-secondary-pressed: #C2E8FF;
+  --button-bg-secondary-pressed: #B5EAFF;
   /** Background of the secondary (outlined) button on an inverted or dark surface, default intent, at rest. Transparent, so the dark surface shows through. */
   --button-bg-secondary-inverse-default: #FFFFFF00;
   /** Background of the secondary (outlined) button on an inverted or dark surface, default intent, when disabled. Transparent, so the dark surface shows through. */
@@ -1469,7 +1469,7 @@
   /** Background of the secondary (outlined) button on an inverted or dark surface, destructive intent, while pressed. A translucent tint: render it at button/bg-opacity-secondary-inverse-destructive-pressed so it works on near black, navy and photos under a scrim. */
   --button-bg-secondary-inverse-destructive-pressed: #FF6467;
   /** Background of the tertiary (tinted) button — default intent, at rest. */
-  --button-bg-tertiary-default: #EDF8FF;
+  --button-bg-tertiary-default: #EDFAFF;
   /** Background of the tertiary (tinted) button — destructive intent, at rest. */
   --button-bg-tertiary-destructive-default: #FEF2F2;
   /** Background of the tertiary (tinted) button — destructive intent, when disabled. */
@@ -1481,9 +1481,9 @@
   /** Background of the tertiary (tinted) button — default intent, when disabled. */
   --button-bg-tertiary-disabled: #E5E5E5;
   /** Background of the tertiary (tinted) button — default intent, on hover. */
-  --button-bg-tertiary-hover: #D6EFFF;
+  --button-bg-tertiary-hover: #D6F3FF;
   /** Background of the tertiary (tinted) button — default intent, while pressed. */
-  --button-bg-tertiary-pressed: #C2E8FF;
+  --button-bg-tertiary-pressed: #B5EAFF;
   /** Background of the tertiary (tinted) button on an inverted or dark surface, default intent, at rest. A translucent tint: render it at button/bg-opacity-tertiary-inverse-default so it works on near black, navy and photos under a scrim. */
   --button-bg-tertiary-inverse-default: #48BBFF;
   /** Background of the tertiary (tinted) button on an inverted or dark surface, default intent, when disabled. Solid, never an opacity, so the disabled state reads on any dark surface. */
@@ -1513,9 +1513,9 @@
   /** Background of the text (no fill or outline) button — default intent, when disabled. */
   --button-bg-text-disabled: #FFFFFF00;
   /** Background of the text (no fill or outline) button — default intent, on hover. */
-  --button-bg-text-hover: #EDF8FF;
+  --button-bg-text-hover: #EDFAFF;
   /** Background of the text (no fill or outline) button — default intent, while pressed. */
-  --button-bg-text-pressed: #D6EFFF;
+  --button-bg-text-pressed: #D6F3FF;
   /** Opacity at which button/bg-secondary-inverse-hover is laid over the dark surface. 15%, so the inverse tint ladder mirrors the light one; retune the ladder here, not in the colour. */
   --button-bg-opacity-secondary-inverse-hover: 0.15;
   /** Opacity at which button/bg-secondary-inverse-pressed is laid over the dark surface. 20%, so the inverse tint ladder mirrors the light one; retune the ladder here, not in the colour. */
@@ -1593,7 +1593,7 @@
   /** Outline of the primary (solid fill) button on an inverted or dark surface, destructive intent, while pressed. Transparent: secondary is the only hierarchy that paints a border, and this token exists so every hierarchy exposes the same slot. */
   --button-border-primary-inverse-destructive-pressed: #FFFFFF00;
   /** Outline of the secondary (outlined) button — default intent, at rest. */
-  --button-border-secondary-default: #0067E8;
+  --button-border-secondary-default: #0088FF;
   /** Outline of the secondary (outlined) button — destructive intent, at rest. */
   --button-border-secondary-destructive-default: #C10007;
   /** Outline of the secondary (outlined) button — destructive intent, when disabled. */
@@ -1605,17 +1605,17 @@
   /** Outline of the secondary (outlined) button — default intent, when disabled. */
   --button-border-secondary-disabled: #A1A1A1;
   /** Outline of the secondary (outlined) button — default intent, on hover. */
-  --button-border-secondary-hover: #0681FF;
+  --button-border-secondary-hover: #0698FF;
   /** Outline of the secondary (outlined) button — default intent, while pressed. */
-  --button-border-secondary-pressed: #0857C5;
+  --button-border-secondary-pressed: #0868C5;
   /** Outline of the secondary (outlined) button on an inverted or dark surface, default intent, at rest. */
   --button-border-secondary-inverse-default: #48BBFF;
   /** Outline of the secondary (outlined) button on an inverted or dark surface, default intent, when disabled. */
   --button-border-secondary-inverse-disabled: #525252;
   /** Outline of the secondary (outlined) button on an inverted or dark surface, default intent, on hover. */
-  --button-border-secondary-inverse-hover: #83D4FF;
+  --button-border-secondary-inverse-hover: #83DFFF;
   /** Outline of the secondary (outlined) button on an inverted or dark surface, default intent, while pressed. */
-  --button-border-secondary-inverse-pressed: #C2E8FF;
+  --button-border-secondary-inverse-pressed: #B5EAFF;
   /** Outline of the secondary (outlined) button on an inverted or dark surface, destructive intent, at rest. */
   --button-border-secondary-inverse-destructive-default: #FF6467;
   /** Outline of the secondary (outlined) button on an inverted or dark surface, destructive intent, when disabled. */
@@ -1691,7 +1691,7 @@
   /** Thickness of the button outline. Only the secondary hierarchy paints a border, but the weight is configured on all four. */
   --button-border-width: 1px;
   /** Colour of the keyboard focus ring. The ring is a separate rectangle outside the auto-layout of the button, not a border — the border-* tokens are a different slot. */
-  --button-focus-ring: #0067E8;
+  --button-focus-ring: #0088FF;
   /** Colour of the keyboard focus ring on a destructive button. */
   --button-focus-ring-destructive: #C10007;
   /** Colour of the keyboard focus ring around a button on an inverted or dark surface. Lighter than button/focus-ring, which falls below 3:1 on navy; use it for every inverse hierarchy with the default intent. */
@@ -1749,7 +1749,7 @@
   /** Colour of the leading, trailing and loading icons in the primary (solid fill) button on an inverted or dark surface, destructive intent, while pressed. Matches button/label-primary-inverse-destructive-pressed. */
   --button-icon-primary-inverse-destructive-pressed: #FFFFFF;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button — default intent. The icons keep this colour on focus. Matches button/label-secondary-default at every state, so glyphs and text read as one colour. */
-  --button-icon-secondary-default: #0067E8;
+  --button-icon-secondary-default: #0088FF;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button — destructive intent. The icons keep this colour on focus. Matches button/label-secondary-destructive-default at every state, so glyphs and text read as one colour. */
   --button-icon-secondary-destructive-default: #C10007;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button — destructive intent when disabled. Matches button/label-secondary-destructive-disabled. */
@@ -1761,17 +1761,17 @@
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button — default intent when disabled. Matches button/label-secondary-disabled. */
   --button-icon-secondary-disabled: #A1A1A1;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button — default intent, on hover. Matches button/label-secondary-hover. */
-  --button-icon-secondary-hover: #0857C5;
+  --button-icon-secondary-hover: #0868C5;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button — default intent, while pressed. Matches button/label-secondary-pressed. */
-  --button-icon-secondary-pressed: #0D4C9B;
+  --button-icon-secondary-pressed: #0D589B;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, default intent, at rest. One step deeper than the label, like the other inverse icons. */
   --button-icon-secondary-inverse-default: #48BBFF;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, default intent, when disabled. Matches button/label-secondary-inverse-disabled. */
   --button-icon-secondary-inverse-disabled: #737373;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, default intent, on hover. One step deeper than the label, like the other inverse icons. */
-  --button-icon-secondary-inverse-hover: #83D4FF;
+  --button-icon-secondary-inverse-hover: #83DFFF;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, default intent, while pressed. One step deeper than the label, like the other inverse icons. */
-  --button-icon-secondary-inverse-pressed: #C2E8FF;
+  --button-icon-secondary-inverse-pressed: #B5EAFF;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, destructive intent, at rest. One step deeper than the label, like the other inverse icons. */
   --button-icon-secondary-inverse-destructive-default: #FF6467;
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, destructive intent, when disabled. Matches button/label-secondary-inverse-destructive-disabled. */
@@ -1781,7 +1781,7 @@
   /** Colour of the leading, trailing and loading icons in the secondary (outlined) button on an inverted or dark surface, destructive intent, while pressed. One step deeper than the label, like the other inverse icons. */
   --button-icon-secondary-inverse-destructive-pressed: #FFC9C9;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — default intent. The icons keep this colour on focus. Matches button/label-tertiary-default at every state, so glyphs and text read as one colour. */
-  --button-icon-tertiary-default: #0067E8;
+  --button-icon-tertiary-default: #0088FF;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — destructive intent. The icons keep this colour on focus. Matches button/label-tertiary-destructive-default at every state, so glyphs and text read as one colour. */
   --button-icon-tertiary-destructive-default: #C10007;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — destructive intent when disabled. Matches button/label-tertiary-destructive-disabled. */
@@ -1793,17 +1793,17 @@
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — default intent when disabled. Matches button/label-tertiary-disabled. */
   --button-icon-tertiary-disabled: #A1A1A1;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — default intent, on hover. Matches button/label-tertiary-hover. */
-  --button-icon-tertiary-hover: #0857C5;
+  --button-icon-tertiary-hover: #0868C5;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted fill) button — default intent, while pressed. Matches button/label-tertiary-pressed. */
-  --button-icon-tertiary-pressed: #0D4C9B;
+  --button-icon-tertiary-pressed: #0D589B;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, default intent, at rest. One step deeper than the label, like the other inverse icons. */
   --button-icon-tertiary-inverse-default: #48BBFF;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, default intent, when disabled. Matches button/label-tertiary-inverse-disabled. */
   --button-icon-tertiary-inverse-disabled: #737373;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, default intent, on hover. One step deeper than the label, like the other inverse icons. */
-  --button-icon-tertiary-inverse-hover: #83D4FF;
+  --button-icon-tertiary-inverse-hover: #83DFFF;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, default intent, while pressed. One step deeper than the label, like the other inverse icons. */
-  --button-icon-tertiary-inverse-pressed: #C2E8FF;
+  --button-icon-tertiary-inverse-pressed: #B5EAFF;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, destructive intent, at rest. One step deeper than the label, like the other inverse icons. */
   --button-icon-tertiary-inverse-destructive-default: #FF6467;
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, destructive intent, when disabled. Matches button/label-tertiary-inverse-destructive-disabled. */
@@ -1813,7 +1813,7 @@
   /** Colour of the leading, trailing and loading icons in the tertiary (tinted) button on an inverted or dark surface, destructive intent, while pressed. One step deeper than the label, like the other inverse icons. */
   --button-icon-tertiary-inverse-destructive-pressed: #FFC9C9;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button — default intent. The icons keep this colour on focus. Matches button/label-text-default at every state, so glyphs and text read as one colour. */
-  --button-icon-text-default: #0067E8;
+  --button-icon-text-default: #0088FF;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button — destructive intent. The icons keep this colour on focus. Matches button/label-text-destructive-default at every state, so glyphs and text read as one colour. */
   --button-icon-text-destructive-default: #C10007;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button — destructive intent when disabled. Matches button/label-text-destructive-disabled. */
@@ -1825,17 +1825,17 @@
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button — default intent when disabled. Matches button/label-text-disabled. */
   --button-icon-text-disabled: #A1A1A1;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button — default intent, on hover. Matches button/label-text-hover. */
-  --button-icon-text-hover: #0857C5;
+  --button-icon-text-hover: #0868C5;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button — default intent, while pressed. Matches button/label-text-pressed. */
-  --button-icon-text-pressed: #0D4C9B;
+  --button-icon-text-pressed: #0D589B;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, default intent, at rest. One step deeper than the label, like the other inverse icons. */
   --button-icon-text-inverse-default: #48BBFF;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, default intent, when disabled. Matches button/label-text-inverse-disabled. */
   --button-icon-text-inverse-disabled: #737373;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, default intent, on hover. One step deeper than the label, like the other inverse icons. */
-  --button-icon-text-inverse-hover: #83D4FF;
+  --button-icon-text-inverse-hover: #83DFFF;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, default intent, while pressed. One step deeper than the label, like the other inverse icons. */
-  --button-icon-text-inverse-pressed: #C2E8FF;
+  --button-icon-text-inverse-pressed: #B5EAFF;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, destructive intent, at rest. One step deeper than the label, like the other inverse icons. */
   --button-icon-text-inverse-destructive-default: #FF6467;
   /** Colour of the leading, trailing and loading icons in the text (no fill or outline) button on an inverted or dark surface, destructive intent, when disabled. Matches button/label-text-inverse-destructive-disabled. */
@@ -1877,7 +1877,7 @@
   /** Colour of the text label in the primary (solid fill) button on an inverted or dark surface, destructive intent, while pressed. A solid fill keeps a white label in every state. */
   --button-label-primary-inverse-destructive-pressed: #FFFFFF;
   /** Colour of the text label in the secondary (outlined) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens. */
-  --button-label-secondary-default: #0067E8;
+  --button-label-secondary-default: #0088FF;
   /** Colour of the text label in the secondary (outlined) button — destructive intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens. */
   --button-label-secondary-destructive-default: #C10007;
   /** Colour of the text label in the secondary (outlined) button when disabled — destructive intent. */
@@ -1889,17 +1889,17 @@
   /** Colour of the text label in the secondary (outlined) button when disabled — default intent. */
   --button-label-secondary-disabled: #A1A1A1;
   /** Colour of the text label in the secondary (outlined) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
-  --button-label-secondary-hover: #0857C5;
+  --button-label-secondary-hover: #0868C5;
   /** Colour of the text label in the secondary (outlined) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
-  --button-label-secondary-pressed: #0D4C9B;
+  --button-label-secondary-pressed: #0D589B;
   /** Colour of the text label in the secondary (outlined) button on an inverted or dark surface, default intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens. */
-  --button-label-secondary-inverse-default: #83D4FF;
+  --button-label-secondary-inverse-default: #83DFFF;
   /** Colour of the text label in the secondary (outlined) button on an inverted or dark surface, default intent, when disabled. */
   --button-label-secondary-inverse-disabled: #737373;
   /** Colour of the text label in the secondary (outlined) button on an inverted or dark surface, default intent, on hover. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
-  --button-label-secondary-inverse-hover: #C2E8FF;
+  --button-label-secondary-inverse-hover: #B5EAFF;
   /** Colour of the text label in the secondary (outlined) button on an inverted or dark surface, default intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
-  --button-label-secondary-inverse-pressed: #D6EFFF;
+  --button-label-secondary-inverse-pressed: #D6F3FF;
   /** Colour of the text label in the secondary (outlined) button on an inverted or dark surface, destructive intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens. */
   --button-label-secondary-inverse-destructive-default: #FFA2A2;
   /** Colour of the text label in the secondary (outlined) button on an inverted or dark surface, destructive intent, when disabled. */
@@ -1909,7 +1909,7 @@
   /** Colour of the text label in the secondary (outlined) button on an inverted or dark surface, destructive intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
   --button-label-secondary-inverse-destructive-pressed: #FFE2E2;
   /** Colour of the text label in the tertiary (tinted) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens. */
-  --button-label-tertiary-default: #0067E8;
+  --button-label-tertiary-default: #0088FF;
   /** Colour of the text label in the tertiary (tinted) button — destructive intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens. */
   --button-label-tertiary-destructive-default: #C10007;
   /** Colour of the text label in the tertiary (tinted) button when disabled — destructive intent. */
@@ -1921,17 +1921,17 @@
   /** Colour of the text label in the tertiary (tinted) button when disabled — default intent. */
   --button-label-tertiary-disabled: #A1A1A1;
   /** Colour of the text label in the tertiary (tinted) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
-  --button-label-tertiary-hover: #0857C5;
+  --button-label-tertiary-hover: #0868C5;
   /** Colour of the text label in the tertiary (tinted) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
-  --button-label-tertiary-pressed: #0D4C9B;
+  --button-label-tertiary-pressed: #0D589B;
   /** Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, default intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens. */
-  --button-label-tertiary-inverse-default: #83D4FF;
+  --button-label-tertiary-inverse-default: #83DFFF;
   /** Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, default intent, when disabled. */
   --button-label-tertiary-inverse-disabled: #737373;
   /** Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, default intent, on hover. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
-  --button-label-tertiary-inverse-hover: #C2E8FF;
+  --button-label-tertiary-inverse-hover: #B5EAFF;
   /** Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, default intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
-  --button-label-tertiary-inverse-pressed: #D6EFFF;
+  --button-label-tertiary-inverse-pressed: #D6F3FF;
   /** Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, destructive intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens. */
   --button-label-tertiary-inverse-destructive-default: #FFA2A2;
   /** Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, destructive intent, when disabled. */
@@ -1941,7 +1941,7 @@
   /** Colour of the text label in the tertiary (tinted) button on an inverted or dark surface, destructive intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
   --button-label-tertiary-inverse-destructive-pressed: #FFE2E2;
   /** Colour of the text label in the text (no fill or outline) button — default intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens. */
-  --button-label-text-default: #0067E8;
+  --button-label-text-default: #0088FF;
   /** Colour of the text label in the text (no fill or outline) button — destructive intent. The label keeps this colour on focus; hover and pressed have their own tokens. The icon slots bind to the matching button/icon-* tokens. */
   --button-label-text-destructive-default: #C10007;
   /** Colour of the text label in the text (no fill or outline) button when disabled — destructive intent. */
@@ -1953,17 +1953,17 @@
   /** Colour of the text label in the text (no fill or outline) button when disabled — default intent. */
   --button-label-text-disabled: #A1A1A1;
   /** Colour of the text label in the text (no fill or outline) button — default intent, on hover. Darker than the resting label so it holds AA as the tinted background deepens. */
-  --button-label-text-hover: #0857C5;
+  --button-label-text-hover: #0868C5;
   /** Colour of the text label in the text (no fill or outline) button — default intent, while pressed. Darker than the resting label so it holds AA as the tinted background deepens. */
-  --button-label-text-pressed: #0D4C9B;
+  --button-label-text-pressed: #0D589B;
   /** Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, default intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens. */
-  --button-label-text-inverse-default: #83D4FF;
+  --button-label-text-inverse-default: #83DFFF;
   /** Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, default intent, when disabled. */
   --button-label-text-inverse-disabled: #737373;
   /** Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, default intent, on hover. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
-  --button-label-text-inverse-hover: #C2E8FF;
+  --button-label-text-inverse-hover: #B5EAFF;
   /** Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, default intent, while pressed. Lighter than the resting label, the mirror of the light button, where hover and press darken. */
-  --button-label-text-inverse-pressed: #D6EFFF;
+  --button-label-text-inverse-pressed: #D6F3FF;
   /** Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, destructive intent, at rest. The label keeps this colour on focus. The icon slots bind to the matching button/icon-* tokens. */
   --button-label-text-inverse-destructive-default: #FFA2A2;
   /** Colour of the text label in the text (no fill or outline) button on an inverted or dark surface, destructive intent, when disabled. */
@@ -2001,9 +2001,9 @@
   /** Fill of the checkbox box — unchecked, at rest. */
   --checkbox-bg-unselected-default: #FFFFFF;
   /** Fill of the checkbox box — unchecked, on hover. */
-  --checkbox-bg-unselected-hover: #EDF8FF;
+  --checkbox-bg-unselected-hover: #EDFAFF;
   /** Fill of the checkbox box — unchecked, while pressed. */
-  --checkbox-bg-unselected-pressed: #D6EFFF;
+  --checkbox-bg-unselected-pressed: #D6F3FF;
   /** Fill of the checkbox box — unchecked, when disabled. */
   --checkbox-bg-unselected-disabled: #E5E5E5;
   /** Fill of the checkbox box — unchecked and in the error state, at rest. */
@@ -2015,11 +2015,11 @@
   /** Fill of the checkbox box — unchecked and in the error state, when disabled. */
   --checkbox-bg-unselected-error-disabled: #E5E5E5;
   /** Fill of the checkbox box — checked, at rest. */
-  --checkbox-bg-selected-default: #0067E8;
+  --checkbox-bg-selected-default: #0088FF;
   /** Fill of the checkbox box — checked, on hover. */
-  --checkbox-bg-selected-hover: #0857C5;
+  --checkbox-bg-selected-hover: #0868C5;
   /** Fill of the checkbox box — checked, while pressed. */
-  --checkbox-bg-selected-pressed: #0D4C9B;
+  --checkbox-bg-selected-pressed: #0D589B;
   /** Fill of the checkbox box — checked, when disabled. */
   --checkbox-bg-selected-disabled: #A1A1A1;
   /** Fill of the checkbox box — checked and in the error state, at rest. */
@@ -2033,9 +2033,9 @@
   /** Outline of the checkbox box — unchecked, at rest. */
   --checkbox-border-unselected-default: #737373;
   /** Outline of the checkbox box — unchecked, on hover. */
-  --checkbox-border-unselected-hover: #0067E8;
+  --checkbox-border-unselected-hover: #0088FF;
   /** Outline of the checkbox box — unchecked, while pressed. */
-  --checkbox-border-unselected-pressed: #0857C5;
+  --checkbox-border-unselected-pressed: #0868C5;
   /** Outline of the checkbox box — unchecked, when disabled. */
   --checkbox-border-unselected-disabled: #A1A1A1;
   /** Outline of the checkbox box — unchecked and in the error state, at rest. */
@@ -2047,7 +2047,7 @@
   /** Outline of the checkbox box — unchecked and in the error state, when disabled. */
   --checkbox-border-unselected-error-disabled: #A1A1A1;
   /** Outline of the checkbox box — checked, at rest. */
-  --checkbox-border-selected-default: #0067E8;
+  --checkbox-border-selected-default: #0088FF;
   /** Outline of the checkbox box — checked, on hover. Transparent: the fill darkening to bg-fill-brand-hover is the hover feedback, so no stroke is drawn. */
   --checkbox-border-selected-hover: #FFFFFF00;
   /** Outline of the checkbox box — checked, while pressed. Transparent: the fill darkening to bg-fill-brand-pressed is the pressed feedback, so no stroke is drawn. */
@@ -2089,7 +2089,7 @@
   /** Colour of the helper text when the checkbox is disabled. */
   --checkbox-description-disabled: #A1A1A1;
   /** Colour of the keyboard focus ring. Apply on :focus-visible so the ring does not appear on pointer interaction. */
-  --checkbox-focus-ring: #0681FF;
+  --checkbox-focus-ring: #0088FF;
   /** Colour of the keyboard focus ring when the checkbox is in the error state. */
   --checkbox-focus-ring-error: #C10007;
   /** Width and height of the checkbox box at small size. The box is square, so this is both dimensions; the tappable area is set separately by min-touch-target. */
@@ -2131,9 +2131,9 @@
   /** Fill of the radio circle in both selected and unselected states — at rest. */
   --radio-bg-default: #FFFFFF;
   /** Fill of the radio circle in both selected and unselected states — on hover. */
-  --radio-bg-hover: #EDF8FF;
+  --radio-bg-hover: #EDFAFF;
   /** Fill of the radio circle in both selected and unselected states — while pressed. */
-  --radio-bg-pressed: #D6EFFF;
+  --radio-bg-pressed: #D6F3FF;
   /** Fill of the radio circle in both selected and unselected states — when disabled. */
   --radio-bg-disabled: #E5E5E5;
   /** Fill of the radio circle in both selected and unselected states, in the error state — at rest. */
@@ -2147,9 +2147,9 @@
   /** Outline of the radio circle — unselected, at rest. */
   --radio-border-unselected-default: #737373;
   /** Outline of the radio circle — unselected, on hover. */
-  --radio-border-unselected-hover: #0067E8;
+  --radio-border-unselected-hover: #0088FF;
   /** Outline of the radio circle — unselected, while pressed. */
-  --radio-border-unselected-pressed: #0857C5;
+  --radio-border-unselected-pressed: #0868C5;
   /** Outline of the radio circle — unselected, when disabled. */
   --radio-border-unselected-disabled: #A1A1A1;
   /** Outline of the radio circle — unselected and in the error state, at rest. */
@@ -2161,11 +2161,11 @@
   /** Outline of the radio circle — unselected and in the error state, when disabled. */
   --radio-border-unselected-error-disabled: #A1A1A1;
   /** Outline of the radio circle — selected, at rest. */
-  --radio-border-selected-default: #0067E8;
+  --radio-border-selected-default: #0088FF;
   /** Outline of the radio circle — selected, on hover. */
-  --radio-border-selected-hover: #0681FF;
+  --radio-border-selected-hover: #0698FF;
   /** Outline of the radio circle — selected, while pressed. */
-  --radio-border-selected-pressed: #0857C5;
+  --radio-border-selected-pressed: #0868C5;
   /** Outline of the radio circle — selected, when disabled. */
   --radio-border-selected-disabled: #A1A1A1;
   /** Outline of the radio circle — selected and in the error state, at rest. */
@@ -2177,11 +2177,11 @@
   /** Outline of the radio circle — selected and in the error state, when disabled. */
   --radio-border-selected-error-disabled: #A1A1A1;
   /** Colour of the selected dot inside the circle — selected, at rest. */
-  --radio-dot-selected-default: #0067E8;
+  --radio-dot-selected-default: #0088FF;
   /** Colour of the selected dot inside the circle — selected, on hover. */
-  --radio-dot-selected-hover: #0681FF;
+  --radio-dot-selected-hover: #0698FF;
   /** Colour of the selected dot inside the circle — selected, while pressed. */
-  --radio-dot-selected-pressed: #0857C5;
+  --radio-dot-selected-pressed: #0868C5;
   /** Colour of the selected dot inside the circle — selected, when disabled. */
   --radio-dot-selected-disabled: #A1A1A1;
   /** Colour of the selected dot inside the circle — selected and in the error state, at rest. */
@@ -2205,7 +2205,7 @@
   /** Colour of the focus state layer while the radio is unselected. The state layer takes the colour of the content it belongs to, so it follows the ring rather than the interior. */
   --radio-state-layer-unselected: #737373;
   /** Colour of the focus state layer while the radio is selected. */
-  --radio-state-layer-selected: #0067E8;
+  --radio-state-layer-selected: #0088FF;
   /** Colour of the focus state layer in the error state, selected or not. */
   --radio-state-layer-error: #C10007;
   /** Diameter of the radio circle at small size. The tappable area is set separately by min-touch-target. */
@@ -2251,11 +2251,11 @@
   /** Fill of the chip container — unselected, when disabled. The same light neutral in both selection states, so an inert chip does not read as chosen. */
   --chip-bg-unselected-disabled: #FAFAFA;
   /** Fill of the chip container — selected, at rest and on keyboard focus. A tint rather than a solid brand fill, so a row of selected chips stays calm; the label and border carry the brand colour. */
-  --chip-bg-selected-default: #EDF8FF;
+  --chip-bg-selected-default: #EDFAFF;
   /** Fill of the chip container — selected, on hover. */
-  --chip-bg-selected-hover: #D6EFFF;
+  --chip-bg-selected-hover: #D6F3FF;
   /** Fill of the chip container — selected, while pressed. */
-  --chip-bg-selected-pressed: #C2E8FF;
+  --chip-bg-selected-pressed: #B5EAFF;
   /** Fill of the chip container — selected, when disabled. The same light neutral in both selection states, so an inert chip does not read as chosen. */
   --chip-bg-selected-disabled: #FAFAFA;
   /** Outline of the chip — unselected, at rest and on keyboard focus. Painted only when the border is switched on. A divider-weight grey on purpose: the label, not the edge, identifies the chip, so this sits below the 3:1 of border-strong by design. */
@@ -2267,21 +2267,21 @@
   /** Outline of the chip — unselected, when disabled. Painted only when the border is switched on. */
   --chip-border-unselected-disabled: #D4D4D4;
   /** Outline of the chip — selected, at rest and on keyboard focus. Painted only when the border is switched on. */
-  --chip-border-selected-default: #0067E8;
+  --chip-border-selected-default: #0088FF;
   /** Outline of the chip — selected, on hover. Painted only when the border is switched on. */
-  --chip-border-selected-hover: #0681FF;
+  --chip-border-selected-hover: #0698FF;
   /** Outline of the chip — selected, while pressed. Painted only when the border is switched on. */
-  --chip-border-selected-pressed: #0857C5;
+  --chip-border-selected-pressed: #0868C5;
   /** Outline of the chip — selected, when disabled. Painted only when the border is switched on. */
   --chip-border-selected-disabled: #D4D4D4;
   /** Colour of the chip label — unselected, in every enabled state. It keeps this colour on hover, pressed and focus; only the fill and border move. */
   --chip-label-unselected-default: #525252;
   /** Colour of the chip label — selected, at rest and on keyboard focus. */
-  --chip-label-selected-default: #0067E8;
+  --chip-label-selected-default: #0088FF;
   /** Colour of the chip label — selected, on hover. Darkens with the fill so it holds AA contrast on bg-selected-hover. */
-  --chip-label-selected-hover: #0857C5;
+  --chip-label-selected-hover: #0868C5;
   /** Colour of the chip label — selected, while pressed. Darkens with the fill so it holds AA contrast on bg-selected-pressed. */
-  --chip-label-selected-pressed: #0D4C9B;
+  --chip-label-selected-pressed: #0D589B;
   /** Colour of the chip label when disabled, whether or not the chip is selected. */
   --chip-label-disabled: #A1A1A1;
   /** Colour of the optional secondary line under the chip label, in every enabled state and both selection states. Use it for supporting detail such as a price or a date, never for the chip name. */
@@ -2291,7 +2291,7 @@
   /** Colour of the leading icon, trailing icon and remove glyph — unselected, in every enabled state. Does not apply to the leading image, which keeps its own colours. */
   --chip-icon-unselected-default: #525252;
   /** Colour of the leading icon, trailing icon and remove glyph — selected, in every enabled state. Does not apply to the leading image. */
-  --chip-icon-selected-default: #0067E8;
+  --chip-icon-selected-default: #0088FF;
   /** Colour of the leading icon, trailing icon and remove glyph when the chip is disabled. The leading image is not recoloured; desaturate it in code if needed. */
   --chip-icon-disabled: #A1A1A1;
   /** Circle behind the remove glyph of a removable chip — unselected, when the remove button itself is hovered. Transparent at rest. */
@@ -2299,11 +2299,11 @@
   /** Circle behind the remove glyph of a removable chip — unselected, while the remove button itself is pressed. */
   --chip-remove-bg-unselected-pressed: #E5E5E5;
   /** Circle behind the remove glyph of a removable chip — selected, when the remove button itself is hovered. */
-  --chip-remove-bg-selected-hover: #C2E8FF;
+  --chip-remove-bg-selected-hover: #B5EAFF;
   /** Circle behind the remove glyph of a removable chip — selected, while the remove button itself is pressed. */
-  --chip-remove-bg-selected-pressed: #C2E8FF;
+  --chip-remove-bg-selected-pressed: #B5EAFF;
   /** Colour of the keyboard focus ring around the chip, and around the remove button of a removable chip. Apply on focus-visible so the ring does not appear on pointer interaction. */
-  --chip-focus-ring: #0681FF;
+  --chip-focus-ring: #0088FF;
   /** Minimum height of a one-line chip at small size. The chip hugs its content, so it grows past this when the secondary line is on. Not the tap target; see min-touch-target. */
   --chip-min-height-sm: 28px;
   /** Minimum height of a one-line chip at medium size. The chip hugs its content, so it grows past this when the secondary line is on. Not the tap target; see min-touch-target. */
@@ -2409,7 +2409,7 @@
   /** Fill of a tinted snackbar with the neutral intent: a white card that floats over content on its shadow. Use bg-inverse-neutral for the dark appearance. */
   --snackbar-bg-tinted-neutral: #FFFFFF;
   /** Fill of a tinted snackbar with the info intent: a light info tint, so the intent reads from the surface as well as the icon. Use bg-inverse-info for the dark appearance. */
-  --snackbar-bg-tinted-info: #EDF8FF;
+  --snackbar-bg-tinted-info: #EDFAFF;
   /** Fill of a tinted snackbar with the success intent: a light success tint, so the intent reads from the surface as well as the icon. Use bg-inverse-success for the dark appearance. */
   --snackbar-bg-tinted-success: #F0FDF4;
   /** Fill of a tinted snackbar with the caution intent: a light caution tint, so the intent reads from the surface as well as the icon. Use bg-inverse-caution for the dark appearance. */
@@ -2419,7 +2419,7 @@
   /** Outline of a tinted snackbar with the neutral intent. Decorative: the shadow separates the snackbar from the content behind it, so this sits below 3:1 on purpose. The inverse appearance has no border. */
   --snackbar-border-tinted-neutral: #D4D4D4;
   /** Outline of a tinted snackbar with the info intent. Decorative: the shadow separates the snackbar from the content behind it, so this sits below 3:1 on purpose. The inverse appearance has no border. */
-  --snackbar-border-tinted-info: #83D4FF;
+  --snackbar-border-tinted-info: #83DFFF;
   /** Outline of a tinted snackbar with the success intent. Decorative: the shadow separates the snackbar from the content behind it, so this sits below 3:1 on purpose. The inverse appearance has no border. */
   --snackbar-border-tinted-success: #7BF1A8;
   /** Outline of a tinted snackbar with the caution intent. Decorative: the shadow separates the snackbar from the content behind it, so this sits below 3:1 on purpose. The inverse appearance has no border. */
@@ -2459,7 +2459,7 @@
   /** Leading icon of a tinted snackbar with the neutral intent. */
   --snackbar-icon-tinted-neutral: #0A0A0A;
   /** Leading status icon of a tinted snackbar with the info intent, matching the tint and the border. */
-  --snackbar-icon-tinted-info: #0067E8;
+  --snackbar-icon-tinted-info: #0088FF;
   /** Leading status icon of a tinted snackbar with the success intent, matching the tint and the border. */
   --snackbar-icon-tinted-success: #008236;
   /** Leading status icon of a tinted snackbar with the caution intent, matching the tint and the border. */
@@ -2479,11 +2479,11 @@
   /** Fill of the action and close buttons on a tinted neutral snackbar, while pressed: one step darker than the tint. */
   --snackbar-bg-control-tinted-neutral-pressed: #F5F5F5;
   /** Fill of the action and close buttons on a tinted info snackbar, at rest and on keyboard focus. The same as the snackbar fill, so the action reads as text until it is hovered or pressed. */
-  --snackbar-bg-control-tinted-info-default: #EDF8FF;
+  --snackbar-bg-control-tinted-info-default: #EDFAFF;
   /** Fill of the action and close buttons on a tinted info snackbar, on hover: one step darker than the tint. */
-  --snackbar-bg-control-tinted-info-hover: #D6EFFF;
+  --snackbar-bg-control-tinted-info-hover: #D6F3FF;
   /** Fill of the action and close buttons on a tinted info snackbar, while pressed: one step darker than the tint. */
-  --snackbar-bg-control-tinted-info-pressed: #C2E8FF;
+  --snackbar-bg-control-tinted-info-pressed: #B5EAFF;
   /** Fill of the action and close buttons on a tinted success snackbar, at rest and on keyboard focus. The same as the snackbar fill, so the action reads as text until it is hovered or pressed. */
   --snackbar-bg-control-tinted-success-default: #F0FDF4;
   /** Fill of the action and close buttons on a tinted success snackbar, on hover: one step darker than the tint. */
@@ -2503,23 +2503,23 @@
   /** Fill of the action and close buttons on a tinted warning snackbar, while pressed: one step darker than the tint. */
   --snackbar-bg-control-tinted-warning-pressed: #FFC9C9;
   /** Action label on an inverse snackbar, at rest and on keyboard focus. A light brand blue, so the action stands apart from the white message on every intent; the fill, not the label, shows hover and press. */
-  --snackbar-label-control-inverse-default: #83D4FF;
+  --snackbar-label-control-inverse-default: #83DFFF;
   /** Action label on an inverse snackbar, on hover. A light brand blue, so the action stands apart from the white message on every intent; the fill, not the label, shows hover and press. */
-  --snackbar-label-control-inverse-hover: #83D4FF;
+  --snackbar-label-control-inverse-hover: #83DFFF;
   /** Action label on an inverse snackbar, while pressed. A light brand blue, so the action stands apart from the white message on every intent; the fill, not the label, shows hover and press. */
-  --snackbar-label-control-inverse-pressed: #83D4FF;
+  --snackbar-label-control-inverse-pressed: #83DFFF;
   /** Action label on a tinted neutral snackbar, at rest and on keyboard focus. Brand coloured, since a neutral message has no intent colour to follow. */
-  --snackbar-label-control-tinted-neutral-default: #0067E8;
+  --snackbar-label-control-tinted-neutral-default: #0088FF;
   /** Action label on a tinted neutral snackbar, on hover. Brand coloured, since a neutral message has no intent colour to follow; darkens with the fill so it keeps AA contrast. */
-  --snackbar-label-control-tinted-neutral-hover: #0857C5;
+  --snackbar-label-control-tinted-neutral-hover: #0868C5;
   /** Action label on a tinted neutral snackbar, while pressed. Brand coloured, since a neutral message has no intent colour to follow; darkens with the fill so it keeps AA contrast. */
-  --snackbar-label-control-tinted-neutral-pressed: #0D4C9B;
+  --snackbar-label-control-tinted-neutral-pressed: #0D589B;
   /** Action label on a tinted info snackbar, at rest and on keyboard focus. Follows the intent colour. */
-  --snackbar-label-control-tinted-info-default: #0067E8;
+  --snackbar-label-control-tinted-info-default: #0088FF;
   /** Action label on a tinted info snackbar, on hover. Follows the intent colour and darkens with the fill so it keeps AA contrast. */
-  --snackbar-label-control-tinted-info-hover: #0857C5;
+  --snackbar-label-control-tinted-info-hover: #0868C5;
   /** Action label on a tinted info snackbar, while pressed. Follows the intent colour and darkens with the fill so it keeps AA contrast. */
-  --snackbar-label-control-tinted-info-pressed: #0D4C9B;
+  --snackbar-label-control-tinted-info-pressed: #0D589B;
   /** Action label on a tinted success snackbar, at rest and on keyboard focus. Follows the intent colour. */
   --snackbar-label-control-tinted-success-default: #008236;
   /** Action label on a tinted success snackbar, on hover. Follows the intent colour and darkens with the fill so it keeps AA contrast. */
@@ -2575,7 +2575,7 @@
   /** Close icon on a tinted warning snackbar, while pressed. Neutral grey on every tint so dismissing stays secondary to the action. */
   --snackbar-icon-control-tinted-warning-pressed: #525252;
   /** Colour of the keyboard focus ring around the action and close buttons, on both appearances. Apply on focus-visible only. The snackbar container itself never takes focus. */
-  --snackbar-focus-ring: #0681FF;
+  --snackbar-focus-ring: #0088FF;
   /** Minimum height of the snackbar, reached by a single line of message. Two lines, a title or the stacked layout grow it past this. */
   --snackbar-min-height: 48px;
   /** Horizontal padding inside the snackbar before the leading icon or text, and after the text when there is no action or close button. */
@@ -2627,9 +2627,9 @@
   /** Solid fill of a strong neutral badge, used for counts and tags that carry no status, such as a result count or Sold out. Count badges default to strong; for a calmer tag use bg-subtle-neutral. */
   --badge-bg-strong-neutral: #0A0A0A;
   /** Solid fill of a strong brand badge, used for promotional tags such as New, Deal or MMT Exclusive. Count badges default to strong; for a calmer tag use bg-subtle-brand. */
-  --badge-bg-strong-brand: #0067E8;
+  --badge-bg-strong-brand: #0088FF;
   /** Solid fill of a strong info badge, used for informational tags and counts such as Updated or Beta. Count badges default to strong; for a calmer tag use bg-subtle-info. */
-  --badge-bg-strong-info: #0067E8;
+  --badge-bg-strong-info: #0088FF;
   /** Solid fill of a strong success badge, used for positive status such as Free cancellation or Confirmed. Count badges default to strong; for a calmer tag use bg-subtle-success. */
   --badge-bg-strong-success: #008236;
   /** Solid fill of a strong caution badge, used for advisory status such as Few seats left or Price rising. Count badges default to strong; for a calmer tag use bg-subtle-caution. */
@@ -2651,9 +2651,9 @@
   /** Tinted fill of a subtle neutral badge, the calm option for status tags beside content. Not used for dots, which are strong only. On the grey bg-secondary canvas the fill edge disappears and the text alone carries the badge. */
   --badge-bg-subtle-neutral: #F5F5F5;
   /** Tinted fill of a subtle brand badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
-  --badge-bg-subtle-brand: #EDF8FF;
+  --badge-bg-subtle-brand: #EDFAFF;
   /** Tinted fill of a subtle info badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
-  --badge-bg-subtle-info: #EDF8FF;
+  --badge-bg-subtle-info: #EDFAFF;
   /** Tinted fill of a subtle success badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
   --badge-bg-subtle-success: #DCFCE7;
   /** Tinted fill of a subtle caution badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
@@ -2663,9 +2663,9 @@
   /** Count or text colour on a subtle neutral badge. Paired with bg-subtle-neutral and holds AA contrast on it. */
   --badge-label-subtle-neutral: #525252;
   /** Count or text colour on a subtle brand badge. Paired with bg-subtle-brand and holds AA contrast on it. */
-  --badge-label-subtle-brand: #0067E8;
+  --badge-label-subtle-brand: #0088FF;
   /** Count or text colour on a subtle info badge. Paired with bg-subtle-info and holds AA contrast on it. */
-  --badge-label-subtle-info: #0067E8;
+  --badge-label-subtle-info: #0088FF;
   /** Count or text colour on a subtle success badge. Paired with bg-subtle-success and holds AA contrast on it. */
   --badge-label-subtle-success: #008236;
   /** Count or text colour on a subtle caution badge. Paired with bg-subtle-caution and holds AA contrast on it. */
@@ -2675,9 +2675,9 @@
   /** Fill of a neutral dot badge, a count-free marker for new or unread content. The same colour as bg-strong-neutral, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
   --badge-dot-neutral: #0A0A0A;
   /** Fill of a brand dot badge, a count-free marker for new or unread content. The same colour as bg-strong-brand, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
-  --badge-dot-brand: #0067E8;
+  --badge-dot-brand: #0088FF;
   /** Fill of an info dot badge, a count-free marker for new or unread content. The same colour as bg-strong-info, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
-  --badge-dot-info: #0067E8;
+  --badge-dot-info: #0088FF;
   /** Fill of a success dot badge, a count-free marker for new or unread content. The same colour as bg-strong-success, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
   --badge-dot-success: #008236;
   /** Fill of a caution dot badge, a count-free marker for new or unread content. The same colour as bg-strong-caution, kept separate so it is checked for 3 to 1 contrast against both page canvases. */
@@ -2729,11 +2729,11 @@
   /** Label colour of an unselected tab while pressed. */
   --tab-label-unselected-pressed: #0A0A0A;
   /** Label colour of the selected tab at rest and on keyboard focus. Pairs with the brand indicator. */
-  --tab-label-selected-default: #0067E8;
+  --tab-label-selected-default: #0088FF;
   /** Label colour of the selected tab on hover. Stays text-brand, which holds AA on the hover grey. */
-  --tab-label-selected-hover: #0067E8;
+  --tab-label-selected-hover: #0088FF;
   /** Label colour of the selected tab while pressed. One step darker than text-brand, which falls below AA on the pressed grey. */
-  --tab-label-selected-pressed: #0857C5;
+  --tab-label-selected-pressed: #0868C5;
   /** Label colour of a disabled tab, selected or not. */
   --tab-label-disabled: #A1A1A1;
   /** Colour of the icon above the label on an unselected Primary tab, at rest and on keyboard focus. Matches label-unselected-default. */
@@ -2743,21 +2743,21 @@
   /** Colour of the icon on an unselected Primary tab while pressed. */
   --tab-icon-unselected-pressed: #0A0A0A;
   /** Colour of the icon on the selected Primary tab, at rest and on keyboard focus. Matches label-selected-default. */
-  --tab-icon-selected-default: #0067E8;
+  --tab-icon-selected-default: #0088FF;
   /** Colour of the icon on the selected Primary tab on hover. */
-  --tab-icon-selected-hover: #0067E8;
+  --tab-icon-selected-hover: #0088FF;
   /** Colour of the icon on the selected Primary tab while pressed, darkening with the label on the pressed grey. */
-  --tab-icon-selected-pressed: #0857C5;
+  --tab-icon-selected-pressed: #0868C5;
   /** Colour of the icon on a disabled Primary tab, selected or not. */
   --tab-icon-disabled: #A1A1A1;
   /** Colour of the underline under the selected tab in every enabled state. Only the selected tab draws it. */
-  --tab-indicator-default: #0067E8;
+  --tab-indicator-default: #0088FF;
   /** Colour of the underline under a selected tab that is disabled. */
   --tab-indicator-disabled: #A1A1A1;
   /** Colour of the full-width line under a row of Primary or Secondary tabs, drawn by the tab list rather than by each tab so it runs past the last tab. The selected indicator sits on top of it. */
   --tab-track: #E5E5E5;
   /** Colour of the keyboard focus ring drawn inside the tab edge. */
-  --tab-focus-ring: #0681FF;
+  --tab-focus-ring: #0088FF;
   /** Minimum height of a Primary tab with its icon above the label. Also its touch target. */
   --tab-primary-min-height: 64px;
   /** Left and right padding inside a Primary tab. The indicator is inset by the same amount. */
@@ -2823,13 +2823,13 @@
   /** Fill of the neutral grey circle behind a leading icon, for everyday menu rows. Use leading-container-bg-brand to call out one row. */
   --list-leading-container-bg-neutral: #F5F5F5;
   /** Fill of the light blue circle behind a leading icon, for a row that should stand out from its neutral neighbours. Use sparingly, at most one kind per list. */
-  --list-leading-container-bg-brand: #EDF8FF;
+  --list-leading-container-bg-brand: #EDFAFF;
   /** Fill of the circle behind a leading icon in a disabled list row, whichever tint it has when enabled. */
   --list-leading-container-bg-disabled: #FAFAFA;
   /** Colour of the icon inside a neutral leading circle. Pairs with leading-container-bg-neutral. */
   --list-leading-container-icon-neutral: #0A0A0A;
   /** Colour of the icon inside a brand leading circle. Pairs with leading-container-bg-brand. */
-  --list-leading-container-icon-brand: #0067E8;
+  --list-leading-container-icon-brand: #0088FF;
   /** Colour of the icon inside a leading circle in a disabled list row. */
   --list-leading-container-icon-disabled: #A1A1A1;
   /** Colour of the trailing chevron that marks a list row as a link to another screen. Quieter than leading icons so the row content leads. */
@@ -2841,7 +2841,7 @@
   /** Colour of the section header label that names a group of rows, such as Recent searches. Use title-default for the rows themselves. */
   --list-section-header-text: #525252;
   /** Colour of the keyboard focus ring drawn inside the edge of a focused list row. */
-  --list-focus-ring: #0681FF;
+  --list-focus-ring: #0088FF;
   /** Minimum height of a one-line Comfortable row, also its touch target. Taller rows grow with their content. Comfortable is the default and the only density for touch screens. */
   --list-min-height-comfortable: 48px;
   /** Minimum height of a one-line Compact row. Compact is for pointer-first web lists only; use min-height-comfortable on touch screens. */
@@ -2915,11 +2915,11 @@
   /** Corner radius of the keyboard focus ring of a list row. */
   --list-focus-ring-radius: 8px;
   /** Track of a switch that is on, at rest. Also used by the Outlined backup style. Use track-on-disabled when the switch is disabled. */
-  --switch-track-on-default: #0067E8;
+  --switch-track-on-default: #0088FF;
   /** Track of a switch that is on, under the pointer. Web only. */
-  --switch-track-on-hover: #0857C5;
+  --switch-track-on-hover: #0868C5;
   /** Track of a switch that is on, while held. */
-  --switch-track-on-pressed: #0D4C9B;
+  --switch-track-on-pressed: #0D589B;
   /** Track of a disabled switch that is on. The same lightest grey as the disabled off track, so a disabled switch reads as disabled first and the thumb position shows its value. */
   --switch-track-on-disabled: #E5E5E5;
   /** Solid grey track of a switch that is off, at rest. Below 3:1 against the canvas by choice, so the thumb position carries the value. */
@@ -2953,11 +2953,11 @@
   /** Outlined backup style only, not for product use. Thumb of a disabled switch that is off. Lighter than outlined-thumb-off-default so it never reads as enabled. */
   --switch-outlined-thumb-off-disabled: #D4D4D4;
   /** Check glyph inside the white thumb of a switch that is on, at rest and on focus. Tracks track-on-default so glyph and track read as one colour. */
-  --switch-icon-on-default: #0067E8;
+  --switch-icon-on-default: #0088FF;
   /** Check glyph of a switch that is on, under the pointer. Tracks track-on-hover. Web only. */
-  --switch-icon-on-hover: #0857C5;
+  --switch-icon-on-hover: #0868C5;
   /** Check glyph of a switch that is on, while held. Tracks track-on-pressed. */
-  --switch-icon-on-pressed: #0D4C9B;
+  --switch-icon-on-pressed: #0D589B;
   /** Check glyph of a disabled switch that is on. */
   --switch-icon-on-disabled: #A1A1A1;
   /** Close glyph inside the white thumb of a switch that is off, at rest and on focus. Darker than the off track so it keeps 3:1 on the white thumb. */
@@ -2969,13 +2969,13 @@
   /** Close glyph of a disabled switch that is off. */
   --switch-icon-off-disabled: #A1A1A1;
   /** Outlined backup style only, not for product use. Check glyph inside the white thumb of a switch that is on, in every enabled state. Use outlined-icon-disabled when the switch is disabled. */
-  --switch-outlined-icon-on: #0067E8;
+  --switch-outlined-icon-on: #0088FF;
   /** Outlined backup style only, not for product use. Close glyph inside the grey thumb of a switch that is off. */
   --switch-outlined-icon-off: #FFFFFF;
   /** Outlined backup style only, not for product use. Check glyph of a disabled switch that is on. When the switch is off, the glyph keeps outlined-icon-off, because the thumb there is grey. */
   --switch-outlined-icon-disabled: #A1A1A1;
   /** Keyboard focus ring drawn around the track, outside it, with focus-ring-offset between the two. */
-  --switch-focus-ring: #0681FF;
+  --switch-focus-ring: #0088FF;
   /** Track width of the Small switch. Small is for dense web layouts such as tables and filter panels; use Medium on touch. */
   --switch-track-width-sm: 36px;
   /** Track width of the Medium switch, the default on mobile and web. */
@@ -3037,7 +3037,7 @@
   /** Thumb under a selected segment that is disabled, in both thumb styles. Drawn without a shadow. For an enabled thumb use neutral-thumb-default or brand-thumb-default. */
   --segmented-control-thumb-disabled: #E5E5E5;
   /** Keyboard focus ring drawn outside the focused segment, focus-ring-offset away from its edge, on the grey track. Shown for hardware keyboards, Android D-pad and iOS Full Keyboard Access, never on touch. */
-  --segmented-control-focus-ring: #0681FF;
+  --segmented-control-focus-ring: #0088FF;
   /** Neutral thumb style, under test against the Brand thumb. White thumb under the selected segment at rest and on keyboard focus. Lifted off the grey track by neutral-thumb-shadow, because the fill alone barely separates from the track. */
   --segmented-control-neutral-thumb-default: #FFFFFF;
   /** Neutral thumb style, under test against the Brand thumb. White thumb while it is held, before a tap lands or while it is dragged. Keeps neutral-thumb-shadow. */
@@ -3045,17 +3045,17 @@
   /** Neutral thumb style, under test against the Brand thumb. Elevation of the white thumb in every enabled state. Carries most of the separation from the track. A disabled thumb drops it. */
   --segmented-control-neutral-thumb-shadow: 0px 1px 2px #0A0A0A14, 0px 2px 6px #0A0A0A0F;
   /** Neutral thumb style, under test against the Brand thumb. Brand label of the selected segment at rest and on keyboard focus. For the pressed thumb use neutral-label-selected-pressed, because this colour falls below AA on the pressed grey. For a disabled segment use label-disabled. */
-  --segmented-control-neutral-label-selected-default: #0067E8;
+  --segmented-control-neutral-label-selected-default: #0088FF;
   /** Neutral thumb style, under test against the Brand thumb. Brand label of the selected segment while the thumb is held. One step darker than neutral-label-selected-default so it keeps AA on the pressed grey. */
-  --segmented-control-neutral-label-selected-pressed: #0857C5;
+  --segmented-control-neutral-label-selected-pressed: #0868C5;
   /** Neutral thumb style, under test against the Brand thumb. Optional leading icon of the selected segment at rest and on keyboard focus. Matches neutral-label-selected-default. */
-  --segmented-control-neutral-icon-selected-default: #0067E8;
+  --segmented-control-neutral-icon-selected-default: #0088FF;
   /** Neutral thumb style, under test against the Brand thumb. Optional leading icon of the selected segment while the thumb is held. Matches neutral-label-selected-pressed. */
-  --segmented-control-neutral-icon-selected-pressed: #0857C5;
+  --segmented-control-neutral-icon-selected-pressed: #0868C5;
   /** Brand thumb style, under test against the Neutral thumb. Solid brand thumb under the selected segment at rest and on keyboard focus. Drawn without a shadow. */
-  --segmented-control-brand-thumb-default: #0067E8;
+  --segmented-control-brand-thumb-default: #0088FF;
   /** Brand thumb style, under test against the Neutral thumb. Solid brand thumb while it is held, before a tap lands or while it is dragged. */
-  --segmented-control-brand-thumb-pressed: #0D4C9B;
+  --segmented-control-brand-thumb-pressed: #0D589B;
   /** Brand thumb style, under test against the Neutral thumb. Label on the brand thumb in every enabled state, including pressed. During a drag a label switches to this colour only once the thumb centre enters its segment, so it never sits on the grey track. */
   --segmented-control-brand-label-selected-default: #FFFFFF;
   /** Brand thumb style, under test against the Neutral thumb. Optional leading icon on the brand thumb at rest and on keyboard focus. For the pressed thumb use brand-icon-selected-pressed. */
@@ -3063,21 +3063,21 @@
   /** Brand thumb style, under test against the Neutral thumb. Optional leading icon on the brand thumb while it is held, on the pressed brand fill. The same role as the default step, kept as its own token so every state binds its own icon, as in Button. */
   --segmented-control-brand-icon-selected-pressed: #FFFFFF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb under the selected segment at rest and on keyboard focus. The tint barely separates from the track, so tinted-thumb-border-default draws its edge. */
-  --segmented-control-tinted-thumb-default: #EDF8FF;
+  --segmented-control-tinted-thumb-default: #EDFAFF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Brand-tinted thumb while it is held, before a tap lands or while it is dragged. */
-  --segmented-control-tinted-thumb-pressed: #C2E8FF;
+  --segmented-control-tinted-thumb-pressed: #B5EAFF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Outline of the tinted thumb at rest and on keyboard focus. Drawn inside the thumb so it does not change size, and it carries the selection against the track. */
-  --segmented-control-tinted-thumb-border-default: #0067E8;
+  --segmented-control-tinted-thumb-border-default: #0088FF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Outline of the tinted thumb while it is held. */
-  --segmented-control-tinted-thumb-border-pressed: #0857C5;
+  --segmented-control-tinted-thumb-border-pressed: #0868C5;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Label on the tinted thumb at rest and on keyboard focus. For the pressed thumb use tinted-label-selected-pressed, because this colour falls below AA on the pressed tint. */
-  --segmented-control-tinted-label-selected-default: #0067E8;
+  --segmented-control-tinted-label-selected-default: #0088FF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Label on the tinted thumb while it is held. One step darker than tinted-label-selected-default so it keeps AA on the pressed tint. */
-  --segmented-control-tinted-label-selected-pressed: #0D4C9B;
+  --segmented-control-tinted-label-selected-pressed: #0D589B;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Optional leading icon on the tinted thumb at rest and on keyboard focus. Matches tinted-label-selected-default. */
-  --segmented-control-tinted-icon-selected-default: #0067E8;
+  --segmented-control-tinted-icon-selected-default: #0088FF;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Optional leading icon on the tinted thumb while it is held. Matches tinted-label-selected-pressed. */
-  --segmented-control-tinted-icon-selected-pressed: #0D4C9B;
+  --segmented-control-tinted-icon-selected-pressed: #0D589B;
   /** Height of the Medium track, for form-level choices such as trip type. Segments fill it minus track-padding. The hit area grows to min-touch-target. */
   --segmented-control-height-md: 40px;
   /** Height of the Small track, for compact filters inside cards. Segments fill it minus track-padding. The hit area grows to min-touch-target. */
@@ -3115,7 +3115,7 @@
   /** Part of the track outside the selected value or range when the slider is disabled. Lighter than track-active-disabled so the value still reads. */
   --slider-track-inactive-disabled: #E5E5E5;
   /** Part of the track between the start and the thumb, or between the two thumbs of a range. Stays the same while the thumb is hovered or held; the thumb and halo show the state. Use track-active-disabled when disabled. */
-  --slider-track-active: #0067E8;
+  --slider-track-active: #0088FF;
   /** Active part of the track when the slider is disabled. Darker than track-inactive-disabled so the selected value or range stays visible. */
   --slider-track-active-disabled: #A1A1A1;
   /** Track height of the Medium slider, the default on mobile and web. Fully rounded with radius. */
@@ -3153,15 +3153,15 @@
   /** Grow press, under test against the halo press. Thumb diameter of a Small slider while held or dragged, with no halo. It returns to thumb-size-sm on release. */
   --slider-thumb-size-pressed-sm: 20px;
   /** Soft circle behind a thumb under the pointer, drawn under the track. Web only. Use halo-pressed while the thumb is held. */
-  --slider-halo-hover: #EDF8FF;
+  --slider-halo-hover: #EDFAFF;
   /** Soft circle behind a thumb while it is held or dragged, drawn under the track, so the touch point stays visible around a finger. Halo press only; the Grow press enlarges the thumb to thumb-size-pressed instead. Use halo-hover for the pointer. */
-  --slider-halo-pressed: #D6EFFF;
+  --slider-halo-pressed: #D6F3FF;
   /** Diameter of the hover and pressed halo around a Medium thumb. */
   --slider-halo-size-md: 40px;
   /** Diameter of the hover and pressed halo around a Small thumb. */
   --slider-halo-size-sm: 28px;
   /** Keyboard focus ring drawn around the focused thumb, focus-ring-offset away from its edge. Shown for hardware keyboards, Android D-pad and iOS Full Keyboard Access, never on touch. */
-  --slider-focus-ring: #0681FF;
+  --slider-focus-ring: #0088FF;
   /** Width of the keyboard focus ring around a thumb. */
   --slider-focus-ring-width: 2px;
   /** Gap between the focused thumb and its focus ring. */
@@ -3269,7 +3269,7 @@
   /** Trailing chevron of a disabled submenu row. */
   --menu-chevron-disabled: #A1A1A1;
   /** Trailing check on the selected row of a single-select menu, such as Sort by. It is the only mark of selection, so the label stays label-default. */
-  --menu-check-default: #0067E8;
+  --menu-check-default: #0088FF;
   /** Trailing check on a selected row that is disabled. */
   --menu-check-disabled: #A1A1A1;
   /** Small header that names a group of menu rows. It is not interactive and never takes a fill. */
@@ -3279,7 +3279,7 @@
   /** Width of the hairline between groups of menu rows. */
   --menu-divider-width: 1px;
   /** Ring drawn inside the edge of the menu row that holds keyboard focus, on top of item-bg-focus. It follows item-radius-comfortable or item-radius-compact. */
-  --menu-focus-ring: #0681FF;
+  --menu-focus-ring: #0088FF;
   /** Width of the keyboard focus ring on a menu row. */
   --menu-focus-ring-width: 2px;
   /** Minimum height of a one-line Comfortable menu row, also its touch target. Comfortable is the default and the only density for touch screens. */
@@ -3329,11 +3329,11 @@
   /** Fill of a Light tooltip bubble and its caret, Plain and Rich. Always paired with border-light and shadow-light so the white bubble separates from a white page. Use bg-dark by default and bg-info for friendly tips and feature hints. */
   --tooltip-bg-light: #FFFFFF;
   /** Fill of an Info tooltip bubble and its caret, Plain and Rich: a light brand tint for friendly tips and feature hints. Always paired with border-info and shadow-info, because the tint alone barely separates from a white or grey page. Not for errors or warnings. Use bg-dark by default. */
-  --tooltip-bg-info: #EDF8FF;
+  --tooltip-bg-info: #EDFAFF;
   /** Hairline around a Light tooltip bubble and along the two outer edges of its caret. Dark tooltips have no border. */
   --tooltip-border-light: #E5E5E5;
   /** Hairline around an Info tooltip bubble and along the outer edges of its caret. It carries the edge on a grey page, where the tint is almost invisible. */
-  --tooltip-border-info: #83D4FF;
+  --tooltip-border-info: #83DFFF;
   /** Elevation of a Light tooltip, the same as other floating layers. In code it follows the bubble and caret outline. Dark tooltips have no shadow. */
   --tooltip-shadow-light: 0px 4px 8px #0A0A0A14, 0px 8px 24px #0A0A0A1F;
   /** Elevation of an Info tooltip, the same as Light, so it reads as a floating layer. In code it follows the bubble and caret outline. */
@@ -3355,7 +3355,7 @@
   /** Optional leading icon of a Rich tooltip on Light, level with the title. Use close-icon-light for the close glyph. */
   --tooltip-icon-light: #0A0A0A;
   /** Optional leading icon of a Rich tooltip on Info, in the info blue so it ties to the tint. Use close-icon-info for the close glyph. */
-  --tooltip-icon-info: #0067E8;
+  --tooltip-icon-info: #0088FF;
   /** Placeholder fill of the optional Rich media area on Dark, shown until the image loads and behind transparent illustrations. */
   --tooltip-media-bg-dark: #262626;
   /** Placeholder fill of the optional Rich media area on Light, shown until the image loads and behind transparent illustrations. */
@@ -3369,19 +3369,19 @@
   /** Label of the secondary text action, such as Skip, on an Info Rich tooltip, in every state. Grey so it stays behind the primary text action; the fill, not the label, shows hover and press. */
   --tooltip-secondary-label-info: #525252;
   /** Label of the primary text action, such as Next or Got it, on a Dark Rich tooltip, in every state. A light brand blue, so it reads as the main action on near black where the brand blue fails; the fill, not the label, shows hover and press. Use secondary-label-dark for Skip. */
-  --tooltip-primary-label-dark: #83D4FF;
+  --tooltip-primary-label-dark: #83DFFF;
   /** Label of the primary text action, such as Next or Got it, on a Light Rich tooltip, at rest and on focus. Brand blue, so it reads as the main action beside the grey Skip. Use primary-label-light-hover and primary-label-light-pressed as the fill changes. */
-  --tooltip-primary-label-light: #0067E8;
+  --tooltip-primary-label-light: #0088FF;
   /** Label of the primary text action on a Light Rich tooltip under the pointer. Darkens with the control-bg-light-hover fill so it keeps AA contrast. Web only. */
-  --tooltip-primary-label-light-hover: #0857C5;
+  --tooltip-primary-label-light-hover: #0868C5;
   /** Label of the primary text action on a Light Rich tooltip while pressed. Darkens with the control-bg-light-pressed fill so it keeps AA contrast. */
-  --tooltip-primary-label-light-pressed: #0D4C9B;
+  --tooltip-primary-label-light-pressed: #0D589B;
   /** Label of the primary text action, such as Next or Got it, on an Info Rich tooltip, at rest and on focus. Info blue, so it reads as the main action beside the grey Skip. Use primary-label-info-hover and primary-label-info-pressed as the fill changes. */
-  --tooltip-primary-label-info: #0067E8;
+  --tooltip-primary-label-info: #0088FF;
   /** Label of the primary text action on an Info Rich tooltip under the pointer. Darkens with the control-bg-info-hover fill, where info blue would drop below AA. Web only. */
-  --tooltip-primary-label-info-hover: #0857C5;
+  --tooltip-primary-label-info-hover: #0868C5;
   /** Label of the primary text action on an Info Rich tooltip while pressed. Darkens with the control-bg-info-pressed fill, where info blue would drop below AA. */
-  --tooltip-primary-label-info-pressed: #0D4C9B;
+  --tooltip-primary-label-info-pressed: #0D589B;
   /** Close glyph of a Dark Rich tooltip, in every state. Dimmer than the title so dismissing stays secondary. Use icon-dark for the leading icon. */
   --tooltip-close-icon-dark: #A1A1A1;
   /** Close glyph of a Light Rich tooltip, in every state. Dimmer than the title so dismissing stays secondary. Use icon-light for the leading icon. */
@@ -3397,11 +3397,11 @@
   /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip while pressed, on touch and web. Use control-bg-light-hover under the pointer. */
   --tooltip-control-bg-light-pressed: #F5F5F5;
   /** Fill of the primary and secondary text actions and the close button on an Info Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-info-pressed while pressed. */
-  --tooltip-control-bg-info-hover: #D6EFFF;
+  --tooltip-control-bg-info-hover: #D6F3FF;
   /** Fill of the primary and secondary text actions and the close button on an Info Rich tooltip while pressed, on touch and web. Use control-bg-info-hover under the pointer. */
-  --tooltip-control-bg-info-pressed: #C2E8FF;
+  --tooltip-control-bg-info-pressed: #B5EAFF;
   /** Keyboard focus ring around the primary and secondary text actions and the close button of a Rich tooltip, on every surface. Shown on focus-visible only. */
-  --tooltip-focus-ring: #0681FF;
+  --tooltip-focus-ring: #0088FF;
   /** Horizontal padding inside a Plain tooltip bubble. Rich tooltips use rich-padding-x. */
   --tooltip-padding-x: 12px;
   /** Vertical padding inside a Plain tooltip bubble. Rich tooltips use rich-padding-y. */
@@ -3469,36 +3469,36 @@
  * on any element to switch it and everything inside it.
  */
 [data-brand="mmt"] {
-  --color-bg-surface-brand: #EDF8FF;
-  --color-bg-surface-brand-hover: #D6EFFF;
-  --color-bg-surface-brand-pressed-subtle: #D6EFFF;
-  --color-bg-surface-brand-pressed-strong: #C2E8FF;
+  --color-bg-surface-brand: #EDFAFF;
+  --color-bg-surface-brand-hover: #D6F3FF;
+  --color-bg-surface-brand-pressed-subtle: #D6F3FF;
+  --color-bg-surface-brand-pressed-strong: #B5EAFF;
   --color-bg-surface-brand-inverse: #48BBFF;
-  --color-bg-fill-brand: #0067E8;
-  --color-bg-fill-brand-hover: #0857C5;
-  --color-bg-fill-brand-pressed: #0D4C9B;
-  --color-text-brand: #0067E8;
-  --color-text-brand-hover: #0681FF;
-  --color-text-brand-pressed: #0857C5;
-  --color-text-brand-on-bg-surface-hover: #0857C5;
-  --color-text-brand-on-bg-surface-pressed: #0D4C9B;
-  --color-text-brand-inverse: #83D4FF;
-  --color-text-brand-inverse-hover: #C2E8FF;
-  --color-text-brand-inverse-pressed: #D6EFFF;
-  --color-border-brand: #0067E8;
-  --color-border-brand-hover: #0681FF;
-  --color-border-brand-pressed: #0857C5;
+  --color-bg-fill-brand: #0088FF;
+  --color-bg-fill-brand-hover: #0868C5;
+  --color-bg-fill-brand-pressed: #0D589B;
+  --color-text-brand: #0088FF;
+  --color-text-brand-hover: #0698FF;
+  --color-text-brand-pressed: #0868C5;
+  --color-text-brand-on-bg-surface-hover: #0868C5;
+  --color-text-brand-on-bg-surface-pressed: #0D589B;
+  --color-text-brand-inverse: #83DFFF;
+  --color-text-brand-inverse-hover: #B5EAFF;
+  --color-text-brand-inverse-pressed: #D6F3FF;
+  --color-border-brand: #0088FF;
+  --color-border-brand-hover: #0698FF;
+  --color-border-brand-pressed: #0868C5;
   --color-border-brand-inverse: #48BBFF;
-  --color-border-brand-inverse-hover: #83D4FF;
-  --color-border-brand-inverse-pressed: #C2E8FF;
-  --color-icon-brand: #0067E8;
-  --color-icon-brand-hover: #0681FF;
-  --color-icon-brand-pressed: #0857C5;
-  --color-icon-brand-on-bg-surface-hover: #0857C5;
-  --color-icon-brand-on-bg-surface-pressed: #0D4C9B;
+  --color-border-brand-inverse-hover: #83DFFF;
+  --color-border-brand-inverse-pressed: #B5EAFF;
+  --color-icon-brand: #0088FF;
+  --color-icon-brand-hover: #0698FF;
+  --color-icon-brand-pressed: #0868C5;
+  --color-icon-brand-on-bg-surface-hover: #0868C5;
+  --color-icon-brand-on-bg-surface-pressed: #0D589B;
   --color-icon-brand-inverse: #48BBFF;
-  --color-icon-brand-inverse-hover: #83D4FF;
-  --color-icon-brand-inverse-pressed: #C2E8FF;
+  --color-icon-brand-inverse-hover: #83DFFF;
+  --color-icon-brand-inverse-pressed: #B5EAFF;
   --typeface-default: Lato;
   --weight-bold: 700;
   --weight-black: 900;
@@ -3562,145 +3562,145 @@
   --label-small-bold-font-weight: 700;
   --label-small-black-font-family: Lato;
   --label-small-black-font-weight: 900;
-  --button-bg-primary-default: #0067E8;
-  --button-bg-primary-hover: #0857C5;
-  --button-bg-primary-pressed: #0D4C9B;
-  --button-bg-primary-inverse-default: #0067E8;
-  --button-bg-primary-inverse-hover: #0857C5;
-  --button-bg-primary-inverse-pressed: #0D4C9B;
-  --button-bg-secondary-hover: #D6EFFF;
-  --button-bg-secondary-pressed: #C2E8FF;
+  --button-bg-primary-default: #0088FF;
+  --button-bg-primary-hover: #0868C5;
+  --button-bg-primary-pressed: #0D589B;
+  --button-bg-primary-inverse-default: #0088FF;
+  --button-bg-primary-inverse-hover: #0868C5;
+  --button-bg-primary-inverse-pressed: #0D589B;
+  --button-bg-secondary-hover: #D6F3FF;
+  --button-bg-secondary-pressed: #B5EAFF;
   --button-bg-secondary-inverse-hover: #48BBFF;
   --button-bg-secondary-inverse-pressed: #48BBFF;
-  --button-bg-tertiary-default: #EDF8FF;
-  --button-bg-tertiary-hover: #D6EFFF;
-  --button-bg-tertiary-pressed: #C2E8FF;
+  --button-bg-tertiary-default: #EDFAFF;
+  --button-bg-tertiary-hover: #D6F3FF;
+  --button-bg-tertiary-pressed: #B5EAFF;
   --button-bg-tertiary-inverse-default: #48BBFF;
   --button-bg-tertiary-inverse-hover: #48BBFF;
   --button-bg-tertiary-inverse-pressed: #48BBFF;
-  --button-bg-text-hover: #EDF8FF;
-  --button-bg-text-pressed: #D6EFFF;
+  --button-bg-text-hover: #EDFAFF;
+  --button-bg-text-pressed: #D6F3FF;
   --button-bg-text-inverse-hover: #48BBFF;
   --button-bg-text-inverse-pressed: #48BBFF;
-  --button-border-secondary-default: #0067E8;
-  --button-border-secondary-hover: #0681FF;
-  --button-border-secondary-pressed: #0857C5;
+  --button-border-secondary-default: #0088FF;
+  --button-border-secondary-hover: #0698FF;
+  --button-border-secondary-pressed: #0868C5;
   --button-border-secondary-inverse-default: #48BBFF;
-  --button-border-secondary-inverse-hover: #83D4FF;
-  --button-border-secondary-inverse-pressed: #C2E8FF;
-  --button-focus-ring: #0067E8;
+  --button-border-secondary-inverse-hover: #83DFFF;
+  --button-border-secondary-inverse-pressed: #B5EAFF;
+  --button-focus-ring: #0088FF;
   --button-focus-ring-inverse: #48BBFF;
-  --button-icon-secondary-default: #0067E8;
-  --button-icon-secondary-hover: #0857C5;
-  --button-icon-secondary-pressed: #0D4C9B;
+  --button-icon-secondary-default: #0088FF;
+  --button-icon-secondary-hover: #0868C5;
+  --button-icon-secondary-pressed: #0D589B;
   --button-icon-secondary-inverse-default: #48BBFF;
-  --button-icon-secondary-inverse-hover: #83D4FF;
-  --button-icon-secondary-inverse-pressed: #C2E8FF;
-  --button-icon-tertiary-default: #0067E8;
-  --button-icon-tertiary-hover: #0857C5;
-  --button-icon-tertiary-pressed: #0D4C9B;
+  --button-icon-secondary-inverse-hover: #83DFFF;
+  --button-icon-secondary-inverse-pressed: #B5EAFF;
+  --button-icon-tertiary-default: #0088FF;
+  --button-icon-tertiary-hover: #0868C5;
+  --button-icon-tertiary-pressed: #0D589B;
   --button-icon-tertiary-inverse-default: #48BBFF;
-  --button-icon-tertiary-inverse-hover: #83D4FF;
-  --button-icon-tertiary-inverse-pressed: #C2E8FF;
-  --button-icon-text-default: #0067E8;
-  --button-icon-text-hover: #0857C5;
-  --button-icon-text-pressed: #0D4C9B;
+  --button-icon-tertiary-inverse-hover: #83DFFF;
+  --button-icon-tertiary-inverse-pressed: #B5EAFF;
+  --button-icon-text-default: #0088FF;
+  --button-icon-text-hover: #0868C5;
+  --button-icon-text-pressed: #0D589B;
   --button-icon-text-inverse-default: #48BBFF;
-  --button-icon-text-inverse-hover: #83D4FF;
-  --button-icon-text-inverse-pressed: #C2E8FF;
-  --button-label-secondary-default: #0067E8;
-  --button-label-secondary-hover: #0857C5;
-  --button-label-secondary-pressed: #0D4C9B;
-  --button-label-secondary-inverse-default: #83D4FF;
-  --button-label-secondary-inverse-hover: #C2E8FF;
-  --button-label-secondary-inverse-pressed: #D6EFFF;
-  --button-label-tertiary-default: #0067E8;
-  --button-label-tertiary-hover: #0857C5;
-  --button-label-tertiary-pressed: #0D4C9B;
-  --button-label-tertiary-inverse-default: #83D4FF;
-  --button-label-tertiary-inverse-hover: #C2E8FF;
-  --button-label-tertiary-inverse-pressed: #D6EFFF;
-  --button-label-text-default: #0067E8;
-  --button-label-text-hover: #0857C5;
-  --button-label-text-pressed: #0D4C9B;
-  --button-label-text-inverse-default: #83D4FF;
-  --button-label-text-inverse-hover: #C2E8FF;
-  --button-label-text-inverse-pressed: #D6EFFF;
-  --checkbox-bg-unselected-hover: #EDF8FF;
-  --checkbox-bg-unselected-pressed: #D6EFFF;
-  --checkbox-bg-selected-default: #0067E8;
-  --checkbox-bg-selected-hover: #0857C5;
-  --checkbox-bg-selected-pressed: #0D4C9B;
-  --checkbox-border-unselected-hover: #0067E8;
-  --checkbox-border-unselected-pressed: #0857C5;
-  --checkbox-border-selected-default: #0067E8;
-  --radio-bg-hover: #EDF8FF;
-  --radio-bg-pressed: #D6EFFF;
-  --radio-border-unselected-hover: #0067E8;
-  --radio-border-unselected-pressed: #0857C5;
-  --radio-border-selected-default: #0067E8;
-  --radio-border-selected-hover: #0681FF;
-  --radio-border-selected-pressed: #0857C5;
-  --radio-dot-selected-default: #0067E8;
-  --radio-dot-selected-hover: #0681FF;
-  --radio-dot-selected-pressed: #0857C5;
-  --radio-state-layer-selected: #0067E8;
-  --chip-bg-selected-default: #EDF8FF;
-  --chip-bg-selected-hover: #D6EFFF;
-  --chip-bg-selected-pressed: #C2E8FF;
-  --chip-border-selected-default: #0067E8;
-  --chip-border-selected-hover: #0681FF;
-  --chip-border-selected-pressed: #0857C5;
-  --chip-label-selected-default: #0067E8;
-  --chip-label-selected-hover: #0857C5;
-  --chip-label-selected-pressed: #0D4C9B;
-  --chip-icon-selected-default: #0067E8;
-  --chip-remove-bg-selected-hover: #C2E8FF;
-  --chip-remove-bg-selected-pressed: #C2E8FF;
-  --snackbar-label-control-tinted-neutral-default: #0067E8;
-  --snackbar-label-control-tinted-neutral-hover: #0857C5;
-  --snackbar-label-control-tinted-neutral-pressed: #0D4C9B;
-  --badge-bg-strong-brand: #0067E8;
-  --badge-bg-subtle-brand: #EDF8FF;
-  --badge-label-subtle-brand: #0067E8;
-  --badge-dot-brand: #0067E8;
-  --tab-label-selected-default: #0067E8;
-  --tab-label-selected-hover: #0067E8;
-  --tab-label-selected-pressed: #0857C5;
-  --tab-icon-selected-default: #0067E8;
-  --tab-icon-selected-hover: #0067E8;
-  --tab-icon-selected-pressed: #0857C5;
-  --tab-indicator-default: #0067E8;
-  --list-leading-container-bg-brand: #EDF8FF;
-  --list-leading-container-icon-brand: #0067E8;
-  --switch-track-on-default: #0067E8;
-  --switch-track-on-hover: #0857C5;
-  --switch-track-on-pressed: #0D4C9B;
-  --switch-icon-on-default: #0067E8;
-  --switch-icon-on-hover: #0857C5;
-  --switch-icon-on-pressed: #0D4C9B;
-  --switch-outlined-icon-on: #0067E8;
-  --segmented-control-neutral-label-selected-default: #0067E8;
-  --segmented-control-neutral-label-selected-pressed: #0857C5;
-  --segmented-control-neutral-icon-selected-default: #0067E8;
-  --segmented-control-neutral-icon-selected-pressed: #0857C5;
-  --segmented-control-brand-thumb-default: #0067E8;
-  --segmented-control-brand-thumb-pressed: #0D4C9B;
-  --segmented-control-tinted-thumb-default: #EDF8FF;
-  --segmented-control-tinted-thumb-pressed: #C2E8FF;
-  --segmented-control-tinted-thumb-border-default: #0067E8;
-  --segmented-control-tinted-thumb-border-pressed: #0857C5;
-  --segmented-control-tinted-label-selected-default: #0067E8;
-  --segmented-control-tinted-label-selected-pressed: #0D4C9B;
-  --segmented-control-tinted-icon-selected-default: #0067E8;
-  --segmented-control-tinted-icon-selected-pressed: #0D4C9B;
-  --slider-track-active: #0067E8;
-  --slider-halo-hover: #EDF8FF;
-  --slider-halo-pressed: #D6EFFF;
-  --menu-check-default: #0067E8;
-  --tooltip-primary-label-light: #0067E8;
-  --tooltip-primary-label-light-hover: #0857C5;
-  --tooltip-primary-label-light-pressed: #0D4C9B;
+  --button-icon-text-inverse-hover: #83DFFF;
+  --button-icon-text-inverse-pressed: #B5EAFF;
+  --button-label-secondary-default: #0088FF;
+  --button-label-secondary-hover: #0868C5;
+  --button-label-secondary-pressed: #0D589B;
+  --button-label-secondary-inverse-default: #83DFFF;
+  --button-label-secondary-inverse-hover: #B5EAFF;
+  --button-label-secondary-inverse-pressed: #D6F3FF;
+  --button-label-tertiary-default: #0088FF;
+  --button-label-tertiary-hover: #0868C5;
+  --button-label-tertiary-pressed: #0D589B;
+  --button-label-tertiary-inverse-default: #83DFFF;
+  --button-label-tertiary-inverse-hover: #B5EAFF;
+  --button-label-tertiary-inverse-pressed: #D6F3FF;
+  --button-label-text-default: #0088FF;
+  --button-label-text-hover: #0868C5;
+  --button-label-text-pressed: #0D589B;
+  --button-label-text-inverse-default: #83DFFF;
+  --button-label-text-inverse-hover: #B5EAFF;
+  --button-label-text-inverse-pressed: #D6F3FF;
+  --checkbox-bg-unselected-hover: #EDFAFF;
+  --checkbox-bg-unselected-pressed: #D6F3FF;
+  --checkbox-bg-selected-default: #0088FF;
+  --checkbox-bg-selected-hover: #0868C5;
+  --checkbox-bg-selected-pressed: #0D589B;
+  --checkbox-border-unselected-hover: #0088FF;
+  --checkbox-border-unselected-pressed: #0868C5;
+  --checkbox-border-selected-default: #0088FF;
+  --radio-bg-hover: #EDFAFF;
+  --radio-bg-pressed: #D6F3FF;
+  --radio-border-unselected-hover: #0088FF;
+  --radio-border-unselected-pressed: #0868C5;
+  --radio-border-selected-default: #0088FF;
+  --radio-border-selected-hover: #0698FF;
+  --radio-border-selected-pressed: #0868C5;
+  --radio-dot-selected-default: #0088FF;
+  --radio-dot-selected-hover: #0698FF;
+  --radio-dot-selected-pressed: #0868C5;
+  --radio-state-layer-selected: #0088FF;
+  --chip-bg-selected-default: #EDFAFF;
+  --chip-bg-selected-hover: #D6F3FF;
+  --chip-bg-selected-pressed: #B5EAFF;
+  --chip-border-selected-default: #0088FF;
+  --chip-border-selected-hover: #0698FF;
+  --chip-border-selected-pressed: #0868C5;
+  --chip-label-selected-default: #0088FF;
+  --chip-label-selected-hover: #0868C5;
+  --chip-label-selected-pressed: #0D589B;
+  --chip-icon-selected-default: #0088FF;
+  --chip-remove-bg-selected-hover: #B5EAFF;
+  --chip-remove-bg-selected-pressed: #B5EAFF;
+  --snackbar-label-control-tinted-neutral-default: #0088FF;
+  --snackbar-label-control-tinted-neutral-hover: #0868C5;
+  --snackbar-label-control-tinted-neutral-pressed: #0D589B;
+  --badge-bg-strong-brand: #0088FF;
+  --badge-bg-subtle-brand: #EDFAFF;
+  --badge-label-subtle-brand: #0088FF;
+  --badge-dot-brand: #0088FF;
+  --tab-label-selected-default: #0088FF;
+  --tab-label-selected-hover: #0088FF;
+  --tab-label-selected-pressed: #0868C5;
+  --tab-icon-selected-default: #0088FF;
+  --tab-icon-selected-hover: #0088FF;
+  --tab-icon-selected-pressed: #0868C5;
+  --tab-indicator-default: #0088FF;
+  --list-leading-container-bg-brand: #EDFAFF;
+  --list-leading-container-icon-brand: #0088FF;
+  --switch-track-on-default: #0088FF;
+  --switch-track-on-hover: #0868C5;
+  --switch-track-on-pressed: #0D589B;
+  --switch-icon-on-default: #0088FF;
+  --switch-icon-on-hover: #0868C5;
+  --switch-icon-on-pressed: #0D589B;
+  --switch-outlined-icon-on: #0088FF;
+  --segmented-control-neutral-label-selected-default: #0088FF;
+  --segmented-control-neutral-label-selected-pressed: #0868C5;
+  --segmented-control-neutral-icon-selected-default: #0088FF;
+  --segmented-control-neutral-icon-selected-pressed: #0868C5;
+  --segmented-control-brand-thumb-default: #0088FF;
+  --segmented-control-brand-thumb-pressed: #0D589B;
+  --segmented-control-tinted-thumb-default: #EDFAFF;
+  --segmented-control-tinted-thumb-pressed: #B5EAFF;
+  --segmented-control-tinted-thumb-border-default: #0088FF;
+  --segmented-control-tinted-thumb-border-pressed: #0868C5;
+  --segmented-control-tinted-label-selected-default: #0088FF;
+  --segmented-control-tinted-label-selected-pressed: #0D589B;
+  --segmented-control-tinted-icon-selected-default: #0088FF;
+  --segmented-control-tinted-icon-selected-pressed: #0D589B;
+  --slider-track-active: #0088FF;
+  --slider-halo-hover: #EDFAFF;
+  --slider-halo-pressed: #D6F3FF;
+  --menu-check-default: #0088FF;
+  --tooltip-primary-label-light: #0088FF;
+  --tooltip-primary-label-light-hover: #0868C5;
+  --tooltip-primary-label-light-pressed: #0D589B;
 }
 
 /**
