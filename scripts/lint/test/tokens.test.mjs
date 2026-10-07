@@ -96,6 +96,10 @@ const cases = [
   ["tokens/contrast", (j) => { j.semantic.color["bg-fill-brand"].value = "{color.azure.500}"; }, "floor of the azure exception"],
   // Other ramps keep 4.5:1: a 3.6:1 orange fill under white still fails in the default brand.
   ["tokens/contrast", (j) => { j.semantic.color["bg-fill-warning-strong"].value = "{color.orange.600}"; }, "below the 4.5:1 WCAG 1.4.3 minimum"],
+  // The myBiz brand-role exception lowers brand text to 3:1, but not below: orange.500 under white is 2.89:1.
+  ["tokens/contrast", (j) => { j["brands/mybiz"].color["bg-fill-brand"].value = "{color.orange.500}"; }, "floor of the myBiz brand-role exception"],
+  // It is scoped by role: a myBiz warning fill on pomegranate.600 (4.41:1 under white) still needs 4.5:1.
+  ["tokens/contrast", (j) => { j["brands/mybiz"].color["bg-fill-warning-strong-hover"] = { value: "{color.pomegranate.600}", type: "color" }; }, "In myBiz, component.button.label-primary-destructive-hover"],
   // An accepted pairing keeps its own floor: the Radio hover dot may not sink further.
   ["tokens/contrast", (j) => { j.component.radio["dot-selected-hover"].value = "{color.border-brand-inverse}"; }, "radio.dot-selected-hover"],
   ["tokens/structure", (j) => { j.$metadata.tokenSetOrder = ["primitives", "semantic", "component", "brands/mybiz"]; }, "each brand set overrides semantic"],
