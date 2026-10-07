@@ -1,4 +1,5 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type CSSProperties, type ReactNode, type Ref } from "react";
+import { createPortal } from "react-dom";
 import { aliasLabel, cssVar, data, formatValue, groupsOf, inBrand, select, useBrand, type FlatToken, type Platform, type TokenSet } from "./data";
 import { Icon } from "../components/Icon/Icon";
 import { SegmentedControl } from "../components/SegmentedControl/SegmentedControl";
@@ -12,14 +13,54 @@ const PLATFORMS: { id: Platform; label: string }[] = [
 ];
 
 /** `sb-unstyled` opts out of the Storybook docs typography so the blocks render in the brand typeface with tokens. */
-const Doc = ({ children }: { children: ReactNode }) => <div className="doc sb-unstyled">{children}</div>;
+const Doc = ({ children, ref }: { children: ReactNode; ref?: Ref<HTMLDivElement> }) => (
+  <div ref={ref} className="doc sb-unstyled">
+    {children}
+  </div>
+);
 
-function PlatformSwitch({ value, onChange }: { value: Platform; onChange: (platform: Platform) => void }) {
+/** `fallback` marks the toolbar copy of a switch that also sits in a heading; CSS shows one of the two by column width. */
+function PlatformSwitch({ value, onChange, fallback = false }: { value: Platform; onChange: (platform: Platform) => void; fallback?: boolean }) {
   return (
-    <div className="doc-platforms">
+    <div className={fallback ? "doc-platforms doc-platforms-fallback" : "doc-platforms"}>
       <SegmentedControl aria-label="Platform" items={PLATFORMS} value={value} onChange={(id) => onChange(id as Platform)} />
     </div>
   );
+}
+
+/**
+ * Adds a copy of a block's platform switch to the nearest h1–h3 above it, on the right and
+ * top-aligned with the heading, and marks the intro text between them so it stops short of
+ * the switch. Returns a ref for the block and the slot to portal into, which is null when
+ * the block has no heading of its own, so the switch stays in the toolbar.
+ */
+function useHeadingSlot() {
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
+  const ref = useCallback((block: HTMLDivElement | null) => {
+    const intro: Element[] = [];
+    let node = block?.previousElementSibling;
+    while (node && !/^H[1-3]$/.test(node.tagName)) {
+      if (/^(P|UL|OL)$/.test(node.tagName)) intro.push(node);
+      node = node.previousElementSibling;
+    }
+    if (!(node instanceof HTMLElement) || node.querySelector(".doc-heading-switch")) return;
+    const heading = node;
+    for (const element of intro) element.setAttribute("data-beside-switch", "");
+    const host = heading.ownerDocument.createElement("div");
+    host.className = "doc-heading-switch sb-unstyled";
+    // Keep the heading's accessible name to its own text, without the switch labels.
+    heading.setAttribute("aria-label", heading.textContent?.trim() ?? "");
+    // First child, so the float sits on the heading's first line.
+    heading.prepend(host);
+    setSlot(host);
+    return () => {
+      host.remove();
+      heading.removeAttribute("aria-label");
+      for (const element of intro) element.removeAttribute("data-beside-switch");
+      setSlot(null);
+    };
+  }, []);
+  return [ref, slot] as const;
 }
 
 /** Token name for the chosen platform; clicking copies the ready-to-paste usage. */
@@ -70,10 +111,12 @@ type TableProps = {
 /** Name, alias, value and description for a fixed list of tokens. */
 export function TokenRows({ tokens, preview, initialPlatform = "css" }: TableProps) {
   const [platform, setPlatform] = useState<Platform>(initialPlatform);
+  const [block, slot] = useHeadingSlot();
   return (
-    <Doc>
-      <div className="doc-toolbar">
-        <PlatformSwitch value={platform} onChange={setPlatform} />
+    <Doc ref={block}>
+      {slot && createPortal(<PlatformSwitch value={platform} onChange={setPlatform} />, slot)}
+      <div className={slot ? "doc-toolbar doc-toolbar-fallback" : "doc-toolbar"}>
+        <PlatformSwitch value={platform} onChange={setPlatform} fallback={Boolean(slot)} />
       </div>
       <Rows tokens={tokens} preview={preview} platform={platform} />
     </Doc>
@@ -133,9 +176,10 @@ export function TokenTable({ set }: { set: TokenSet }) {
           (token.description ?? "").toLowerCase().includes(needle)),
     );
   }, [set, group, query, brand]);
+  const [block, slot] = useHeadingSlot();
 
   return (
-    <Doc>
+    <Doc ref={block}>
       <div className="doc-toolbar">
         <input type="search" placeholder="Search names, values, aliases or descriptions" aria-label="Search tokens" value={query} onChange={(event) => setQuery(event.target.value)} />
         <span className="doc-select">
@@ -149,7 +193,8 @@ export function TokenTable({ set }: { set: TokenSet }) {
           </select>
           <Icon name="chevron-down" size="var(--icon-sm)" className="doc-select-icon" />
         </span>
-        <PlatformSwitch value={platform} onChange={setPlatform} />
+        {slot && createPortal(<PlatformSwitch value={platform} onChange={setPlatform} />, slot)}
+        <PlatformSwitch value={platform} onChange={setPlatform} fallback={Boolean(slot)} />
       </div>
       <Rows tokens={tokens} platform={platform} />
       <p className="doc-count doc-small doc-muted">
