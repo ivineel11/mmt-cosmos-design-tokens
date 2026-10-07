@@ -29,7 +29,9 @@ const level = (r) => (r >= 7 ? "AA and AAA" : "AA");
 // Primitives whose real-world pairing already fails, called out on the swatch itself.
 const PAIRING_NOTES = {
   "azure.600":
-    " Too weak for text: it fails AA on white at 3.75:1, which is why text-link and bg-fill-brand-hover were moved off it. It still backs border-focus and border-brand-hover, and text-brand-hover for the Radio dot — all non-text graphics under the 3:1 rule of WCAG 1.4.11, which it clears.",
+    " Too weak for text: it reads at 3.02:1 on white. It backs the brand hover steps (text-, icon- and border-brand-hover). The Radio hover dot on its azure.50 tint reads at 2.84:1, below the 3:1 rule of WCAG 1.4.11, and is accepted by design decision (README, Azure contrast exception).",
+  "azure.700":
+    " The MakeMyTrip primary. White text on it reads at 3.52:1, below AA for normal text; brand and info roles accept that under the azure exception, which follows Apple guidance with a 3:1 floor (README, Azure contrast exception). Inline links use azure.800 instead.",
   "yellow.100":
     " In use as bg-fill-caution-subtle it carries text-caution-on-bg-fill-subtle (yellow.800) at 6.36:1. The pairing used to be yellow.600 at 2.73:1, the worst in the system.",
   "neutral.500":

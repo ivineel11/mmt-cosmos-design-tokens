@@ -92,6 +92,12 @@ const cases = [
   ["tokens/contrast", (j) => { j.component.button["bg-opacity-tertiary-inverse-default"].value = "{opacity.90}"; }, "at 90% over color.bg-surface-inverse"],
   // Each brand is checked on its own values: a myBiz fill too light for the white label.
   ["tokens/contrast", (j) => { j["brands/mybiz"].color["bg-fill-brand"].value = "{color.orange.400}"; }, "In myBiz, component.button.label-primary-default"],
+  // The azure exception lowers the text floor to 3:1, but not below: azure.500 under white is 2.41:1.
+  ["tokens/contrast", (j) => { j.semantic.color["bg-fill-brand"].value = "{color.azure.500}"; }, "floor of the azure exception"],
+  // Other ramps keep 4.5:1: a 3.6:1 orange fill under white still fails in the default brand.
+  ["tokens/contrast", (j) => { j.semantic.color["bg-fill-warning-strong"].value = "{color.orange.600}"; }, "below the 4.5:1 WCAG 1.4.3 minimum"],
+  // An accepted pairing keeps its own floor: the Radio hover dot may not sink further.
+  ["tokens/contrast", (j) => { j.component.radio["dot-selected-hover"].value = "{color.border-brand-inverse}"; }, "radio.dot-selected-hover"],
   ["tokens/structure", (j) => { j.$metadata.tokenSetOrder = ["primitives", "semantic", "component", "brands/mybiz"]; }, "each brand set overrides semantic"],
   ["tokens/structure", (j) => { j["mybiz"] = j["brands/mybiz"]; }, 'Unknown top-level key "mybiz"'],
   ["tokens/brand", (j) => { j["brands/mybiz"].color["text-nope"] = { value: "{color.orange.700}", type: "color" }; }, "not a semantic token"],

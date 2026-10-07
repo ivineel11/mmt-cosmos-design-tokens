@@ -203,7 +203,7 @@ Web outputs keep token colors as hex strings (or CSS `linear-gradient(...)` if a
 
 | Input (resolved token value) | iOS output | Android output |
 |------------------------------|------------|----------------|
-| `#0067E8` | `Color(red: 0, green: 0.403922, blue: 0.909804)` | `Color(0xFF0067E8)` |
+| `#0088FF` | `Color(red: 0, green: 0.533333, blue: 1)` | `Color(0xFF0088FF)` |
 | `#RRGGBBAA` (8-digit hex) | `Color(.sRGB, red: …, green: …, blue: …, opacity: …)` | `Color(0xAARRGGBB)` |
 | `linear-gradient(90deg, #FFD230 0%, …)` | `LinearGradient(gradient: Gradient(stops: […]), startPoint: …, endPoint: …)` | `Brush.linearGradient(0f to Color(…), …, start = Offset(…), end = Offset(…))` |
 
@@ -284,10 +284,10 @@ Chips follow the same rule, and their border toggle is what adapts them to the c
 ### 4. Color scale system
 
 - **14 palettes:** neutral, azure, red, orange, tangerine, amber, yellow, lime, green, blue, indigo, violet, purple, fuchsia
-- **Brand ramps:** `azure` (MakeMyTrip), `orange` (myBiz) and `tangerine` (Goibibo). Each step of `tangerine` matches the azure step of the same number in contrast against white, so every brand pairing holds
+- **Brand ramps:** `azure` (MakeMyTrip), `orange` (myBiz) and `tangerine` (Goibibo). `tangerine` was matched step for step to the earlier azure ramp, so Goibibo pairings meet WCAG AA where MakeMyTrip now relies on the azure exception (section 15)
 - **11–12 steps per palette:** `50`, `100`–`900`, `950`, plus `0` on neutral only
 - **Neutral is special:** includes both `0` (white) and `50`–`950`; other palettes start at `50`
-- **Brand primary (interactive):** semantic brand roles rest on `color.azure.700` = `#0067E8` (WCAG AA on white). The lighter `color.azure.600` = `#0681FF` carries the hover and focus steps — `text-brand-hover`, `border-brand-hover`, `border-focus`.
+- **Brand primary (interactive):** semantic brand roles rest on `color.azure.700` = `#0088FF`, matched to the MakeMyTrip product primary. White on it reads at 3.52:1, accepted under the azure exception (section 15). The lighter `color.azure.600` = `#0698FF` carries the hover steps (`text-brand-hover`, `border-brand-hover`); `border-focus` sits on 700 and inline links on 800.
 
 ### 5. One typeface per brand (Lato, Rubik for Goibibo)
 
@@ -412,15 +412,15 @@ Cosmos has one elevation scale, written as shadows. There is no separate `elevat
 
 ### 13. Inverse surface (controls on dark sections)
 
-Cosmos has one light theme, but products still place controls on dark sections: hero banners, offer cards on navy, dark tooltips and snackbars, and photos under a scrim. A light control fails there. Brand blue text (`#0067E8`) is 3.87:1 on `#0A0A0A` and 2.59:1 on navy, and a light grey disabled fill turns into a bright slab. Button therefore has an **Inverse** surface. Its `button/*-inverse-*` keys put the surface after the hierarchy, for example `button/label-secondary-inverse-destructive-hover`.
+Cosmos has one light theme, but products still place controls on dark sections: hero banners, offer cards on navy, dark tooltips and snackbars, and photos under a scrim. A light control fails there. Brand blue text (`#0088FF`) is 5.62:1 on `#0A0A0A` but only 3.50:1 on navy (`azure.950`), and a light grey disabled fill turns into a bright slab. Button therefore has an **Inverse** surface. Its `button/*-inverse-*` keys put the surface after the hierarchy, for example `button/label-secondary-inverse-destructive-hover`.
 
 - **Inverse, not dark mode.** A dark theme would be a mode on the semantic collection, and the `button/*` keys would follow it unchanged. Inverse is a surface inside the light theme, named by role, so it stays valid when a dark theme arrives and inverted surfaces flip to light.
 - **Steps on dark.**
-  - Labels sit at step 300 (`text-brand-inverse` `#83D4FF`, `text-warning-inverse` `#FFA2A2`).
+  - Labels sit at step 300 (`text-brand-inverse` `#83DFFF`, `text-warning-inverse` `#FFA2A2`).
   - Icons and outlines sit one step deeper, at 400, like the existing inverse status icons.
   - Hover and pressed get lighter by one step each, mirroring light, where they get darker.
 - **Translucent tints.** Hover, pressed and the Tertiary fill must work on near-black, on navy and on photos. They are a colour (`bg-surface-brand-inverse`, `bg-surface-warning-inverse`) rendered at a `button/bg-opacity-*` token (10, 15 or 20%). This is the same split as a scrim or Radio's state layer, never an alpha hex. Disabled stays solid (`bg-surface-inverse-disabled`).
-- **Primary keeps its fill.** The brand and destructive fills are shared with light, so Primary is the same button on every surface. Its hover and pressed fills get darker, and the pressed fill is only 2.38:1 against `#0A0A0A`. The white label keeps it readable at 5.12:1 or more.
+- **Primary keeps its fill.** The brand and destructive fills are shared with light, so Primary is the same button on every surface. Its hover and pressed fills get darker, and the pressed fill is only 2.72:1 against `#0A0A0A`. The white label reads at 3.52:1 at rest (the azure exception, section 15) and 5.53:1 or more on hover and press.
 - **Contrast is linted on the dark canvas.** `tokens/contrast` checks an `-inverse` key against `bg-surface-inverse`, blending a tint over it at its `bg-opacity-*` value first.
 
 ### 14. Brands (MakeMyTrip, myBiz and Goibibo)
@@ -459,15 +459,15 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 | `text-brand-inverse-pressed` | `azure.100` | `orange.100` | `tangerine.100` |
 | `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `orange.400` | `tangerine.400` |
 
-**Contrast.** myBiz uses the Tailwind `orange` ramp step for step, with `orange.700` as its primary. `tangerine` was generated so that each step matches the azure step of the same number in contrast against white, within 0.07. Every pairing MakeMyTrip passes, the other brands pass too:
+**Contrast.** myBiz uses the Tailwind `orange` ramp step for step, with `orange.700` as its primary. `tangerine` was generated to match the earlier azure ramp step for step in contrast against white, within 0.07. The azure ramp was then lightened to match the MakeMyTrip product primary (section 15), so the myBiz and Goibibo brand pairings pass WCAG AA where MakeMyTrip uses the 3:1 azure exception:
 
 | Pairing | MakeMyTrip (azure) | myBiz (orange) | Goibibo (tangerine) |
 |---|---|---|---|
-| White label on `bg-fill-brand` (700) | 5.11:1 | 5.22:1 | 5.09:1 |
-| `text-brand-hover` on white (600, non-text only) | 3.75:1 | 3.59:1 | 3.77:1 |
-| `text-brand-on-bg-surface-hover` on its tint (800 on 100) | 5.55:1 | 6.42:1 | 5.60:1 |
-| `text-brand-inverse` on `#0A0A0A` (300) | 12.09:1 | 11.61:1 | 12.07:1 |
-| Inverse Primary pressed fill on `#0A0A0A` (900, known gap) | 2.37:1 | 2.09:1 | 2.39:1 |
+| White label on `bg-fill-brand` (700) | 3.52:1 (azure exception) | 5.22:1 | 5.09:1 |
+| `text-brand-hover` on white (600, non-text only) | 3.02:1 | 3.59:1 | 3.77:1 |
+| `text-brand-on-bg-surface-hover` on its tint (800 on 100) | 4.77:1 | 6.42:1 | 5.60:1 |
+| `text-brand-inverse` on `#0A0A0A` (300) | 13.16:1 | 11.61:1 | 12.07:1 |
+| Inverse Primary pressed fill on `#0A0A0A` (900, known gap) | 2.72:1 | 2.09:1 | 2.39:1 |
 
 The previous brand colours, myBiz `#FF664B` and Goibibo `#FF6D38`, read at 2.89:1 and 2.80:1 with white text, so they failed. At that lightness they sit where step 500 sits in a ramp; the accessible primary is step 700. myBiz now uses `orange.700` (`#CA3500`) for its primary fill, brand text, borders and icons, and the other `orange` steps for tints, hover, pressed and dark surfaces. Goibibo moves from hue 39 toward amber (OKLCH hue 52 at 500, `#EF7500`; primary `#B35200`), so the two oranges sit about three times further apart than the old colours did. `tokens/contrast` checks every brand, and names the brand in its report.
 
@@ -493,6 +493,16 @@ Rubik is wider than Lato and has a taller x-height, so the same size reads large
 4. In Figma, extend the **MakeMyTrip** collection with the brand name and set the same overrides.
 
 `tokens/brand` enforces the shape: an override must name an existing semantic colour, font family or font weight, alias a primitive and differ from the default value, and each brand set must belong to exactly one theme.
+
+### 15. Azure contrast exception (3:1, following Apple)
+
+The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`) matches the primary colour MakeMyTrip already ships. White text on it reads at **3.52:1**. That clears 3:1 but not the 4.5:1 WCAG 1.4.3 asks of normal text. Cosmos accepts this by design decision and follows Apple guidance instead, where system blue carries white labels at a similar ratio.
+
+- **What the exception covers.** Any text pairing where one side is an azure step needs 3:1 instead of 4.5:1. That covers brand roles (the Primary, Secondary, Tertiary and Text Buttons, selected Tab and Chip labels, brand Badges, the Segmented control brand thumb) and info roles (info Badges, `bg-fill-info-strong`, the Snackbar info action). Info stays azure in myBiz and Goibibo, so it falls under the exception there too. Orange, tangerine and every other ramp keep 4.5:1.
+- **Inline links are not covered.** Links sit in small running text, so `text-link` moved to `azure.800` (`#0868C5`, 5.53:1 on white), with hover on 900 and pressed on 950.
+- **Focus moved to 700.** `border-focus` reads at 3.52:1 on white and 3.22:1 on `bg-secondary`. On `azure.600` it would have been 3.02:1 and about 2.8:1.
+- **Hover stays on 600.** `text-brand-hover`, `icon-brand-hover` and `border-brand-hover` stay on `azure.600` (`#0698FF`, 3.02:1 on white). The Radio hover dot on its `azure.50` tint reads at **2.84:1**, below the 3:1 graphics minimum. It is accepted by name.
+- **How it is linted.** `tokens/contrast` applies the 3:1 floor to azure pairings and lists the accepted Radio pairing in `ACCEPTED_BELOW_FLOOR`. A pairing that drops below these floors still fails.
 
 ---
 
@@ -575,17 +585,17 @@ Token path pattern: `color.{palette}.{step}`
 | Step | Neutral | Azure | Red | Orange | Tangerine | Amber | Yellow | Lime | Green | Blue | Indigo | Violet | Purple | Fuchsia |
 |------|---------|-------|-----|--------|-----------|-------|--------|------|-------|------|--------|--------|--------|---------|
 | `0` | #FFFFFF | — | — | — | — | — | — | — | — | — | — | — | — | — |
-| `50` | #FAFAFA | #EDF8FF | #FEF2F2 | #FFF7ED | #FEF4EC | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
-| `100` | #F5F5F5 | #D6EFFF | #FFE2E2 | #FFEDD4 | #FFE8D4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
-| `200` | #E5E5E5 | #C2E8FF | #FFC9C9 | #FFD6A8 | #FFDCC2 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
-| `300` | #D4D4D4 | #83D4FF | #FFA2A2 | #FFB86A | #FFBC8A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
+| `50` | #FAFAFA | #EDFAFF | #FEF2F2 | #FFF7ED | #FEF4EC | #FFFBEB | #FEFCE8 | #F7FEE7 | #F0FDF4 | #EFF6FF | #EEF2FF | #F5F3FF | #FAF5FF | #FDF4FF |
+| `100` | #F5F5F5 | #D6F3FF | #FFE2E2 | #FFEDD4 | #FFE8D4 | #FEF3C6 | #FEF9C2 | #ECFCCA | #DCFCE7 | #DBEAFE | #E0E7FF | #EDE9FE | #F3E8FF | #FAE8FF |
+| `200` | #E5E5E5 | #B5EAFF | #FFC9C9 | #FFD6A8 | #FFDCC2 | #FEE685 | #FFF085 | #D8F999 | #B9F8CF | #BEDBFF | #C6D2FF | #DDD6FF | #E9D4FF | #F6CFFF |
+| `300` | #D4D4D4 | #83DFFF | #FFA2A2 | #FFB86A | #FFBC8A | #FFD230 | #FFDF20 | #BBF451 | #7BF1A8 | #8EC5FF | #A3B3FF | #C4B4FF | #DAB2FF | #F4A8FF |
 | `400` | #A1A1A1 | #48BBFF | #FF6467 | #FF8904 | #FF9749 | #FFB900 | #FDC700 | #9AE600 | #05DF72 | #51A2FF | #7C86FF | #A684FF | #C27AFF | #ED6AFF |
-| `500` | #737373 | #1E9CFF | #FB2C36 | #FF6900 | #EF7500 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
-| `600` | #525252 | #0681FF | #E7000B | #F54900 | #D26400 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
-| `700` | #404040 | #0067E8 | #C10007 | #CA3500 | #B35200 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
-| `800` | #262626 | #0857C5 | #9F0712 | #9F2D00 | #974500 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
-| `900` | #171717 | #0D4C9B | #82181A | #7E2A0C | #813A00 | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
-| `950` | #0A0A0A | #0E2F5D | #460809 | #441306 | #512303 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
+| `500` | #737373 | #1EB0FF | #FB2C36 | #FF6900 | #EF7500 | #FE9A00 | #F0B100 | #7CCF00 | #00C950 | #2B7FFF | #615FFF | #8E51FF | #AD46FF | #E12AFB |
+| `600` | #525252 | #0698FF | #E7000B | #F54900 | #D26400 | #E17100 | #D08700 | #5EA500 | #00A63E | #155DFC | #4F39F6 | #7F22FE | #9810FA | #C800DE |
+| `700` | #404040 | #0088FF | #C10007 | #CA3500 | #B35200 | #BB4D00 | #A65F00 | #497D00 | #008236 | #1447E6 | #432DD7 | #7008E7 | #8200DB | #A800B7 |
+| `800` | #262626 | #0868C5 | #9F0712 | #9F2D00 | #974500 | #973C00 | #894B00 | #3C6300 | #016630 | #193CB8 | #372AAC | #5D0EC0 | #6E11B0 | #8A0194 |
+| `900` | #171717 | #0D589B | #82181A | #7E2A0C | #813A00 | #7B3306 | #733E0A | #35530E | #0D542B | #1C398E | #312C85 | #4D179A | #59168B | #721378 |
+| `950` | #0A0A0A | #0E365D | #460809 | #441306 | #512303 | #461901 | #432004 | #192E03 | #032E15 | #162456 | #1E1A4D | #2F0D68 | #3C0366 | #4B004F |
 
 The `alpha` palette holds the only translucent colours. Apart from `transparent`, each step is neutral 950 at a fixed alpha, for shadow layers only:
 
@@ -1144,20 +1154,20 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 
 | Token | Alias | Resolves to |
 |-------|-------|-------------|
-| `button/bg-primary-default` | `{color.bg-fill-brand}` | `#0067E8` |
+| `button/bg-primary-default` | `{color.bg-fill-brand}` | `#0088FF` |
 | `button/bg-primary-destructive-hover` | `{color.bg-fill-warning-strong-hover}` | `#E7000B` |
-| `button/label-secondary-inverse-hover` | `{color.text-brand-inverse-hover}` | `#C2E8FF` |
-| `checkbox/bg-selected-default` | `{color.bg-fill-brand}` | `#0067E8` |
+| `button/label-secondary-inverse-hover` | `{color.text-brand-inverse-hover}` | `#B5EAFF` |
+| `checkbox/bg-selected-default` | `{color.bg-fill-brand}` | `#0088FF` |
 | `checkbox/border-unselected-default` | `{color.border-strong}` | `#737373` |
 | `checkbox/control-size-md` | `{space.lg}` | `20px` |
-| `radio/dot-selected-default` | `{color.text-brand}` | `#0067E8` |
+| `radio/dot-selected-default` | `{color.text-brand}` | `#0088FF` |
 | `radio/radius` | `{radius.full}` | `999px` |
 | `snackbar/icon-inverse-success` | `{color.icon-success-inverse}` | `#05DF72` |
 | `badge/bg-strong-warning` | `{color.bg-fill-warning-strong}` | `#C10007` |
-| `tab/label-selected-pressed` | `{color.text-brand-pressed}` | `#0857C5` |
+| `tab/label-selected-pressed` | `{color.text-brand-pressed}` | `#0868C5` |
 | `list/item-bg-pressed` | `{color.bg-fill-pressed-strong}` | `#E5E5E5` |
 | `switch/track-off-default` | `{color.bg-fill-neutral-strong}` | `#D4D4D4` |
-| `segmented-control/brand-thumb-default` | `{color.bg-fill-brand}` | `#0067E8` |
+| `segmented-control/brand-thumb-default` | `{color.bg-fill-brand}` | `#0088FF` |
 | `slider/tick-inactive` | `{color.bg-fill-neutral-strong-pressed}` | `#737373` |
 | `menu/item-bg-destructive-hover` | `{color.bg-surface-warning-hover}` | `#FFE2E2` |
 
@@ -1244,9 +1254,9 @@ Add a component group only when a component has enough variant × state combinat
 | `text-inverse` | `color.neutral.0` |
 | `text-inverse-secondary` | `color.neutral.400` |
 | `text-inverse-disabled` | `color.neutral.500` |
-| `text-link` | `color.azure.700` |
-| `text-link-hover` | `color.azure.800` |
-| `text-link-pressed` | `color.azure.900` |
+| `text-link` | `color.azure.800` |
+| `text-link-hover` | `color.azure.900` |
+| `text-link-pressed` | `color.azure.950` |
 | `text-link-inverse` | `color.azure.300` |
 | `text-brand` | `color.azure.700` |
 | `text-brand-hover` | `color.azure.600` |
@@ -1288,7 +1298,7 @@ Add a component group only when a component has enough variant × state combinat
 | `border-strong` | `color.neutral.500` |
 | `border-disabled-strong` | `color.neutral.400` |
 | `border-disabled-subtle` | `color.neutral.300` |
-| `border-focus` | `color.azure.600` |
+| `border-focus` | `color.azure.700` |
 | `border-brand` | `color.azure.700` |
 | `border-brand-hover` | `color.azure.600` |
 | `border-brand-pressed` | `color.azure.800` |
@@ -1574,7 +1584,7 @@ Primitive `spacing.*` remains available for leftover steps (`44`, `52`, `56`, `6
 ```ts
 import tokens from "./dist/web/tokens.ts";
 
-console.log(tokens.colorBgFillBrand); // "#0067E8"
+console.log(tokens.colorBgFillBrand); // "#0088FF"
 ```
 
 ### iOS (SwiftUI)
