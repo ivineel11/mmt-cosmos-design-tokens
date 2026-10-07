@@ -8,7 +8,7 @@ import { create } from "storybook/theming";
 export const cosmosTheme = create({
   base: "light",
   brandTitle: "Cosmos",
-  colorSecondary: "#0067E8",
+  colorSecondary: "#0088FF",
   fontBase: '"Lato", system-ui, sans-serif',
   fontCode: 'ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace',
 });
