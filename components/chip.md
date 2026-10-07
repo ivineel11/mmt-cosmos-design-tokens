@@ -196,7 +196,7 @@ Disabled pairs are exempt from WCAG 1.4.3 / 1.4.11 and are not listed.
 | Selected hover label `#0868C5` on `#D6F3FF` | 4.77:1 | 4.5:1 (1.4.3) | Pass |
 | Selected pressed label `#0D589B` on `#B5EAFF` | 5.60:1 | 4.5:1 (1.4.3) | Pass |
 | Secondary `#525252`, lowest pair (on `#B5EAFF`) | 6.01:1 | 4.5:1 (1.4.3) | Pass |
-| Selected icon `#0088FF`, lowest pair (on `#B5EAFF`) | 2.71:1 | 3:1 (1.4.11) | **Below** since the azure change of 2026-10-07. The icon keeps `icon-brand` on the pressed fill |
+| Selected icon on the pressed fill `#B5EAFF` | Figma 5.60:1 (`chip/icon-selected-pressed` `#0D589B`); code 2.71:1 (`#0088FF`) | 3:1 (1.4.11) | Figma passes. **Code below**: tokens.json lacks the hover and pressed icon tokens that Figma binds |
 | Selected border `#0088FF` on white / grey canvas | 3.52 / 3.22:1 | 3:1 (1.4.11) | Pass |
 | Focus ring `#0088FF` on white / grey canvas | 3.52 / 3.22:1 | 3:1 (1.4.11) | Pass |
 | Unselected border `#D4D4D4` on white | 1.48:1 | – | See below |
