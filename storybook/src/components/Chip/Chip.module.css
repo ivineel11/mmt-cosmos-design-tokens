@@ -17,6 +17,7 @@
   --_icon: var(--chip-icon-unselected-default);
   --_remove-bg-hover: var(--chip-remove-bg-unselected-hover);
   --_remove-bg-pressed: var(--chip-remove-bg-unselected-pressed);
+  --_remove-icon-active: var(--chip-icon-unselected-default);
 
   position: relative;
   box-sizing: border-box;
@@ -39,9 +40,11 @@
   --_icon: var(--chip-icon-selected-default);
   --_remove-bg-hover: var(--chip-remove-bg-selected-hover);
   --_remove-bg-pressed: var(--chip-remove-bg-selected-pressed);
+  /* The remove circle uses the pressed tint, where icon-selected-default is too light. */
+  --_remove-icon-active: var(--chip-icon-selected-pressed);
 }
-.surface[data-selected="true"]:has(.main:hover) { --_bg: var(--chip-bg-selected-hover); --_border: var(--chip-border-selected-hover); --_label: var(--chip-label-selected-hover); }
-.surface[data-selected="true"]:has(.main:active) { --_bg: var(--chip-bg-selected-pressed); --_border: var(--chip-border-selected-pressed); --_label: var(--chip-label-selected-pressed); }
+.surface[data-selected="true"]:has(.main:hover) { --_bg: var(--chip-bg-selected-hover); --_border: var(--chip-border-selected-hover); --_label: var(--chip-label-selected-hover); --_icon: var(--chip-icon-selected-hover); }
+.surface[data-selected="true"]:has(.main:active) { --_bg: var(--chip-bg-selected-pressed); --_border: var(--chip-border-selected-pressed); --_label: var(--chip-label-selected-pressed); --_icon: var(--chip-icon-selected-pressed); }
 
 /* Disabled collapses to the neutral ramp, selected or not. */
 .surface[data-disabled="true"] {
@@ -180,8 +183,8 @@
   height: max(100%, var(--chip-remove-min-touch-target));
   transform: translate(-50%, -50%);
 }
-.remove:hover:not(:disabled) { background: var(--_remove-bg-hover); }
-.remove:active:not(:disabled) { background: var(--_remove-bg-pressed); }
+.remove:hover:not(:disabled) { background: var(--_remove-bg-hover); color: var(--_remove-icon-active); }
+.remove:active:not(:disabled) { background: var(--_remove-bg-pressed); color: var(--_remove-icon-active); }
 .remove:disabled { cursor: not-allowed; }
 .remove:focus { outline: none; }
 .remove:focus-visible { outline: var(--chip-focus-ring-width) solid var(--chip-focus-ring); outline-offset: var(--chip-focus-ring-offset); }
