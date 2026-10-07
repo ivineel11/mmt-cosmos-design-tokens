@@ -32,6 +32,8 @@ const PAIRING_NOTES = {
     " Too weak for text: it reads at 3.02:1 on white. It backs the brand hover steps (text-, icon- and border-brand-hover). The Radio hover dot on its azure.50 tint reads at 2.84:1, below the 3:1 rule of WCAG 1.4.11, and is accepted by design decision (README, Azure contrast exception).",
   "azure.700":
     " The MakeMyTrip primary. White text on it reads at 3.52:1, below AA for normal text; brand and info roles accept that under the azure exception, which follows Apple guidance with a 3:1 floor (README, Azure contrast exception). Inline links use azure.800 instead.",
+  "thunderbird.600":
+    " The Goibibo primary. White text on it reads at 3.34:1, below AA for normal text; Goibibo brand roles accept that under the brand-role exception, with a 3:1 floor (README, Azure contrast exception).",
   "yellow.100":
     " In use as bg-fill-caution-subtle it carries text-caution-on-bg-fill-subtle (yellow.800) at 6.36:1. The pairing used to be yellow.600 at 2.73:1, the worst in the system.",
   "neutral.500":
