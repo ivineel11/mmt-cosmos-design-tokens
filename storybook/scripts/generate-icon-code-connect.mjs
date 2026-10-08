@@ -44,6 +44,10 @@ const FIGMA_ICONS = {
   "more-horiz": "906:37",
   "more-vert": "906:40",
   search: "906:43",
+  cancel: "1009:28",
+  calendar: "1009:31",
+  visibility: "1009:34",
+  "visibility-off": "1009:37",
 };
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");

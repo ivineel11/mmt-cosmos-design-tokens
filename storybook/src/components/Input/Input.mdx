@@ -1,0 +1,37 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Input.stories";
+
+<Meta of={Stories} />
+
+# Input
+
+A single-line text field with its label inside the box: large while the field is empty, small above the value once it has focus or text. There is no notch in the outline, and fields always stand alone. Figma set `1011:900`. Full spec: [components/input.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/input.md).
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## States
+
+Figma draws Value (Empty, Populated) and State (Default, Hover, Focus, Disabled) as variants. In code, Value is whether the input holds text, Hover and Focus are `:hover` and `:focus`, and Disabled is the `disabled` attribute. `invalid` is the Error intent: the field takes a faint red fill, and the outline, label and message turn red. Disabled wins over invalid.
+
+<Canvas of={Stories.States} />
+
+## Prefix, icons and the trailing button
+
+A `prefix` such as +91 appears with the value. A leading icon is decorative. A trailing icon becomes a button when it has `onTrailingIconClick`, and then needs `trailingIconLabel`; its hit area reaches `input/touch-target` (48) without moving the glyph.
+
+<Canvas of={Stories.Slots} />
+
+## Examples
+
+<Canvas of={Stories.Examples} />
+
+## Accessibility
+
+- A native `input` with a real `label`. Clicking anywhere in the field focuses it.
+- The supporting text is wired with `aria-describedby`, and invalid sets `aria-invalid`, so the error message is read with the field.
+- The placeholder only shows while the field is focused and never replaces the label.
+- Pass the right `type`, `inputMode` and `autoComplete`, such as `tel` and `tel-national` for a mobile number.
+- The resting outline is 1.48:1 on white, below WCAG 1.4.11. This is an accepted deviation: the label inside the field identifies it, and every interactive state clears 3:1.
+
+<ArgTypes of={Stories} />

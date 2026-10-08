@@ -465,8 +465,10 @@
   --color-bg-fill-warning-strong-hover: #E7000B;
   /** Pressed/active state for bg-fill-warning-strong — destructive primary button pressed. */
   --color-bg-fill-warning-strong-pressed: #9F0712;
-  /** Tinted error fill — low-emphasis error badges and tags. Pair the label with text-warning-on-bg-fill-subtle. */
+  /** Tinted error fill — low-emphasis error badges and tags. Pair the label with text-warning-on-bg-fill-subtle. For the body of an input field in the error state use the lighter bg-fill-warning-subtlest. */
   --color-bg-fill-warning-subtle: #FFE2E2;
+  /** Lightest error fill — the body of an input field in the error state, a faint tint that sits behind the field content without competing with it. Pair the label with text-warning and the outline with border-warning-strong. For a low-emphasis error badge or tag use bg-fill-warning-subtle, and for a tinted error container behind content use bg-surface-warning. */
+  --color-bg-fill-warning-subtlest: #FEF2F2;
   /** Solid inverted fill — dark badges, toasts and controls on a light page. Pair with text-inverse and icon-inverse, and use bg-fill-inverse-hover and bg-fill-inverse-pressed when it is interactive. */
   --color-bg-fill-inverse: #0A0A0A;
   /** Hover state for bg-fill-inverse — an action on a dark toast or a dark control. Lighter than the rest step, since the fill is already near black. */
@@ -1011,7 +1013,6 @@
   --spacing-48: 48px;
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-52: 52px;
-  /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-56: 56px;
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --spacing-60: 60px;
@@ -3492,10 +3493,96 @@
   --tooltip-screen-margin: 16px;
   /** Smallest gap between a tooltip and the viewport edge on web. Near an edge the bubble flips or shifts inward and the caret stays over the trigger. Use screen-margin on iOS and Android. */
   --tooltip-viewport-margin: 8px;
+  /** Fill of the field at rest, on hover and while focused. Uses bg-fill, not the page bg, so the field stays white on either canvas. The error intent uses bg-error and a disabled field uses bg-disabled. */
+  --input-bg-default: #FFFFFF;
+  /** Fill of the field in the error state, at rest, on hover and while focused. A faint red tint that marks the field together with the red outline and label. A disabled field drops the tint and uses bg-disabled. */
+  --input-bg-error: #FEF2F2;
+  /** Fill of a disabled field, in both intents. The lightest disabled fill, so an inert field recedes; the disabled text carries the state. On the grey bg-secondary canvas it matches the page and the outline alone marks the field. */
+  --input-bg-disabled: #F5F5F5;
+  /** Outline of the field at rest. Deliberately light so a resting form reads quiet; below the 3:1 of WCAG 1.4.11, an accepted deviation recorded in the Input spec. Steps up to border-hover on hover. */
+  --input-border-default: #D4D4D4;
+  /** Outline of the field on hover. One step darker than border-default so the pointer visibly lands on the field. Not used on touch platforms. */
+  --input-border-hover: #737373;
+  /** Outline of the field while focused, drawn at border-width-focus. Marks the field that receives typing. An invalid field keeps border-error-focus instead. */
+  --input-border-focus: #0088FF;
+  /** Outline of a disabled field, in both intents. Disabled wins over the error state, so an inert field never shows red. */
+  --input-border-disabled: #D4D4D4;
+  /** Outline of the field in the error state, at rest. Pairs with label-error and the error message under the field. */
+  --input-border-error-default: #C10007;
+  /** Outline of the field in the error state, on hover. A brighter red than border-error-default so hover still reads on an invalid field. */
+  --input-border-error-hover: #E7000B;
+  /** Outline of the field in the error state while focused, drawn at border-width-focus. Stays red rather than brand, so a field the user is correcting keeps its error. */
+  --input-border-error-focus: #C10007;
+  /** Field label in the default intent, both resting inside an empty field and sitting above the value. Stays the same on hover and focus; the outline shows the state. */
+  --input-label-default: #525252;
+  /** Field label in the error state, in every state except disabled. */
+  --input-label-error: #C10007;
+  /** Field label of a disabled field, in both intents. Disabled wins over the error state. */
+  --input-label-disabled: #A1A1A1;
+  /** Text the user has entered, in both intents. Use value-disabled when the field is disabled. */
+  --input-value-default: #0A0A0A;
+  /** Entered text in a disabled field. */
+  --input-value-disabled: #A1A1A1;
+  /** Placeholder text, shown only while an empty field is focused and the label has moved above it. Never a substitute for the label. */
+  --input-placeholder: #525252;
+  /** Fixed text before the value, such as a +91 country code, in both intents. Shown when the field has a value or focus. Use prefix-disabled when the field is disabled. */
+  --input-prefix-default: #525252;
+  /** Fixed text before the value in a disabled field. */
+  --input-prefix-disabled: #A1A1A1;
+  /** Text insertion caret while the field is focused. Use caret-error in the error state. */
+  --input-caret-default: #0A0A0A;
+  /** Text insertion caret while a field in the error state is focused. */
+  --input-caret-error: #C10007;
+  /** Leading and trailing icons, at rest, on hover and while focused, in both intents. The error state does not recolour them; the error glyph sits beside the message instead. */
+  --input-icon-default: #525252;
+  /** Leading and trailing icons of a disabled field. */
+  --input-icon-disabled: #A1A1A1;
+  /** Supporting text under the field, such as a hint or a character count. Use supporting-error when it carries an error message. */
+  --input-supporting-default: #525252;
+  /** Supporting text in the error state, where it carries the error message beside the error glyph. */
+  --input-supporting-error: #C10007;
+  /** Supporting text under a disabled field, in both intents. */
+  --input-supporting-disabled: #A1A1A1;
+  /** Error glyph before the error message. Shown only in the error state, and hidden when the field is disabled. */
+  --input-supporting-icon-error: #C10007;
+  /** Height of the field container. The label and value column is centred inside it, so the container has no vertical padding. Clears the 48px touch target. */
+  --input-height: 56px;
+  /** Horizontal padding inside the container, on both sides. Icons and text both start this far from the edge. */
+  --input-padding-x: 12px;
+  /** Horizontal gap between an icon and the label and value column. */
+  --input-gap: 12px;
+  /** Gap between the prefix and the value. */
+  --input-prefix-gap: 4px;
+  /** Size of the leading and trailing icons. A trailing icon that is a button still needs a 48 by 48 hit area in code. */
+  --input-icon-size: 24px;
+  /** Corner radius of the field container, on all four corners. */
+  --input-radius: 12px;
+  /** Thickness of the outline at rest, on hover and when disabled. Drawn inside the container so the field never shifts. */
+  --input-border-width: 1px;
+  /** Thickness of the outline while focused. Drawn inside the container, so the field does not reflow when it thickens. */
+  --input-border-width-focus: 2px;
+  /** Width of the text insertion caret where the platform lets it be set, and in design files. The web draws its own caret. */
+  --input-caret-width: 2px;
+  /** Gap between the field container and the supporting text under it. */
+  --input-supporting-padding-top: 8px;
+  /** Gap between the error glyph and the error message. */
+  --input-supporting-gap: 4px;
+  /** Size of the error glyph before the error message. */
+  --input-supporting-icon-size: 16px;
+  /** Minimum hit area of a trailing icon button, such as clear or show password. The 24px glyph keeps its size and the hit area overhangs it. */
+  --input-touch-target: 48px;
+  /** Keyboard focus ring around a trailing icon button. Apply on focus-visible only; the field itself shows focus with border-focus instead. */
+  --input-focus-ring: #0088FF;
+  /** Thickness of the focus ring around a trailing icon button. */
+  --input-focus-ring-width: 2px;
+  /** Gap between the trailing icon glyph and its focus ring. */
+  --input-focus-ring-offset: 2px;
+  /** Corner radius of the focus ring around a trailing icon button, a circle around the glyph. */
+  --input-focus-ring-radius: 999px;
 }
 
 /**
- * MakeMyTrip: the 235 tokens that change with the brand. Set data-brand="mmt"
+ * MakeMyTrip: the 236 tokens that change with the brand. Set data-brand="mmt"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mmt"] {
@@ -3734,10 +3821,11 @@
   --tooltip-primary-label-light: #0088FF;
   --tooltip-primary-label-light-hover: #0868C5;
   --tooltip-primary-label-light-pressed: #0D589B;
+  --input-border-focus: #0088FF;
 }
 
 /**
- * myBiz: the 235 tokens that change with the brand. Set data-brand="mybiz"
+ * myBiz: the 236 tokens that change with the brand. Set data-brand="mybiz"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mybiz"] {
@@ -3976,10 +4064,11 @@
   --tooltip-primary-label-light: #FF4929;
   --tooltip-primary-label-light-hover: #EF1107;
   --tooltip-primary-label-light-pressed: #C6080A;
+  --input-border-focus: #FF4929;
 }
 
 /**
- * Goibibo: the 235 tokens that change with the brand. Set data-brand="goibibo"
+ * Goibibo: the 236 tokens that change with the brand. Set data-brand="goibibo"
  * on any element to switch it and everything inside it.
  */
 [data-brand="goibibo"] {
@@ -4218,4 +4307,5 @@
   --tooltip-primary-label-light: #F45900;
   --tooltip-primary-label-light-hover: #A1340B;
   --tooltip-primary-label-light-pressed: #822D0C;
+  --input-border-focus: #F45900;
 }

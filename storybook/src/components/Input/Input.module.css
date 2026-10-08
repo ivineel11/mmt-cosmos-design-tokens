@@ -1,0 +1,163 @@
+/*
+ * Input: components/input.md. Every value is an input/* or semantic token.
+ * The field is empty and resting when its input shows the placeholder and has no focus:
+ * the label then sits large in the middle and the value row collapses.
+ */
+
+.root {
+  display: grid;
+  font-family: var(--body-large-regular-font-family), system-ui, sans-serif;
+  --_bg: var(--input-bg-default);
+  --_border: var(--input-border-default);
+  --_border-width: var(--input-border-width);
+  --_label: var(--input-label-default);
+  --_value: var(--input-value-default);
+  --_prefix: var(--input-prefix-default);
+  --_caret: var(--input-caret-default);
+  --_icon: var(--input-icon-default);
+  --_supporting: var(--input-supporting-default);
+}
+
+.field {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--input-gap);
+  height: var(--input-height);
+  padding-inline: var(--input-padding-x);
+  border-radius: var(--input-radius);
+  background: var(--_bg);
+  /* The outline is drawn inside the field, so thickening it on focus never moves the content. */
+  box-shadow: inset 0 0 0 var(--_border-width) var(--_border);
+  cursor: text;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+/*
+ * Optical centring on the web: browsers draw 12px Lato half a pixel above where Figma
+ * draws it, so 12px text shifts down a quarter of space-3xs. 16px text matches.
+ */
+.label {
+  color: var(--_label);
+  font-weight: var(--body-small-regular-font-weight);
+  font-size: var(--body-small-regular-font-size);
+  line-height: var(--body-small-regular-line-height);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: inherit;
+}
+.labelText { position: relative; top: calc(var(--space-3xs) / 4); }
+/* The label covers the whole field, so a click anywhere focuses the input. */
+.label::after { content: ""; position: absolute; inset: 0; }
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--input-prefix-gap);
+  font-weight: var(--body-large-regular-font-weight);
+  font-size: var(--body-large-regular-font-size);
+  line-height: var(--body-large-regular-line-height);
+}
+
+.prefix { flex: none; color: var(--_prefix); }
+
+.input {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  height: var(--body-large-regular-line-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--_value);
+  caret-color: var(--_caret);
+  font: inherit;
+  outline: none;
+}
+.input::placeholder { color: transparent; opacity: 1; }
+.input:focus::placeholder { color: var(--input-placeholder); }
+
+/* Resting and empty: the label takes the value's place and size, and the row collapses. */
+.field:has(.input:placeholder-shown:not(:focus)) .labelText { top: 0; }
+.field:has(.input:placeholder-shown:not(:focus)) .label {
+  font-weight: var(--body-large-regular-font-weight);
+  font-size: var(--body-large-regular-font-size);
+  line-height: var(--body-large-regular-line-height);
+}
+.field:has(.input:placeholder-shown:not(:focus)) .row { height: 0; overflow: hidden; }
+
+.icon { color: var(--_icon); }
+
+/* The trailing button keeps the 24px glyph and reaches a 48px hit area without moving it. */
+.action {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: none;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.action::before {
+  content: "";
+  position: absolute;
+  inset: calc((var(--input-icon-size) - var(--input-touch-target)) / 2);
+}
+.action:focus-visible { outline: var(--input-focus-ring-width) solid var(--input-focus-ring); outline-offset: var(--input-focus-ring-offset); border-radius: var(--input-focus-ring-radius); }
+
+.supporting {
+  display: flex;
+  align-items: center;
+  gap: var(--input-supporting-gap);
+  margin: 0;
+  padding-top: var(--input-supporting-padding-top);
+  color: var(--_supporting);
+  font-weight: var(--body-small-regular-font-weight);
+  font-size: var(--body-small-regular-font-size);
+  line-height: var(--body-small-regular-line-height);
+}
+.supportingText { position: relative; top: calc(var(--space-3xs) / 4); }
+.errorIcon { color: var(--input-supporting-icon-error); }
+
+/* States. Hover is pointer-only; focus thickens the outline. */
+@media (hover: hover) {
+  .root:not([data-disabled="true"]) .field:hover:not(:focus-within) { --_border: var(--input-border-hover); }
+  .root[data-invalid="true"] .field:hover:not(:focus-within) { --_border: var(--input-border-error-hover); }
+}
+.field:focus-within { --_border: var(--input-border-focus); --_border-width: var(--input-border-width-focus); }
+
+.root[data-invalid="true"] {
+  --_bg: var(--input-bg-error);
+  --_border: var(--input-border-error-default);
+  --_label: var(--input-label-error);
+  --_caret: var(--input-caret-error);
+  --_supporting: var(--input-supporting-error);
+}
+.root[data-invalid="true"] .field:focus-within { --_border: var(--input-border-error-focus); }
+
+/* Disabled wins over invalid: Input only sets data-invalid when the field is enabled. */
+.root[data-disabled="true"] {
+  --_bg: var(--input-bg-disabled);
+  --_border: var(--input-border-disabled);
+  --_label: var(--input-label-disabled);
+  --_value: var(--input-value-disabled);
+  --_prefix: var(--input-prefix-disabled);
+  --_icon: var(--input-icon-disabled);
+  --_supporting: var(--input-supporting-disabled);
+}
+.root[data-disabled="true"] .field { cursor: not-allowed; }
+.root[data-disabled="true"] .input { cursor: not-allowed; -webkit-text-fill-color: var(--_value); }
