@@ -291,7 +291,7 @@ Chips follow the same rule, and their border toggle is what adapts them to the c
 
 ### 5. One typeface per brand (Lato, Rubik for Goibibo)
 
-Each brand sets every typography role (headline, title, body and label) in one typeface. MakeMyTrip and myBiz use **Lato**. Goibibo uses **Rubik**. There is no display scale and no letter-spacing tokens.
+Each brand sets every typography role (headline, title, paragraph, body and label) in one typeface. MakeMyTrip and myBiz use **Lato**. Goibibo uses **Rubik**. There is no display scale and no letter-spacing tokens.
 
 | Brand | Font | regular | bold | black |
 |-------|------|---------|------|-------|
@@ -305,6 +305,27 @@ Lato and Rubik are Google Fonts ([Lato](https://fonts.google.com/specimen/Lato),
 ```
 
 Typography tokens are **composite** — each bundles `fontFamily`, `fontWeight`, `fontSize`, and `lineHeight` in a flat `{group}.{size}.{weight}` shape (e.g. `body.medium.regular`). The build pipeline expands them into individual output properties. Radius, icon, and space T-shirt sizes (`radius.md`, `icon.lg`, `space.md`, etc.) are unrelated and keep their existing names.
+
+#### Which text role
+
+| Role | Use it for | Line height |
+|---|---|---|
+| `headline` | Page and screen titles that set the structure of a page | 1.25–1.33× |
+| `title` | Names of a contained piece of UI: cards, sheets, dialogs, list groups | 1.33–1.43× |
+| `paragraph` | Text the user reads in full: hotel and property descriptions, reviews, FAQ answers, policies, terms and fare rules | 1.5–1.63× |
+| `body` | Short copy inside a component: list rows, card details, snackbar and tooltip messages, input values, helper and error text | Same as label |
+| `label` | Text that names a control: buttons, tabs, chips, menu items, badges | 1.33–1.5× |
+
+**Paragraph or body.** Decide by where the text sits, not by how long it happens to be:
+
+- **Inside a component, use body, even when it wraps.** Components size themselves from body metrics, such as a 48 List row or a 56 Input. A two-line snackbar or a wrapped list supporting line stays body.
+- **On a reading surface, use paragraph.** This covers a page section, a sheet, or an expanded About this hotel area, where the text runs to three lines or more and the user reads it from start to finish.
+- **When unsure, ask whether the text can be clamped.** Text that can be cut to one or two lines with an ellipsis is body. Text that must be read in full is paragraph.
+- **Match the size to the surface.** `paragraph.medium` is the default. `paragraph.large` is for spacious reading screens such as guides and articles. `paragraph.small` is for terms, fare rules and other fine print.
+
+Paragraph comes in regular and bold only. Bold marks a lead-in or a key fact inside a block. Promotional emphasis belongs in headline or title black, not in reading text.
+
+**Space between paragraphs** comes from the spacing scale, not from the text style. Put `space.md` (16) between blocks of `paragraph.large` or `paragraph.medium`, and `space.sm` (12) between blocks of `paragraph.small`. iOS and Android text styles have no paragraph spacing, so a gap token keeps every platform the same.
 
 ### 6. T-shirt sizing for radius, icon, and space tokens
 
@@ -471,7 +492,7 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 
 myBiz has changed brand colour several times. `#FF664B` failed with white text, the Tailwind `orange` ramp (primary `orange.700`, `#CA3500`) passed AA, and on 2026-10-07 myBiz moved to `pomegranate` with the lighter `pomegranate.400` primary, accepted at 3:1 like the MakeMyTrip azure. `orange` stays in the palette for expressive and future use. Goibibo moved from the generated `tangerine` ramp (primary `#B35200`, AA) to the supplied `thunderbird` ramp on 2026-10-07, with the brighter `thunderbird.600` primary accepted at 3:1; `tangerine` was deleted. `tokens/contrast` checks every brand, and names the brand in its report.
 
-**Typography per brand.** The 36 text styles share their sizes, line heights and roles across brands. Each style reads its family from `typeface.default` and its weight from `weight.regular`, `weight.bold` or `weight.black`, the only place a semantic token aliases another semantic token (README → Typography mappings). In Figma, the text styles bind to the same variables in the MakeMyTrip collection, so a brand extension swaps the font for every style at once.
+**Typography per brand.** The 42 text styles share their sizes, line heights and roles across brands. Each style reads its family from `typeface.default` and its weight from `weight.regular`, `weight.bold` or `weight.black`, the only place a semantic token aliases another semantic token (README → Typography mappings). In Figma, the text styles bind to the same variables in the MakeMyTrip collection, so a brand extension swaps the font for every style at once.
 
 | Semantic token | MakeMyTrip, myBiz | Goibibo |
 |---|---|---|
@@ -484,7 +505,7 @@ Rubik is wider than Lato and has a taller x-height, so the same size reads large
 
 **Watch the warning red.** `pomegranate` is a red ramp, and myBiz keeps the shared `red` warning roles. So myBiz separates primary from destructive by lightness, not hue. The primary fill sits on `pomegranate.400` (`#FF4929`) and the destructive fill on `red.700` (`#C10007`). The interaction states come closer: the myBiz Primary pressed fill (`pomegranate.600`, `#EF1107`) looks almost the same as the destructive hover fill (`red.600`, `#E7000B`). Keep destructive actions in their own confirmation step. Goibibo (`#F45900`) is clearly orange.
 
-**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 232 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (36 families and 24 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
+**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 241 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (42 families and 27 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
 
 **Adding a brand.**
 1. Add `brands/{id}` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
@@ -575,9 +596,9 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 
 ## Token Inventory
 
-**Totals:** 303 primitive tokens · 400 semantic tokens (289 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1903 values on web** · **1987 on iOS and Android** · **0 gradients**
+**Totals:** 303 primitive tokens · 406 semantic tokens (289 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1927 values on web** · **2011 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1795 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1801 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (303)
 
@@ -801,7 +822,7 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (400)
+### Semantic tokens (406)
 
 #### Color — 289 tokens
 
@@ -1016,7 +1037,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 |-------|------|
 | `color.transparent` | Explicit no-fill (fully transparent) |
 
-#### Typography — 36 composite tokens
+#### Typography — 42 composite tokens
 
 Flat shape `{group}.{size}.{weight}` · family from `typeface.default` and weight from `weight.*`, so each brand sets its own · no letter spacing.
 
@@ -1028,6 +1049,9 @@ Flat shape `{group}.{size}.{weight}` · family from `typeface.default` and weigh
 | title | large | 22px | 30px | regular, bold, black |
 | title | medium | 18px | 24px | regular, bold, black |
 | title | small | 14px | 20px | regular, bold, black |
+| paragraph | large | 16px | 26px | regular, bold |
+| paragraph | medium | 14px | 22px | regular, bold |
+| paragraph | small | 12px | 18px | regular, bold |
 | body | large | 16px | 24px | regular, bold, black |
 | body | medium | 14px | 20px | regular, bold, black |
 | body | small | 12px | 16px | regular, bold, black |
@@ -1516,6 +1540,12 @@ Full token list with resolved primitive references (generated from `tokens/token
 - `title.small.regular` → typeface.default · weight.regular · 14px · 20px
 - `title.small.bold` → typeface.default · weight.bold · 14px · 20px
 - `title.small.black` → typeface.default · weight.black · 14px · 20px
+- `paragraph.large.regular` → typeface.default · weight.regular · 16px · 26px
+- `paragraph.large.bold` → typeface.default · weight.bold · 16px · 26px
+- `paragraph.medium.regular` → typeface.default · weight.regular · 14px · 22px
+- `paragraph.medium.bold` → typeface.default · weight.bold · 14px · 22px
+- `paragraph.small.regular` → typeface.default · weight.regular · 12px · 18px
+- `paragraph.small.bold` → typeface.default · weight.bold · 12px · 18px
 - `body.large.regular` → typeface.default · weight.regular · 16px · 24px
 - `body.large.bold` → typeface.default · weight.bold · 16px · 24px
 - `body.large.black` → typeface.default · weight.black · 16px · 24px
@@ -1762,7 +1792,7 @@ Box(
 
 ### Brands
 
-The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 232 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
+The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 241 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
 
 ```html
 <!-- Web: everything inside switches, including nested components. -->

@@ -243,7 +243,8 @@ for (const [key, raw] of expressiveEntries) {
 const TYPE_GROUPS = [
   { id: "headline", title: "Headline", description: "Highest content hierarchy — page and section titles that establish structure." },
   { id: "title", title: "Title", description: "Cards, panels, modules, and list headers. Names a contained block rather than the page." },
-  { id: "body", title: "Body", description: "Reading text for paragraphs, descriptions, and supporting copy." },
+  { id: "paragraph", title: "Paragraph", description: "Text the user reads in full — descriptions, reviews, policies and fine print. Looser leading than body for blocks of three or more lines." },
+  { id: "body", title: "Body", description: "Short copy inside components — list rows, cards, snackbars, inputs and helper text. Shares metrics with label, even when it wraps." },
   { id: "label", title: "Label", description: "UI chrome for controls and short identifiers, optimized for scanning over reading." },
 ];
 
