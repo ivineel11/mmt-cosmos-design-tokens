@@ -12,13 +12,13 @@ A single-line text field with its label inside the box: large while the field is
 
 ## States
 
-Figma draws Value (Empty, Populated) and State (Default, Hover, Focus, Disabled) as variants. In code, Value is whether the input holds text, Hover and Focus are `:hover` and `:focus`, and Disabled is the `disabled` attribute. `invalid` is the Error intent: the field takes a faint red fill, and the outline, label and message turn red. Disabled wins over invalid.
+Figma draws Value (Empty, Populated) and State (Default, Hover, Pressed, Active, Typing, Read-only, Disabled) as variants. In code, Value is whether the input holds text. Hover, Pressed and Active are `:hover`, `:active` before the field takes focus, and `:focus`. Typing is an active field with text, where `clearable` shows the Clear button. Read-only is `readOnly`, a picker trigger with a chevron and no caret. Disabled is the `disabled` attribute. `invalid` is the Error intent: the field takes a faint red fill, and the outline, label and message turn red. Disabled wins over invalid.
 
 <Canvas of={Stories.States} />
 
-## Prefix, icons and the trailing button
+## Prefix, icons, Clear and the trailing button
 
-A `prefix` such as +91 appears with the value. A leading icon is decorative. A trailing icon becomes a button when it has `onTrailingIconClick`, and then needs `trailingIconLabel`; its hit area reaches `input/touch-target` (48) without moving the glyph.
+A `prefix` such as +91 appears with the value. With `clearable`, a Clear button appears while the field is active and holds text; it empties the field, fires `onChange`, then `onClear`, and returns focus. A leading icon is decorative. A trailing icon becomes a button when it has `onTrailingIconClick`, and then needs `trailingIconLabel`; its hit area reaches `input/touch-target` (48) without moving the glyph.
 
 <Canvas of={Stories.Slots} />
 

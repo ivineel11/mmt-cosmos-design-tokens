@@ -133,12 +133,27 @@
 .supportingText { position: relative; top: calc(var(--space-3xs) / 4); }
 .errorIcon { color: var(--input-supporting-icon-error); }
 
-/* States. Hover is pointer-only; focus thickens the outline. */
+/* Typing: the Clear button shows only while the field is active and has a value. */
+.clear { display: none; }
+.field:focus-within:has(.input:not(:placeholder-shown)) .clear { display: grid; }
+
+/* Read-only is a picker trigger: it opens a sheet on tap and never shows a caret. */
+.root[data-readonly="true"] .field,
+.root[data-readonly="true"] .input { cursor: pointer; }
+.root[data-readonly="true"] .input { caret-color: transparent; }
+
+/*
+ * States. Hover is pointer-only. Pressed shows while a finger or pointer is down and the
+ * field is not yet active, which on touch screens is the moment before focus lands.
+ * Active (Typing too) is focus, and thickens the outline.
+ */
 @media (hover: hover) {
   .root:not([data-disabled="true"]) .field:hover:not(:focus-within) { --_border: var(--input-border-hover); }
   .root[data-invalid="true"] .field:hover:not(:focus-within) { --_border: var(--input-border-error-hover); }
 }
-.field:focus-within { --_border: var(--input-border-focus); --_border-width: var(--input-border-width-focus); }
+.root:not([data-disabled="true"]) .field:active:not(:focus-within) { --_bg: var(--input-bg-pressed); --_border: var(--input-border-pressed); }
+.root[data-invalid="true"] .field:active:not(:focus-within) { --_bg: var(--input-bg-error-pressed); --_border: var(--input-border-error-pressed); }
+.field:focus-within { --_border: var(--input-border-active); --_border-width: var(--input-border-width-active); }
 
 .root[data-invalid="true"] {
   --_bg: var(--input-bg-error);
@@ -147,7 +162,7 @@
   --_caret: var(--input-caret-error);
   --_supporting: var(--input-supporting-error);
 }
-.root[data-invalid="true"] .field:focus-within { --_border: var(--input-border-error-focus); }
+.root[data-invalid="true"] .field:focus-within { --_border: var(--input-border-error-active); }
 
 /* Disabled wins over invalid: Input only sets data-invalid when the field is enabled. */
 .root[data-disabled="true"] {

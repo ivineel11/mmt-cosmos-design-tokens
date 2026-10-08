@@ -244,7 +244,7 @@ export const brands = {
       tooltipPrimaryLabelLight: "#0088FF",
       tooltipPrimaryLabelLightHover: "#0868C5",
       tooltipPrimaryLabelLightPressed: "#0D589B",
-      inputBorderFocus: "#0088FF",
+      inputBorderActive: "#0088FF",
     },
   },
   mybiz: {
@@ -485,7 +485,7 @@ export const brands = {
       tooltipPrimaryLabelLight: "#FF4929",
       tooltipPrimaryLabelLightHover: "#EF1107",
       tooltipPrimaryLabelLightPressed: "#C6080A",
-      inputBorderFocus: "#FF4929",
+      inputBorderActive: "#FF4929",
     },
   },
   goibibo: {
@@ -726,7 +726,7 @@ export const brands = {
       tooltipPrimaryLabelLight: "#F45900",
       tooltipPrimaryLabelLightHover: "#A1340B",
       tooltipPrimaryLabelLightPressed: "#822D0C",
-      inputBorderFocus: "#F45900",
+      inputBorderActive: "#F45900",
     },
   },
 } as const;

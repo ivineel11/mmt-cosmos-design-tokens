@@ -8,11 +8,20 @@ const instance = figma.selectedInstance;
 
 const label = instance.getString("Label");
 const populated = instance.getEnum("Value", { Empty: false, Populated: true });
-// Hover and Focus are browser states, not props. Only Disabled reaches code.
-const state = instance.getEnum("State", { Default: "default", Hover: "default", Focus: "focus", Disabled: "disabled" });
+// Hover, Pressed and Active are browser states, not props. Typing means the field is clearable,
+// Read-only is a picker trigger and Disabled is disabled.
+const state = instance.getEnum("State", {
+  Default: "default",
+  Hover: "default",
+  Pressed: "default",
+  Active: "active",
+  Typing: "typing",
+  "Read-only": "readOnly",
+  Disabled: "disabled",
+});
 const invalid = instance.getEnum("Intent", { Default: false, Error: true });
-// The placeholder only shows in an empty, focused field, so the snippet carries it only there.
-const placeholder = !populated && state === "focus" ? instance.getString("Placeholder") : undefined;
+// The placeholder only shows in an empty, active field, so the snippet carries it only there.
+const placeholder = !populated && state === "active" ? instance.getString("Placeholder") : undefined;
 const supportingText = instance.getBoolean("Show Supporting Text") ? instance.getString("Supporting text") : undefined;
 const prefix = instance.getBoolean("Show Prefix") ? instance.getString("Prefix") : undefined;
 const trailingIcon = swapIcon(instance, "Trailing Icon", "Show Trailing Icon");
@@ -27,6 +36,8 @@ const attrs = [
   str("trailingIcon", trailingIcon),
   // A trailing icon is usually an action, such as clear, which needs a spoken name.
   trailingIcon && str("trailingIconLabel", trailingIcon === "cancel" ? "Clear" : "Describe the action"),
+  flag("clearable", state === "typing"),
+  flag("readOnly", state === "readOnly"),
   flag("invalid", invalid),
   flag("disabled", state === "disabled"),
 ];
