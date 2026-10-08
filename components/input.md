@@ -150,6 +150,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 - **The label does not turn brand when the field is active.** The outline alone shows it.
 - **Pressed reuses the hover outline** and adds a fill one step darker, so a tap reads on touch screens, where there is no hover. On the grey `bg-secondary` canvas the pressed grey matches the page, and the `#737373` outline carries the press.
 - **Icons keep their colour in the Error intent.** The error glyph beside the message carries the error.
+- **An invalid field looks the same whether or not it is active.** Active and Typing in the Error intent keep the resting `bg-error` fill and the same 1 px #C10007 outline (`border-error-active` = `border-error-default`), by design; the caret marks the active field. `border-error-active` stays its own token so this can change without touching components.
 - **Brands.** Only `border-active` changes per brand, through `border-brand`: #FF4929 in myBiz and #F45900 in Goibibo. Every other Input colour is neutral or red in all three brands.
 
 ---
@@ -244,7 +245,6 @@ A mobile number field is the Input with **Show Country** on. A country segment s
 - **No country picker sheet yet.** The segment opens a native select in code and has no picker in Figma.
 - **Figma has 14 of the flags.** Oman and Saudi Arabia, in the Popular group, and the rest of the world come with the picker; code already has them all.
 - **Active is a colour change only.** At 1 px the active outline differs from rest by colour alone: #0088FF against #D4D4D4 is 2.37:1 (myBiz 2.27, Goibibo 2.26). That meets WCAG 2.4.7 (Focus Visible) with the caret, but not the 3:1 change of 2.4.13 (Focus Appearance, AAA).
-- **In the Error intent, Active looks the same as rest.** `border-error-active` and `border-error-default` are both #C10007 at 1 px, so only the caret shows which invalid field is active.
 
 ---
 
