@@ -28,7 +28,7 @@ Focus is drawn by a dedicated ring rectangle positioned outside the auto-layout 
 
 > `Selection` and `State` are not the same kind of thing. `Selection` is the control's value and maps to real props. `State` is design-only: `Hover`, `Pressed` and `Focus` exist so a mock can show them, but in code they are `:hover`, `:active` and `:focus-visible`, owned by the component. Only `State=Disabled` maps to a prop.
 >
-> `Indeterminate` is a presentation of a parent checkbox whose children are partly checked. It is never a value the user can select: activating an indeterminate checkbox moves it to `Checked`. In the DOM it is not a third value of `checked` — it is the separate `input.indeterminate` property.
+> `Indeterminate` is a presentation of a parent checkbox whose children are partly checked. It is never a value the user can select: activating an indeterminate checkbox moves it to `Checked`. In the DOM it is not a third value of `checked` — it is the separate `indeterminate` property of the HTML input element.
 
 | Property | Type | Values | Default | Notes |
 |---|---|---|---|---|

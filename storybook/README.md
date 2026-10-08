@@ -30,7 +30,7 @@ npm run build-storybook           # static build in storybook-static/
 
 ## Icons
 
-`src/components/Icon/paths.ts` holds the glyph paths exported from the Figma **Icons** page (`Icon / *`, 24 × 24, one filled path each). `<Icon>` draws them in `currentColor`, so each component colours its glyphs with its own icon tokens. Re-export a glyph from Figma rather than editing a path by hand, and keep it to the glyphs on the Figma Icons page (all 34 are in).
+`src/components/Icon/paths.ts` holds the glyph paths exported from the Figma **Icons** page (`Icon / *`, 24 × 24, one filled path each). `<Icon>` draws them in `currentColor`, so each component colours its glyphs with its own icon tokens. Re-export a glyph from Figma rather than editing a path by hand, and keep it to the glyphs on the Figma Icons page (all 38 are in).
 
 ## Figma Code Connect
 
@@ -47,7 +47,7 @@ How the templates map Figma to code:
 
 | File | Connects |
 |------|----------|
-| `src/components/<Name>/<Name>.figma.ts` | Badge, Button, Checkbox, Chip, Chip / Vertical, Radio, Slider, Snackbar, Switch and Tooltip |
+| `src/components/<Name>/<Name>.figma.ts` | Badge, Button, Checkbox, Chip, Chip / Vertical, Input, Radio, Slider, Snackbar, Switch and Tooltip |
 | `src/components/Tabs/Tab*.figma.ts` | Tab / Primary and Tab / Secondary, as entries in the `items` of `<Tabs>` |
 | `src/components/SegmentedControl/*.figma.ts` | Segmented control and its Segment |
 | `src/components/List/List.figma.ts`, `List/code-connect/*.figma.ts` | List, List / Item, List / Leading, List / Trailing and List / Section header |

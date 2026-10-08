@@ -490,6 +490,8 @@ data class CosmosBrand(
   val tooltipPrimaryLabelLightHover: Color,
   /** Label of the primary text action on a Light Rich tooltip while pressed. Darkens with the control-bg-light-pressed fill so it keeps AA contrast. */
   val tooltipPrimaryLabelLightPressed: Color,
+  /** Outline of the field while focused, drawn at border-width-focus. Marks the field that receives typing. An invalid field keeps border-error-focus instead. */
+  val inputBorderFocus: Color,
 ) {
   companion object {
     val MakeMyTrip = CosmosBrand(
@@ -730,6 +732,7 @@ data class CosmosBrand(
       tooltipPrimaryLabelLight = Color(0xFF0088FF),
       tooltipPrimaryLabelLightHover = Color(0xFF0868C5),
       tooltipPrimaryLabelLightPressed = Color(0xFF0D589B),
+      inputBorderFocus = Color(0xFF0088FF),
     )
 
     val MyBiz = CosmosBrand(
@@ -970,6 +973,7 @@ data class CosmosBrand(
       tooltipPrimaryLabelLight = Color(0xFFFF4929),
       tooltipPrimaryLabelLightHover = Color(0xFFEF1107),
       tooltipPrimaryLabelLightPressed = Color(0xFFC6080A),
+      inputBorderFocus = Color(0xFFFF4929),
     )
 
     val Goibibo = CosmosBrand(
@@ -1210,6 +1214,7 @@ data class CosmosBrand(
       tooltipPrimaryLabelLight = Color(0xFFF45900),
       tooltipPrimaryLabelLightHover = Color(0xFFA1340B),
       tooltipPrimaryLabelLightPressed = Color(0xFF822D0C),
+      inputBorderFocus = Color(0xFFF45900),
     )
 
     val all = listOf(MakeMyTrip, MyBiz, Goibibo)
