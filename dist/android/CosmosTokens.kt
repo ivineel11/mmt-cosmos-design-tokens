@@ -584,6 +584,7 @@ object CosmosTokens {
   val colorBgFillDisabled = Color(0xFFD4D4D4)
   val colorBgFillDisabledStrong = Color(0xFFA1A1A1)
   val colorBgFillDisabledSubtle = Color(0xFFE5E5E5)
+  val colorBgFillDisabledSubtlest = Color(0xFFF5F5F5)
   val colorBgFillHover = Color(0xFFF5F5F5)
   val colorBgFillInfoStrong = Color(0xFF0088FF)
   val colorBgFillInfoStrongHover = Color(0xFF0868C5)

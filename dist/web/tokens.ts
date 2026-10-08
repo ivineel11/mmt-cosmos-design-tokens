@@ -245,6 +245,7 @@ export default {
     "bg-fill-disabled-strong": "#A1A1A1",
     "bg-fill-disabled": "#D4D4D4",
     "bg-fill-disabled-subtle": "#E5E5E5",
+    "bg-fill-disabled-subtlest": "#F5F5F5",
     "bg-fill-secondary": "#F5F5F5",
     "bg-fill-secondary-hover": "#E5E5E5",
     "bg-fill-secondary-pressed": "#D4D4D4",

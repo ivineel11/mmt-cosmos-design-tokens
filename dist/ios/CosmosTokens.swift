@@ -581,6 +581,7 @@ public enum CosmosTokens {
     public static let colorBgFillDisabled = Color(red: 0.831373, green: 0.831373, blue: 0.831373)
     public static let colorBgFillDisabledStrong = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
     public static let colorBgFillDisabledSubtle = Color(red: 0.898039, green: 0.898039, blue: 0.898039)
+    public static let colorBgFillDisabledSubtlest = Color(red: 0.960784, green: 0.960784, blue: 0.960784)
     public static let colorBgFillHover = Color(red: 0.960784, green: 0.960784, blue: 0.960784)
     public static let colorBgFillInfoStrong = Color(red: 0, green: 0.533333, blue: 1)
     public static let colorBgFillInfoStrongHover = Color(red: 0.031373, green: 0.407843, blue: 0.772549)
