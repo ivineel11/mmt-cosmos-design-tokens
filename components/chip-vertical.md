@@ -117,11 +117,11 @@ The root is a vertical auto-layout stack with `counterAxisAlignItems = CENTER`, 
 | Property | Small | Medium | Token |
 |---|---|---|---|
 | Height, icon and label | 56 | 72 | hugs content |
-| Height, icon, label and secondary line | 74 | 90 | hugs content |
+| Height, icon, label and secondary line | 72 | 88 | hugs content |
 | Height, image and label | 60 | 80 | hugs content |
-| Height, image, label and secondary line | 78 | 98 | hugs content |
+| Height, image, label and secondary line | 76 | 96 | hugs content |
 | Height, label only (`Leading=None`) | 32 | 44 | hugs content |
-| Height, label and secondary line (`Leading=None`) | 50 | 62 | hugs content |
+| Height, label and secondary line (`Leading=None`) | 48 | 60 | hugs content |
 | Padding x | 8 | 12 | `chip/padding-x-*` (shared with Chip) |
 | Padding y | 8 | 12 | `chip/vertical-padding-y-*` |
 | Leading icon | 20 | 24 | `chip/vertical-icon-size-*` |
@@ -130,7 +130,7 @@ The root is a vertical auto-layout stack with `counterAxisAlignItems = CENTER`, 
 | Leading image radius, Square | 4 | 4 | `chip/image-radius-square` (shared) |
 | Leading icon or image to text gap | 4 | 4 | `chip/vertical-gap-*` |
 | Label type | 12 / 16 bold | 14 / 20 bold | `label/{small,medium}/bold` |
-| Secondary type | 12 / 18 regular | 12 / 18 regular | `body/small/regular` |
+| Secondary type | 12 / 16 regular | 12 / 16 regular | `body/small/regular` |
 | Label to secondary gap | 2 | 2 | `chip/vertical-gap-text` |
 | Label trailing icon | 12 | 16 | `chip/vertical-label-trailing-icon-size-*` |
 | Secondary trailing icon | 12 | 12 | `chip/vertical-secondary-trailing-icon-size-*` |

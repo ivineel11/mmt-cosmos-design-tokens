@@ -148,15 +148,15 @@ In every scene the caret tip sits exactly `offset` (4) from its trigger, and the
 ```text
 Tooltip (component set · 881:362 · Type x Surface x Side x Caret = 96 variants)
 ├─ Bubble (auto layout)
-│  ├─ Plain: Label (text · body/small/regular, 12 / 18 · fills and wraps) · padding 8 x 12 · radius 8 · hugs up to max width 240
+│  ├─ Plain: Label (text · body/small/regular, 12 / 16 · fills and wraps) · padding 8 x 12 · radius 8 · hugs up to max width 240
 │  └─ Rich: vertical, gap 12 · padding 12 · radius 12 · 320 wide
 │     ├─ Media (2:1, radius 8, media-bg fill) · Show media
 │     └─ Body (vertical, gap 16, fills)
 │        ├─ Header (horizontal, gap 8, top-aligned)
 │        │  ├─ Icon (instance · 20) · Show icon · Icon swap
 │        │  ├─ Text (vertical, gap 2, fills)
-│        │  │  ├─ Title (text · title/small/bold, 14 / 22) · Show title
-│        │  │  └─ Message (text · body/small/regular, 12 / 18)
+│        │  │  ├─ Title (text · title/small/bold, 14 / 20) · Show title
+│        │  │  └─ Message (text · body/small/regular, 12 / 16)
 │        │  └─ Close (exposed instance · Tooltip / Control, Close) · Show close
 │        └─ Footer (horizontal, gap 8, centred, right-aligned) · Show footer
 │           ├─ Step (text · label/small/regular, 12 / 16 · fills) · Show step
@@ -182,7 +182,7 @@ The caret row comes after the bubble for Top and Left, and before it for Bottom 
 | Padding (top and bottom x sides) | 8 x 12 | 12 x 12 | `tooltip/padding-y`, `padding-x`, `rich-padding-y`, `rich-padding-x` |
 | Corner radius | 8 | 12 | `tooltip/radius`, `rich-radius` |
 | Maximum width | 240 | 320 | `tooltip/max-width`, `rich-max-width`. Figma draws Rich at a fixed 320, because wrapping text needs a width; in code it hugs up to 320 |
-| Height, one line, no caret | 34 | 114 with title, message and footer | 18 line plus padding |
+| Height, one line, no caret | 32 | 110 with title, message and footer | 16 line plus padding |
 | Gap: media to header | – | 12 | `tooltip/rich-gap-section` |
 | Gap: header to footer | – | 16 | `tooltip/rich-gap-footer` |
 | Gap: icon to text, text to close | – | 8 | `tooltip/rich-gap-inline` |

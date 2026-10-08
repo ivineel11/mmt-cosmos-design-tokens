@@ -17,7 +17,7 @@ A list comes in two containers. The rows are the same in both:
 
 And two densities:
 
-- **Comfortable** is the default, and the only density allowed on touch screens. A one-line text row is 50 tall, and never less than 48.
+- **Comfortable** is the default, and the only density allowed on touch screens. A one-line row is 48 tall.
 - **Compact** is for pointer-first web lists, such as filter panels. A one-line row is 40 tall.
 
 The component is five Figma sets:
@@ -212,8 +212,8 @@ The divider sits inside Main, so it starts at the text column whatever the leadi
 | Trailing Button | Medium, 40 tall | Small, 32 tall | the Button tokens |
 | Trailing Switch | Medium, 48 × 28 | Small, 36 × 20 | the Switch tokens |
 | Chevron | 20 | 16 | `list/chevron-size-comfortable`, `list/chevron-size-compact` |
-| Title type | 16 / 26 regular | 14 / 22 regular | `body/large/regular`, `body/medium/regular` |
-| Supporting, third line and meta type | 14 / 22 regular | 12 / 18 regular | `body/medium/regular`, `body/small/regular` |
+| Title type | 16 / 24 regular | 14 / 20 regular | `body/large/regular`, `body/medium/regular` |
+| Supporting, third line and meta type | 14 / 20 regular | 12 / 16 regular | `body/medium/regular`, `body/small/regular` |
 | Section header padding top / bottom | 16 / 8 | 12 / 4 | `list/section-header-padding-top-*`, `list/section-header-padding-bottom-*` |
 | Section header type | 12 / 16 bold | 12 / 16 bold | `label/small/bold` |
 | Divider | 1 | 1 | `list/divider-width` |
@@ -227,9 +227,9 @@ Row heights with an icon or no leading element:
 
 | Lines | Comfortable | Compact |
 |---|---|---|
-| One | 12 + 26 + 12 = 50 | 8 + 22 + 8 = 38, raised to the 40 minimum |
-| Two | 12 + 26 + 22 + 12 = 72 | 8 + 22 + 18 + 8 = 56 |
-| Three | 12 + 26 + 22 + 22 + 12 = 94 | 8 + 22 + 18 + 18 + 8 = 74 |
+| One | 12 + 24 + 12 = 48 | 8 + 20 + 8 = 36, raised to the 40 minimum |
+| Two | 12 + 24 + 20 + 12 = 68 | 8 + 20 + 16 + 8 = 52 |
+| Three | 12 + 24 + 20 + 20 + 12 = 88 | 8 + 20 + 16 + 16 + 8 = 68 |
 
 The text-to-trailing gap is wider than the leading-to-text gap, so a meta value or chevron reads as separate from the title rather than as its last word.
 
