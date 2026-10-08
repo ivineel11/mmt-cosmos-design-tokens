@@ -3519,7 +3519,7 @@
   --input-border-error-hover: #E7000B;
   /** Outline of a field in the error state while it is pressed, together with bg-error-pressed. The same red as border-error-hover. */
   --input-border-error-pressed: #E7000B;
-  /** Outline of a field in the error state while it is active or typing, drawn at border-width-active. Stays red rather than brand, so a field the user is correcting keeps its error. */
+  /** Outline of a field in the error state while it is active or typing, drawn at border-width-active. The same red as border-error-default, and the field keeps bg-error, so an invalid field looks the same whether or not it is active; the caret marks the active one. */
   --input-border-error-active: #C10007;
   /** Field label in the default intent, both resting inside an empty field and sitting above the value. Stays the same in every enabled state; the outline and fill show the state. */
   --input-label-default: #525252;
@@ -3567,8 +3567,8 @@
   --input-radius: 12px;
   /** Thickness of the outline at rest, on hover, while pressed, when read-only and when disabled. Drawn inside the container so the field never shifts. */
   --input-border-width: 1px;
-  /** Thickness of the outline in the Active and Typing states. Drawn inside the container, so the field does not reflow when it thickens. */
-  --input-border-width-active: 2px;
+  /** Thickness of the outline in the Active and Typing states. The same 1 px as border-width, so the outline colour alone marks the active field. Kept as its own token so Active can thicken again without touching components. */
+  --input-border-width-active: 1px;
   /** Width of the text insertion caret where the platform lets it be set, and in design files. The web draws its own caret. */
   --input-caret-width: 2px;
   /** Gap between the field container and the supporting text under it. */

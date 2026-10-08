@@ -117,7 +117,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | Prefix to value gap | `input/prefix-gap` | 4 |
 | Icon size | `input/icon-size` | 24 |
 | Corner radius | `input/radius` | 12 |
-| Outline | `input/border-width` / `input/border-width-active` | 1 / 2, drawn inside |
+| Outline | `input/border-width` / `input/border-width-active` | 1 / 1, drawn inside |
 | Caret width | `input/caret-width` | 2 |
 | Container to supporting text | `input/supporting-padding-top` | 8 |
 | Error glyph to message | `input/supporting-gap` | 4 |
@@ -126,7 +126,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 
 - The text column is centred vertically: the 18 px label and the 26 px value row make 44, leaving 6 above and below.
 - Text and icons both start 12 from the edge. The supporting text starts at the container edge, not under the text.
-- The outline is drawn inside the container, so thickening it when the field becomes active never moves the content.
+- The outline is drawn inside the container and stays 1 px in every state; the active field changes only its outline colour. `input/border-width-active` is kept as its own token so Active can thicken again without touching components.
 - **Web optical centring.** Browsers draw 12 px Lato half a pixel higher than Figma, so the small label and the supporting text shift down a quarter of `space-3xs`. 16 px text matches.
 
 ---
@@ -136,7 +136,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | Element | Default, Read-only | Hover | Pressed | Active, Typing | Error | Disabled |
 |---|---|---|---|---|---|---|
 | Fill | `bg-default` → `bg-fill` #FFFFFF | same | `bg-pressed` → `bg-fill-pressed-subtle` #F5F5F5 | `bg-default` | `bg-error` → `bg-fill-warning-subtlest` #FEF2F2; pressed `bg-error-pressed` → `bg-fill-warning-subtle` #FFE2E2 | `bg-disabled` → `bg-fill-disabled-subtlest` #F5F5F5 |
-| Outline | `border-default` → `border` #D4D4D4 | `border-hover` → `border-strong` #737373 | `border-pressed` → `border-strong` #737373 | `border-active` → `border-brand` #0088FF, 2 px | `border-error-default` → `border-warning-strong` #C10007; hover and pressed `border-error-hover` / `border-error-pressed` → `border-warning-strong-hover` #E7000B; active `border-error-active` #C10007, 2 px | `border-disabled` → `border-disabled-subtle` #D4D4D4 |
+| Outline | `border-default` → `border` #D4D4D4 | `border-hover` → `border-strong` #737373 | `border-pressed` → `border-strong` #737373 | `border-active` → `border-brand` #0088FF, 1 px | `border-error-default` → `border-warning-strong` #C10007; hover and pressed `border-error-hover` / `border-error-pressed` → `border-warning-strong-hover` #E7000B; active `border-error-active` #C10007, 1 px | `border-disabled` → `border-disabled-subtle` #D4D4D4 |
 | Label | `label-default` → `text-secondary` #525252 | same | same | same | `label-error` → `text-warning` #C10007 | `label-disabled` → `text-disabled` #A1A1A1 |
 | Value | `value-default` → `text-primary` #0A0A0A | same | same | same | same | `value-disabled` → `text-disabled` |
 | Placeholder | – | – | – | `placeholder` → `text-secondary` (Active, empty) | same | – |
@@ -150,6 +150,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 - **The label does not turn brand when the field is active.** The outline alone shows it.
 - **Pressed reuses the hover outline** and adds a fill one step darker, so a tap reads on touch screens, where there is no hover. On the grey `bg-secondary` canvas the pressed grey matches the page, and the `#737373` outline carries the press.
 - **Icons keep their colour in the Error intent.** The error glyph beside the message carries the error.
+- **An invalid field looks the same whether or not it is active.** Active and Typing in the Error intent keep the resting `bg-error` fill and the same 1 px #C10007 outline (`border-error-active` = `border-error-default`), by design; the caret marks the active field. `border-error-active` stays its own token so this can change without touching components.
 - **Brands.** Only `border-active` changes per brand, through `border-brand`: #FF4929 in myBiz and #F45900 in Goibibo. Every other Input colour is neutral or red in all three brands.
 
 ---
@@ -245,6 +246,7 @@ A mobile number field is the Input with **Show Country** on. A country segment s
 - **No motion tokens.** The label move is instant in Figma; code may animate it until a motion scale exists.
 - **No country picker sheet yet.** The segment opens a native select in code and has no picker in Figma.
 - **Figma has 14 of the flags.** Oman and Saudi Arabia, in the Popular group, and the rest of the world come with the picker; code already has them all.
+- **Active is a colour change only.** At 1 px the active outline differs from rest by colour alone: #0088FF against #D4D4D4 is 2.37:1 (myBiz 2.27, Goibibo 2.26). That meets WCAG 2.4.7 (Focus Visible) with the caret, but not the 3:1 change of 2.4.13 (Focus Appearance, AAA).
 
 ---
 

@@ -1093,7 +1093,7 @@ public enum CosmosTokens {
     public static let inputBorderHover = Color(red: 0.45098, green: 0.45098, blue: 0.45098)
     public static let inputBorderPressed = Color(red: 0.45098, green: 0.45098, blue: 0.45098)
     public static let inputBorderWidth = CGFloat(1)
-    public static let inputBorderWidthActive = CGFloat(2)
+    public static let inputBorderWidthActive = CGFloat(1)
     public static let inputCaretDefault = Color(red: 0.039216, green: 0.039216, blue: 0.039216)
     public static let inputCaretError = Color(red: 0.756863, green: 0, blue: 0.027451)
     public static let inputCaretWidth = CGFloat(2)

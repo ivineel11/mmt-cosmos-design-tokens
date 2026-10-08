@@ -2086,7 +2086,7 @@ export default {
     "icon-size": "24px",
     radius: "12px",
     "border-width": "1px",
-    "border-width-active": "2px",
+    "border-width-active": "1px",
     "caret-width": "2px",
     "supporting-padding-top": "8px",
     "supporting-gap": "4px",

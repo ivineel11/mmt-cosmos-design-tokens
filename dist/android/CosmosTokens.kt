@@ -1096,7 +1096,7 @@ object CosmosTokens {
   val inputBorderHover = Color(0xFF737373)
   val inputBorderPressed = Color(0xFF737373)
   val inputBorderWidth = 1.dp
-  val inputBorderWidthActive = 2.dp
+  val inputBorderWidthActive = 1.dp
   val inputCaretDefault = Color(0xFF0A0A0A)
   val inputCaretError = Color(0xFFC10007)
   val inputCaretWidth = 2.dp
