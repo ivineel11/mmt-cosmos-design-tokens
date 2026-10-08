@@ -34,12 +34,8 @@
   height: var(--input-country-flag-container-size);
 }
 
-/*
- * The flag fills the container width and never more; its height follows the 4 by 3 artwork.
- * The hairline is an overlay, so the artwork keeps its full size, as Figma's inside stroke does.
- */
+/* The flag fills the container width and never more; its height follows the 4 by 3 artwork. */
 .flag {
-  position: relative;
   width: 100%;
   max-width: var(--input-country-flag-width);
   aspect-ratio: 4 / 3;
@@ -47,13 +43,6 @@
   border-radius: var(--input-country-flag-radius);
 }
 .flag img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.flag::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 var(--input-country-flag-border-width) var(--input-country-flag-border);
-}
 
 .codeRow {
   display: flex;

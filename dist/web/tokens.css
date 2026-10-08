@@ -3597,10 +3597,6 @@
   --input-country-flag-width: 24px;
   /** Corner radius of the country flag, a slight softening that keeps the flag readable as a flag. */
   --input-country-flag-radius: 2px;
-  /** Hairline around the country flag, so flags with white edges, such as Japan or Singapore, keep their shape on a white field. Drawn inside the flag at country-flag-border-width. */
-  --input-country-flag-border: #E5E5E5;
-  /** Thickness of the hairline around the country flag, drawn inside. */
-  --input-country-flag-border-width: 1px;
   /** Dial code of the selected country, such as +91, in every enabled state and both intents. Regular weight, so the bold number the user typed stays the focus. Use country-code-disabled when the field is disabled. */
   --input-country-code: #0A0A0A;
   /** Dial code of the selected country in a disabled phone number field. */

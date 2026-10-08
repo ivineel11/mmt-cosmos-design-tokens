@@ -2101,8 +2101,6 @@ export default {
     "country-flag-container-size": "24px",
     "country-flag-width": "24px",
     "country-flag-radius": "2px",
-    "country-flag-border": "#E5E5E5",
-    "country-flag-border-width": "1px",
     "country-code": "#0A0A0A",
     "country-code-disabled": "#A1A1A1",
     "country-chevron-size": "20px",

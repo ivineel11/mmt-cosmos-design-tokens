@@ -215,7 +215,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1196 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 289 semantic roles + 735 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1195 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 289 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -575,9 +575,9 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 
 ## Token Inventory
 
-**Totals:** 303 primitive tokens · 400 semantic tokens (289 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1093 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 61 `input/*`) · **1904 values on web** · **1988 on iOS and Android** · **0 gradients**
+**Totals:** 303 primitive tokens · 400 semantic tokens (289 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1091 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 59 `input/*`) · **1902 values on web** · **1986 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1796 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1794 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (303)
 
@@ -1135,7 +1135,7 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
 
-### Component tokens (1093)
+### Component tokens (1091)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -1154,7 +1154,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `slider/*` | 43 | Slider (`811:1622`, 48 variants), Slider / Thumb (`809:83`, 12 variants) and Slider / Tooltip (`870:538`, 2 variants), with the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. A Pressed grow state (the thumb enlarges instead of showing a halo) is under test beside Pressed | [`components/slider.md`](components/slider.md) |
 | `menu/*` | 65 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
 | `tooltip/*` | 69 | Tooltip (`881:362`, 96 variants: Type x Surface x Side x Caret, with Dark, Light and the Info surface under test) and Tooltip / Control (`876:95`, 36 variants) for the primary and secondary text actions and the close button | [`components/tooltip.md`](components/tooltip.md) |
-| `input/*` | 61 | Input (`1011:900`, 26 variants: Value x State x Intent, with Pressed, Typing and Read-only states), with a label inside the field, optional prefix, leading and trailing icons, a Clear button while typing, and an Error intent; Show Country nests Input / Country (`1026:410`, 2 variants) for a phone number field | [`components/input.md`](components/input.md) |
+| `input/*` | 59 | Input (`1011:900`, 26 variants: Value x State x Intent, with Pressed, Typing and Read-only states), with a label inside the field, optional prefix, leading and trailing icons, a Clear button while typing, and an Error intent; Show Country nests Input / Country (`1026:410`, 2 variants) for a phone number field | [`components/input.md`](components/input.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp. Button adds a surface after the variant for its Inverse surface (`{property}-{hierarchy}-inverse-{intent}-{state}`):
 

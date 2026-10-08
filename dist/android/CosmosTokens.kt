@@ -1108,8 +1108,6 @@ object CosmosTokens {
   val inputCountryDividerDisabled = Color(0xFFD4D4D4)
   val inputCountryDividerHeight = 24.dp
   val inputCountryDividerWidth = 1.dp
-  val inputCountryFlagBorder = Color(0xFFE5E5E5)
-  val inputCountryFlagBorderWidth = 1.dp
   val inputCountryFlagContainerSize = 24.dp
   val inputCountryFlagRadius = 2.dp
   val inputCountryFlagWidth = 24.dp
