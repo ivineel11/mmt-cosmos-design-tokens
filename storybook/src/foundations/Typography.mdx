@@ -18,6 +18,16 @@ line-height: var(--body-medium-regular-line-height);
 
 Use the whole composite rather than assembling sizes and weights yourself.
 
+## Paragraph or body
+
+Decide by where the text sits, not by how long it happens to be.
+
+- **Body** is short copy inside a component: list rows, card details, snackbar and tooltip messages, input values, helper and error text. It shares metrics with label, so components keep their heights. Use it even when the text wraps.
+- **Paragraph** is text the user reads in full on a page or sheet: hotel and property descriptions, reviews, FAQ answers, policies and fine print. Its looser leading keeps blocks of three lines or more easy to follow. `paragraph.medium` is the default, `paragraph.large` is for guides and articles, and `paragraph.small` is for terms and fare rules.
+- **When unsure**, ask whether the text can be clamped to one or two lines. If it can, use body. If it must be read in full, use paragraph.
+
+Paragraph comes in regular and bold only. Put `space.md` between paragraph blocks, or `space.sm` between `paragraph.small` blocks. The text style holds no paragraph spacing.
+
 <TypeScale />
 
 ## Primitives

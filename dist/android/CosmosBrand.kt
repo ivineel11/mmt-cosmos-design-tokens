@@ -146,65 +146,83 @@ data class CosmosBrand(
   val titleSmallBlackFontFamily: String,
   /** Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   val titleSmallBlackFontWeight: Int,
-  /** Body text for spacious reading layouts — article and detail copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest paragraph text — long reading on spacious screens, such as destination guides and articles. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphLargeRegularFontFamily: String,
+  /** Largest paragraph text — long reading on spacious screens, such as destination guides and articles. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphLargeBoldFontFamily: String,
+  /** Largest paragraph text — long reading on spacious screens, such as destination guides and articles. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphLargeBoldFontWeight: Int,
+  /** Default paragraph text — hotel and property descriptions, reviews, FAQ answers and policy details. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphMediumRegularFontFamily: String,
+  /** Default paragraph text — hotel and property descriptions, reviews, FAQ answers and policy details. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphMediumBoldFontFamily: String,
+  /** Default paragraph text — hotel and property descriptions, reviews, FAQ answers and policy details. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphMediumBoldFontWeight: Int,
+  /** Smallest paragraph text — terms and conditions, fare rules and other fine print. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphSmallRegularFontFamily: String,
+  /** Smallest paragraph text — terms and conditions, fare rules and other fine print. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphSmallBoldFontFamily: String,
+  /** Smallest paragraph text — terms and conditions, fare rules and other fine print. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  val paragraphSmallBoldFontWeight: Int,
+  /** Largest body text — prominent short copy such as list row titles and input values. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyLargeRegularFontFamily: String,
-  /** Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest body text — prominent short copy such as list row titles and input values. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyLargeBoldFontFamily: String,
-  /** Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest body text — prominent short copy such as list row titles and input values. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyLargeBoldFontWeight: Int,
-  /** Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest body text — prominent short copy such as list row titles and input values. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyLargeBlackFontFamily: String,
-  /** Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest body text — prominent short copy such as list row titles and input values. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyLargeBlackFontWeight: Int,
-  /** Default body text — the running copy most content uses. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyMediumRegularFontFamily: String,
-  /** Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyMediumBoldFontFamily: String,
-  /** Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyMediumBoldFontWeight: Int,
-  /** Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyMediumBlackFontFamily: String,
-  /** Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodyMediumBlackFontWeight: Int,
-  /** Smallest body text — captions, helper text and legal copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodySmallRegularFontFamily: String,
-  /** Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodySmallBoldFontFamily: String,
-  /** Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodySmallBoldFontWeight: Int,
-  /** Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodySmallBlackFontFamily: String,
-  /** Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   val bodySmallBlackFontWeight: Int,
-  /** Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelLargeRegularFontFamily: String,
-  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelLargeBoldFontFamily: String,
-  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelLargeBoldFontWeight: Int,
-  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelLargeBlackFontFamily: String,
-  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelLargeBlackFontWeight: Int,
-  /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelMediumRegularFontFamily: String,
-  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelMediumBoldFontFamily: String,
-  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelMediumBoldFontWeight: Int,
-  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelMediumBlackFontFamily: String,
-  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelMediumBlackFontWeight: Int,
-  /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelSmallRegularFontFamily: String,
-  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelSmallBoldFontFamily: String,
-  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelSmallBoldFontWeight: Int,
-  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelSmallBlackFontFamily: String,
-  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   val labelSmallBlackFontWeight: Int,
   /** Background of the primary (solid fill) button — default intent, at rest. */
   val buttonBgPrimaryDefault: Color,
@@ -560,6 +578,15 @@ data class CosmosBrand(
       titleSmallBoldFontWeight = 700,
       titleSmallBlackFontFamily = "Lato",
       titleSmallBlackFontWeight = 900,
+      paragraphLargeRegularFontFamily = "Lato",
+      paragraphLargeBoldFontFamily = "Lato",
+      paragraphLargeBoldFontWeight = 700,
+      paragraphMediumRegularFontFamily = "Lato",
+      paragraphMediumBoldFontFamily = "Lato",
+      paragraphMediumBoldFontWeight = 700,
+      paragraphSmallRegularFontFamily = "Lato",
+      paragraphSmallBoldFontFamily = "Lato",
+      paragraphSmallBoldFontWeight = 700,
       bodyLargeRegularFontFamily = "Lato",
       bodyLargeBoldFontFamily = "Lato",
       bodyLargeBoldFontWeight = 700,
@@ -801,6 +828,15 @@ data class CosmosBrand(
       titleSmallBoldFontWeight = 700,
       titleSmallBlackFontFamily = "Lato",
       titleSmallBlackFontWeight = 900,
+      paragraphLargeRegularFontFamily = "Lato",
+      paragraphLargeBoldFontFamily = "Lato",
+      paragraphLargeBoldFontWeight = 700,
+      paragraphMediumRegularFontFamily = "Lato",
+      paragraphMediumBoldFontFamily = "Lato",
+      paragraphMediumBoldFontWeight = 700,
+      paragraphSmallRegularFontFamily = "Lato",
+      paragraphSmallBoldFontFamily = "Lato",
+      paragraphSmallBoldFontWeight = 700,
       bodyLargeRegularFontFamily = "Lato",
       bodyLargeBoldFontFamily = "Lato",
       bodyLargeBoldFontWeight = 700,
@@ -1042,6 +1078,15 @@ data class CosmosBrand(
       titleSmallBoldFontWeight = 600,
       titleSmallBlackFontFamily = "Rubik",
       titleSmallBlackFontWeight = 700,
+      paragraphLargeRegularFontFamily = "Rubik",
+      paragraphLargeBoldFontFamily = "Rubik",
+      paragraphLargeBoldFontWeight = 600,
+      paragraphMediumRegularFontFamily = "Rubik",
+      paragraphMediumBoldFontFamily = "Rubik",
+      paragraphMediumBoldFontWeight = 600,
+      paragraphSmallRegularFontFamily = "Rubik",
+      paragraphSmallBoldFontFamily = "Rubik",
+      paragraphSmallBoldFontWeight = 600,
       bodyLargeRegularFontFamily = "Rubik",
       bodyLargeBoldFontFamily = "Rubik",
       bodyLargeBoldFontWeight = 600,

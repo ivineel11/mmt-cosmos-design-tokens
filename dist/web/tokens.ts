@@ -783,6 +783,50 @@ export default {
       },
     },
   },
+  paragraph: {
+    large: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "16px",
+        lineHeight: "26px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "16px",
+        lineHeight: "26px",
+      },
+    },
+    medium: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "14px",
+        lineHeight: "22px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "14px",
+        lineHeight: "22px",
+      },
+    },
+    small: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "12px",
+        lineHeight: "18px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "12px",
+        lineHeight: "18px",
+      },
+    },
+  },
   body: {
     large: {
       regular: {

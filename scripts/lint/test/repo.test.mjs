@@ -87,11 +87,11 @@ describe("docs rules", () => {
   });
 
   it("docs/readme-counts: headings, totals and prose counts", async () => {
-    // The semantic colour and emitted-value counts must match the real tokens.json, which the
+    // The semantic colour, typography and emitted-value counts must match the real tokens.json, which the
     // fixture keeps, so they are read from the real README (itself checked by "passes every
     // rule") rather than hardcoded. Hardcoding them broke this test on every token addition.
     const real = readFileSync(join(REPO, "README.md"), "utf8");
-    const [, semanticColors, web, native] = /\((\d+) colors \+[^)]*\)[^\n]*?\*\*(\d+) values on web\*\* · \*\*(\d+) on iOS and Android\*\*/.exec(real);
+    const [, semanticColors, typography, web, native] = /\((\d+) colors \+ (\d+) typography[^)]*\)[^\n]*?\*\*(\d+) values on web\*\* · \*\*(\d+) on iOS and Android\*\*/.exec(real);
     const root = readme([
       "### Primitive tokens (1)",
       "#### Font size — 3 tokens",
@@ -99,7 +99,7 @@ describe("docs rules", () => {
       "| Token | Role |",
       "|---|---|",
       "| `color.text-primary` | Body |",
-      `**Totals:** 1 primitive tokens · 2 semantic tokens (${semanticColors} colors + 36 typography) · 3 component tokens (${BUTTON_TOKENS} \`button/*\` + 1 \`checkbox/*\`) · **${web} values on web** · **${native} on iOS and Android** · **0 gradients**`,
+      `**Totals:** 1 primitive tokens · 2 semantic tokens (${semanticColors} colors + ${typography} typography) · 3 component tokens (${BUTTON_TOKENS} \`button/*\` + 1 \`checkbox/*\`) · **${web} values on web** · **${native} on iOS and Android** · **0 gradients**`,
       `Button (${BUTTON_TOKENS} tokens) and Radio (5 tokens) qualify.`,
     ].join("\n"));
     const hits = ofRule(await lint(root, "docs/readme-counts"), "docs/readme-counts");

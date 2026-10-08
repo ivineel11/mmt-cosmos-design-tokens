@@ -17,6 +17,7 @@ export const NAV: NavGroup[] = [
     items: [
       { id: "type-headline", label: "Headline" },
       { id: "type-title", label: "Title" },
+      { id: "type-paragraph", label: "Paragraph" },
       { id: "type-body", label: "Body" },
       { id: "type-label", label: "Label" },
     ],

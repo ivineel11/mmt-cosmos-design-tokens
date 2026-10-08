@@ -968,13 +968,10 @@
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --line-height-12: 12px;
   --line-height-16: 16px;
-  /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --line-height-18: 18px;
   --line-height-20: 20px;
-  /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --line-height-22: 22px;
   --line-height-24: 24px;
-  /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --line-height-26: 26px;
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --line-height-28: 28px;
@@ -1200,94 +1197,124 @@
   /** Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-black-font-size: 14px;
   --title-small-black-line-height: 20px;
+  --paragraph-large-regular-font-family: Lato;
+  --paragraph-large-regular-font-weight: 400;
+  /** Largest paragraph text — long reading on spacious screens, such as destination guides and articles. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  --paragraph-large-regular-font-size: 16px;
+  --paragraph-large-regular-line-height: 26px;
+  --paragraph-large-bold-font-family: Lato;
+  --paragraph-large-bold-font-weight: 700;
+  /** Largest paragraph text — long reading on spacious screens, such as destination guides and articles. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  --paragraph-large-bold-font-size: 16px;
+  --paragraph-large-bold-line-height: 26px;
+  --paragraph-medium-regular-font-family: Lato;
+  --paragraph-medium-regular-font-weight: 400;
+  /** Default paragraph text — hotel and property descriptions, reviews, FAQ answers and policy details. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  --paragraph-medium-regular-font-size: 14px;
+  --paragraph-medium-regular-line-height: 22px;
+  --paragraph-medium-bold-font-family: Lato;
+  --paragraph-medium-bold-font-weight: 700;
+  /** Default paragraph text — hotel and property descriptions, reviews, FAQ answers and policy details. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  --paragraph-medium-bold-font-size: 14px;
+  --paragraph-medium-bold-line-height: 22px;
+  --paragraph-small-regular-font-family: Lato;
+  --paragraph-small-regular-font-weight: 400;
+  /** Smallest paragraph text — terms and conditions, fare rules and other fine print. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  --paragraph-small-regular-font-size: 12px;
+  --paragraph-small-regular-line-height: 18px;
+  --paragraph-small-bold-font-family: Lato;
+  --paragraph-small-bold-font-weight: 700;
+  /** Smallest paragraph text — terms and conditions, fare rules and other fine print. Bold weight for emphasis within the role. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
+  --paragraph-small-bold-font-size: 12px;
+  --paragraph-small-bold-line-height: 18px;
   --body-large-regular-font-family: Lato;
   --body-large-regular-font-weight: 400;
-  /** Body text for spacious reading layouts — article and detail copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest body text — prominent short copy such as list row titles and input values. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-large-regular-font-size: 16px;
   --body-large-regular-line-height: 24px;
   --body-large-bold-font-family: Lato;
   --body-large-bold-font-weight: 700;
-  /** Body text for spacious reading layouts — article and detail copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest body text — prominent short copy such as list row titles and input values. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-large-bold-font-size: 16px;
   --body-large-bold-line-height: 24px;
   --body-large-black-font-family: Lato;
   --body-large-black-font-weight: 900;
-  /** Body text for spacious reading layouts — article and detail copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Largest body text — prominent short copy such as list row titles and input values. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-large-black-font-size: 16px;
   --body-large-black-line-height: 24px;
   --body-medium-regular-font-family: Lato;
   --body-medium-regular-font-weight: 400;
-  /** Default body text — the running copy most content uses. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-medium-regular-font-size: 14px;
   --body-medium-regular-line-height: 20px;
   --body-medium-bold-font-family: Lato;
   --body-medium-bold-font-weight: 700;
-  /** Default body text — the running copy most content uses. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-medium-bold-font-size: 14px;
   --body-medium-bold-line-height: 20px;
   --body-medium-black-font-family: Lato;
   --body-medium-black-font-weight: 900;
-  /** Default body text — the running copy most content uses. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-medium-black-font-size: 14px;
   --body-medium-black-line-height: 20px;
   --body-small-regular-font-family: Lato;
   --body-small-regular-font-weight: 400;
-  /** Smallest body text — captions, helper text and legal copy. Regular weight, the default. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-small-regular-font-size: 12px;
   --body-small-regular-line-height: 16px;
   --body-small-bold-font-family: Lato;
   --body-small-bold-font-weight: 700;
-  /** Smallest body text — captions, helper text and legal copy. Bold weight for emphasis within the role. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-small-bold-font-size: 12px;
   --body-small-bold-line-height: 16px;
   --body-small-black-font-family: Lato;
   --body-small-black-font-weight: 900;
-  /** Smallest body text — captions, helper text and legal copy. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for prose the user reads and label for text that names a control. */
+  /** Smallest body text — captions, helper and error text, and metadata. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-small-black-font-size: 12px;
   --body-small-black-line-height: 16px;
   --label-large-regular-font-family: Lato;
   --label-large-regular-font-weight: 400;
-  /** Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-large-regular-font-size: 16px;
   --label-large-regular-line-height: 24px;
   --label-large-bold-font-family: Lato;
   --label-large-bold-font-weight: 700;
-  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-large-bold-font-size: 16px;
   --label-large-bold-line-height: 24px;
   --label-large-black-font-family: Lato;
   --label-large-black-font-weight: 900;
-  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-large-black-font-size: 16px;
   --label-large-black-line-height: 24px;
   --label-medium-regular-font-family: Lato;
   --label-medium-regular-font-weight: 400;
-  /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-medium-regular-font-size: 14px;
   --label-medium-regular-line-height: 20px;
   --label-medium-bold-font-family: Lato;
   --label-medium-bold-font-weight: 700;
-  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-medium-bold-font-size: 14px;
   --label-medium-bold-line-height: 20px;
   --label-medium-black-font-family: Lato;
   --label-medium-black-font-weight: 900;
-  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-medium-black-font-size: 14px;
   --label-medium-black-line-height: 20px;
   --label-small-regular-font-family: Lato;
   --label-small-regular-font-weight: 400;
-  /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-small-regular-font-size: 12px;
   --label-small-regular-line-height: 16px;
   --label-small-bold-font-family: Lato;
   --label-small-bold-font-weight: 700;
-  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-small-bold-font-size: 12px;
   --label-small-bold-line-height: 16px;
   --label-small-black-font-family: Lato;
   --label-small-black-font-weight: 900;
-  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control and body for prose the user reads. */
+  /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-small-black-font-size: 12px;
   --label-small-black-line-height: 16px;
   /** No rounding — flush edges, full-bleed media, table cells. */
@@ -3619,7 +3646,7 @@
 }
 
 /**
- * MakeMyTrip: the 236 tokens that change with the brand. Set data-brand="mmt"
+ * MakeMyTrip: the 245 tokens that change with the brand. Set data-brand="mmt"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mmt"] {
@@ -3686,6 +3713,15 @@
   --title-small-bold-font-weight: 700;
   --title-small-black-font-family: Lato;
   --title-small-black-font-weight: 900;
+  --paragraph-large-regular-font-family: Lato;
+  --paragraph-large-bold-font-family: Lato;
+  --paragraph-large-bold-font-weight: 700;
+  --paragraph-medium-regular-font-family: Lato;
+  --paragraph-medium-bold-font-family: Lato;
+  --paragraph-medium-bold-font-weight: 700;
+  --paragraph-small-regular-font-family: Lato;
+  --paragraph-small-bold-font-family: Lato;
+  --paragraph-small-bold-font-weight: 700;
   --body-large-regular-font-family: Lato;
   --body-large-bold-font-family: Lato;
   --body-large-bold-font-weight: 700;
@@ -3862,7 +3898,7 @@
 }
 
 /**
- * myBiz: the 236 tokens that change with the brand. Set data-brand="mybiz"
+ * myBiz: the 245 tokens that change with the brand. Set data-brand="mybiz"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mybiz"] {
@@ -3929,6 +3965,15 @@
   --title-small-bold-font-weight: 700;
   --title-small-black-font-family: Lato;
   --title-small-black-font-weight: 900;
+  --paragraph-large-regular-font-family: Lato;
+  --paragraph-large-bold-font-family: Lato;
+  --paragraph-large-bold-font-weight: 700;
+  --paragraph-medium-regular-font-family: Lato;
+  --paragraph-medium-bold-font-family: Lato;
+  --paragraph-medium-bold-font-weight: 700;
+  --paragraph-small-regular-font-family: Lato;
+  --paragraph-small-bold-font-family: Lato;
+  --paragraph-small-bold-font-weight: 700;
   --body-large-regular-font-family: Lato;
   --body-large-bold-font-family: Lato;
   --body-large-bold-font-weight: 700;
@@ -4105,7 +4150,7 @@
 }
 
 /**
- * Goibibo: the 236 tokens that change with the brand. Set data-brand="goibibo"
+ * Goibibo: the 245 tokens that change with the brand. Set data-brand="goibibo"
  * on any element to switch it and everything inside it.
  */
 [data-brand="goibibo"] {
@@ -4172,6 +4217,15 @@
   --title-small-bold-font-weight: 600;
   --title-small-black-font-family: Rubik;
   --title-small-black-font-weight: 700;
+  --paragraph-large-regular-font-family: Rubik;
+  --paragraph-large-bold-font-family: Rubik;
+  --paragraph-large-bold-font-weight: 600;
+  --paragraph-medium-regular-font-family: Rubik;
+  --paragraph-medium-bold-font-family: Rubik;
+  --paragraph-medium-bold-font-weight: 600;
+  --paragraph-small-regular-font-family: Rubik;
+  --paragraph-small-bold-font-family: Rubik;
+  --paragraph-small-bold-font-weight: 600;
   --body-large-regular-font-family: Rubik;
   --body-large-bold-font-family: Rubik;
   --body-large-bold-font-weight: 600;
