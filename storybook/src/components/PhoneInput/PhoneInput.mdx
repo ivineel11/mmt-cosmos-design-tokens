@@ -1,0 +1,37 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import * as Stories from "./PhoneInput.stories";
+
+<Meta of={Stories} />
+
+# Phone input
+
+A mobile number field: the Input with a country segment inside it, holding the flag, dial code, chevron and a divider. In Figma it is the Input set (`1011:900`) with **Show Country** on, and the segment is Input / Country (`1026:410`). Full spec: [components/input.md](https://github.com/ivineel11/mmt-cosmos-design-tokens/blob/main/components/input.md), section "Phone number field".
+
+<Canvas of={Stories.Playground} />
+<Controls of={Stories.Playground} />
+
+## States
+
+Every Input state applies: Hover, Pressed, Active and Typing come from the browser, `invalid` is the Error intent and `disabled` greys the code, chevron and divider. The flag keeps its colours.
+
+<Canvas of={Stories.States} />
+
+## Formatting and validation
+
+The number is grouped as it is typed, the way the country writes it (98765 43210, 50 123 4567, 7400 123456), and cut at the longest number the country allows: India stops at 10 digits. A trunk 0 typed out of habit (07400 for the UK) is dropped, and a pasted international number such as +971 50 123 4567 also switches the country. `onValueChange` reports the national digits, the E.164 number and `isValid`; show the error on blur, as this story does.
+
+<Canvas of={Stories.Validation} />
+
+## Countries
+
+Every country with a dialling code is offered: a Popular group first (India, UAE, US, UK, Singapore, Saudi Arabia and the Gulf, Thailand, Malaysia, Australia, Canada, Nepal, Sri Lanka), then A to Z. Until the country picker sheet exists, the segment opens the native select.
+
+<Canvas of={Stories.Countries} />
+
+## Accessibility
+
+- The country segment is a native `select` named "Country code"; it reaches a 48px hit area and shows the Input focus ring on keyboard focus.
+- The number is an `input type="tel"` with `inputmode="tel"` and `autocomplete="tel-national"`, so phones show the dial pad and can fill it.
+- The flag image is decorative; the select announces the country name and dial code.
+
+<ArgTypes of={Stories} />
