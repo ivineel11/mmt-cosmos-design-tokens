@@ -215,7 +215,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1196 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 289 semantic roles + 735 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1195 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 289 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 

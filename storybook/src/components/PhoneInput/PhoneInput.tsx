@@ -153,9 +153,13 @@ export function PhoneInput({
   const segment = (
     <div className={styles.country} data-disabled={disabled}>
       <span className={styles.selector}>
-        <span className={styles.flag}>{flag && <img src={flag} alt="" />}</span>
-        <span className={styles.code}>{current.dialCode}</span>
-        <Icon name="chevron-down" size="var(--input-country-chevron-size)" className={styles.chevron} />
+        <span className={styles.flagBox}>
+          <span className={styles.flag}>{flag && <img src={flag} alt="" />}</span>
+        </span>
+        <span className={styles.codeRow}>
+          <span className={styles.code}>{current.dialCode}</span>
+          <Icon name="chevron-down" size="var(--input-country-chevron-size)" className={styles.chevron} />
+        </span>
         <select className={styles.select} aria-label={countryLabel} value={country} onChange={pickCountry} disabled={disabled || readOnly}>
           <optgroup label="Popular">
             {POPULAR_COUNTRIES.map((c) => (
