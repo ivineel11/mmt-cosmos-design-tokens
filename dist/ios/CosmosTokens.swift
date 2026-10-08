@@ -1103,6 +1103,7 @@ public enum CosmosTokens {
     public static let inputCountryCodeDisabled = Color(red: 0.631373, green: 0.631373, blue: 0.631373)
     public static let inputCountryDivider = Color(red: 0.831373, green: 0.831373, blue: 0.831373)
     public static let inputCountryDividerDisabled = Color(red: 0.831373, green: 0.831373, blue: 0.831373)
+    public static let inputCountryDividerGap = CGFloat(8)
     public static let inputCountryDividerHeight = CGFloat(24)
     public static let inputCountryDividerWidth = CGFloat(1)
     public static let inputCountryFlagContainerSize = CGFloat(24)

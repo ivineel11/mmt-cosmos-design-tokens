@@ -1,13 +1,14 @@
 /*
  * PhoneInput country segment: components/input.md, "Phone number field". Every value is an
- * input/* or semantic token. The segment sits in Input's start slot, input/gap from the text.
+ * input/* or semantic token. The segment sits in Input's start slot, input/gap from the text,
+ * with input/country-divider-gap between the selector and the divider.
  */
 
 .country {
   display: flex;
   flex: none;
   align-items: center;
-  gap: var(--input-gap);
+  gap: var(--input-country-divider-gap);
   --_code: var(--input-country-code);
   --_chevron: var(--input-icon-default);
   --_divider: var(--input-country-divider);

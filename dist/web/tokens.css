@@ -3587,10 +3587,12 @@
   --input-focus-ring-offset: 2px;
   /** Corner radius of the focus ring around a trailing icon button, a circle around the glyph. */
   --input-focus-ring-radius: 999px;
-  /** Gap between the flag container and the dial code in the country segment of a phone number field. The code and chevron sit closer, at country-chevron-gap. The segment sits input/gap away from the divider and the text column. */
+  /** Gap between the flag container and the dial code in the country segment of a phone number field. The code and chevron sit closer, at country-chevron-gap, and the divider sits country-divider-gap after the chevron. */
   --input-country-gap: 8px;
   /** Gap between the dial code and the chevron, tighter than country-gap so the code and chevron read as one control. */
   --input-country-chevron-gap: 4px;
+  /** Gap between the country selector (flag, dial code and chevron) and the divider. The divider then sits input/gap away from the text column. */
+  --input-country-divider-gap: 8px;
   /** Width and height of the square container that holds the country flag, the same 24 as an icon slot, with the flag centred inside it. */
   --input-country-flag-container-size: 24px;
   /** Width of the country flag, the full width of its container and never wider. The height follows the 4 by 3 artwork, so the flag is 24 by 18, centred in the container. */

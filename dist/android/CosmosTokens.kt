@@ -1106,6 +1106,7 @@ object CosmosTokens {
   val inputCountryCodeDisabled = Color(0xFFA1A1A1)
   val inputCountryDivider = Color(0xFFD4D4D4)
   val inputCountryDividerDisabled = Color(0xFFD4D4D4)
+  val inputCountryDividerGap = 8.dp
   val inputCountryDividerHeight = 24.dp
   val inputCountryDividerWidth = 1.dp
   val inputCountryFlagContainerSize = 24.dp

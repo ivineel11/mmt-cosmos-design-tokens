@@ -2098,6 +2098,7 @@ export default {
     "focus-ring-radius": "999px",
     "country-gap": "8px",
     "country-chevron-gap": "4px",
+    "country-divider-gap": "8px",
     "country-flag-container-size": "24px",
     "country-flag-width": "24px",
     "country-flag-radius": "4px",
