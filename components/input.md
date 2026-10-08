@@ -124,7 +124,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | Error glyph | `input/supporting-icon-size` | 16 |
 | Trailing button hit area | `input/touch-target` | 48 |
 
-- The text column is centred vertically: the 18 px label and the 26 px value row make 44, leaving 6 above and below.
+- The text column is centred vertically: the 16 px label and the 24 px value row make 40, leaving 8 above and below.
 - Text and icons both start 12 from the edge. The supporting text starts at the container edge, not under the text.
 - The outline is drawn inside the container and stays 1 px in every state; the active field changes only its outline colour. `input/border-width-active` is kept as its own token so Active can thicken again without touching components.
 - **Web optical centring.** Browsers draw 12 px Lato half a pixel higher than Figma, so the small label and the supporting text shift down a quarter of `space-3xs`. 16 px text matches.

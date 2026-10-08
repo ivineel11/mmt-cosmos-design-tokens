@@ -212,7 +212,7 @@ The rows are inset from the panel edge by `menu/padding-comfortable` or `menu/pa
 | Leading icon | 20 | 16 | `menu/leading-icon-size-comfortable`, `menu/leading-icon-size-compact` |
 | Chevron and check | 20 | 16 | `menu/trailing-icon-size-comfortable`, `menu/trailing-icon-size-compact` |
 | Label type | 16 / 24 regular | 14 / 20 regular | `label/large/regular`, `label/medium/regular` |
-| Supporting text and meta type | 14 / 22 regular | 12 / 18 regular | `body/medium/regular`, `body/small/regular` |
+| Supporting text and meta type | 14 / 20 regular | 12 / 16 regular | `body/medium/regular`, `body/small/regular` |
 | Section header padding top / bottom | 8 / 4 | 4 / 2 | `menu/section-header-padding-top-*`, `menu/section-header-padding-bottom-*` |
 | Section header type | 12 / 16 bold | 12 / 16 bold | `label/small/bold` |
 | Divider line | 1 | 1 | `menu/divider-width` |
@@ -224,7 +224,7 @@ Row heights:
 | Lines | Comfortable | Compact |
 |---|---|---|
 | Label only | 12 + 24 + 12 = 48 | 8 + 20 + 8 = 36 |
-| Label and supporting text | 12 + 24 + 2 + 22 + 12 = 72 | 8 + 20 + 2 + 18 + 8 = 56 |
+| Label and supporting text | 12 + 24 + 2 + 20 + 12 = 70 | 8 + 20 + 2 + 16 + 8 = 54 |
 
 The label uses the label style, not body, because a row is a single-line control label with tight leading. Label plus padding lands exactly on the 48 and 36 minimums. The label starts 8 + 12 = 20 in from the panel edge in Comfortable, and 4 + 8 = 12 in Compact. The section header uses the same inset, so it lines up with the labels.
 

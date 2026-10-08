@@ -1026,11 +1026,11 @@ Flat shape `{group}.{size}.{weight}` · family from `typeface.default` and weigh
 | headline | medium | 28px | 36px | regular, bold, black |
 | headline | small | 24px | 32px | regular, bold, black |
 | title | large | 22px | 30px | regular, bold, black |
-| title | medium | 18px | 26px | regular, bold, black |
-| title | small | 14px | 22px | regular, bold, black |
-| body | large | 16px | 26px | regular, bold, black |
-| body | medium | 14px | 22px | regular, bold, black |
-| body | small | 12px | 18px | regular, bold, black |
+| title | medium | 18px | 24px | regular, bold, black |
+| title | small | 14px | 20px | regular, bold, black |
+| body | large | 16px | 24px | regular, bold, black |
+| body | medium | 14px | 20px | regular, bold, black |
+| body | small | 12px | 16px | regular, bold, black |
 | label | large | 16px | 24px | regular, bold, black |
 | label | medium | 14px | 20px | regular, bold, black |
 | label | small | 12px | 16px | regular, bold, black |
@@ -1510,21 +1510,21 @@ Full token list with resolved primitive references (generated from `tokens/token
 - `title.large.regular` → typeface.default · weight.regular · 22px · 30px
 - `title.large.bold` → typeface.default · weight.bold · 22px · 30px
 - `title.large.black` → typeface.default · weight.black · 22px · 30px
-- `title.medium.regular` → typeface.default · weight.regular · 18px · 26px
-- `title.medium.bold` → typeface.default · weight.bold · 18px · 26px
-- `title.medium.black` → typeface.default · weight.black · 18px · 26px
-- `title.small.regular` → typeface.default · weight.regular · 14px · 22px
-- `title.small.bold` → typeface.default · weight.bold · 14px · 22px
-- `title.small.black` → typeface.default · weight.black · 14px · 22px
-- `body.large.regular` → typeface.default · weight.regular · 16px · 26px
-- `body.large.bold` → typeface.default · weight.bold · 16px · 26px
-- `body.large.black` → typeface.default · weight.black · 16px · 26px
-- `body.medium.regular` → typeface.default · weight.regular · 14px · 22px
-- `body.medium.bold` → typeface.default · weight.bold · 14px · 22px
-- `body.medium.black` → typeface.default · weight.black · 14px · 22px
-- `body.small.regular` → typeface.default · weight.regular · 12px · 18px
-- `body.small.bold` → typeface.default · weight.bold · 12px · 18px
-- `body.small.black` → typeface.default · weight.black · 12px · 18px
+- `title.medium.regular` → typeface.default · weight.regular · 18px · 24px
+- `title.medium.bold` → typeface.default · weight.bold · 18px · 24px
+- `title.medium.black` → typeface.default · weight.black · 18px · 24px
+- `title.small.regular` → typeface.default · weight.regular · 14px · 20px
+- `title.small.bold` → typeface.default · weight.bold · 14px · 20px
+- `title.small.black` → typeface.default · weight.black · 14px · 20px
+- `body.large.regular` → typeface.default · weight.regular · 16px · 24px
+- `body.large.bold` → typeface.default · weight.bold · 16px · 24px
+- `body.large.black` → typeface.default · weight.black · 16px · 24px
+- `body.medium.regular` → typeface.default · weight.regular · 14px · 20px
+- `body.medium.bold` → typeface.default · weight.bold · 14px · 20px
+- `body.medium.black` → typeface.default · weight.black · 14px · 20px
+- `body.small.regular` → typeface.default · weight.regular · 12px · 16px
+- `body.small.bold` → typeface.default · weight.bold · 12px · 16px
+- `body.small.black` → typeface.default · weight.black · 12px · 16px
 - `label.large.regular` → typeface.default · weight.regular · 16px · 24px
 - `label.large.bold` → typeface.default · weight.bold · 16px · 24px
 - `label.large.black` → typeface.default · weight.black · 16px · 24px
