@@ -50,6 +50,7 @@ Three variant axes drive the set:
 | Clear button | `State=Typing` | `clearable`, `clearLabel`, `onClear` | off |
 | Read-only | `State=Read-only` | `readOnly`, which also shows Icon / chevron-down unless `trailingIcon` replaces it | off |
 | Disabled | `State=Disabled` | `disabled` | enabled |
+| Country segment | `Show Country`, with the nested Input / Country `Flag` and `Code` | `PhoneInput` (`country` / `defaultCountry`, `onCountryChange`, `onValueChange`) | off; India, +91 |
 
 ### Figma-only properties
 
@@ -208,6 +209,30 @@ Disabled states are exempt from WCAG 1.4.3 and 1.4.11. For reference, disabled t
 
 ---
 
+## Phone number field
+
+A mobile number field is the Input with **Show Country** on. A country segment sits between the leading icon slot and the text: the flag, the dial code and a chevron, then a divider. The segment is its own sub-component, **Input / Country** (`1026:410`, State Default and Disabled), nested in every Input variant and exposed, so its **Flag** (instance swap) and **Code** (text) are set from the Input instance. It takes every Input state, Pressed, Active, Typing and Error included; Disabled switches the nested segment to its Disabled variant. In code it is `PhoneInput`.
+
+| Part | Token | Value |
+|---|---|---|
+| Flag | `input/country-flag-width` × `input/country-flag-height`, `input/country-flag-radius` | 16 × 12, 4 by 3, radius 2 |
+| Flag hairline | `input/country-flag-border` → `color.border-secondary` at `input/country-flag-border-width` | #E5E5E5, 1 px inside, so white-edged flags keep their shape |
+| Flag, code and chevron gap | `input/country-gap` | 8 |
+| Dial code | `input/country-code` → `text-primary`; disabled `input/country-code-disabled` → `text-disabled` | `body/large/regular`, so the bold number stays the focus |
+| Chevron | `input/country-chevron-size`, coloured `input/icon-default` / `input/icon-disabled` | 20 |
+| Divider | `input/country-divider` → `color.border`; disabled `input/country-divider-disabled` → `border-disabled-subtle`; `input/country-divider-width` × `input/country-divider-height` | #D4D4D4, 1 × 24 |
+| Segment to divider, divider to text | `input/gap` | 12 |
+
+- **Flags** are flag-icons 7.5.0 (MIT licence), 4 by 3. The Figma Icons page holds 14 as `Flag / XX` components in a Flags frame: IN, AE, US, GB, SG, QA, KW, BH, TH, MY, AU, CA, NP and LK. Code bundles every country. A flag keeps its colours when the field is disabled; only the code, chevron and divider grey out.
+- **The dial code stays regular and `text-primary`.** It is the selected value of the segment, not a hint, but regular weight keeps the typed number, in bold, as the focus. This is different from the Input `prefix`, which stays `text-secondary`; a phone field does not also use the prefix.
+- **Countries.** Every country with a dialling code: a Popular group first (India, UAE, US, UK, Singapore, Saudi Arabia, Qatar, Kuwait, Oman, Bahrain, Thailand, Malaysia, Australia, Canada, Nepal, Sri Lanka), then A to Z. India is the default.
+- **Formatting.** The number is grouped as it is typed, the way the country writes it without the dial code: 98765 43210, 50 123 4567, 7400 123456, 201 555 0123. A trunk 0 typed out of habit (07400 for the UK, 050 for the UAE) is dropped. Input is cut at the longest number the country allows, so India stops at 10 digits, and a pasted number with its dial code (919876543210) loses it. A pasted international number such as +971 50 123 4567 switches the country.
+- **Validation** checks the length and pattern for the country (libphonenumber-js). `onValueChange` reports the national digits, the E.164 number and `isValid`. Show the Error intent on blur, not while typing; the message names the problem, for example "Enter a valid 10-digit mobile number."
+- **Picking a country.** Tapping the segment opens the country picker. Until the picker sheet is built, code uses an invisible native `select` over the segment, named "Country code", reaching `input/touch-target` (48) in height and showing the `input/focus-ring` on keyboard focus.
+- **Semantics.** `input type="tel"`, `inputmode="tel"`, `autocomplete="tel-national"`; the flag image is decorative. On iOS use `.telephoneNumber` content type and the phone pad; on Android `KeyboardType.Phone`.
+
+---
+
 ## Known gaps
 
 - **The resting boundary fails WCAG 1.4.11 by design.** See Accessibility → Contrast for the one-token change that would restore it.
@@ -215,12 +240,14 @@ Disabled states are exempt from WCAG 1.4.3 and 1.4.11. For reference, disabled t
 - **Disabled and resting look alike on white.** The two fills differ by 1.09:1 and the outlines match, so the grey text carries the disabled state.
 - **No text area, no character counter and no dropdown variant yet.** A counter fits in the supporting text for now.
 - **No motion tokens.** The label move is instant in Figma; code may animate it until a motion scale exists.
+- **No country picker sheet yet.** The segment opens a native select in code and has no picker in Figma.
+- **Figma has 14 of the flags.** Oman and Saudi Arabia, in the Popular group, and the rest of the world come with the picker; code already has them all.
 
 ---
 
 ## Token reference
 
-47 tokens under `component.input` in `tokens/tokens.json`, mirrored 1:1 as `input/*` in the Figma `component` collection:
+60 tokens under `component.input` in `tokens/tokens.json`, mirrored 1:1 as `input/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
@@ -231,5 +258,6 @@ Disabled states are exempt from WCAG 1.4.3 and 1.4.11. For reference, disabled t
 | Supporting: `supporting-{default,error,disabled}`, `supporting-icon-error` | 4 |
 | Dimensions: `height`, `padding-x`, `gap`, `prefix-gap`, `icon-size`, `radius`, `border-width`, `border-width-active`, `caret-width`, `supporting-padding-top`, `supporting-gap`, `supporting-icon-size` | 12 |
 | Trailing button: `touch-target`, `focus-ring`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius` | 5 |
+| Country segment: `country-gap`, `country-flag-{width,height,radius,border,border-width}`, `country-code`, `country-code-disabled`, `country-chevron-size`, `country-divider`, `country-divider-disabled`, `country-divider-{width,height}` | 13 |
 
 Platform names follow the standard pipeline: `input/border-active` → `--input-border-active` (CSS) → `CosmosTokens.inputBorderActive` (Swift / Kotlin) → `tokens.input["border-active"]` (TS, the default export of `dist/web/tokens.ts`).

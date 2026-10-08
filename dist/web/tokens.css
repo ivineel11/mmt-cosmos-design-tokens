@@ -3587,6 +3587,32 @@
   --input-focus-ring-offset: 2px;
   /** Corner radius of the focus ring around a trailing icon button, a circle around the glyph. */
   --input-focus-ring-radius: 999px;
+  /** Gap between the flag, the dial code and the chevron in the country segment of a phone number field. The segment sits input/gap away from the divider and the text column. */
+  --input-country-gap: 8px;
+  /** Width of the country flag, drawn at 4 by 3 with country-flag-height. */
+  --input-country-flag-width: 16px;
+  /** Height of the country flag, drawn at 4 by 3 with country-flag-width. */
+  --input-country-flag-height: 12px;
+  /** Corner radius of the country flag, a slight softening that keeps the flag readable as a flag. */
+  --input-country-flag-radius: 2px;
+  /** Hairline around the country flag, so flags with white edges, such as Japan or Singapore, keep their shape on a white field. Drawn inside the flag at country-flag-border-width. */
+  --input-country-flag-border: #E5E5E5;
+  /** Thickness of the hairline around the country flag, drawn inside. */
+  --input-country-flag-border-width: 1px;
+  /** Dial code of the selected country, such as +91, in every enabled state and both intents. Regular weight, so the bold number the user typed stays the focus. Use country-code-disabled when the field is disabled. */
+  --input-country-code: #0A0A0A;
+  /** Dial code of the selected country in a disabled phone number field. */
+  --input-country-code-disabled: #A1A1A1;
+  /** Size of the chevron after the dial code, which marks the country as something to change. Coloured with icon-default, or icon-disabled when the field is disabled. */
+  --input-country-chevron-size: 20px;
+  /** Vertical rule between the country segment and the number, in every enabled state and both intents. Use country-divider-disabled when the field is disabled. */
+  --input-country-divider: #D4D4D4;
+  /** Vertical rule between the country segment and the number in a disabled phone number field. */
+  --input-country-divider-disabled: #D4D4D4;
+  /** Thickness of the rule between the country segment and the number. */
+  --input-country-divider-width: 1px;
+  /** Height of the rule between the country segment and the number, centred in the field. */
+  --input-country-divider-height: 24px;
 }
 
 /**

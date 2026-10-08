@@ -1,4 +1,4 @@
-import { useId, useRef, type InputHTMLAttributes } from "react";
+import { useId, useRef, type InputHTMLAttributes, type ReactNode, type Ref } from "react";
 import { Icon, type IconName } from "../Icon/Icon";
 import styles from "./Input.module.css";
 
@@ -24,6 +24,9 @@ export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "p
   onClear?: () => void;
   /** Tints the field, turns the outline, label and message red, and sets aria-invalid. Disabled wins over it. */
   invalid?: boolean;
+  /** Content between the leading icon and the text, such as the country segment of PhoneInput. */
+  start?: ReactNode;
+  ref?: Ref<HTMLInputElement>;
 };
 
 /**
@@ -44,12 +47,19 @@ export function Input({
   invalid = false,
   disabled = false,
   readOnly = false,
+  start,
+  ref: forwardedRef,
   placeholder,
   className,
   id,
   ...rest
 }: InputProps) {
-  const ref = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLInputElement | null>(null);
+  const setRef = (node: HTMLInputElement | null) => {
+    ref.current = node;
+    if (typeof forwardedRef === "function") forwardedRef(node);
+    else if (forwardedRef) forwardedRef.current = node;
+  };
   const autoId = useId();
   const inputId = id ?? autoId;
   const supportingId = supportingText ? `${inputId}-supporting` : undefined;
@@ -68,6 +78,7 @@ export function Input({
     <div className={[styles.root, className].filter(Boolean).join(" ")} data-invalid={showError} data-disabled={disabled} data-readonly={readOnly}>
       <div className={styles.field}>
         {leadingIcon && <Icon name={leadingIcon} size="var(--input-icon-size)" className={styles.icon} />}
+        {start}
         <div className={styles.content}>
           <label htmlFor={inputId} className={styles.label}>
             <span className={styles.labelText}>{label}</span>
@@ -80,7 +91,7 @@ export function Input({
             )}
             <input
               {...rest}
-              ref={ref}
+              ref={setRef}
               id={inputId}
               className={styles.input}
               disabled={disabled}
