@@ -4,7 +4,7 @@
 <!-- uSpec Stage 1 requires the uSpec Extract plugin to run inside Figma Desktop (see README -> "Generating a spec for a new component"). -->
 <!-- Regenerate this file through that flow once the component set has been extracted, and this notice can be dropped. -->
 <!-- Figma: https://www.figma.com/design/byPBTSedTYOO0AYwmIlncH/?node-id=1011-900 -->
-<!-- Authored at: 2026-10-08. States Pressed, Typing and Read-only added and Focus renamed Active the same day. -->
+<!-- Authored at: 2026-10-08. States Pressed, Typing and Read-only added, Focus renamed Active, and the value set in bold the same day. -->
 
 ## Overview
 
@@ -76,6 +76,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 ## Behaviour
 
 - **Label motion.** Empty and at rest, the label is `body/large/regular` in the place of the value. While the field is active, or once there is a value, it is `body/small/regular` at the top of the text column. A field with a value keeps the small label when it loses focus.
+- **Type.** The entered value is `body/large/bold` in every populated state, Disabled included, so its width never changes between states. The resting label, the prefix and the placeholder stay `body/large/regular`, and the small label and supporting text `body/small/regular`. In myBiz and Goibibo the bold weight follows the brand `weight.bold`.
 - **Placeholder** shows only while an empty field is active. It never stands in for the label.
 - **Prefix** shows with the value row, so it is hidden while the field is empty and at rest.
 - **Pressed** shows while a finger or pointer is down and the field is not yet active. On touch screens that is the moment before focus lands; with a mouse the field takes focus on press, so Active shows instead.

@@ -83,9 +83,11 @@
   color: var(--_value);
   caret-color: var(--_caret);
   font: inherit;
+  /* Entered values read bold in every state; the prefix and placeholder stay regular. */
+  font-weight: var(--body-large-bold-font-weight);
   outline: none;
 }
-.input::placeholder { color: transparent; opacity: 1; }
+.input::placeholder { color: transparent; opacity: 1; font-weight: var(--body-large-regular-font-weight); }
 .input:focus::placeholder { color: var(--input-placeholder); }
 
 /* Resting and empty: the label takes the value's place and size, and the row collapses. */
