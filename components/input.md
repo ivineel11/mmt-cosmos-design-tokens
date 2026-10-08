@@ -4,18 +4,18 @@
 <!-- uSpec Stage 1 requires the uSpec Extract plugin to run inside Figma Desktop (see README -> "Generating a spec for a new component"). -->
 <!-- Regenerate this file through that flow once the component set has been extracted, and this notice can be dropped. -->
 <!-- Figma: https://www.figma.com/design/byPBTSedTYOO0AYwmIlncH/?node-id=1011-900 -->
-<!-- Authored at: 2026-10-08 -->
+<!-- Authored at: 2026-10-08. States Pressed, Typing and Read-only added and Focus renamed Active the same day. -->
 
 ## Overview
 
 An input is a single-line text field: a mobile number at login, a passenger name, an email address, a promo code. Its label sits inside the field. While the field is empty and at rest the label is large, in the place of the value. Once the field has focus or a value, the label moves to the top of the field in small type and the value appears under it. There is no notch in the outline, and fields always stand alone; related fields such as From and To keep a gap between them instead of merging into one block.
 
-The set is **Input** (`1011:900`) on the Input page (`1011:899`). It is Exploration 2 from the Input fields · Exploration 2 page, at the 12px radius. The Material 3 version on the Input fields page (`491:3`) was not taken forward.
+The set is **Input** (`1011:900`) on the Input page (`1011:899`). It is Exploration 2 from the Input fields · Exploration 2 page, at the 12px radius. The Material 3 version was not taken forward and its page has been deleted.
 
 Three variant axes drive the set:
 
 - **Value** is Empty or Populated.
-- **State** covers Default, Hover, Focus and Disabled.
+- **State** covers Default, Hover, Pressed, Active, Typing, Read-only and Disabled. Typing exists with a value only, so the set has 26 variants.
 - **Intent** is Default or Error. Error tints the field, turns the outline, label and message red, and puts the error glyph before the message.
 
 ### When to use something else
@@ -47,13 +47,17 @@ Three variant axes drive the set:
 | Leading icon | `Show Leading Icon` + `Leading Icon` swap | `leadingIcon` | off; Icon / search |
 | Trailing icon | `Show Trailing Icon` + `Trailing Icon` swap | `trailingIcon`, `trailingIconLabel`, `onTrailingIconClick` | off; Icon / cancel |
 | Error | `Intent=Error` | `invalid` | Default |
+| Clear button | `State=Typing` | `clearable`, `clearLabel`, `onClear` | off |
+| Read-only | `State=Read-only` | `readOnly`, which also shows Icon / chevron-down unless `trailingIcon` replaces it | off |
 | Disabled | `State=Disabled` | `disabled` | enabled |
 
 ### Figma-only properties
 
-- **State Hover and Focus** exist for mocks. In code they are `:hover` (pointer devices only) and `:focus`.
+- **State Hover, Pressed and Active** exist for mocks. In code they are `:hover` (pointer devices only), `:active` before the field takes focus, and `:focus`.
+- **State Typing** is an active field with a value, where a clearable field shows its Clear button (the `Clear` layer, Icon / cancel). In code the button appears by itself while `clearable` is set, the field is active and it holds text.
+- **State Read-only** is a picker trigger, such as Departure or Travellers. It looks like Default with a `Chevron` layer (Icon / chevron-down) at the end. In code it is `readOnly`: no caret and no typing, and a click opens the picker. Hover, Pressed and keyboard focus still apply.
 - **Value** is drawn as a variant so mocks can show both layouts. In code it follows whether the input holds text.
-- The **Caret** layer marks a focused field in mocks. Code uses the platform caret, coloured with `input/caret-*`.
+- The **Caret** layer marks an active field in mocks. Code uses the platform caret, coloured with `input/caret-*`.
 
 ### Examples
 
@@ -61,9 +65,9 @@ The Input examples frame (`1013:8`) shows realistic copy:
 
 | Pattern | Setup |
 |---|---|
-| Mobile number at login | Focus, `Prefix` +91, value 98765 43210, hint "We will send a 6-digit OTP to this number." |
-| Flight search | From and To with Icon / flight, Departure with Icon / calendar, Travellers with Icon / person |
-| Stay search | Empty and focused, Icon / search, placeholder "City, area or hotel name" |
+| Mobile number at login | Active, `Prefix` +91, value 98765 43210, hint "We will send a 6-digit OTP to this number." |
+| Flight search | From and To with Icon / flight; Departure (Icon / calendar) and Travellers (Icon / person) as Read-only pickers |
+| Stay search | Typing "Goa" with Icon / search and the Clear button |
 | Passenger details | Name; Email in Error with "Enter a valid email address, such as name@example.com."; Password with the Icon / visibility button |
 | Offers and payment | Promo code empty with a hint; Wallet balance disabled |
 
@@ -71,12 +75,15 @@ The Input examples frame (`1013:8`) shows realistic copy:
 
 ## Behaviour
 
-- **Label motion.** Empty and at rest, the label is `body/large/regular` in the place of the value. On focus, or once there is a value, it is `body/small/regular` at the top of the text column. A field with a value keeps the small label when it loses focus.
-- **Placeholder** shows only while an empty field is focused. It never stands in for the label.
+- **Label motion.** Empty and at rest, the label is `body/large/regular` in the place of the value. While the field is active, or once there is a value, it is `body/small/regular` at the top of the text column. A field with a value keeps the small label when it loses focus.
+- **Placeholder** shows only while an empty field is active. It never stands in for the label.
 - **Prefix** shows with the value row, so it is hidden while the field is empty and at rest.
-- **Error.** The red stays while the field is focused, so a field the user is correcting keeps its error until validation clears it. Validate on blur or submit, not on each keystroke.
+- **Pressed** shows while a finger or pointer is down and the field is not yet active. On touch screens that is the moment before focus lands; with a mouse the field takes focus on press, so Active shows instead.
+- **Typing and Clear.** With `clearable`, the Clear button appears while the field is active and holds text. It empties the value, fires `onChange`, then `onClear`, and returns focus to the input.
+- **Read-only** never takes typing or shows a caret. Tapping it opens its picker sheet; the field shows the chosen value afterwards.
+- **Error.** The red stays while the field is active, so a field the user is correcting keeps its error until validation clears it. Validate on blur or submit, not on each keystroke.
 - **Disabled wins over Error.** A disabled field renders neutral and does not announce an error.
-- **Trailing icon button.** Clear empties the value and returns focus to the input. Show password switches the input type and swaps to Icon / visibility-off.
+- **Trailing icon button.** Show password switches the input type and swaps to Icon / visibility-off.
 
 ---
 
@@ -90,11 +97,13 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | 2 | Leading icon | `Leading Icon` | Optional, 24 |
 | 3 | Label | `Label` (small) / `Resting Label` (large) | One text property drives both |
 | 4 | Prefix | `Prefix` → `Prefix Text` | Optional |
-| 5 | Value | `Value` | Or `Placeholder` when empty and focused |
-| 6 | Caret | `Caret` | Focus only, mocks only |
-| 7 | Trailing icon | `Trailing Icon` | Optional, 24; a button in code |
-| 8 | Error glyph | `Error Icon` | Error intent only, 16 |
-| 9 | Supporting text | `Supporting Text` | Optional |
+| 5 | Value | `Value` | Or `Placeholder` when empty and active |
+| 6 | Caret | `Caret` | Active and Typing only, mocks only |
+| 7 | Clear | `Clear` | Typing only, 24; a button in code |
+| 8 | Trailing icon | `Trailing Icon` | Optional, 24; a button in code |
+| 9 | Chevron | `Chevron` | Read-only only, 24 |
+| 10 | Error glyph | `Error Icon` | Error intent only, 16 |
+| 11 | Supporting text | `Supporting Text` | Optional |
 
 ### Dimensions
 
@@ -106,7 +115,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | Prefix to value gap | `input/prefix-gap` | 4 |
 | Icon size | `input/icon-size` | 24 |
 | Corner radius | `input/radius` | 12 |
-| Outline | `input/border-width` / `input/border-width-focus` | 1 / 2, drawn inside |
+| Outline | `input/border-width` / `input/border-width-active` | 1 / 2, drawn inside |
 | Caret width | `input/caret-width` | 2 |
 | Container to supporting text | `input/supporting-padding-top` | 8 |
 | Error glyph to message | `input/supporting-gap` | 4 |
@@ -115,30 +124,31 @@ The Input examples frame (`1013:8`) shows realistic copy:
 
 - The text column is centred vertically: the 18 px label and the 26 px value row make 44, leaving 6 above and below.
 - Text and icons both start 12 from the edge. The supporting text starts at the container edge, not under the text.
-- The outline is drawn inside the container, so thickening it on focus never moves the content.
+- The outline is drawn inside the container, so thickening it when the field becomes active never moves the content.
 - **Web optical centring.** Browsers draw 12 px Lato half a pixel higher than Figma, so the small label and the supporting text shift down a quarter of `space-3xs`. 16 px text matches.
 
 ---
 
 ## Color
 
-| Element | Default | Hover | Focus | Error | Disabled |
-|---|---|---|---|---|---|
-| Fill | `bg-default` → `bg-fill` #FFFFFF | same | same | `bg-error` → `bg-fill-warning-subtlest` #FEF2F2 | `bg-disabled` → `bg-fill-disabled-subtlest` #F5F5F5 |
-| Outline | `border-default` → `border` #D4D4D4 | `border-hover` → `border-strong` #737373 | `border-focus` → `border-brand` #0088FF, 2 px | `border-error-default` → `border-warning-strong` #C10007; hover `border-error-hover` → `border-warning-strong-hover` #E7000B; focus `border-error-focus` #C10007, 2 px | `border-disabled` → `border-disabled-subtle` #D4D4D4 |
-| Label | `label-default` → `text-secondary` #525252 | same | same | `label-error` → `text-warning` #C10007 | `label-disabled` → `text-disabled` #A1A1A1 |
-| Value | `value-default` → `text-primary` #0A0A0A | same | same | same | `value-disabled` → `text-disabled` |
-| Placeholder | – | – | `placeholder` → `text-secondary` | same | – |
-| Prefix | `prefix-default` → `text-secondary` | same | same | same | `prefix-disabled` → `text-disabled` |
-| Caret | – | – | `caret-default` → `text-primary` | `caret-error` → `text-warning` | – |
-| Icons | `icon-default` → `icon-secondary` #525252 | same | same | same | `icon-disabled` → `icon-disabled` #A1A1A1 |
-| Supporting text | `supporting-default` → `text-secondary` | same | same | `supporting-error` → `text-warning` | `supporting-disabled` → `text-disabled` |
-| Error glyph | – | – | – | `supporting-icon-error` → `icon-warning` #C10007 | hidden |
+| Element | Default, Read-only | Hover | Pressed | Active, Typing | Error | Disabled |
+|---|---|---|---|---|---|---|
+| Fill | `bg-default` → `bg-fill` #FFFFFF | same | `bg-pressed` → `bg-fill-pressed-subtle` #F5F5F5 | `bg-default` | `bg-error` → `bg-fill-warning-subtlest` #FEF2F2; pressed `bg-error-pressed` → `bg-fill-warning-subtle` #FFE2E2 | `bg-disabled` → `bg-fill-disabled-subtlest` #F5F5F5 |
+| Outline | `border-default` → `border` #D4D4D4 | `border-hover` → `border-strong` #737373 | `border-pressed` → `border-strong` #737373 | `border-active` → `border-brand` #0088FF, 2 px | `border-error-default` → `border-warning-strong` #C10007; hover and pressed `border-error-hover` / `border-error-pressed` → `border-warning-strong-hover` #E7000B; active `border-error-active` #C10007, 2 px | `border-disabled` → `border-disabled-subtle` #D4D4D4 |
+| Label | `label-default` → `text-secondary` #525252 | same | same | same | `label-error` → `text-warning` #C10007 | `label-disabled` → `text-disabled` #A1A1A1 |
+| Value | `value-default` → `text-primary` #0A0A0A | same | same | same | same | `value-disabled` → `text-disabled` |
+| Placeholder | – | – | – | `placeholder` → `text-secondary` (Active, empty) | same | – |
+| Prefix | `prefix-default` → `text-secondary` | same | same | same | same | `prefix-disabled` → `text-disabled` |
+| Caret | – | – | – | `caret-default` → `text-primary`; none when read-only | `caret-error` → `text-warning` | – |
+| Icons, Clear, chevron | `icon-default` → `icon-secondary` #525252 | same | same | same | same | `icon-disabled` → `icon-disabled` #A1A1A1 |
+| Supporting text | `supporting-default` → `text-secondary` | same | same | same | `supporting-error` → `text-warning` | `supporting-disabled` → `text-disabled` |
+| Error glyph | – | – | – | – | `supporting-icon-error` → `icon-warning` #C10007 | hidden |
 
 - **Every fill is a `bg-fill` role.** The resting fill is `bg-fill`, not the page `bg`, so the field stays white on the grey `bg-secondary` canvas. The error and disabled fills use two semantic tokens added for Input: `bg-fill-warning-subtlest` (red.50) and `bg-fill-disabled-subtlest` (neutral.100).
-- **The label does not turn brand on focus.** The outline alone shows focus.
+- **The label does not turn brand when the field is active.** The outline alone shows it.
+- **Pressed reuses the hover outline** and adds a fill one step darker, so a tap reads on touch screens, where there is no hover. On the grey `bg-secondary` canvas the pressed grey matches the page, and the `#737373` outline carries the press.
 - **Icons keep their colour in the Error intent.** The error glyph beside the message carries the error.
-- **Brands.** Only `border-focus` changes per brand, through `border-brand`: #FF4929 in myBiz and #F45900 in Goibibo. Every other Input colour is neutral or red in all three brands.
+- **Brands.** Only `border-active` changes per brand, through `border-brand`: #FF4929 in myBiz and #F45900 in Goibibo. Every other Input colour is neutral or red in all three brands.
 
 ---
 
@@ -151,10 +161,14 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | Outline `#D4D4D4` on `#FFFFFF` | 1.48:1 | 3:1 (1.4.11) | **Below — accepted deviation** |
 | Outline `#D4D4D4` on the grey canvas `#F5F5F5` | 1.36:1 | 3:1 | **Below — accepted deviation** |
 | Outline hover `#737373` on `#FFFFFF` | 4.74:1 | 3:1 | Pass |
-| Outline focus on `#FFFFFF`: MakeMyTrip `#0088FF` / myBiz `#FF4929` / Goibibo `#F45900` | 3.52 / 3.37 / 3.35:1 | 3:1 | Pass |
-| Outline focus on the grey canvas, same brands | 3.23 / 3.09 / 3.07:1 | 3:1 | Pass |
+| Outline active on `#FFFFFF`: MakeMyTrip `#0088FF` / myBiz `#FF4929` / Goibibo `#F45900` | 3.52 / 3.37 / 3.35:1 | 3:1 | Pass |
+| Outline active on the grey canvas, same brands | 3.23 / 3.09 / 3.07:1 | 3:1 | Pass |
 | Outline error `#C10007` on `#FEF2F2` | 5.87:1 | 3:1 | Pass |
 | Outline error hover `#E7000B` on `#FEF2F2` | 4.36:1 | 3:1 | Pass |
+| Pressed: outline `#737373` on `#F5F5F5` | 4.35:1 | 3:1 | Pass |
+| Pressed: label `#525252` / value `#0A0A0A` on `#F5F5F5` | 7.17 / 18.16:1 | 4.5:1 | Pass |
+| Pressed error: outline `#E7000B` on `#FFE2E2` | 3.91:1 | 3:1 | Pass |
+| Pressed error: label `#C10007` / value `#0A0A0A` / icons `#525252` on `#FFE2E2` | 5.27 / 16.24 / 6.41:1 | 4.5:1 (icons 3:1) | Pass |
 | Label `#525252` on `#FFFFFF` | 7.81:1 | 4.5:1 (1.4.3) | Pass |
 | Label error `#C10007` on `#FEF2F2` | 5.87:1 | 4.5:1 | Pass |
 | Value `#0A0A0A` on `#FFFFFF` / `#FEF2F2` | 19.80 / 18.10:1 | 4.5:1 | Pass |
@@ -186,8 +200,11 @@ Disabled states are exempt from WCAG 1.4.3 and 1.4.11. For reference, disabled t
 | | Android | iOS | Web |
 |---|---|---|---|
 | Base | A custom composable on `BasicTextField`. Material 3 `OutlinedTextField` notches the outline and `TextField` draws an underline, so neither matches | `TextField` in a custom container drawn from the tokens, with the label moved by state | The `Input` component in `storybook/src/components/Input` |
-| Outline | `Modifier.border` inside the shape, width by focus | `RoundedRectangle().strokeBorder` | An inset `box-shadow`, so focus never reflows |
-| Label motion | Animate the label size and offset on focus or value | Same | CSS, keyed on `:focus` and `:placeholder-shown` |
+| Outline | `Modifier.border` inside the shape, width by state | `RoundedRectangle().strokeBorder` | An inset `box-shadow`, so the Active outline never reflows |
+| Label motion | Animate the label size and offset when active or filled | Same | CSS, keyed on `:focus` and `:placeholder-shown` |
+| Pressed | `interactionSource.collectIsPressedAsState()` | A press gesture before focus | `:active:not(:focus-within)` |
+| Clear | A trailing `IconButton` shown while focused with text | Same, in the `TextField` overlay | The `clearable` prop |
+| Read-only | `readOnly = true` with a click modifier that opens the sheet | A `Button` styled as the field | `readOnly` plus `aria-haspopup="dialog"` |
 
 ---
 
@@ -203,16 +220,16 @@ Disabled states are exempt from WCAG 1.4.3 and 1.4.11. For reference, disabled t
 
 ## Token reference
 
-43 tokens under `component.input` in `tokens/tokens.json`, mirrored 1:1 as `input/*` in the Figma `component` collection:
+47 tokens under `component.input` in `tokens/tokens.json`, mirrored 1:1 as `input/*` in the Figma `component` collection:
 
 | Group | Count |
 |---|---|
-| Fill: `bg-default`, `bg-error`, `bg-disabled` | 3 |
-| Outline: `border-default`, `border-hover`, `border-focus`, `border-disabled`, `border-error-{default,hover,focus}` | 7 |
+| Fill: `bg-default`, `bg-pressed`, `bg-error`, `bg-error-pressed`, `bg-disabled` | 5 |
+| Outline: `border-default`, `border-hover`, `border-pressed`, `border-active`, `border-disabled`, `border-error-{default,hover,pressed,active}` | 9 |
 | Text: `label-{default,error,disabled}`, `value-{default,disabled}`, `placeholder`, `prefix-{default,disabled}`, `caret-{default,error}` | 10 |
 | Icons: `icon-{default,disabled}` | 2 |
 | Supporting: `supporting-{default,error,disabled}`, `supporting-icon-error` | 4 |
-| Dimensions: `height`, `padding-x`, `gap`, `prefix-gap`, `icon-size`, `radius`, `border-width`, `border-width-focus`, `caret-width`, `supporting-padding-top`, `supporting-gap`, `supporting-icon-size` | 12 |
+| Dimensions: `height`, `padding-x`, `gap`, `prefix-gap`, `icon-size`, `radius`, `border-width`, `border-width-active`, `caret-width`, `supporting-padding-top`, `supporting-gap`, `supporting-icon-size` | 12 |
 | Trailing button: `touch-target`, `focus-ring`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius` | 5 |
 
-Platform names follow the standard pipeline: `input/border-focus` → `--input-border-focus` (CSS) → `CosmosTokens.inputBorderFocus` (Swift / Kotlin) → `tokens.input["border-focus"]` (TS, the default export of `dist/web/tokens.ts`).
+Platform names follow the standard pipeline: `input/border-active` → `--input-border-active` (CSS) → `CosmosTokens.inputBorderActive` (Swift / Kotlin) → `tokens.input["border-active"]` (TS, the default export of `dist/web/tokens.ts`).

@@ -723,8 +723,8 @@ public struct CosmosBrand: Identifiable, Sendable {
     /// Label of the primary text action on a Light Rich tooltip while pressed. Darkens with the control-bg-light-pressed fill so it keeps AA contrast.
     public let tooltipPrimaryLabelLightPressed: Color
 
-    /// Outline of the field while focused, drawn at border-width-focus. Marks the field that receives typing. An invalid field keeps border-error-focus instead.
-    public let inputBorderFocus: Color
+    /// Outline of the active field, the one that has focus and receives typing, in the Active and Typing states. Drawn at border-width-active. A field in the error state keeps border-error-active instead.
+    public let inputBorderActive: Color
 
     public static let makeMyTrip = CosmosBrand(
         id: "mmt",
@@ -964,7 +964,7 @@ public struct CosmosBrand: Identifiable, Sendable {
         tooltipPrimaryLabelLight: Color(red: 0, green: 0.533333, blue: 1),
         tooltipPrimaryLabelLightHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         tooltipPrimaryLabelLightPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
-        inputBorderFocus: Color(red: 0, green: 0.533333, blue: 1)
+        inputBorderActive: Color(red: 0, green: 0.533333, blue: 1)
     )
 
     public static let myBiz = CosmosBrand(
@@ -1205,7 +1205,7 @@ public struct CosmosBrand: Identifiable, Sendable {
         tooltipPrimaryLabelLight: Color(red: 1, green: 0.286275, blue: 0.160784),
         tooltipPrimaryLabelLightHover: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
         tooltipPrimaryLabelLightPressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
-        inputBorderFocus: Color(red: 1, green: 0.286275, blue: 0.160784)
+        inputBorderActive: Color(red: 1, green: 0.286275, blue: 0.160784)
     )
 
     public static let goibibo = CosmosBrand(
@@ -1446,7 +1446,7 @@ public struct CosmosBrand: Identifiable, Sendable {
         tooltipPrimaryLabelLight: Color(red: 0.956863, green: 0.34902, blue: 0),
         tooltipPrimaryLabelLightHover: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
         tooltipPrimaryLabelLightPressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
-        inputBorderFocus: Color(red: 0.956863, green: 0.34902, blue: 0)
+        inputBorderActive: Color(red: 0.956863, green: 0.34902, blue: 0)
     )
 
     public static let all: [CosmosBrand] = [.makeMyTrip, .myBiz, .goibibo]

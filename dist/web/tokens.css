@@ -411,7 +411,7 @@
   --color-bg-fill: #FFFFFF;
   /** Hover step of bg-fill for a neutral control that must stay neutral under the pointer — unselected chips, and later input fields. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill on hover and only its label remains. Use bg-surface-brand when hover should hint at a brand selection, and bg-surface-hover or bg-surface-secondary-hover for a tappable row or card. */
   --color-bg-fill-hover: #F5F5F5;
-  /** Light pressed step of bg-fill — the unselected chip while pressed. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill while pressed and only its label remains. Use bg-fill-pressed-strong where the press must read on either canvas. */
+  /** Light pressed step of bg-fill — the unselected chip and an input field while pressed. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill while pressed and only its label remains. Use bg-fill-pressed-strong where the press must read on either canvas. */
   --color-bg-fill-pressed-subtle: #F5F5F5;
   /** Strong pressed step of bg-fill — the chip remove button circle, and any neutral control whose press must read on either canvas. Darker than bg-secondary. Not a disabled colour; use bg-surface-disabled or bg-fill-disabled-subtle for that. */
   --color-bg-fill-pressed-strong: #E5E5E5;
@@ -465,7 +465,7 @@
   --color-bg-fill-warning-strong-hover: #E7000B;
   /** Pressed/active state for bg-fill-warning-strong — destructive primary button pressed. */
   --color-bg-fill-warning-strong-pressed: #9F0712;
-  /** Tinted error fill — low-emphasis error badges and tags. Pair the label with text-warning-on-bg-fill-subtle. For the body of an input field in the error state use the lighter bg-fill-warning-subtlest. */
+  /** Tinted error fill — low-emphasis error badges and tags. Pair the label with text-warning-on-bg-fill-subtle. Also the pressed body of an input field in the error state; at rest that field uses the lighter bg-fill-warning-subtlest. */
   --color-bg-fill-warning-subtle: #FFE2E2;
   /** Lightest error fill — the body of an input field in the error state, a faint tint that sits behind the field content without competing with it. Pair the label with text-warning and the outline with border-warning-strong. For a low-emphasis error badge or tag use bg-fill-warning-subtle, and for a tinted error container behind content use bg-surface-warning. */
   --color-bg-fill-warning-subtlest: #FEF2F2;
@@ -3493,27 +3493,35 @@
   --tooltip-screen-margin: 16px;
   /** Smallest gap between a tooltip and the viewport edge on web. Near an edge the bubble flips or shifts inward and the caret stays over the trigger. Use screen-margin on iOS and Android. */
   --tooltip-viewport-margin: 8px;
-  /** Fill of the field at rest, on hover and while focused. Uses bg-fill, not the page bg, so the field stays white on either canvas. The error intent uses bg-error and a disabled field uses bg-disabled. */
+  /** Fill of the field at rest, on hover, while active or typing, and when read-only. Uses bg-fill, not the page bg, so the field stays white on either canvas. Pressed uses bg-pressed, the error intent bg-error and a disabled field bg-disabled. */
   --input-bg-default: #FFFFFF;
-  /** Fill of the field in the error state, at rest, on hover and while focused. A faint red tint that marks the field together with the red outline and label. A disabled field drops the tint and uses bg-disabled. */
+  /** Fill of the field while a finger or pointer is down on it, before it becomes active. A light grey that acknowledges the tap on touch screens. The error intent uses bg-error-pressed. */
+  --input-bg-pressed: #F5F5F5;
+  /** Fill of the field in the error state, at rest, on hover, while active or typing, and when read-only. A faint red tint that marks the field together with the red outline and label. A disabled field drops the tint and uses bg-disabled. */
   --input-bg-error: #FEF2F2;
+  /** Fill of a field in the error state while it is pressed. One step deeper than bg-error, so the press still reads on the red tint. */
+  --input-bg-error-pressed: #FFE2E2;
   /** Fill of a disabled field, in both intents. The lightest disabled fill, so an inert field recedes; the disabled text carries the state. On the grey bg-secondary canvas it matches the page and the outline alone marks the field. */
   --input-bg-disabled: #F5F5F5;
   /** Outline of the field at rest. Deliberately light so a resting form reads quiet; below the 3:1 of WCAG 1.4.11, an accepted deviation recorded in the Input spec. Steps up to border-hover on hover. */
   --input-border-default: #D4D4D4;
   /** Outline of the field on hover. One step darker than border-default so the pointer visibly lands on the field. Not used on touch platforms. */
   --input-border-hover: #737373;
-  /** Outline of the field while focused, drawn at border-width-focus. Marks the field that receives typing. An invalid field keeps border-error-focus instead. */
-  --input-border-focus: #0088FF;
+  /** Outline of the field while it is pressed, together with bg-pressed. The same step as border-hover, so on touch screens the press reads as clearly as a hover does with a pointer. */
+  --input-border-pressed: #737373;
+  /** Outline of the active field, the one that has focus and receives typing, in the Active and Typing states. Drawn at border-width-active. A field in the error state keeps border-error-active instead. */
+  --input-border-active: #0088FF;
   /** Outline of a disabled field, in both intents. Disabled wins over the error state, so an inert field never shows red. */
   --input-border-disabled: #D4D4D4;
   /** Outline of the field in the error state, at rest. Pairs with label-error and the error message under the field. */
   --input-border-error-default: #C10007;
   /** Outline of the field in the error state, on hover. A brighter red than border-error-default so hover still reads on an invalid field. */
   --input-border-error-hover: #E7000B;
-  /** Outline of the field in the error state while focused, drawn at border-width-focus. Stays red rather than brand, so a field the user is correcting keeps its error. */
-  --input-border-error-focus: #C10007;
-  /** Field label in the default intent, both resting inside an empty field and sitting above the value. Stays the same on hover and focus; the outline shows the state. */
+  /** Outline of a field in the error state while it is pressed, together with bg-error-pressed. The same red as border-error-hover. */
+  --input-border-error-pressed: #E7000B;
+  /** Outline of a field in the error state while it is active or typing, drawn at border-width-active. Stays red rather than brand, so a field the user is correcting keeps its error. */
+  --input-border-error-active: #C10007;
+  /** Field label in the default intent, both resting inside an empty field and sitting above the value. Stays the same in every enabled state; the outline and fill show the state. */
   --input-label-default: #525252;
   /** Field label in the error state, in every state except disabled. */
   --input-label-error: #C10007;
@@ -3523,17 +3531,17 @@
   --input-value-default: #0A0A0A;
   /** Entered text in a disabled field. */
   --input-value-disabled: #A1A1A1;
-  /** Placeholder text, shown only while an empty field is focused and the label has moved above it. Never a substitute for the label. */
+  /** Placeholder text, shown only while an empty field is active and the label has moved above it. Never a substitute for the label. */
   --input-placeholder: #525252;
-  /** Fixed text before the value, such as a +91 country code, in both intents. Shown when the field has a value or focus. Use prefix-disabled when the field is disabled. */
+  /** Fixed text before the value, such as a +91 country code, in both intents. Shown when the field has a value or is active. Use prefix-disabled when the field is disabled. */
   --input-prefix-default: #525252;
   /** Fixed text before the value in a disabled field. */
   --input-prefix-disabled: #A1A1A1;
-  /** Text insertion caret while the field is focused. Use caret-error in the error state. */
+  /** Text insertion caret in the Active and Typing states. A read-only field shows no caret. Use caret-error in the error state. */
   --input-caret-default: #0A0A0A;
-  /** Text insertion caret while a field in the error state is focused. */
+  /** Text insertion caret in a field in the error state while it is active or typing. */
   --input-caret-error: #C10007;
-  /** Leading and trailing icons, at rest, on hover and while focused, in both intents. The error state does not recolour them; the error glyph sits beside the message instead. */
+  /** Leading and trailing icons, the clear button while typing and the read-only chevron, in every enabled state and both intents. The error state does not recolour them; the error glyph sits beside the message instead. */
   --input-icon-default: #525252;
   /** Leading and trailing icons of a disabled field. */
   --input-icon-disabled: #A1A1A1;
@@ -3557,10 +3565,10 @@
   --input-icon-size: 24px;
   /** Corner radius of the field container, on all four corners. */
   --input-radius: 12px;
-  /** Thickness of the outline at rest, on hover and when disabled. Drawn inside the container so the field never shifts. */
+  /** Thickness of the outline at rest, on hover, while pressed, when read-only and when disabled. Drawn inside the container so the field never shifts. */
   --input-border-width: 1px;
-  /** Thickness of the outline while focused. Drawn inside the container, so the field does not reflow when it thickens. */
-  --input-border-width-focus: 2px;
+  /** Thickness of the outline in the Active and Typing states. Drawn inside the container, so the field does not reflow when it thickens. */
+  --input-border-width-active: 2px;
   /** Width of the text insertion caret where the platform lets it be set, and in design files. The web draws its own caret. */
   --input-caret-width: 2px;
   /** Gap between the field container and the supporting text under it. */
@@ -3571,7 +3579,7 @@
   --input-supporting-icon-size: 16px;
   /** Minimum hit area of a trailing icon button, such as clear or show password. The 24px glyph keeps its size and the hit area overhangs it. */
   --input-touch-target: 48px;
-  /** Keyboard focus ring around a trailing icon button. Apply on focus-visible only; the field itself shows focus with border-focus instead. */
+  /** Keyboard focus ring around a trailing icon button or the clear button. Apply on focus-visible only; the field itself shows focus with border-active instead. */
   --input-focus-ring: #0088FF;
   /** Thickness of the focus ring around a trailing icon button. */
   --input-focus-ring-width: 2px;
@@ -3821,7 +3829,7 @@
   --tooltip-primary-label-light: #0088FF;
   --tooltip-primary-label-light-hover: #0868C5;
   --tooltip-primary-label-light-pressed: #0D589B;
-  --input-border-focus: #0088FF;
+  --input-border-active: #0088FF;
 }
 
 /**
@@ -4064,7 +4072,7 @@
   --tooltip-primary-label-light: #FF4929;
   --tooltip-primary-label-light-hover: #EF1107;
   --tooltip-primary-label-light-pressed: #C6080A;
-  --input-border-focus: #FF4929;
+  --input-border-active: #FF4929;
 }
 
 /**
@@ -4307,5 +4315,5 @@
   --tooltip-primary-label-light: #F45900;
   --tooltip-primary-label-light-hover: #A1340B;
   --tooltip-primary-label-light-pressed: #822D0C;
-  --input-border-focus: #F45900;
+  --input-border-active: #F45900;
 }
