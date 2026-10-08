@@ -1100,6 +1100,7 @@ object CosmosTokens {
   val inputCaretDefault = Color(0xFF0A0A0A)
   val inputCaretError = Color(0xFFC10007)
   val inputCaretWidth = 2.dp
+  val inputCountryChevronGap = 4.dp
   val inputCountryChevronSize = 20.dp
   val inputCountryCode = Color(0xFF0A0A0A)
   val inputCountryCodeDisabled = Color(0xFFA1A1A1)
@@ -1109,9 +1110,9 @@ object CosmosTokens {
   val inputCountryDividerWidth = 1.dp
   val inputCountryFlagBorder = Color(0xFFE5E5E5)
   val inputCountryFlagBorderWidth = 1.dp
-  val inputCountryFlagHeight = 12.dp
+  val inputCountryFlagContainerSize = 24.dp
   val inputCountryFlagRadius = 2.dp
-  val inputCountryFlagWidth = 16.dp
+  val inputCountryFlagWidth = 24.dp
   val inputCountryGap = 8.dp
   val inputFocusRing = Color(0xFF0088FF)
   val inputFocusRingOffset = 2.dp
