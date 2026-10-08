@@ -217,7 +217,7 @@ A mobile number field is the Input with **Show Country** on. A country segment s
 | Part | Token | Value |
 |---|---|---|
 | Flag container | `input/country-flag-container-size` | 24 × 24, the flag centred inside |
-| Flag | `input/country-flag-width`, `input/country-flag-radius` | 24 wide at most; the height follows the 4 by 3 artwork, so 24 × 18; radius 2 |
+| Flag | `input/country-flag-width`, `input/country-flag-radius` | 24 wide at most; the height follows the 4 by 3 artwork, so 24 × 18; radius 4 |
 | Flag container to dial code | `input/country-gap` | 8 |
 | Dial code to chevron | `input/country-chevron-gap` | 4 |
 | Dial code | `input/country-code` → `text-primary`; disabled `input/country-code-disabled` → `text-disabled` | `body/large/regular`, so the bold number stays the focus |

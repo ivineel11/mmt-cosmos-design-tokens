@@ -1109,7 +1109,7 @@ object CosmosTokens {
   val inputCountryDividerHeight = 24.dp
   val inputCountryDividerWidth = 1.dp
   val inputCountryFlagContainerSize = 24.dp
-  val inputCountryFlagRadius = 2.dp
+  val inputCountryFlagRadius = 4.dp
   val inputCountryFlagWidth = 24.dp
   val inputCountryGap = 8.dp
   val inputFocusRing = Color(0xFF0088FF)

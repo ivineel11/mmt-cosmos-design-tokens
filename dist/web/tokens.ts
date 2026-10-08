@@ -2100,7 +2100,7 @@ export default {
     "country-chevron-gap": "4px",
     "country-flag-container-size": "24px",
     "country-flag-width": "24px",
-    "country-flag-radius": "2px",
+    "country-flag-radius": "4px",
     "country-code": "#0A0A0A",
     "country-code-disabled": "#A1A1A1",
     "country-chevron-size": "20px",

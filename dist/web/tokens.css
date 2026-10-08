@@ -3595,8 +3595,8 @@
   --input-country-flag-container-size: 24px;
   /** Width of the country flag, the full width of its container and never wider. The height follows the 4 by 3 artwork, so the flag is 24 by 18, centred in the container. */
   --input-country-flag-width: 24px;
-  /** Corner radius of the country flag, a slight softening that keeps the flag readable as a flag. */
-  --input-country-flag-radius: 2px;
+  /** Corner radius of the country flag, rounded enough to sit with the 12 px field corners while the flag still reads as a flag. */
+  --input-country-flag-radius: 4px;
   /** Dial code of the selected country, such as +91, in every enabled state and both intents. Regular weight, so the bold number the user typed stays the focus. Use country-code-disabled when the field is disabled. */
   --input-country-code: #0A0A0A;
   /** Dial code of the selected country in a disabled phone number field. */

@@ -1106,7 +1106,7 @@ public enum CosmosTokens {
     public static let inputCountryDividerHeight = CGFloat(24)
     public static let inputCountryDividerWidth = CGFloat(1)
     public static let inputCountryFlagContainerSize = CGFloat(24)
-    public static let inputCountryFlagRadius = CGFloat(2)
+    public static let inputCountryFlagRadius = CGFloat(4)
     public static let inputCountryFlagWidth = CGFloat(24)
     public static let inputCountryGap = CGFloat(8)
     public static let inputFocusRing = Color(red: 0, green: 0.533333, blue: 1)
