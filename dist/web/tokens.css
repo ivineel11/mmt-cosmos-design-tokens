@@ -415,12 +415,14 @@
   --color-bg-fill-pressed-subtle: #F5F5F5;
   /** Strong pressed step of bg-fill — the chip remove button circle, and any neutral control whose press must read on either canvas. Darker than bg-secondary. Not a disabled colour; use bg-surface-disabled or bg-fill-disabled-subtle for that. */
   --color-bg-fill-pressed-strong: #E5E5E5;
-  /** Disabled fill for a control that stays visually solid when disabled — a selected checkbox, the tab indicator, sliders, filled indicators. Use bg-fill-disabled for the middle step and bg-fill-disabled-subtle for the lightest. */
+  /** Disabled fill for a control that stays visually solid when disabled — a selected checkbox, the tab indicator, sliders, filled indicators. Use bg-fill-disabled for the middle step, and bg-fill-disabled-subtle or bg-fill-disabled-subtlest for lighter ones. */
   --color-bg-fill-disabled-strong: #A1A1A1;
   /** Middle disabled fill, between bg-fill-disabled-subtle and bg-fill-disabled-strong — the off thumb of a disabled Outlined switch, on its bg-surface-disabled track. For a disabled switch track use bg-fill-disabled-subtle. */
   --color-bg-fill-disabled: #D4D4D4;
-  /** Lighter disabled fill — disabled input fields, disabled switch tracks and other low-emphasis controls. Use bg-fill-disabled or bg-fill-disabled-strong when the disabled element still needs to read as solid. */
+  /** Lighter disabled fill — disabled switch tracks, the inactive track of a disabled slider and other low-emphasis control parts. Use bg-fill-disabled-subtlest for the body of a disabled input field, and bg-fill-disabled or bg-fill-disabled-strong when the disabled element still needs to read as solid. */
   --color-bg-fill-disabled-subtle: #E5E5E5;
+  /** Lightest disabled fill — the body of a disabled input field, so an inert field recedes instead of reading as a filled control. Pair with text-disabled and border-disabled-subtle; the disabled text and border carry the state. It is the same grey as the bg-secondary canvas, so on that page the border alone outlines the field. For a disabled switch or slider track use bg-fill-disabled-subtle. */
+  --color-bg-fill-disabled-subtlest: #F5F5F5;
   /** Low-emphasis neutral fill — segmented control tracks, skeleton blocks. For its interactive states use bg-fill-secondary-hover and bg-fill-secondary-pressed. */
   --color-bg-fill-secondary: #F5F5F5;
   /** Hover state for bg-fill-secondary — an interactive segmented track or low-emphasis neutral control. For the white control fill use bg-fill-hover. */

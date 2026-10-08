@@ -215,7 +215,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1158 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 287 semantic roles + 699 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1159 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 288 semantic roles + 699 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -575,9 +575,9 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 
 ## Token Inventory
 
-**Totals:** 303 primitive tokens · 398 semantic tokens (287 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1032 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*`) · **1841 values on web** · **1925 on iOS and Android** · **0 gradients**
+**Totals:** 303 primitive tokens · 399 semantic tokens (288 colors + 36 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1032 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*`) · **1842 values on web** · **1926 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1733 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1734 source tokens because the build expands each of the 36 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (303)
 
@@ -801,9 +801,9 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (398)
+### Semantic tokens (399)
 
-#### Color — 287 tokens
+#### Color — 288 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -842,7 +842,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-brand-inverse` | Brand tint on dark backgrounds, always at an opacity token — inverse Button |
 | `color.bg-surface-warning-inverse` | Destructive tint on dark backgrounds, always at an opacity token — inverse Button |
 
-##### Background — fill (35)
+##### Background — fill (36)
 
 | Token | Role |
 |-------|------|
@@ -852,7 +852,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-pressed-strong` | Default fill, pressed, strong — the chip remove button, and presses that must read on either canvas |
 | `color.bg-fill-disabled-strong` | Strong disabled fill |
 | `color.bg-fill-disabled` | Middle disabled fill — the disabled thumb of the Outlined Switch backup |
-| `color.bg-fill-disabled-subtle` | Subtle disabled fill — disabled inputs and Switch tracks |
+| `color.bg-fill-disabled-subtle` | Subtle disabled fill — disabled Switch tracks and the inactive Slider track |
+| `color.bg-fill-disabled-subtlest` | Lightest disabled fill — the body of a disabled input field |
 | `color.bg-fill-secondary` | Secondary fill |
 | `color.bg-fill-secondary-hover` | Secondary fill, hovered |
 | `color.bg-fill-secondary-pressed` | Secondary fill, pressed |
@@ -1221,6 +1222,7 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-disabled-strong` | `color.neutral.400` |
 | `bg-fill-disabled` | `color.neutral.300` |
 | `bg-fill-disabled-subtle` | `color.neutral.200` |
+| `bg-fill-disabled-subtlest` | `color.neutral.100` |
 | `bg-fill-secondary` | `color.neutral.100` |
 | `bg-fill-secondary-hover` | `color.neutral.200` |
 | `bg-fill-secondary-pressed` | `color.neutral.300` |
