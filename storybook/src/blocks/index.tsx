@@ -456,9 +456,9 @@ const SCALE_PREVIEW: Record<ScaleKind, (token: FlatToken) => ReactNode> = {
   icon: (token) => <div className="doc-icon-box" style={{ inlineSize: cssVar(token), blockSize: cssVar(token) }} />,
 };
 
-/** A scale with a visual preview per step; `prefix` picks the group, such as `space` or `spacing`. */
-export function Scale({ kind, set = "semantic", prefix }: { kind: ScaleKind; set?: TokenSet; prefix: string }) {
-  return <TokenRows tokens={select(set, `${prefix}.`)} preview={SCALE_PREVIEW[kind]} />;
+/** A scale with a visual preview per step; `prefix` picks the group, such as `space` or `spacing`. Without `kind` there is no preview column. */
+export function Scale({ kind, set = "semantic", prefix }: { kind?: ScaleKind; set?: TokenSet; prefix: string }) {
+  return <TokenRows tokens={select(set, `${prefix}.`)} preview={kind && SCALE_PREVIEW[kind]} />;
 }
 
 // ------------------------------------------------------------- elevation ----
@@ -491,6 +491,70 @@ export function OpacityScale() {
         </span>
       )}
     />
+  );
+}
+
+// ---------------------------------------------------------------- motion ----
+
+/** The bezier itself, drawn in a unit square: time runs left to right, progress bottom to top. */
+function CurvePlot({ points }: { points: number[] }) {
+  const [x1, y1, x2, y2] = points.map((n) => n * 100);
+  return (
+    <svg className="doc-motion-curve" viewBox="-4 -4 108 108" aria-hidden="true">
+      <path className="doc-motion-curve-frame" d="M0 0 V100 H100" />
+      <path d={`M0 100 C${x1} ${100 - y1} ${x2} ${100 - y2} 100 0`} />
+    </svg>
+  );
+}
+
+/** A dot that crosses its track with the token's motion whenever `played` flips. */
+function MotionTrack({ transition }: { transition: string }) {
+  return (
+    <span className="doc-motion-track">
+      <span className="doc-motion-rail" style={{ transition: `transform ${transition}` }}>
+        <span className="doc-motion-dot" />
+      </span>
+    </span>
+  );
+}
+
+type MotionKind = "duration" | "easing" | "spring";
+
+const MOTION_TRANSITION: Record<MotionKind, (token: FlatToken) => string> = {
+  duration: (token) => `${cssVar(token)} var(--easing-standard)`,
+  // Slowed to a full loop so the shape of each curve is easy to follow.
+  easing: (token) => `var(--duration-loop) ${cssVar(token)}`,
+  // A spring token carries its own duration and curve.
+  spring: (token) => cssVar(token),
+};
+
+/**
+ * Motion tokens with a moving preview. Play sends every dot across at once, so the steps
+ * can be compared; pressing again mid-flight shows how each one is interrupted.
+ */
+export function MotionScale({ kind }: { kind: MotionKind }) {
+  const [played, setPlayed] = useState(false);
+  return (
+    <div className="doc-motion" data-played={played || undefined}>
+      <div className="doc-motion-play sb-unstyled">
+        <Button
+          label={played ? "Play back" : "Play"}
+          hierarchy="secondary"
+          size="small"
+          leadingIcon={played ? "arrow-back" : "arrow-right"}
+          onClick={() => setPlayed((p) => !p)}
+        />
+      </div>
+      <TokenRows
+        tokens={select("semantic", `${kind}.`)}
+        preview={(token) => (
+          <span className="doc-motion-preview">
+            {kind === "easing" && Array.isArray(token.value) && <CurvePlot points={token.value as number[]} />}
+            <MotionTrack transition={MOTION_TRANSITION[kind](token)} />
+          </span>
+        )}
+      />
+    </div>
   );
 }
 

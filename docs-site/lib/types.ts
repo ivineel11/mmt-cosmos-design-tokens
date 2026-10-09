@@ -79,7 +79,7 @@ export type ContrastPair = {
 /** Any token from any set, as listed in `TokenData.all`. Composites keep their resolved object. */
 export type FlatToken = Omit<Token, "value" | "contrast"> & {
   set: "primitives" | "semantic" | "component";
-  value: string | Record<string, unknown> | Record<string, unknown>[];
+  value: string | number[] | Record<string, unknown> | Record<string, unknown>[];
   description: string | null;
 };
 

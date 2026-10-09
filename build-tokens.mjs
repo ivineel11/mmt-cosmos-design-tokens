@@ -400,6 +400,278 @@ StyleDictionary.registerTransform({
   transform: (token) => `${parseFloat(valueOf(token))}f`,
 });
 
+// ------------------------------------------------------------------ motion ---
+// Durations are authored as whole milliseconds ("150ms"), curves as four cubic-bezier
+// control points, and springs as Apple's { duration, bounce } pair (README → Motion
+// tokens). Each platform gets the form its animation API takes.
+
+const MS = /^(\d+)ms$/;
+const isMs = (token) => typeOf(token) === "duration" && MS.test(`${valueOf(token)}`);
+const isCurve = (token) => typeOf(token) === "cubicBezier" && Array.isArray(valueOf(token));
+const isRawNumber = (token) => typeOf(token) === "number" && /^-?\d*\.?\d+$/.test(`${valueOf(token)}`);
+const msOf = (token) => Number(MS.exec(`${valueOf(token)}`)[1]);
+/** Shortest decimal for a native literal: 0.150000001 -> 0.15, 1.0 -> 1. */
+const num = (n) => `${Number(Number(n).toFixed(4))}`;
+
+/**
+ * A spring's { duration, bounce }, read from tokens.json rather than the resolved value:
+ * by the time a spring is transformed its members may already hold another platform's
+ * duration form (seconds on iOS, Int on Android), and the spring maths needs the authored
+ * milliseconds. Follows aliases through every set, so a component spring that aliases a
+ * semantic one resolves the same way.
+ */
+function springOf(token) {
+  const find = (ref) => {
+    for (const set of Object.values(SOURCE)) {
+      let node = set;
+      for (const key of ref.split(".")) node = node?.[key];
+      if (isTokenLeaf(node)) return tokenValue(node);
+    }
+    throw new Error(`Unresolved spring reference: {${ref}}`);
+  };
+  const resolve = (v, hops = 0) => {
+    const ref = typeof v === "string" && /^\{([^{}]+)\}$/.exec(v);
+    if (!ref) return v;
+    if (hops > 10) throw new Error(`Circular spring reference: ${v}`);
+    return resolve(find(ref[1]), hops + 1);
+  };
+  const value = resolve(token.original?.value ?? valueOf(token));
+  const duration = Number(MS.exec(`${resolve(value.duration)}`)?.[1]);
+  const bounce = Number(resolve(value.bounce));
+  if (!Number.isFinite(duration) || !Number.isFinite(bounce)) {
+    throw new Error(`${token.path.join(".")} needs a duration in ms and a numeric bounce.`);
+  }
+  return { duration: duration / 1000, bounce };
+}
+
+/**
+ * Apple's spring model (SwiftUI `spring(duration:bounce:)`): unit mass, stiffness
+ * (2π / duration)², damping ratio 1 − bounce. Compose and physics-based web libraries take
+ * the same stiffness and ratio, so one pair of numbers drives every platform.
+ */
+function springPhysics({ duration, bounce }) {
+  const omega = (2 * Math.PI) / duration;
+  const ratio = bounce >= 0 ? 1 - bounce : 1 / (1 + bounce);
+  const stiffness = omega * omega;
+  return { omega, ratio, stiffness, damping: 2 * ratio * omega };
+}
+
+/** Position from 0 to 1 at time t (s) of a released spring with no initial velocity. */
+function springPosition({ omega, ratio }, t) {
+  if (ratio < 1) {
+    const decay = ratio * omega;
+    const wd = omega * Math.sqrt(1 - ratio * ratio);
+    return 1 - Math.exp(-decay * t) * (Math.cos(wd * t) + (decay / wd) * Math.sin(wd * t));
+  }
+  if (ratio === 1) return 1 - Math.exp(-omega * t) * (1 + omega * t);
+  const r1 = -omega * (ratio - Math.sqrt(ratio * ratio - 1));
+  const r2 = -omega * (ratio + Math.sqrt(ratio * ratio - 1));
+  return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);
+}
+
+/**
+ * CSS has no spring, so sample the curve into `linear()` stops at 60 per second, up to
+ * the moment it stays within 0.1% of rest. The settle time becomes the CSS duration,
+ * which is why a spring runs longer in CSS than its perceived duration: the tail is there,
+ * just too small to see.
+ */
+function springCss(spring) {
+  const physics = springPhysics(spring);
+  const envelope = (t) =>
+    physics.ratio < 1
+      ? Math.exp(-physics.ratio * physics.omega * t) / Math.sqrt(1 - physics.ratio ** 2)
+      : Math.abs(1 - springPosition(physics, t));
+  let settle = 0;
+  while (envelope(settle) > 0.001 && settle < 10) settle += 0.001;
+  const total = Math.ceil(settle * 100) / 100;
+  const steps = Math.max(2, Math.round(total * 60));
+  const stops = Array.from({ length: steps + 1 }, (_, i) =>
+    i === steps ? "1" : num(Number(springPosition(physics, (i * total) / steps).toFixed(3))),
+  );
+  return `${Math.round(total * 1000)}ms linear(${stops.join(", ")})`;
+}
+
+StyleDictionary.registerTransform({
+  name: "mmt/duration/js",
+  type: "value",
+  transitive: true,
+  filter: isMs,
+  transform: (token) => msOf(token),
+});
+
+// iOS: SwiftUI animations take seconds as a TimeInterval (Double). Wrapped, because a
+// bare `0` would land as Int.
+StyleDictionary.registerTransform({
+  name: "mmt/duration/ios",
+  type: "value",
+  transitive: true,
+  filter: isMs,
+  transform: (token) => `TimeInterval(${num(msOf(token) / 1000)})`,
+});
+
+// Android: Compose `tween(durationMillis: Int)` takes whole milliseconds.
+StyleDictionary.registerTransform({
+  name: "mmt/duration/compose",
+  type: "value",
+  transitive: true,
+  filter: isMs,
+  transform: (token) => msOf(token),
+});
+
+// iOS: a CosmosEasing value (Motion.swift) that builds a timing-curve Animation once a
+// duration is given. SwiftUI only takes four control points together with a duration.
+StyleDictionary.registerTransform({
+  name: "mmt/cubicBezier/ios",
+  type: "value",
+  transitive: true,
+  filter: isCurve,
+  transform: (token) => {
+    const [x1, y1, x2, y2] = valueOf(token).map(num);
+    return `CosmosEasing(x1: ${x1}, y1: ${y1}, x2: ${x2}, y2: ${y2})`;
+  },
+});
+
+// Android: Compose's own Easing.
+StyleDictionary.registerTransform({
+  name: "mmt/cubicBezier/compose",
+  type: "value",
+  transitive: true,
+  filter: isCurve,
+  transform: (token) => `CubicBezierEasing(${valueOf(token).map((n) => `${num(n)}f`).join(", ")})`,
+});
+
+StyleDictionary.registerTransform({
+  name: "mmt/number/ios",
+  type: "value",
+  transitive: true,
+  filter: isRawNumber,
+  transform: (token) => `Double(${num(valueOf(token))})`,
+});
+
+StyleDictionary.registerTransform({
+  name: "mmt/number/compose",
+  type: "value",
+  transitive: true,
+  filter: isRawNumber,
+  transform: (token) => `${num(valueOf(token))}f`,
+});
+
+const isSpring = (token) => typeOf(token) === "spring";
+
+// Web: a transition or animation shorthand fragment, `<duration> linear(…)`, so
+// `transition: transform var(--spring-snappy)` springs with no JavaScript.
+StyleDictionary.registerTransform({
+  name: "mmt/spring/css",
+  type: "value",
+  transitive: true,
+  filter: isSpring,
+  transform: (token) => springCss(springOf(token)),
+});
+
+// JS: the physics object Motion (motion.dev) and most spring libraries take.
+StyleDictionary.registerTransform({
+  name: "mmt/spring/js",
+  type: "value",
+  transitive: true,
+  filter: isSpring,
+  transform: (token) => {
+    const { stiffness, damping } = springPhysics(springOf(token));
+    return { type: "spring", stiffness: Number(num(stiffness)), damping: Number(num(damping)), mass: 1 };
+  },
+});
+
+// iOS: response + damping fraction is the iOS 13 form of spring(duration:bounce:).
+StyleDictionary.registerTransform({
+  name: "mmt/spring/ios",
+  type: "value",
+  transitive: true,
+  filter: isSpring,
+  transform: (token) => {
+    const spring = springOf(token);
+    return `Animation.spring(response: ${num(spring.duration)}, dampingFraction: ${num(springPhysics(spring).ratio)})`;
+  },
+});
+
+// Android: a CosmosSpring (CosmosMotion.kt). Compose's spring() is generic over the
+// animated type, so a token cannot hold the spec itself.
+StyleDictionary.registerTransform({
+  name: "mmt/spring/compose",
+  type: "value",
+  transitive: true,
+  filter: isSpring,
+  transform: (token) => {
+    const { ratio, stiffness } = springPhysics(springOf(token));
+    return `CosmosSpring(dampingRatio = ${num(ratio)}f, stiffness = ${num(stiffness)}f)`;
+  },
+});
+
+StyleDictionary.registerFormat({
+  name: "mmt/ios-motion",
+  format: ({ file }) => `//
+// ${file.destination}
+//
+
+// Do not edit directly, this file was auto-generated.
+
+import SwiftUI
+
+/// A cubic-bezier easing curve from the Cosmos motion tokens (\`CosmosTokens.easing*\`).
+/// SwiftUI only takes control points together with a duration, so pair it with a
+/// duration token:
+///
+///     .animation(CosmosTokens.easingStandard.animation(duration: CosmosTokens.durationSm), value: isOpen)
+public struct CosmosEasing: Equatable, Sendable {
+    public let x1: Double
+    public let y1: Double
+    public let x2: Double
+    public let y2: Double
+
+    public init(x1: Double, y1: Double, x2: Double, y2: Double) {
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
+    }
+
+    /// A timing-curve animation that runs for \`duration\` seconds.
+    public func animation(duration: TimeInterval) -> Animation {
+        .timingCurve(x1, y1, x2, y2, duration: duration)
+    }
+
+    /// The same curve as a \`UnitCurve\`, for \`CustomAnimation\` and phase animators.
+    @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+    public var unitCurve: UnitCurve {
+        .bezier(startControlPoint: UnitPoint(x: x1, y: y1), endControlPoint: UnitPoint(x: x2, y: y2))
+    }
+}
+`,
+});
+
+StyleDictionary.registerFormat({
+  name: "mmt/android-motion",
+  format: () => `
+// Do not edit directly, this file was auto-generated.
+
+package com.makemytrip.cosmos.tokens
+
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
+import androidx.compose.runtime.Immutable
+
+/**
+ * A spring from the Cosmos motion tokens (\`CosmosTokens.spring*\`). Compose's spring() is
+ * generic over the value it animates, so turn the token into a spec where it is used:
+ *
+ *     val offset by animateFloatAsState(target, CosmosTokens.springSnappy.spec())
+ */
+@Immutable
+data class CosmosSpring(val dampingRatio: Float, val stiffness: Float) {
+  fun <T> spec(visibilityThreshold: T? = null): SpringSpec<T> =
+    spring(dampingRatio = dampingRatio, stiffness = stiffness, visibilityThreshold = visibilityThreshold)
+}
+`,
+});
+
 // iOS/Android: wrap font family / font style strings as native string literals.
 // Idempotent + non-transitive so values are not double-quoted on repeated passes.
 StyleDictionary.registerTransform({
@@ -554,6 +826,8 @@ const configFor = (tokens, log) => ({
         "name/kebab",
         "fontFamily/css",
         "shadow/css/shorthand",
+        "cubicBezier/css",
+        "mmt/spring/css",
       ],
       buildPath: `${OUT_DIR}/web/`,
       files: [
@@ -567,7 +841,14 @@ const configFor = (tokens, log) => ({
       ],
     },
     "web-js": {
-      transforms: ["attribute/cti", "mmt/fontWeight/number", "name/camel", "shadow/css/shorthand"],
+      transforms: [
+        "attribute/cti",
+        "mmt/fontWeight/number",
+        "name/camel",
+        "shadow/css/shorthand",
+        "mmt/duration/js",
+        "mmt/spring/js",
+      ],
       buildPath: `${OUT_DIR}/web/`,
       files: [
         { destination: "tokens.ts", format: "javascript/esm", options: { minify: true } },
@@ -582,6 +863,10 @@ const configFor = (tokens, log) => ({
         "mmt/fontWeight/number",
         "mmt/dimension/unitless",
         "mmt/opacity/ios",
+        "mmt/duration/ios",
+        "mmt/cubicBezier/ios",
+        "mmt/number/ios",
+        "mmt/spring/ios",
         "mmt/string/quote",
         "mmt/color/ios-gradient",
         "mmt/color/ios",
@@ -597,6 +882,7 @@ const configFor = (tokens, log) => ({
           destination: "LineHeight.swift",
           format: "mmt/ios-line-height-modifier",
         },
+        { destination: "Motion.swift", format: "mmt/ios-motion" },
         { destination: "CosmosBrand.swift", format: "mmt/ios/brands" },
       ],
     },
@@ -608,6 +894,10 @@ const configFor = (tokens, log) => ({
         "mmt/fontWeight/number",
         "mmt/dimension/compose",
         "mmt/opacity/compose",
+        "mmt/duration/compose",
+        "mmt/cubicBezier/compose",
+        "mmt/number/compose",
+        "mmt/spring/compose",
         "mmt/string/quote",
         "mmt/color/android-gradient",
         "mmt/color/android",
@@ -621,6 +911,7 @@ const configFor = (tokens, log) => ({
             className: "CosmosTokens",
             packageName: "com.makemytrip.cosmos.tokens",
             import: [
+              "androidx.compose.animation.core.CubicBezierEasing",
               "androidx.compose.ui.geometry.Offset",
               "androidx.compose.ui.graphics.Brush",
               "androidx.compose.ui.graphics.Color",
@@ -629,6 +920,7 @@ const configFor = (tokens, log) => ({
           },
         },
         { destination: "CosmosBrand.kt", format: "mmt/android/brands" },
+        { destination: "CosmosMotion.kt", format: "mmt/android-motion" },
       ],
     },
   },

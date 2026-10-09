@@ -1,0 +1,46 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { MotionScale, Scale } from "../blocks";
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Motion explains a change: it confirms a tap, shows where something came from, and bridges a change that would otherwise jump. It is never decoration on something people use many times a day. An action repeated constantly, such as moving through a list with the arrow keys, gets no animation at all.
+
+A timed transition names one **duration** and one **easing**. A **spring** replaces both, for motion that follows a gesture or can be interrupted. Press **Play** to run every token in a table at once, and press again mid-flight to see how each one changes direction.
+
+**Reduced motion means gentler, not none.** When the user asks for reduced motion, drop the movement and keep the fade: `easing.linear` at the same duration, or `duration.none` when even a fade adds nothing. The previews on this page stop travelling under reduced motion for the same reason.
+
+## Duration
+
+Durations grow with the size of what moves. 300ms (`duration.xl`) is the ceiling for routine UI; `duration.2xl` is only for full-screen web transitions. An exit uses one size down from its entrance, because people wait for things to arrive but not to leave. Every preview here uses `easing.standard`.
+
+<MotionScale kind="duration" />
+
+## Easing
+
+Every curve starts fast or moves symmetrically. There is no ease-in token, because a curve that starts slowly delays the moment the user is watching. Each preview is slowed to `duration.loop` so the shape is easy to follow; in product, pair the curve with a duration from the table above.
+
+<MotionScale kind="easing" />
+
+## Spring
+
+A spring is a duration and a bounce, as in SwiftUI. iOS, Android and CSS each derive their own form from that pair, so they match. Springs carry the speed of a gesture through an interruption, which a timed curve cannot. On the web the token is a whole transition, duration and curve together: `transition: transform var(--spring-snappy)`.
+
+<MotionScale kind="spring" />
+
+## Primitives
+
+Product code uses the semantic tokens above. The primitives are the authoring scales they alias.
+
+### Duration scale
+
+<Scale set="primitives" prefix="durationScale" />
+
+### Easing curve
+
+<Scale set="primitives" prefix="easingCurve" />
+
+### Bounce scale
+
+<Scale set="primitives" prefix="bounceScale" />
