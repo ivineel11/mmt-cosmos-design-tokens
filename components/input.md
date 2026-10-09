@@ -136,7 +136,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | Element | Default, Read-only | Hover | Pressed | Active, Typing | Error | Disabled |
 |---|---|---|---|---|---|---|
 | Fill | `bg-default` → `bg-fill` #FFFFFF | same | `bg-pressed` → `bg-fill-pressed-subtle` #F5F5F5 | `bg-default` | `bg-error` → `bg-fill-warning-subtlest` #FEF2F2; pressed `bg-error-pressed` → `bg-fill-warning-subtle` #FFE2E2 | `bg-disabled` → `bg-fill-disabled-subtlest` #F5F5F5 |
-| Outline | `border-default` → `border` #D4D4D4 | `border-hover` → `border-strong` #737373 | `border-pressed` → `border-strong` #737373 | `border-active` → `border-brand` #0088FF, 1 px | `border-error-default` → `border-warning-strong` #C10007; hover and pressed `border-error-hover` / `border-error-pressed` → `border-warning-strong-hover` #E7000B; active `border-error-active` #C10007, 1 px | `border-disabled` → `border-disabled-subtle` #D4D4D4 |
+| Outline | `border-default` → `border` #D4D4D4 | `border-hover` → `border-strong` #737373 | `border-pressed` → `border-strong` #737373 | `border-active` → `border-brand` #0088FF, 1 px | `border-error-default` → `border-warning-strong` #C10007; hover and pressed `border-error-hover` / `border-error-pressed` → `border-warning-strong-hover` #E7000B; active `border-error-active` #C10007, 1 px | `border-disabled` → `border-disabled-subtlest` #F5F5F5, the same grey as the disabled body, so the outline disappears |
 | Label | `label-default` → `text-secondary` #525252 | same | same | same | `label-error` → `text-warning` #C10007 | `label-disabled` → `text-disabled` #A1A1A1 |
 | Value | `value-default` → `text-primary` #0A0A0A | same | same | same | same | `value-disabled` → `text-disabled` |
 | Placeholder | – | – | – | `placeholder` → `text-secondary` (Active, empty) | same | – |
@@ -240,8 +240,8 @@ A mobile number field is the Input with **Show Country** on. A country segment s
 ## Known gaps
 
 - **The resting boundary fails WCAG 1.4.11 by design.** See Accessibility → Contrast for the one-token change that would restore it.
-- **A disabled field on the grey canvas has no fill contrast.** `bg-fill-disabled-subtlest` is the same `#F5F5F5` as `bg-secondary`, so only the outline marks the field there.
-- **Disabled and resting look alike on white.** The two fills differ by 1.09:1 and the outlines match, so the grey text carries the disabled state.
+- **A disabled field on the grey canvas disappears.** `bg-fill-disabled-subtlest` and `border-disabled-subtlest` are both the same `#F5F5F5` as `bg-secondary`, so on the grey page only the grey label, value and supporting text remain. Place forms on a white container (`bg-surface-secondary`) when a field can be disabled.
+- **On white, disabled reads apart from resting.** The resting field has a `#D4D4D4` outline and the disabled field has none, so the missing outline and the grey text carry the disabled state together.
 - **No text area, no character counter and no dropdown variant yet.** A counter fits in the supporting text for now.
 - **No motion tokens.** The label move is instant in Figma; code may animate it until a motion scale exists.
 - **No country picker sheet yet.** The segment opens a native select in code and has no picker in Figma.
