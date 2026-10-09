@@ -158,7 +158,7 @@ Token names follow `badge/{property}-{emphasis}-{intent}`. Dots use `badge/dot-{
 | Intent | Strong fill / label | Subtle fill / label | Dot |
 |---|---|---|---|
 | Neutral | `bg-fill-inverse` #0A0A0A / `text-inverse` #FFFFFF | `bg-fill-secondary` #F5F5F5 / `text-secondary` #525252 | #0A0A0A |
-| Brand | `bg-fill-brand` #0088FF / `text-brand-on-bg-fill` #FFFFFF | `bg-surface-brand` #EDFAFF / `text-brand` #0088FF | #0088FF |
+| Brand | `bg-fill-brand` #0088FF / `text-brand-on-bg-fill` #FFFFFF | `bg-fill-brand-subtlest` #EDFAFF / `text-brand` #0088FF | #0088FF |
 | Info | `bg-fill-info-strong` #0088FF / `text-info-on-bg-fill-strong` #FFFFFF | `bg-fill-info-subtle` #EDFAFF / `text-info-on-bg-fill-subtle` #0088FF | #0088FF |
 | Success | `bg-fill-success-strong` #008236 / `text-success-on-bg-fill-strong` #FFFFFF | `bg-fill-success-subtle` #DCFCE7 / `text-success-on-bg-fill-subtle` #008236 | #008236 |
 | Caution | `bg-fill-caution-strong` #A65F00 / `text-caution-on-bg-fill-strong` #FFFFFF | `bg-fill-caution-subtle` #FEF9C2 / `text-caution-on-bg-fill-subtle` #894B00 | #A65F00 |

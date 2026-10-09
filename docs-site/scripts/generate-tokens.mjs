@@ -173,13 +173,13 @@ const SEMANTIC_ROLES = [
   {
     id: "surface",
     title: "Surface",
-    description: "Elevated and grouped surfaces that sit on the page background.",
+    description: "Containers that hold content: sections, cards, sheets, menus, list groups, banners, tooltips and snackbars, and the tappable rows inside them.",
     match: (k) => k.startsWith("bg-surface"),
   },
   {
     id: "fill",
     title: "Fill",
-    description: "Interactive and emphasis fills for buttons, badges, and banners. Strong and subtle pairs carry different text tokens.",
+    description: "The body of an element itself: controls such as buttons, checkboxes, chips and inputs, and marks such as badges, status dots and icon wells. Strong, subtle and subtlest fills carry their own text tokens.",
     match: (k) => k.startsWith("bg-fill"),
   },
   {

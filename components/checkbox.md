@@ -109,8 +109,8 @@ Token names follow `checkbox/{property}-{selection}-{intent}-{state}`, where `in
 
 | Selection | Intent | Default | Hover | Pressed | Disabled |
 |---|---|---|---|---|---|
-| Unchecked | Default | `color.bg-fill` | `color.bg-surface-brand` | `color.bg-surface-brand-hover` | `color.bg-surface-disabled` |
-| Unchecked | Error | `color.bg-fill` | `color.bg-surface-warning` | `color.bg-surface-warning-hover` | `color.bg-surface-disabled` |
+| Unchecked | Default | `color.bg-fill` | `color.bg-fill-brand-subtlest` | `color.bg-fill-brand-subtlest-hover` | `color.bg-fill-disabled-subtle` |
+| Unchecked | Error | `color.bg-fill` | `color.bg-fill-warning-subtlest` | `color.bg-fill-warning-subtlest-hover` | `color.bg-fill-disabled-subtle` |
 | Selected | Default | `color.bg-fill-brand` | `color.bg-fill-brand-hover` | `color.bg-fill-brand-pressed` | `color.bg-fill-disabled-strong` |
 | Selected | Error | `color.bg-fill-warning-strong` | `color.bg-fill-warning-strong-hover` | `color.bg-fill-warning-strong-pressed` | `color.bg-fill-disabled-strong` |
 

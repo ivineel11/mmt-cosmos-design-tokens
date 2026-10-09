@@ -251,7 +251,7 @@ Token names follow `list/{element}-{state}`. Hover, Pressed and Focus only chang
 | Element | Token | Value |
 |---|---|---|
 | Neutral circle / icon | `list/leading-container-bg-neutral` → `bg-fill-secondary`, `list/leading-container-icon-neutral` → `icon` | #F5F5F5 / #0A0A0A |
-| Brand circle / icon | `list/leading-container-bg-brand` → `bg-surface-brand`, `list/leading-container-icon-brand` → `icon-brand` | #EDFAFF / #0088FF |
+| Brand circle / icon | `list/leading-container-bg-brand` → `bg-fill-brand-subtlest`, `list/leading-container-icon-brand` → `icon-brand` | #EDFAFF / #0088FF |
 | Disabled circle / icon | `list/leading-container-bg-disabled` → `bg-surface-disabled-subtle`, `list/leading-container-icon-disabled` → `icon-disabled` | #FAFAFA / #A1A1A1 |
 | Grouped card | `list/bg-grouped` → `bg-surface-secondary` | #FFFFFF |
 | Divider | `list/divider` → `border-secondary` | #E5E5E5 |

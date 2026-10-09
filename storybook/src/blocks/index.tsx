@@ -3,6 +3,10 @@ import { createPortal } from "react-dom";
 import { aliasLabel, cssVar, data, formatValue, groupsOf, inBrand, select, useBrand, type FlatToken, type Platform, type TokenSet } from "./data";
 import { Icon } from "../components/Icon/Icon";
 import { SegmentedControl } from "../components/SegmentedControl/SegmentedControl";
+import { Badge } from "../components/Badge/Badge";
+import { Button } from "../components/Button/Button";
+import { Checkbox } from "../components/Checkbox/Checkbox";
+import { Chip } from "../components/Chip/Chip";
 import "./blocks.css";
 
 const PLATFORMS: { id: Platform; label: string }[] = [
@@ -346,6 +350,47 @@ export function CanvasPairing() {
             </div>
           </div>
         ))}
+      </div>
+    </Doc>
+  );
+}
+
+/** One card on the grey canvas, with every part labelled by the role its background takes. */
+function RoleTag({ kind, children }: { kind: "surface" | "fill"; children: ReactNode }) {
+  return (
+    <span className="doc-sof-tag mono" data-role={kind}>
+      {kind === "surface" ? "Surface" : "Fill"} · {children}
+    </span>
+  );
+}
+
+export function SurfaceOrFill() {
+  return (
+    <Doc>
+      <div className="doc-canvas" style={{ background: "var(--color-bg-secondary)" }}>
+        <div className="mono doc-small">bg-secondary (canvas)</div>
+        <div className="doc-sof-card">
+          <RoleTag kind="surface">bg-surface-secondary: the card holds content</RoleTag>
+          <div className="doc-sof-row">
+            <div className="doc-sof-row-text">
+              <strong>Mumbai to Goa</strong>
+              <span className="doc-small doc-muted">Fri, 14 Nov · 1 traveller</span>
+            </div>
+            <Badge type="text" label="Cheapest" intent="brand" emphasis="subtle" />
+          </div>
+          <div className="doc-sof-notes">
+            <RoleTag kind="surface">bg-surface-secondary-hover: a hovered row is still part of the card</RoleTag>
+            <RoleTag kind="fill">bg-fill-brand-subtlest: the badge is a mark</RoleTag>
+          </div>
+          <div className="doc-sof-controls">
+            <Button label="Add traveller" hierarchy="tertiary" size="small" leadingIcon="plus" />
+            <Chip label="Non-stop" size="small" bordered defaultSelected />
+            <Checkbox label="Free cancellation" defaultChecked />
+          </div>
+          <div className="doc-sof-notes">
+            <RoleTag kind="fill">bg-fill-*: each control colours its own body</RoleTag>
+          </div>
+        </div>
       </div>
     </Doc>
   );

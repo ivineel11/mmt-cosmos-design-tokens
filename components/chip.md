@@ -141,7 +141,7 @@ Token names follow `chip/{property}-{selection}-{state}`. `State=Focus` reuses t
 | Selected | Default | Hover | Pressed | Disabled |
 |---|---|---|---|---|
 | False | `color.bg-fill` | `color.bg-fill-hover` | `color.bg-fill-pressed-subtle` | `color.bg-surface-disabled-subtle` |
-| True | `color.bg-surface-brand` | `color.bg-surface-brand-hover` | `color.bg-surface-brand-pressed-strong` | `color.bg-surface-disabled-subtle` |
+| True | `color.bg-fill-brand-subtlest` | `color.bg-fill-brand-subtlest-hover` | `color.bg-fill-brand-subtlest-pressed` | `color.bg-surface-disabled-subtle` |
 
 `bg-fill-hover` and `bg-fill-pressed-subtle` were added to the semantic tier for this component. Both are `neutral.100`, the same grey as `bg-secondary` (1.00:1): hover and pressed share one fill and differ only by the border (pressed darkens it to `border-strong`), and a borderless chip hovered or pressed on the grey canvas loses its fill and only its label remains. The disabled fill, `bg-surface-disabled-subtle` (`neutral.50`), is 1.04:1 against both canvases, so the grey disabled label carries the state.
 
@@ -158,15 +158,15 @@ Token names follow `chip/{property}-{selection}-{state}`. `State=Focus` reuses t
 |---|---|---|
 | `chip/label-unselected-default` | `color.text-secondary` | Label, unselected, every enabled state. It does not change on hover or pressed. The same grey as the secondary line, so label and secondary text are told apart by weight and size, not colour. |
 | `chip/label-selected-default` | `color.text-brand` | Label, selected, Default and Focus |
-| `chip/label-selected-hover` | `color.text-brand-on-bg-surface-hover` | Label, selected, Hover |
-| `chip/label-selected-pressed` | `color.text-brand-on-bg-surface-pressed` | Label, selected, Pressed |
+| `chip/label-selected-hover` | `color.text-brand-on-bg-fill-subtlest-hover` | Label, selected, Hover |
+| `chip/label-selected-pressed` | `color.text-brand-on-bg-fill-subtlest-pressed` | Label, selected, Pressed |
 | `chip/label-disabled` | `color.text-disabled` | Label, Disabled |
 | `chip/secondary-text-default` | `color.text-secondary` | Secondary line, every enabled state |
 | `chip/secondary-text-disabled` | `color.text-disabled` | Secondary line, Disabled |
 | `chip/icon-unselected-default` | `color.icon-secondary` | Leading icon, trailing icon, remove glyph — unselected |
 | `chip/icon-selected-default` | `color.icon-brand` | The same, selected: Default and Focus |
-| `chip/icon-selected-hover` | `color.icon-brand-on-bg-surface-hover` | The same, selected, on hover. Darkens with the label |
-| `chip/icon-selected-pressed` | `color.icon-brand-on-bg-surface-pressed` | The same, selected, while pressed. Also the remove glyph while the remove button itself is hovered or pressed |
+| `chip/icon-selected-hover` | `color.icon-brand-on-bg-fill-subtlest-hover` | The same, selected, on hover. Darkens with the label |
+| `chip/icon-selected-pressed` | `color.icon-brand-on-bg-fill-subtlest-pressed` | The same, selected, while pressed. Also the remove glyph while the remove button itself is hovered or pressed |
 | `chip/icon-disabled` | `color.icon-disabled` | The same, Disabled |
 | `chip/focus-ring` | `color.border-focus` | Chip ring and remove-button ring |
 
@@ -179,7 +179,7 @@ A circle behind the remove glyph, painted only while the remove button itself is
 | Selected | Hover | Pressed |
 |---|---|---|
 | False | `color.bg-fill-pressed-strong` | `color.bg-fill-pressed-strong` |
-| True | `color.bg-surface-brand-pressed-strong` | `color.bg-surface-brand-pressed-strong` |
+| True | `color.bg-fill-brand-subtlest-pressed` | `color.bg-fill-brand-subtlest-pressed` |
 
 Disabled collapses to the neutral ramp whether or not the chip is selected — an inert chip should not still read as chosen.
 

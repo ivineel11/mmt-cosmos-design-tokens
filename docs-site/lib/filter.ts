@@ -91,6 +91,8 @@ export function populatedSections(data: TokenData): Set<string> {
 
   mark("primitive-palettes", data.primitives.palettes.length > 0);
   mark("semantic-colors", data.semantic.colorGroups.length > 0);
+  // Static guidance: shown while the surface or fill groups have matches.
+  mark("surface-or-fill", data.semantic.colorGroups.some((group) => group.id === "surface" || group.id === "fill"));
   mark("expressive", data.semantic.expressive.length > 0);
   mark("contrast", data.contrastPairs.length > 0);
   for (const group of data.semantic.typography) mark(`type-${group.id}`, group.sizes.length > 0);

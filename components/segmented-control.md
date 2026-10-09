@@ -164,7 +164,7 @@ The focus ring sits **outside** the segment: a 2 px gap, then the 2 px ring, whi
 
 Token names follow `segmented-control/{property}-{selected|unselected}-{state}`. Shared tokens apply to every style; `neutral-*`, `brand-*` and `tinted-*` tokens apply to one style only. Focus uses the Default colours plus the ring. Like Button, every selected state binds its own icon token, and each aliases the icon role for the fill underneath it:
 - Brand uses `icon-brand-on-bg-fill` at rest and pressed, the Button primary pattern.
-- Tinted uses `icon-brand` then `icon-brand-on-bg-surface-pressed`, the Button tertiary pattern.
+- Tinted uses `icon-brand` then `icon-brand-on-bg-fill-subtlest-pressed`, the Button tertiary pattern.
 - Neutral uses `icon-brand` then `icon-brand-pressed` on its grey pressed thumb.
 
 On Brand the label and icon keep their white while pressed, and only the thumb darkens. Neutral and Tinted also darken the brand label and icon one step, because `text-brand` falls below even the 3:1 azure exception on their pressed thumbs: 2.79:1 on the Neutral grey #E5E5E5 and 2.71:1 on the pressed tint. Tinted darkens its outline too.
@@ -177,7 +177,7 @@ On Brand the label and icon keep their white while pressed, and only the thumb d
 | Unselected fill | `bg-unselected-default` → transparent | `bg-unselected-pressed` → `bg-fill-pressed-strong` #E5E5E5 | transparent |
 | Unselected label | `label-unselected-default` → `text-secondary` #525252 | `label-unselected-pressed` → `text-primary` #0A0A0A | `label-disabled` → `text-disabled` #A1A1A1 |
 | Unselected icon | `icon-unselected-default` → `icon-secondary` #525252 | `icon-unselected-pressed` → `icon` #0A0A0A | `icon-disabled` → `icon-disabled` #A1A1A1 |
-| Selected thumb, disabled | – | – | `thumb-disabled` → `bg-surface-disabled` #E5E5E5, no shadow |
+| Selected thumb, disabled | – | – | `thumb-disabled` → `bg-fill-disabled-subtle` #E5E5E5, no shadow |
 | Selected label and icon, disabled | – | – | `label-disabled`, `icon-disabled` #A1A1A1 |
 | Focus ring, drawn outside the segment | `focus-ring` → `border-focus` #0088FF | – | – |
 
@@ -206,10 +206,10 @@ The same treatment as a selected Chip.
 
 | Element | Default, Focus | Pressed |
 |---|---|---|
-| Thumb | `tinted-thumb-default` → `bg-surface-brand` #EDFAFF | `tinted-thumb-pressed` → `bg-surface-brand-pressed-strong` #B5EAFF |
+| Thumb | `tinted-thumb-default` → `bg-fill-brand-subtlest` #EDFAFF | `tinted-thumb-pressed` → `bg-fill-brand-subtlest-pressed` #B5EAFF |
 | Thumb outline, 1 px inside | `tinted-thumb-border-default` → `border-brand` #0088FF | `tinted-thumb-border-pressed` → `border-brand-pressed` #0868C5 |
-| Label | `tinted-label-selected-default` → `text-brand` #0088FF | `tinted-label-selected-pressed` → `text-brand-on-bg-surface-pressed` #0D589B |
-| Icon | `tinted-icon-selected-default` → `icon-brand` #0088FF | `tinted-icon-selected-pressed` → `icon-brand-on-bg-surface-pressed` #0D589B |
+| Label | `tinted-label-selected-default` → `text-brand` #0088FF | `tinted-label-selected-pressed` → `text-brand-on-bg-fill-subtlest-pressed` #0D589B |
+| Icon | `tinted-icon-selected-default` → `icon-brand` #0088FF | `tinted-icon-selected-pressed` → `icon-brand-on-bg-fill-subtlest-pressed` #0D589B |
 
 This component adds no semantic roles.
 

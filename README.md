@@ -70,7 +70,7 @@ Every token in the **semantic** and **component** sets carries a `description` a
 "bg-fill-brand": {
   "value": "{color.azure.700}",
   "type": "color",
-  "description": "Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand."
+  "description": "Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand control use bg-fill-brand-subtlest, and for a tinted brand container use bg-surface-brand."
 }
 ```
 
@@ -215,7 +215,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1195 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 289 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1208 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 302 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -246,8 +246,8 @@ Semantic colors are grouped by **role**, not by hue:
 | Role prefix | Meaning |
 |-------------|---------|
 | `bg`, `bg-secondary` | Page-level background (the canvas) |
-| `bg-surface-*` | Elevated / grouped surface backgrounds |
-| `bg-fill-*` | Interactive or emphasis fills (buttons, badges, banners) |
+| `bg-surface-*` | Containers behind content — sections, cards, sheets, menus, list groups, banners, tooltips, snackbars — and the tappable rows inside them |
+| `bg-fill-*` | The body of an element itself — controls (buttons, checkboxes, chips, switches, inputs) and emphasis marks (badges, status dots, icon wells) |
 | `text-*` | Foreground text |
 | `border-*` | Strokes and dividers |
 | `icon-*` | Icon fill colors |
@@ -260,7 +260,34 @@ Within each role, **intent** is expressed with suffixes:
 | `strong` / `subtle` | Fill intensity pairs |
 | `on-bg-fill` / `on-bg-fill-strong` / `on-bg-fill-subtle` | Contrast-safe text and icons on filled backgrounds |
 | `on-bg-surface-hover` / `on-bg-surface-pressed` | Contrast-safe text on a tinted surface that deepens on interaction |
+| `on-bg-fill-subtlest-hover` / `on-bg-fill-subtlest-pressed` | Contrast-safe text and icons on a tinted control fill that deepens on interaction |
 | `hover` / `pressed` | Interaction steps of the token they extend |
+
+#### Surface or fill
+
+`bg-surface-*` and `bg-fill-*` often share a colour (`bg-surface-brand` and `bg-fill-brand-subtlest` are both `azure.50`), so never choose between them by colour. Choose by **what the colour belongs to**:
+
+- **Fill:** the colour is the body of the element itself, the shape that *is* the control or the mark. Take away the colour and the element loses its shape.
+- **Surface:** the colour is an area that holds other content. Take away the colour and the content is still there, just without a backdrop.
+
+| Use `bg-fill-*` for | Use `bg-surface-*` for |
+|---|---|
+| Buttons, including the tinted secondary, tertiary and text button states | Page sections, wells and grouped areas |
+| Checkbox and radio boxes, switch tracks and thumbs | Cards, sheets, dialogs and popovers |
+| Chips, segmented control tracks and thumbs | Menu panels and list groups |
+| Slider tracks and halos | Banners, snackbars and tooltips |
+| Input field bodies | Tappable rows and cards: menu items and list rows, at rest and on hover or press |
+| Badges, counters and status dots | Scrims and dark overlays (`bg-surface-inverse`) |
+| Icon wells, such as the leading circle of a list row | A disabled section or card (`bg-surface-disabled`) |
+| Skeleton blocks | |
+
+**Tappable rows stay surfaces.** A menu item or list row is interactive, but it is a slice of its container and holds other content (a title, a description, slots for other components). Its hover and pressed steps come from the surface it sits in: `bg-surface-hover` on a grey group, `bg-surface-secondary-hover` on a white panel, `bg-surface-warning-hover` for a destructive item. Rule of thumb: if the element holds other components or lines of content, it is a surface; if it is a single control or mark, it is a fill.
+
+**A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever surface it sits on. (The inline actions of Snackbar and Tooltip are still on surface tokens and move in a follow-up.)
+
+**Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; a whole unavailable section or card uses `bg-surface-disabled` or `bg-surface-disabled-subtle`. The one exception: the disabled chip and the disabled list icon well use `bg-surface-disabled-subtle` (`neutral.50`), because no disabled fill is that light, and `bg-fill-disabled-subtlest` (`neutral.100`) would vanish on the grey canvas.
+
+**Pair the foreground with the same role.** Labels and icons on a fill use `*-on-bg-fill-*` (`text-brand-on-bg-fill-subtlest-hover` on a hovered tertiary button); on a surface they use `*-on-bg-surface-*` (`text-warning-on-bg-surface-hover` on a hovered destructive menu item). Even when the two resolve to the same colour, the right pairing keeps the meaning clear in Figma and lets the two roles diverge later, for example in another brand.
 
 #### Canvas and container pairing
 
@@ -440,7 +467,7 @@ Cosmos has one light theme, but products still place controls on dark sections: 
   - Labels sit at step 300 (`text-brand-inverse` `#83DFFF`, `text-warning-inverse` `#FFA2A2`).
   - Icons and outlines sit one step deeper, at 400, like the existing inverse status icons.
   - Hover and pressed get lighter by one step each, mirroring light, where they get darker.
-- **Translucent tints.** Hover, pressed and the Tertiary fill must work on near-black, on navy and on photos. They are a colour (`bg-surface-brand-inverse`, `bg-surface-warning-inverse`) rendered at a `button/bg-opacity-*` token (10, 15 or 20%). This is the same split as a scrim or Radio's state layer, never an alpha hex. Disabled stays solid (`bg-surface-inverse-disabled`).
+- **Translucent tints.** Hover, pressed and the Tertiary fill must work on near-black, on navy and on photos. They are a colour (`bg-fill-brand-inverse`, `bg-fill-warning-inverse`) rendered at a `button/bg-opacity-*` token (10, 15 or 20%). This is the same split as a scrim or Radio's state layer, never an alpha hex. Disabled stays solid (`bg-fill-inverse-disabled`).
 - **Primary keeps its fill.** The brand and destructive fills are shared with light, so Primary is the same button on every surface. Its hover and pressed fills get darker, and the pressed fill is only 2.72:1 against `#0A0A0A`. The white label reads at 3.52:1 at rest (the azure exception, section 15) and 5.53:1 or more on hover and press.
 - **Contrast is linted on the dark canvas.** `tokens/contrast` checks an `-inverse` key against `bg-surface-inverse`, blending a tint over it at its `bg-opacity-*` value first.
 
@@ -463,18 +490,18 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 
 | Semantic token | MakeMyTrip | myBiz | Goibibo |
 |---|---|---|---|
-| `bg-surface-brand` | `azure.50` | `pomegranate.50` | `thunderbird.50` |
-| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle` | `azure.100` | `pomegranate.100` | `thunderbird.100` |
-| `bg-surface-brand-pressed-strong` | `azure.200` | `pomegranate.200` | `thunderbird.200` |
-| `bg-surface-brand-inverse` | `azure.400` | `pomegranate.300` | `thunderbird.400` |
+| `bg-surface-brand`, `bg-fill-brand-subtlest` | `azure.50` | `pomegranate.50` | `thunderbird.50` |
+| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle`, `bg-fill-brand-subtlest-hover` | `azure.100` | `pomegranate.100` | `thunderbird.100` |
+| `bg-surface-brand-pressed-strong`, `bg-fill-brand-subtlest-pressed` | `azure.200` | `pomegranate.200` | `thunderbird.200` |
+| `bg-fill-brand-inverse` | `azure.400` | `pomegranate.300` | `thunderbird.400` |
 | `bg-fill-brand` | `azure.700` | `pomegranate.400` | `thunderbird.600` |
 | `bg-fill-brand-hover` | `azure.800` | `pomegranate.500` | `thunderbird.700` |
 | `bg-fill-brand-pressed` | `azure.900` | `pomegranate.600` | `thunderbird.800` |
 | `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `pomegranate.400` | `thunderbird.600` |
 | `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `pomegranate.500` | `thunderbird.700` |
 | `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `pomegranate.600` | `thunderbird.800` |
-| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `pomegranate.600` | `thunderbird.800` |
-| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `pomegranate.700` | `thunderbird.900` |
+| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover`, `text-brand-on-bg-fill-subtlest-hover`, `icon-brand-on-bg-fill-subtlest-hover` | `azure.800` | `pomegranate.600` | `thunderbird.800` |
+| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed`, `text-brand-on-bg-fill-subtlest-pressed`, `icon-brand-on-bg-fill-subtlest-pressed` | `azure.900` | `pomegranate.700` | `thunderbird.900` |
 | `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `pomegranate.200` | `thunderbird.300` |
 | `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `pomegranate.100` | `thunderbird.200` |
 | `text-brand-inverse-pressed` | `azure.100` | `pomegranate.50` | `thunderbird.100` |
@@ -563,6 +590,7 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.azure.600}`).
 - Do reference semantic tokens from component tokens the same way (e.g. `{color.bg-fill-brand}`), so a palette change propagates through both tiers.
 - Do use the semantic color role system (`bg-surface`, `bg-fill`, `text`, `border`, `icon`) consistently.
+- Do choose between `bg-fill` and `bg-surface` by what the colour belongs to, not by colour: the body of a control or mark is a fill, an area holding content is a surface. See [Surface or fill](#surface-or-fill).
 - Do pair canvas and container by suffix: `bg` with `bg-surface`, `bg-secondary` with `bg-surface-secondary`. See [Canvas and container pairing](#canvas-and-container-pairing).
 - Do add new palette steps at the primitive layer before creating semantic aliases.
 - Do use t-shirt sizes (`radius.md`, `icon.lg`, `space.md`) in components instead of raw pixel values.
@@ -586,6 +614,7 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - Don't use negative spacing keys in references — the build renames them (`spacing.-8` → `spacing.minus8` in output).
 - Don't hand-convert hex colors or CSS gradients in iOS/Android app code — use the generated `Tokens` values directly.
 - Don't alias a control's fill to `bg` or `bg-secondary`; those are canvases. Use `bg-fill`.
+- Don't colour a control with a `bg-surface-*` token because it has the right colour; use the `bg-fill-*` token of the same value, so the role still reads correctly if the two diverge.
 - Don't use opacity to express a disabled state — disabled is a solid neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`, `icon-disabled`).
 - Don't use `opacityScale.*` in product code; it is the authoring ramp, and `opacity.*` mirrors every step of it.
 - Don't author an opacity as a percentage — Figma holds `32`, `tokens.json` holds `0.32`, and the build throws on the difference.
@@ -596,9 +625,9 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 
 ## Token Inventory
 
-**Totals:** 303 primitive tokens · 406 semantic tokens (289 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1927 values on web** · **2011 on iOS and Android** · **0 gradients**
+**Totals:** 303 primitive tokens · 419 semantic tokens (302 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1940 values on web** · **2024 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1801 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1814 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (303)
 
@@ -822,13 +851,13 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (406)
+### Semantic tokens (419)
 
-#### Color — 289 tokens
+#### Color — 302 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — canvas and surface (30)
+##### Background — canvas and surface (27)
 
 | Token | Role |
 |-------|------|
@@ -837,15 +866,15 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface` | Grey container on `bg` |
 | `color.bg-surface-hover` | Grey container on `bg`, hovered — tappable list rows |
 | `color.bg-surface-pressed` | Grey container on `bg`, pressed |
-| `color.bg-surface-disabled` | Disabled surface |
+| `color.bg-surface-disabled` | Disabled section or card — controls use `bg-fill-disabled-subtle` |
 | `color.bg-surface-disabled-subtle` | Lighter disabled surface — a whole unavailable section or card |
 | `color.bg-surface-secondary` | White container on `bg-secondary` |
 | `color.bg-surface-secondary-hover` | White container on `bg-secondary`, hovered — tappable cards and menu items |
 | `color.bg-surface-secondary-pressed` | White container on `bg-secondary`, pressed |
-| `color.bg-surface-brand` | Brand-tinted surface |
+| `color.bg-surface-brand` | Brand-tinted container — selected rows, callouts |
 | `color.bg-surface-brand-hover` | Brand-tinted surface, hovered |
 | `color.bg-surface-brand-pressed-subtle` | Brand-tinted surface, pressed, light — same tint as hover |
-| `color.bg-surface-brand-pressed-strong` | Brand-tinted surface, pressed — secondary and tertiary buttons, the selected chip |
+| `color.bg-surface-brand-pressed-strong` | Brand-tinted surface, pressed, strong |
 | `color.bg-surface-info` | Info surface |
 | `color.bg-surface-info-hover` | Info surface, hovered |
 | `color.bg-surface-info-pressed` | Info surface, pressed |
@@ -855,15 +884,12 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-caution` | Caution surface |
 | `color.bg-surface-caution-hover` | Caution surface, hovered |
 | `color.bg-surface-caution-pressed` | Caution surface, pressed |
-| `color.bg-surface-warning` | Warning surface |
-| `color.bg-surface-warning-hover` | Warning surface, hovered |
+| `color.bg-surface-warning` | Warning surface — error banners |
+| `color.bg-surface-warning-hover` | Warning surface, hovered — destructive menu items |
 | `color.bg-surface-warning-pressed` | Warning surface, pressed |
 | `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
-| `color.bg-surface-inverse-disabled` | Disabled control fill on dark backgrounds — inverse Button |
-| `color.bg-surface-brand-inverse` | Brand tint on dark backgrounds, always at an opacity token — inverse Button |
-| `color.bg-surface-warning-inverse` | Destructive tint on dark backgrounds, always at an opacity token — inverse Button |
 
-##### Background — fill (37)
+##### Background — fill (45)
 
 | Token | Role |
 |-------|------|
@@ -873,7 +899,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-pressed-strong` | Default fill, pressed, strong — the chip remove button, and presses that must read on either canvas |
 | `color.bg-fill-disabled-strong` | Strong disabled fill |
 | `color.bg-fill-disabled` | Middle disabled fill — the disabled thumb of the Outlined Switch backup |
-| `color.bg-fill-disabled-subtle` | Subtle disabled fill — disabled Switch tracks and the inactive Slider track |
+| `color.bg-fill-disabled-subtle` | Subtle disabled fill — disabled Buttons, Checkbox, Radio and segmented thumb, Switch tracks, the inactive Slider track |
 | `color.bg-fill-disabled-subtlest` | Lightest disabled fill — the body of a disabled input field |
 | `color.bg-fill-secondary` | Secondary fill |
 | `color.bg-fill-secondary-hover` | Secondary fill, hovered |
@@ -881,6 +907,10 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-brand` | Brand button / emphasis fill |
 | `color.bg-fill-brand-hover` | Brand fill, hovered |
 | `color.bg-fill-brand-pressed` | Brand fill, pressed |
+| `color.bg-fill-brand-subtlest` | Lightest brand fill — tertiary Button, selected Chip, tinted segmented thumb, brand Badge, brand List icon well |
+| `color.bg-fill-brand-subtlest-hover` | Lightest brand fill, hovered — and the press of brand controls that start transparent |
+| `color.bg-fill-brand-subtlest-pressed` | Lightest brand fill, pressed — secondary and tertiary Button, selected Chip |
+| `color.bg-fill-brand-inverse` | Brand tint on dark backgrounds, always at an opacity token — inverse Button |
 | `color.bg-fill-info-strong` | Strong info fill |
 | `color.bg-fill-info-strong-hover` | Strong info fill, hovered |
 | `color.bg-fill-info-strong-pressed` | Strong info fill, pressed |
@@ -897,15 +927,19 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-warning-strong-hover` | Strong warning fill, hovered |
 | `color.bg-fill-warning-strong-pressed` | Strong warning fill, pressed |
 | `color.bg-fill-warning-subtle` | Subtle warning fill |
-| `color.bg-fill-warning-subtlest` | Lightest error fill — the body of an input field in the error state |
+| `color.bg-fill-warning-subtlest` | Lightest error fill — destructive tertiary Button, the body of an input field in the error state |
+| `color.bg-fill-warning-subtlest-hover` | Lightest error fill, hovered — destructive Buttons, error Checkbox and Radio |
+| `color.bg-fill-warning-subtlest-pressed` | Lightest error fill, pressed — destructive secondary and tertiary Button |
+| `color.bg-fill-warning-inverse` | Destructive tint on dark backgrounds, always at an opacity token — inverse Button |
 | `color.bg-fill-inverse` | Inverted (dark) fill — badges, toasts |
 | `color.bg-fill-inverse-hover` | Inverted fill, hovered |
 | `color.bg-fill-inverse-pressed` | Inverted fill, pressed |
+| `color.bg-fill-inverse-disabled` | Disabled control fill on dark backgrounds — inverse Button |
 | `color.bg-fill-neutral-strong` | Solid grey fill — the off Switch track |
 | `color.bg-fill-neutral-strong-hover` | Solid grey fill, hovered |
 | `color.bg-fill-neutral-strong-pressed` | Solid grey fill, pressed |
 
-##### Text (46)
+##### Text (50)
 
 | Token | Role |
 |-------|------|
@@ -927,6 +961,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-brand-on-bg-fill` | Text on brand fill |
 | `color.text-brand-on-bg-surface-hover` | Text on a hovered brand surface |
 | `color.text-brand-on-bg-surface-pressed` | Text on a pressed brand surface |
+| `color.text-brand-on-bg-fill-subtlest-hover` | Text on a hovered tinted brand control |
+| `color.text-brand-on-bg-fill-subtlest-pressed` | Text on a pressed tinted brand control |
 | `color.text-brand-inverse` | Brand text on dark backgrounds — inverse Button labels |
 | `color.text-brand-inverse-hover` | Brand text on dark backgrounds, hovered |
 | `color.text-brand-inverse-pressed` | Brand text on dark backgrounds, pressed |
@@ -952,6 +988,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-warning-on-bg-fill-subtle` | Text on subtle warning fill |
 | `color.text-warning-on-bg-surface-hover` | Text on a hovered warning surface |
 | `color.text-warning-on-bg-surface-pressed` | Text on a pressed warning surface |
+| `color.text-warning-on-bg-fill-subtlest-hover` | Text on a hovered tinted destructive control |
+| `color.text-warning-on-bg-fill-subtlest-pressed` | Text on a pressed tinted destructive control |
 | `color.text-warning-inverse` | Destructive text on dark backgrounds — inverse Button labels |
 | `color.text-warning-inverse-hover` | Destructive text on dark backgrounds, hovered |
 | `color.text-warning-inverse-pressed` | Destructive text on dark backgrounds, pressed |
@@ -987,7 +1025,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.border-inverse` | Divider or outline on dark backgrounds |
 | `color.border-inverse-disabled` | Disabled control outline on dark backgrounds |
 
-##### Icon (39)
+##### Icon (43)
 
 | Token | Role |
 |-------|------|
@@ -1011,6 +1049,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-brand-on-bg-fill` | Icon on brand fill |
 | `color.icon-brand-on-bg-surface-hover` | Icon on a hovered brand surface |
 | `color.icon-brand-on-bg-surface-pressed` | Icon on a pressed brand surface |
+| `color.icon-brand-on-bg-fill-subtlest-hover` | Icon in a hovered tinted brand control |
+| `color.icon-brand-on-bg-fill-subtlest-pressed` | Icon in a pressed tinted brand control |
 | `color.icon-brand-inverse` | Brand icon on dark backgrounds — inverse Button glyphs |
 | `color.icon-brand-inverse-hover` | Brand icon on dark backgrounds, hovered |
 | `color.icon-brand-inverse-pressed` | Brand icon on dark backgrounds, pressed |
@@ -1026,6 +1066,8 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-warning-on-bg-fill-strong` | Icon on strong warning fill |
 | `color.icon-warning-on-bg-surface-hover` | Icon on a hovered warning surface |
 | `color.icon-warning-on-bg-surface-pressed` | Icon on a pressed warning surface |
+| `color.icon-warning-on-bg-fill-subtlest-hover` | Icon in a hovered tinted destructive control |
+| `color.icon-warning-on-bg-fill-subtlest-pressed` | Icon in a pressed tinted destructive control |
 | `color.icon-warning-on-bg-fill-subtle` | Icon on subtle warning fill |
 | `color.icon-info` | Info icon |
 | `color.icon-info-on-bg-fill-strong` | Icon on strong info fill |
@@ -1238,9 +1280,6 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-surface-warning-hover` | `color.red.100` |
 | `bg-surface-warning-pressed` | `color.red.200` |
 | `bg-surface-inverse` | `color.neutral.950` |
-| `bg-surface-inverse-disabled` | `color.neutral.800` |
-| `bg-surface-brand-inverse` | `color.azure.400` |
-| `bg-surface-warning-inverse` | `color.red.400` |
 | `bg-fill` | `color.neutral.0` |
 | `bg-fill-hover` | `color.neutral.100` |
 | `bg-fill-pressed-subtle` | `color.neutral.100` |
@@ -1255,6 +1294,10 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-brand` | `color.azure.700` |
 | `bg-fill-brand-hover` | `color.azure.800` |
 | `bg-fill-brand-pressed` | `color.azure.900` |
+| `bg-fill-brand-subtlest` | `color.azure.50` |
+| `bg-fill-brand-subtlest-hover` | `color.azure.100` |
+| `bg-fill-brand-subtlest-pressed` | `color.azure.200` |
+| `bg-fill-brand-inverse` | `color.azure.400` |
 | `bg-fill-info-strong` | `color.azure.700` |
 | `bg-fill-info-strong-hover` | `color.azure.800` |
 | `bg-fill-info-strong-pressed` | `color.azure.900` |
@@ -1272,9 +1315,13 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-warning-strong-pressed` | `color.red.800` |
 | `bg-fill-warning-subtle` | `color.red.100` |
 | `bg-fill-warning-subtlest` | `color.red.50` |
+| `bg-fill-warning-subtlest-hover` | `color.red.100` |
+| `bg-fill-warning-subtlest-pressed` | `color.red.200` |
+| `bg-fill-warning-inverse` | `color.red.400` |
 | `bg-fill-inverse` | `color.neutral.950` |
 | `bg-fill-inverse-hover` | `color.neutral.900` |
 | `bg-fill-inverse-pressed` | `color.neutral.800` |
+| `bg-fill-inverse-disabled` | `color.neutral.800` |
 | `bg-fill-neutral-strong` | `color.neutral.300` |
 | `bg-fill-neutral-strong-hover` | `color.neutral.400` |
 | `bg-fill-neutral-strong-pressed` | `color.neutral.500` |
@@ -1296,6 +1343,8 @@ Add a component group only when a component has enough variant × state combinat
 | `text-brand-on-bg-fill` | `color.neutral.0` |
 | `text-brand-on-bg-surface-hover` | `color.azure.800` |
 | `text-brand-on-bg-surface-pressed` | `color.azure.900` |
+| `text-brand-on-bg-fill-subtlest-hover` | `color.azure.800` |
+| `text-brand-on-bg-fill-subtlest-pressed` | `color.azure.900` |
 | `text-brand-inverse` | `color.azure.300` |
 | `text-brand-inverse-hover` | `color.azure.200` |
 | `text-brand-inverse-pressed` | `color.azure.100` |
@@ -1321,6 +1370,8 @@ Add a component group only when a component has enough variant × state combinat
 | `text-warning-on-bg-fill-subtle` | `color.red.700` |
 | `text-warning-on-bg-surface-hover` | `color.red.800` |
 | `text-warning-on-bg-surface-pressed` | `color.red.900` |
+| `text-warning-on-bg-fill-subtlest-hover` | `color.red.800` |
+| `text-warning-on-bg-fill-subtlest-pressed` | `color.red.900` |
 | `text-warning-inverse` | `color.red.300` |
 | `text-warning-inverse-hover` | `color.red.200` |
 | `text-warning-inverse-pressed` | `color.red.100` |
@@ -1370,6 +1421,8 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-brand-on-bg-fill` | `color.neutral.0` |
 | `icon-brand-on-bg-surface-hover` | `color.azure.800` |
 | `icon-brand-on-bg-surface-pressed` | `color.azure.900` |
+| `icon-brand-on-bg-fill-subtlest-hover` | `color.azure.800` |
+| `icon-brand-on-bg-fill-subtlest-pressed` | `color.azure.900` |
 | `icon-brand-inverse` | `color.azure.400` |
 | `icon-brand-inverse-hover` | `color.azure.300` |
 | `icon-brand-inverse-pressed` | `color.azure.200` |
@@ -1385,6 +1438,8 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-on-bg-fill-strong` | `color.neutral.0` |
 | `icon-warning-on-bg-surface-hover` | `color.red.800` |
 | `icon-warning-on-bg-surface-pressed` | `color.red.900` |
+| `icon-warning-on-bg-fill-subtlest-hover` | `color.red.800` |
+| `icon-warning-on-bg-fill-subtlest-pressed` | `color.red.900` |
 | `icon-warning-on-bg-fill-subtle` | `color.red.700` |
 | `icon-info` | `color.azure.700` |
 | `icon-info-on-bg-fill-strong` | `color.neutral.0` |

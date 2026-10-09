@@ -184,5 +184,14 @@
 .doc-canvas { padding: var(--space-3xl); border-radius: var(--radius-xl); border: var(--stroke-default) solid var(--color-border-secondary); }
 .doc-container { padding: var(--space-xl); border-radius: var(--radius-xl); display: grid; gap: var(--space-2xs); }
 
+/* Surface or fill */
+.doc-sof-card { margin-block-start: var(--space-sm); background: var(--color-bg-surface-secondary); border-radius: var(--radius-xl); padding: var(--space-xl); display: grid; gap: var(--space-md); }
+.doc-sof-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-md); border-radius: var(--radius-md); background: var(--color-bg-surface-secondary-hover); }
+.doc-sof-row-text { display: grid; gap: var(--space-3xs); }
+.doc-sof-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); }
+.doc-sof-notes { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.doc .doc-sof-tag { font-size: var(--font-size-12); padding: var(--space-3xs) var(--space-xs); border-radius: var(--radius-xs); border: var(--stroke-default) dashed var(--color-border-strong); color: var(--color-text-secondary); justify-self: start; }
+.doc .doc-sof-tag[data-role="fill"] { border-style: solid; border-color: var(--color-border-brand); color: var(--color-text-brand); }
+
 .doc-inverse { background: var(--color-bg-surface-inverse); color: var(--color-text-inverse); border-radius: var(--radius-xl); padding: var(--space-5xl); display: grid; gap: var(--space-lg); }
 .doc-inverse-row { display: flex; justify-content: space-between; gap: var(--space-md); align-items: baseline; }

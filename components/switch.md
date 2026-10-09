@@ -124,8 +124,8 @@ Token names follow `switch/{part}-{off|on}-{state}`. Focus uses the Default colo
 | State | Track | Glyph |
 |---|---|---|
 | Default, Focus | `track-on-default` → `bg-fill-brand` #0088FF | `icon-on-default` → `icon-brand` #0088FF |
-| Hover | `track-on-hover` → `bg-fill-brand-hover` #0868C5 | `icon-on-hover` → `icon-brand-on-bg-surface-hover` #0868C5 |
-| Pressed | `track-on-pressed` → `bg-fill-brand-pressed` #0D589B | `icon-on-pressed` → `icon-brand-on-bg-surface-pressed` #0D589B |
+| Hover | `track-on-hover` → `bg-fill-brand-hover` #0868C5 | `icon-on-hover` → `icon-brand-on-bg-fill-subtlest-hover` #0868C5 |
+| Pressed | `track-on-pressed` → `bg-fill-brand-pressed` #0D589B | `icon-on-pressed` → `icon-brand-on-bg-fill-subtlest-pressed` #0D589B |
 | Disabled | `track-on-disabled` → `bg-fill-disabled-subtle` #E5E5E5 | `icon-on-disabled` → `icon-disabled` #A1A1A1 |
 
 ### Off
