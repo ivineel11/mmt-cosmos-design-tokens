@@ -1,10 +1,21 @@
 @import "tailwindcss";
 @import "./tokens.css";
 
+/*
+ * Lato is self-hosted under its own name, so var(--typeface-default) resolves to it
+ * and the whole site follows the brand switcher: Lato for MakeMyTrip and myBiz, Rubik
+ * (Google Fonts, app/layout.tsx) for Goibibo.
+ */
+@font-face { font-family: "Lato"; font-weight: 400; font-style: normal; font-display: swap; src: url("../public/fonts/lato-400.woff2") format("woff2"); }
+@font-face { font-family: "Lato"; font-weight: 700; font-style: normal; font-display: swap; src: url("../public/fonts/lato-700.woff2") format("woff2"); }
+@font-face { font-family: "Lato"; font-weight: 800; font-style: normal; font-display: swap; src: url("../public/fonts/lato-800.woff2") format("woff2"); }
+@font-face { font-family: "Lato"; font-weight: 900; font-style: normal; font-display: swap; src: url("../public/fonts/lato-900.woff2") format("woff2"); }
+
 /* The docs site is styled with the tokens it documents. */
 :root {
   --page-max: 1080px;
   --sidebar-width: 268px;
+  --font-lato: "Lato";
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   /* Corporate motion: decisive, no overshoot (Material 3 / Snappy UI). */
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -12,6 +23,25 @@
   --motion-duration-panel: 260ms;
   --motion-duration-panel-exit: 200ms;
   --motion-duration-fade: 160ms;
+
+  /* Site chrome. Cosmos has no display scale, so the two display sizes live here. */
+  --site-topbar: 64px;
+  --site-rail: 88px;
+  --site-drawer: 248px;
+  --site-content: 960px;
+  --site-home: 1280px;
+  --site-brand-switch: 320px;
+  --site-stage: 260px;
+  --site-card: 320px;
+  --site-palette-label: 120px;
+  --site-scale-visual: 120px;
+  --site-toc: 200px;
+  --site-display-size: 52px;
+  --site-display-line: 60px;
+  --site-display-size-compact: 36px;
+  --site-display-line-compact: 44px;
+  /* Offset for anchored headings: the top bar plus breathing room. */
+  --site-anchor-offset: calc(var(--site-topbar) + var(--space-xl));
 }
 
 html {
@@ -19,21 +49,21 @@ html {
 }
 
 body {
-  background: var(--color-bg);
+  background: var(--color-bg-secondary);
   color: var(--color-text-primary);
-  /* --font-lato is the self-hosted face; --font-family-lato is the token value. */
-  font-family: var(--font-lato), var(--font-family-lato), system-ui, sans-serif;
+  font-family: var(--typeface-default), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Anchored sections must clear the sticky mobile bar when jumped to. */
-[data-section] {
-  scroll-margin-top: var(--space-xl);
+/* Anchored sections must clear the sticky top bar when jumped to. */
+[data-section],
+.prose :is(h2, h3)[id] {
+  scroll-margin-top: var(--site-anchor-offset);
 }
 
 @media (max-width: 1023px) {
   [data-section] {
-    scroll-margin-top: 76px;
+    scroll-margin-top: calc(var(--site-topbar) + 76px);
   }
 }
 
@@ -45,6 +75,90 @@ body {
 .hairline {
   border-color: var(--color-border);
 }
+
+/* Keyboard focus for site chrome, in the token focus colour. */
+.site-focus:focus-visible,
+.prose a:focus-visible {
+  outline: var(--stroke-focus) solid var(--color-border-focus);
+  outline-offset: var(--space-3xs);
+}
+
+/*
+ * Long-form guidance. Headings follow the Cosmos type scale; body copy is body-large,
+ * the reading size, capped at a comfortable measure.
+ */
+.prose {
+  font-size: var(--body-large-regular-font-size);
+  line-height: var(--body-large-regular-line-height);
+}
+.prose > h2 {
+  font-size: var(--headline-medium-bold-font-size);
+  line-height: var(--headline-medium-bold-line-height);
+  font-weight: var(--weight-black);
+  margin-block: var(--space-7xl) var(--space-md);
+}
+.prose > h2:first-child { margin-block-start: 0; }
+.prose > h3 {
+  font-size: var(--title-large-bold-font-size);
+  line-height: var(--title-large-bold-line-height);
+  font-weight: var(--weight-bold);
+  margin-block: var(--space-5xl) var(--space-xs);
+}
+.prose > p,
+.prose > ul,
+.prose > ol {
+  max-width: 72ch;
+  margin-block-end: var(--space-md);
+}
+.prose > ul { list-style: disc; padding-inline-start: var(--space-xl); }
+.prose > ol { list-style: decimal; padding-inline-start: var(--space-xl); }
+.prose li { margin-block-end: var(--space-xs); }
+.prose li::marker { color: var(--color-text-tertiary); }
+.prose a:not(.site-link-button) { color: var(--color-text-link); text-decoration: underline; text-underline-offset: 3px; }
+.prose a:not(.site-link-button):hover { color: var(--color-text-link-hover); }
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 1px var(--space-2xs);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface-secondary);
+}
+.prose > figure,
+.prose > .site-block {
+  margin-block: var(--space-xl) var(--space-3xl);
+}
+
+/*
+ * Links that navigate but look like a Large Cosmos Button. A <button> would be the wrong
+ * element for navigation, so these borrow the button/* tokens instead.
+ */
+.site-link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--button-gap-sm);
+  min-height: var(--button-min-height-lg);
+  padding: var(--button-padding-y-lg) var(--button-padding-x-lg);
+  border-radius: var(--button-radius-lg);
+  font-size: var(--label-large-bold-font-size);
+  line-height: var(--label-large-bold-line-height);
+  font-weight: var(--label-large-bold-font-weight);
+  white-space: nowrap;
+  transition: background-color var(--motion-duration-fade) var(--motion-ease-standard);
+}
+.site-link-button:focus-visible {
+  outline: var(--button-focus-ring-width) solid var(--button-focus-ring);
+  outline-offset: var(--button-focus-ring-offset);
+}
+.site-link-button[data-hierarchy="primary"] { background: var(--button-bg-primary-default); color: var(--button-label-primary-default); }
+.site-link-button[data-hierarchy="primary"]:hover { background: var(--button-bg-primary-hover); }
+.site-link-button[data-hierarchy="primary"]:active { background: var(--button-bg-primary-pressed); }
+.site-link-button[data-hierarchy="secondary"] {
+  background: var(--button-bg-secondary-default);
+  color: var(--button-label-secondary-default);
+  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-secondary-default);
+}
+.site-link-button[data-hierarchy="secondary"]:hover { background: var(--button-bg-secondary-hover); color: var(--button-label-secondary-hover); }
+.site-link-button[data-hierarchy="secondary"]:active { background: var(--button-bg-secondary-pressed); color: var(--button-label-secondary-pressed); }
 
 @media (prefers-reduced-motion: reduce) {
   html {
