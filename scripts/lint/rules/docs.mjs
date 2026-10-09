@@ -44,7 +44,7 @@ function tokenIndex(api) {
   const find = (raw) => {
     const code = raw.replace(/^\{(.+)\}$/, "$1").replace(/^var\((--[\w-]+)\)$/, "$1");
     if (model.byId.has(code)) return model.byId.get(code);
-    const comp = /^(\w+)\/([\w-]+)$/.exec(code);
+    const comp = /^([a-z][a-z0-9-]*)\/([\w-]+)$/.exec(code);
     if (comp && componentGroups.has(comp[1])) return model.byId.get(`${comp[1]}.${comp[2]}`) ?? null;
     if (code.startsWith("--")) return cssToLeaf.get(code) ?? null;
     return model.byId.get(`color.${code}`) ?? null;
@@ -96,7 +96,7 @@ function classify(code, idx) {
     if (FILE_EXT.test(code)) return null;
     return { name: code, ok: false };
   }
-  const comp = /^(\w+)\/([\w-]+)$/.exec(code);
+  const comp = /^([a-z][a-z0-9-]*)\/([\w-]+)$/.exec(code);
   if (comp && idx.componentGroups.has(comp[1])) return { name: code, ok: idx.model.byId.has(`${comp[1]}.${comp[2]}`) };
   const css = /^(?:var\()?(--[\w-]+)\)?$/.exec(code);
   if (css && idx.cssPrefixes.has(css[1].slice(2).split("-")[0])) return { name: css[1], ok: idx.cssVars.has(css[1]) };
@@ -227,7 +227,7 @@ const tokenFacts = {
           if (!subjectCode) continue;
 
           // | `button/*` | 120 | … — a count of the group's tokens.
-          const star = /^(\w+)\/\*$/.exec(subjectCode);
+          const star = /^([a-z][a-z0-9-]*)\/\*$/.exec(subjectCode);
           const countCol = headers.indexOf("tokens");
           if (star && idx.componentGroups.has(star[1]) && countCol > 0) {
             const documented = Number(cellText(row.cells[countCol] ?? ""));
@@ -377,7 +377,7 @@ const readmeCounts = {
           else if (sem[name]) expect(line.n, `semantic.${name} tokens`, m[1], c.leavesIn(sem[name]));
         }
         expect(line.n, "component tokens", totals[4], c.byTier("component"));
-        for (const m of totals[5].matchAll(/(\d+) `(\w+)\/\*`/g)) {
+        for (const m of totals[5].matchAll(/(\d+) `([a-z][a-z0-9-]*)\/\*`/g)) {
           if (comp[m[2]]) expect(line.n, `${m[2]}/* tokens`, m[1], c.leavesIn(comp[m[2]]));
         }
         expect(line.n, "values on web", totals[6], c.emittedWeb);
@@ -408,9 +408,12 @@ const readmeCounts = {
         const listed = paletteList[2].split(",").map((s) => s.trim());
         if (listed.join(",") !== c.palettes.join(",")) report(line.n, `Lists palettes ${listed.join(", ")}; tokens.json has ${c.palettes.join(", ")}.`, "palettes");
       }
-      for (const m of text.matchAll(/\b([A-Z][a-z]+) \((\d+) tokens\)/g)) {
-        const group = m[1].toLowerCase();
-        if (comp[group]) expect(line.n, `${group}/* tokens`, m[2], c.leavesIn(comp[group]));
+      // "Button (297 tokens)", "Segmented control (47 tokens)", "Chip (79 tokens, shared …)". The name
+      // can run on in lower case, so match the longest trailing run of words that names a group.
+      for (const m of text.matchAll(/\b([A-Z][a-z]+(?: [a-z]+)*) \((\d+) tokens[,)]/g)) {
+        const words = m[1].toLowerCase().split(" ");
+        const group = words.map((_, i) => words.slice(i).join("-")).find((g) => comp[g]);
+        if (group) expect(line.n, `${group}/* tokens`, m[2], c.leavesIn(comp[group]));
       }
     }
     if (!sawTotals) report(1, "No **Totals:** line found in the Token Inventory, so the inventory counts are unchecked.");

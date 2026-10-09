@@ -10,6 +10,8 @@ import { fixture, lint, ofRule, realTokens, REPO } from "./helpers.mjs";
 const DIST = ["dist"];
 // Live count, so adding a Button token does not break the count assertions below.
 const BUTTON_TOKENS = Object.keys(realTokens().component.button).length;
+// A hyphenated group, so the count checks cannot fall back to matching single words only.
+const SEGMENTED_TOKENS = Object.keys(realTokens().component["segmented-control"]).length;
 
 describe("the repository itself", () => {
   it("passes every rule", async () => {
@@ -30,8 +32,8 @@ describe("docs rules", () => {
   it("docs/unknown-token: every spelling of a token", async () => {
     const root = readme([
       "# T",
-      "Real: `color.text-primary`, `button/bg-primary-default`, `{color.azure.700}`, `--space-md`, `CosmosTokens.colorBgFillBrand`, `spacing.minus8`, `CosmosTokens.swift`.",
-      "Dead: `color.text-primry`, `button/bg-nope`, `{color.azure.1000}`, `--space-huge`, `CosmosTokens.colorNope`.",
+      "Real: `color.text-primary`, `button/bg-primary-default`, `segmented-control/brand-thumb-default`, `{color.azure.700}`, `--space-md`, `CosmosTokens.colorBgFillBrand`, `spacing.minus8`, `CosmosTokens.swift`.",
+      "Dead: `color.text-primry`, `button/bg-nope`, `segmented-control/bg-nope`, `{color.azure.1000}`, `--space-huge`, `CosmosTokens.colorNope`.",
       "Not tokens: `color.*`, `{group}.{size}`, `README.md`.",
       "```css",
       ".a { color: var(--color-text-nope); }",
@@ -44,6 +46,7 @@ describe("docs rules", () => {
     assert.deepEqual(hits.map((h) => h.subject), [
       "color.text-primry",
       "button/bg-nope",
+      "segmented-control/bg-nope",
       "{color.azure.1000}",
       "--space-huge",
       "CosmosTokens.colorNope",
@@ -73,16 +76,18 @@ describe("docs rules", () => {
       "| Group | Tokens |",
       "|---|---|",
       "| `button/*` | 104 |",
+      "| `segmented-control/*` | 1 |",
       "",
       "- `body.medium.regular` → fontFamily.lato · fontWeight.regular · 14px · 24px",
     ].join("\n"));
     const hits = ofRule(await lint(root, "docs/token-facts"), "docs/token-facts");
     const text = hits.map((h) => h.message).join("\n");
-    assert.equal(hits.length, 5, text);
+    assert.equal(hits.length, 6, text);
     assert.match(text, /border-focus aliases color\.azure\.400; tokens\.json has \{color\.azure\.700\}/);
     assert.match(text, /fontSize\.14 is 15px; it resolves to 14px/);
     assert.match(text, /color\.azure\.0 \(#000000\), which does not exist/);
     assert.match(text, new RegExp(`button/\\* has 104 tokens; tokens\\.json has ${BUTTON_TOKENS}`));
+    assert.match(text, new RegExp(`segmented-control/\\* has 1 tokens; tokens\\.json has ${SEGMENTED_TOKENS}`));
     assert.match(text, /body\.medium\.regular/);
   });
 
@@ -99,19 +104,23 @@ describe("docs rules", () => {
       "| Token | Role |",
       "|---|---|",
       "| `color.text-primary` | Body |",
-      `**Totals:** 1 primitive tokens · 2 semantic tokens (${semanticColors} colors + ${typography} typography) · 3 component tokens (${BUTTON_TOKENS} \`button/*\` + 1 \`checkbox/*\`) · **${web} values on web** · **${native} on iOS and Android** · **0 gradients**`,
+      `**Totals:** 1 primitive tokens · 2 semantic tokens (${semanticColors} colors + ${typography} typography) · 3 component tokens (${BUTTON_TOKENS} \`button/*\` + 1 \`checkbox/*\` + 1 \`segmented-control/*\`) · **${web} values on web** · **${native} on iOS and Android** · **0 gradients**`,
       `Button (${BUTTON_TOKENS} tokens) and Radio (5 tokens) qualify.`,
+      `Chip (2 tokens, shared by both sets), Segmented control (${SEGMENTED_TOKENS} tokens) and Also segmented control (2 tokens) too.`,
     ].join("\n"));
     const hits = ofRule(await lint(root, "docs/readme-counts"), "docs/readme-counts");
     const subjects = hits.map((h) => h.subject).sort();
     assert.deepEqual(subjects, [
       "checkbox/* tokens",
+      "chip/* tokens",
       "component tokens",
       "primitive tokens",
       "primitives tokens",
       "primitives.fontSize tokens",
       "radio/* tokens",
       'rows in the "Text (2)" table',
+      "segmented-control/* tokens",
+      "segmented-control/* tokens",
       "semantic tokens",
     ]);
   });
