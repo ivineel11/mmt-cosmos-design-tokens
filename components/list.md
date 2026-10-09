@@ -202,7 +202,7 @@ The divider sits inside Main, so it starts at the text column whatever the leadi
 | Gap between leading and text | 16 | 12 | `list/gap-comfortable`, `list/gap-compact` |
 | Gap between text and trailing | 20 | 16 | `list/gap-text-trailing-comfortable`, `list/gap-text-trailing-compact` |
 | Gap inside the trailing slot | 8 | 4 | `list/gap-trailing-comfortable`, `list/gap-trailing-compact` |
-| Gap between title, supporting text and third line | 0 | 0 | `list/gap-text` |
+| Gap between title, supporting text and third line | 2 | 2 | `list/gap-text` |
 | Leading icon | 24 | 20 | `list/leading-icon-size-comfortable`, `list/leading-icon-size-compact` |
 | Leading circle | 40 | 32 | `list/leading-container-size-comfortable`, `list/leading-container-size-compact` |
 | Icon in the circle | 24 | 20 | `list/leading-container-icon-size-comfortable`, `list/leading-container-icon-size-compact` |

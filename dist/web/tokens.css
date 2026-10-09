@@ -2752,8 +2752,8 @@
   --snackbar-padding-end-control: 12px;
   /** Horizontal gap between the leading icon and the text in both layouts. */
   --snackbar-gap: 12px;
-  /** Vertical gap between the title and the message. Zero, so the two read as one block and the 22px line heights alone space them. For the gap between the text and the controls use gap-controls. */
-  --snackbar-gap-text: 0px;
+  /** Vertical gap between the title and the message. A hairline, so the two still read as one block but the title separates cleanly from the message. For the gap between the text and the controls use gap-controls. */
+  --snackbar-gap-text: 2px;
   /** Gap before each visible control: between the text block and the first control, and between the action and close buttons in the inline layout; between the text block and the close button in the stacked layout. Hidden controls leave no gap, so the text fills the row. */
   --snackbar-gap-controls: 8px;
   /** End padding of the icon and text block in both layouts. Adds to gap-controls for 12px between the text and the first control, and to padding-end-control for 16px from the edge when no control sits beside the text. */
@@ -3032,8 +3032,8 @@
   --list-gap-trailing-comfortable: 8px;
   /** Space between items inside the trailing slot of a Compact row, such as a meta value and its chevron. */
   --list-gap-trailing-compact: 4px;
-  /** Space between the title, the supporting text and the third line of a row. Zero, so the lines read as one block and their line heights alone space them. Use gap-text-trailing-comfortable or gap-text-trailing-compact between the text and the trailing slot. */
-  --list-gap-text: 0px;
+  /** Space between the title, the supporting text and the third line of a row. A hairline, so the lines still read as one block but each line separates cleanly from the next. Use gap-text-trailing-comfortable or gap-text-trailing-compact between the text and the trailing slot. */
+  --list-gap-text: 2px;
   /** Size of a bare leading icon in a Comfortable row. Icons inside a circle use leading-container-icon-size-comfortable. */
   --list-leading-icon-size-comfortable: 24px;
   /** Size of a bare leading icon in a Compact row. */
