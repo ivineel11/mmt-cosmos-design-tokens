@@ -48,6 +48,8 @@ Figma variables cannot bind to prototype transitions or Figma Motion keyframes. 
 - Segmented control slides on `spring.snappy`, the spring its spec already asked for. The slide and the 0.95 press are now the separate `translate` and `scale` properties, so the press keeps its 100 ms.
 - The docs site sidebar uses the semantic tokens; its own `--motion-*` variables and ease-in exit curve are gone.
 
-## Still open
+## Exit animations (PR 3)
 
-- Menu, Snackbar and Rich tooltip exits: each unmounts at once, so a fade-out needs the component to stay mounted until the fade ends.
+- Menu fades out over `menu/exit-duration` (`duration.xs`) and Snackbar over `snackbar/exit-duration` (`duration.md`), both without moving. A replaced snackbar leaves before the next one enters.
+- Both stay mounted and inert until the fade ends, through `storybook/src/components/presence.ts`, which reads the timing from the element's own CSS so the tokens remain the only source.
+- The Rich tooltip now stays mounted and hidden when closed, like Plain, so it reuses the same `display` transition and `tooltip/exit-duration` fade.

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { Icon, type IconName } from "../Icon/Icon";
+import { usePresence } from "../presence";
 import styles from "./Menu.module.css";
 
 export type MenuEntry =
@@ -59,6 +60,8 @@ export function Menu({ trigger, items, open, onOpenChange, density = "comfortabl
   const triggerId = useId();
   const menuId = useId();
   const [focusOn, setFocusOn] = useState<"first" | "last">("first");
+  // The panel stays mounted while it fades out, then unmounts.
+  const { mounted, exiting } = usePresence(isOpen, () => document.getElementById(menuId));
 
   const setOpen = useCallback(
     (next: boolean, restoreFocus = true) => {
@@ -91,9 +94,10 @@ export function Menu({ trigger, items, open, onOpenChange, density = "comfortabl
   return (
     <>
       {trigger(triggerProps)}
-      {isOpen && (
+      {mounted && (
         <Panel
           id={menuId}
+          exiting={exiting}
           labelledBy={triggerId}
           getAnchor={() => triggerRef.current}
           placement={align === "end" ? "bottom-end" : "bottom-start"}
@@ -129,9 +133,11 @@ type PanelProps = {
   onClose: (restoreFocus: boolean) => void;
   /** Submenus close back to their parent row instead of closing everything. */
   onBack?: () => void;
+  /** Fading out after close: inert, and no longer listening for outside presses. */
+  exiting?: boolean;
 };
 
-function Panel({ id, labelledBy, getAnchor, placement, items, density, selectionMode, value, focusOn, onSelect, onClose, onBack }: PanelProps) {
+function Panel({ id, labelledBy, getAnchor, placement, items, density, selectionMode, value, focusOn, onSelect, onClose, onBack, exiting = false }: PanelProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<CSSProperties>({ opacity: 0 }); // transparent, not hidden, so focus can move in before it is placed
   const [submenu, setSubmenu] = useState<{ id: string; focusOn: "first" | "none" } | null>(null);
@@ -170,16 +176,16 @@ function Panel({ id, labelledBy, getAnchor, placement, items, density, selection
 
   const rows = () => [...(ref.current?.querySelectorAll<HTMLElement>('[role^="menuitem"]') ?? [])];
 
-  // Move focus into the panel on open.
+  // Move focus into the panel on open, and again if it reopens while fading out.
   useEffect(() => {
-    if (focusOn === "none") return;
+    if (focusOn === "none" || exiting) return;
     const list = rows();
     (focusOn === "last" ? list[list.length - 1] : list[0])?.focus();
-  }, [focusOn]);
+  }, [focusOn, exiting]);
 
   // Close on a pointer press outside every open panel.
   useEffect(() => {
-    if (onBack) return;
+    if (onBack || exiting) return;
     const onPointerDown = (event: PointerEvent) => {
       const target = event.target as Node;
       if (getAnchor()?.contains(target)) return;
@@ -188,7 +194,7 @@ function Panel({ id, labelledBy, getAnchor, placement, items, density, selection
     };
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);
-  }, [getAnchor, onBack, onClose]);
+  }, [getAnchor, onBack, onClose, exiting]);
 
   const activate = (entry: Extract<MenuEntry, { id: string }>, viaKeyboard: boolean) => {
     if (entry.disabled) return;
@@ -310,7 +316,7 @@ function Panel({ id, labelledBy, getAnchor, placement, items, density, selection
 
   return createPortal(
     <>
-      <div ref={ref} id={id} role="menu" tabIndex={-1} aria-labelledby={labelledBy} data-cosmos-menu="" className={styles.panel} data-density={density} style={style} onKeyDown={onKeyDown}>
+      <div ref={ref} id={id} role="menu" tabIndex={-1} aria-labelledby={labelledBy} data-cosmos-menu="" className={styles.panel} data-density={density} data-exiting={exiting || undefined} inert={exiting || undefined} style={style} onKeyDown={onKeyDown}>
         {groups}
       </div>
       {openEntry?.submenu && (
@@ -325,6 +331,7 @@ function Panel({ id, labelledBy, getAnchor, placement, items, density, selection
           focusOn={submenu!.focusOn}
           onSelect={onSelect}
           onClose={onClose}
+          exiting={exiting}
           onBack={() => {
             setSubmenu(null);
             rowRefs.current[openEntry.id]?.focus();

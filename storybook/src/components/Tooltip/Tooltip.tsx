@@ -267,32 +267,34 @@ export function Tooltip({ children, open, onOpenChange, delay = 300, duration = 
   return (
     <>
       {children(triggerProps)}
-      {/* Plain stays mounted (hidden) so aria-describedby always resolves. */}
-      {(isOpen || !rich) &&
-        createPortal(
-          <div
-            className={styles.floating}
-            hidden={!isOpen}
-            style={{ left: place?.left ?? 0, top: place?.top ?? 0, opacity: place ? undefined : 0, ...enter }}
-            onPointerEnter={() => !rich && window.clearTimeout(timer.current)}
-            onPointerLeave={() => !rich && later(false, 100)}
-          >
-            <TooltipBubble
-              {...bubble}
-              ref={bubbleRef}
-              id={id}
-              side={side}
-              caretPosition={place?.caret}
-              onClose={() => {
-                setOpen(false);
-                triggerRef.current?.focus();
-              }}
-              secondaryAction={bubble.secondaryAction && { ...bubble.secondaryAction, onAction: () => { bubble.secondaryAction?.onAction?.(); setOpen(false); triggerRef.current?.focus(); } }}
-              primaryAction={bubble.primaryAction && { ...bubble.primaryAction, onAction: () => { bubble.primaryAction?.onAction?.(); setOpen(false); triggerRef.current?.focus(); } }}
-            />
-          </div>,
-          document.body,
-        )}
+      {/* Both stay mounted and hidden when closed: Plain so aria-describedby always resolves,
+          and both so the bubble can fade out (CSS keeps it displayed until the fade ends).
+          A closed Rich bubble is inert, so its buttons leave the tab order at once. */}
+      {createPortal(
+        <div
+          className={styles.floating}
+          hidden={!isOpen}
+          inert={(rich && !isOpen) || undefined}
+          style={{ left: place?.left ?? 0, top: place?.top ?? 0, opacity: place ? undefined : 0, ...enter }}
+          onPointerEnter={() => !rich && window.clearTimeout(timer.current)}
+          onPointerLeave={() => !rich && later(false, 100)}
+        >
+          <TooltipBubble
+            {...bubble}
+            ref={bubbleRef}
+            id={id}
+            side={side}
+            caretPosition={place?.caret}
+            onClose={() => {
+              setOpen(false);
+              triggerRef.current?.focus();
+            }}
+            secondaryAction={bubble.secondaryAction && { ...bubble.secondaryAction, onAction: () => { bubble.secondaryAction?.onAction?.(); setOpen(false); triggerRef.current?.focus(); } }}
+            primaryAction={bubble.primaryAction && { ...bubble.primaryAction, onAction: () => { bubble.primaryAction?.onAction?.(); setOpen(false); triggerRef.current?.focus(); } }}
+          />
+        </div>,
+        document.body,
+      )}
     </>
   );
 }

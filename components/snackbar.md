@@ -114,10 +114,10 @@ The Figma page has these as a live `Snackbar examples` frame (`637:3330`).
 | Phase | Movement | Duration | Easing |
 |---|---|---|---|
 | Enter | Slide up 16 px and fade 0 → 1 | `snackbar/enter-duration` (`duration.lg`) | `snackbar/easing` (`easing.standard`) |
-| Exit | Fade 1 → 0 (with swipe: follow the finger, then fade) | `duration.md`, one size down from the entrance | `easing.standard` |
+| Exit | Fade 1 → 0 (with swipe: follow the finger, then fade) | `snackbar/exit-duration` (`duration.md`) | `snackbar/easing` (`easing.standard`) |
 | Replace | Exit the old one, then enter the new one | Exit, then enter | as above |
 
-With `prefers-reduced-motion`, or Reduce Motion on iOS and Android, use the fade alone with no slide. On the web the entrance is a transition started with `@starting-style`; the exit is not built yet (see Known gaps).
+With `prefers-reduced-motion`, or Reduce Motion on iOS and Android, use the fade alone with no slide. On the web the entrance is a transition started with `@starting-style`, and the viewport keeps a dismissed snackbar mounted (inert, with its timer stopped) until it has faded out, then shows the next one. Swipe to dismiss is not built on the web.
 
 ---
 
@@ -289,7 +289,6 @@ On the Inverse bar the icon is the only intent signal, and on Tinted the tint ad
 ## Known gaps
 
 - **Appearance is a trial.** Inverse and Tinted both ship. Once one is chosen, delete the other appearance tokens (about 50 of the 114), its Figma variants and its Control tones.
-- **Exit is not animated on the web.** The snackbar unmounts as soon as it is dismissed, so the `duration.md` fade-out needs the component to stay mounted until the fade ends.
 - **Web width is not tokenised.** 288 min and 560 max are beyond the space scale, which stops at 64. They are documented here only.
 - **No leading icon swap property.** A set-level instance-swap default resets every intent to one glyph (tested and reverted), so the glyph is swapped on the layer.
 - **`snackbar/focus-ring-offset` is not bound in Figma.** As on Chip, the 4 px outset is ring geometry. The ring binds width, radius and colour.

@@ -1747,6 +1747,7 @@ export default {
     "margin-mobile": "16px",
     "margin-desktop": "24px",
     "enter-duration": 250,
+    "exit-duration": 200,
     easing: [0.23, 1, 0.32, 1],
   },
   badge: {
@@ -2134,6 +2135,7 @@ export default {
     "divider-spacing-comfortable": "8px",
     "divider-spacing-compact": "4px",
     "enter-duration": 150,
+    "exit-duration": 100,
     easing: [0.23, 1, 0.32, 1],
   },
   tooltip: {

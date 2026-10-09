@@ -1334,6 +1334,7 @@ object CosmosTokens {
   val menuDividerWidth = 1.dp
   val menuEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
   val menuEnterDuration = 150
+  val menuExitDuration = 100
   val menuFocusRing = Color(0xFF0088FF)
   val menuFocusRingWidth = 2.dp
   val menuGapComfortable = 12.dp
@@ -1764,6 +1765,7 @@ object CosmosTokens {
   val snackbarControlRadius = 8.dp
   val snackbarEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
   val snackbarEnterDuration = 250
+  val snackbarExitDuration = 200
   val snackbarFocusRing = Color(0xFF0088FF)
   val snackbarFocusRingOffset = 2.dp
   val snackbarFocusRingRadius = 12.dp

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Icon, type IconName } from "../Icon/Icon";
+import { afterExit } from "../presence";
 import styles from "./Snackbar.module.css";
 
 export type SnackbarIntent = "neutral" | "info" | "success" | "caution" | "warning";
@@ -163,9 +164,27 @@ export function useSnackbarQueue() {
  * Where snackbars appear: bottom of the screen, full width minus margins on mobile and
  * hugging 288 to 560 px on wider screens (widths the spec leaves untokenised). The two live
  * regions exist before a message arrives, so screen readers announce it: polite for every
- * intent except warning, which is assertive.
+ * intent except warning, which is assertive. A dismissed snackbar fades out before the next
+ * one enters (spec, Motion: Replace).
  */
 export function SnackbarViewport({ current, onDismiss, contained = false }: { current: Queued | null; onDismiss: (reason: DismissReason) => void; contained?: boolean }) {
+  const viewport = useRef<HTMLDivElement>(null);
+  // The snackbar on screen. It lags `current` while a dismissed one fades out.
+  const [shown, setShown] = useState(current);
+  const [leaving, setLeaving] = useState(false);
+  if (current?.key !== shown?.key && !leaving) {
+    if (shown) setLeaving(true);
+    else setShown(current);
+  }
+  useEffect(() => {
+    if (!leaving) return;
+    return afterExit(viewport.current?.querySelector("[data-exiting] > *") ?? null, () => {
+      setLeaving(false);
+      setShown(null);
+    });
+  }, [leaving]);
+  const visible = leaving ? shown : current;
+
   const [wide, setWide] = useState(() => typeof window !== "undefined" && window.innerWidth >= 600);
   useEffect(() => {
     const query = window.matchMedia("(min-width: 600px)");
@@ -174,14 +193,18 @@ export function SnackbarViewport({ current, onDismiss, contained = false }: { cu
     return () => query.removeEventListener("change", update);
   }, []);
   const size: CSSProperties = wide ? { minWidth: 288, maxWidth: 560 } : { width: "100%" };
-  const { key, ...props } = current ?? { key: 0 };
-  const region = (assertive: boolean): ReactNode => (
-    <div role={assertive ? "alert" : "status"} style={current ? size : undefined}>
-      {current && (current.intent === "warning") === assertive && <Snackbar key={key} {...(props as SnackbarProps)} onDismiss={onDismiss} />}
-    </div>
-  );
+  const { key, ...props } = visible ?? { key: 0 };
+  // While leaving, the snackbar no longer times out or answers Esc, and is inert.
+  const region = (assertive: boolean): ReactNode => {
+    const here = visible && (visible.intent === "warning") === assertive;
+    return (
+      <div role={assertive ? "alert" : "status"} style={visible ? size : undefined} data-exiting={(here && leaving) || undefined} inert={(here && leaving) || undefined}>
+        {here && <Snackbar key={key} {...(props as SnackbarProps)} onDismiss={leaving ? undefined : onDismiss} />}
+      </div>
+    );
+  };
   return (
-    <div className={styles.viewport} style={contained ? { position: "absolute" } : undefined}>
+    <div ref={viewport} className={styles.viewport} style={contained ? { position: "absolute" } : undefined}>
       {region(false)}
       {region(true)}
     </div>

@@ -1,8 +1,9 @@
 /*
  * Snackbar: components/snackbar.md. Every value is a snackbar/* or semantic token; the
  * shadow is shadow.card, as the spec binds it. Appearance (inverse, tinted) is on trial.
- * Motion: enter slides up 16 and fades over snackbar-enter-duration; reduced motion fades
- * only. The snackbar still leaves at once (spec, Known gaps).
+ * Motion: enter slides up 16 and fades over snackbar-enter-duration, and a dismissed
+ * snackbar fades out without moving over snackbar-exit-duration before the next one enters.
+ * Reduced motion keeps the fades and drops the slide.
  */
 
 .root {
@@ -100,6 +101,9 @@
   pointer-events: none;
 }
 .viewport > * { pointer-events: auto; }
+/* Leaving: the viewport keeps the snackbar mounted until this fade ends. */
+.viewport > [data-exiting] { pointer-events: none; }
+.viewport > [data-exiting] > .root { opacity: 0; transition: opacity var(--snackbar-exit-duration) var(--snackbar-easing); }
 .root[data-appearance="inverse"][data-intent="neutral"] { --_bg: var(--snackbar-bg-inverse-neutral); --_label: var(--snackbar-label-inverse-neutral); --_icon: var(--snackbar-icon-inverse-neutral); }
 .root[data-appearance="tinted"][data-intent="neutral"] {
   --_bg: var(--snackbar-bg-tinted-neutral); --_border: var(--snackbar-border-tinted-neutral); --_label: var(--snackbar-label-tinted-neutral); --_icon: var(--snackbar-icon-tinted-neutral);
