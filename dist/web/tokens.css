@@ -2796,7 +2796,9 @@
   --snackbar-margin-desktop: 24px;
   /** How long the snackbar takes to slide up and fade in. Under reduced motion it only fades, over the same time. */
   --snackbar-enter-duration: 250ms;
-  /** Curve of the snackbar entrance, fast at the start and settling gently into place. */
+  /** How long a dismissed snackbar takes to fade out without moving, one size down from enter-duration. The next snackbar enters only after it has gone. */
+  --snackbar-exit-duration: 200ms;
+  /** Curve of the snackbar entrance and exit, fast at the start and settling gently into place. */
   --snackbar-easing: cubic-bezier(0.23, 1, 0.32, 1);
   /** Solid fill of a strong neutral badge, used for counts and tags that carry no status, such as a result count or Sold out. Count badges default to strong; for a calmer tag use bg-subtle-neutral. */
   --badge-bg-strong-neutral: #0A0A0A;
@@ -3532,7 +3534,9 @@
   --menu-divider-spacing-compact: 4px;
   /** How long the panel takes to fade in and scale up from the corner nearest its trigger. Under reduced motion it only fades, over the same time. */
   --menu-enter-duration: 150ms;
-  /** Curve of the panel entrance, fast at the start so the menu appears to answer the tap at once. */
+  /** How long the panel takes to fade out without moving when it closes, one step quicker than enter-duration because nobody waits for it to leave. It is inert while it fades. */
+  --menu-exit-duration: 100ms;
+  /** Curve of the panel entrance and exit, fast at the start so the menu appears to answer the tap at once. */
   --menu-easing: cubic-bezier(0.23, 1, 0.32, 1);
   /** Fill of a Dark tooltip bubble and its caret, Plain and Rich. The default surface. No border and no shadow, because near black already stands apart from the page. Use bg-light over photos, maps and dark sections, and bg-info for friendly tips and feature hints. */
   --tooltip-bg-dark: #0A0A0A;
