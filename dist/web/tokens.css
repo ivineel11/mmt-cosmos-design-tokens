@@ -631,8 +631,10 @@
   --color-border-strong: #737373;
   /** Border of a disabled control that keeps a visible outline — disabled secondary button. */
   --color-border-disabled-strong: #A1A1A1;
-  /** Border of a disabled low-emphasis control — disabled input field. */
+  /** Border of a disabled low-emphasis control that keeps a faint outline — the disabled chip and the disabled outlined switch. For the disabled input field, whose outline merges into its body, use border-disabled-subtlest. */
   --color-border-disabled-subtle: #D4D4D4;
+  /** Lightest disabled border, the same grey as bg-fill-disabled-subtlest, so the outline of a disabled input field merges into its body and the inert field recedes. For a disabled control that keeps a faint outline use border-disabled-subtle, and one that keeps a visible outline use border-disabled-strong. */
+  --color-border-disabled-subtlest: #F5F5F5;
   /** Keyboard focus ring. Apply on :focus-visible rather than :focus so the ring does not appear on pointer interaction. */
   --color-border-focus: #0088FF;
   /** Brand border on an unfilled control — secondary button default, selected card outline. */
@@ -3597,8 +3599,8 @@
   --input-border-pressed: #737373;
   /** Outline of the active field, the one that has focus and receives typing, in the Active and Typing states. Drawn at border-width-active. A field in the error state keeps border-error-active instead. */
   --input-border-active: #0088FF;
-  /** Outline of a disabled field, in both intents. Disabled wins over the error state, so an inert field never shows red. */
-  --input-border-disabled: #D4D4D4;
+  /** Outline of a disabled field, in both intents. The same grey as the disabled field body, so the outline disappears and the inert field recedes. Disabled wins over the error state, so an inert field never shows red. */
+  --input-border-disabled: #F5F5F5;
   /** Outline of the field in the error state, at rest. Pairs with label-error and the error message under the field. */
   --input-border-error-default: #C10007;
   /** Outline of the field in the error state, on hover. A brighter red than border-error-default so hover still reads on an invalid field. */
