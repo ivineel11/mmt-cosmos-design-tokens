@@ -8,6 +8,7 @@ export const NAV: NavGroup[] = [
     items: [
       { id: "primitive-palettes", label: "Primitive palettes" },
       { id: "semantic-colors", label: "Semantic colors" },
+      { id: "surface-or-fill", label: "Surface or fill" },
       { id: "expressive", label: "Expressive" },
       { id: "contrast", label: "Contrast" },
     ],

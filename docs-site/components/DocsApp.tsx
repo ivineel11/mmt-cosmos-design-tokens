@@ -9,6 +9,7 @@ import { Contrast } from "@/components/sections/Contrast";
 import { Palettes } from "@/components/sections/Palettes";
 import { ScaleTable, previews } from "@/components/sections/ScaleTable";
 import { SemanticColors } from "@/components/sections/SemanticColors";
+import { SurfaceOrFill } from "@/components/sections/SurfaceOrFill";
 import { Typography } from "@/components/sections/Typography";
 import { filterData, populatedSections } from "@/lib/filter";
 import type { Platform, TokenData } from "@/lib/types";
@@ -86,6 +87,16 @@ export function DocsApp({ data }: { data: TokenData }) {
               description="Role-based colors that reference a primitive. Use these everywhere so a palette change flows through the product without touching component code."
             >
               <SemanticColors groups={semantic.colorGroups} platform={platform} />
+            </Section>
+          )}
+
+          {populated.has("surface-or-fill") && (
+            <Section
+              id="surface-or-fill"
+              title="Surface or fill"
+              description="bg-surface and bg-fill often share a colour, so never pick between them by colour. Pick by what the colour belongs to: the body of a control or mark is a fill, an area that holds content is a surface."
+            >
+              <SurfaceOrFill />
             </Section>
           )}
 

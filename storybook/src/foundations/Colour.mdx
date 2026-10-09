@@ -1,5 +1,5 @@
 import { Meta } from "@storybook/addon-docs/blocks";
-import { CanvasPairing, ColorRole, ContrastTable, Palettes } from "../blocks";
+import { CanvasPairing, ColorRole, ContrastTable, Palettes, SurfaceOrFill } from "../blocks";
 
 <Meta title="Foundations/Colour" />
 
@@ -15,19 +15,44 @@ A screen sits on one of two canvases, white or grey, and the container on top mu
 
 <CanvasPairing />
 
+## Surface or fill
+
+`bg-surface-*` and `bg-fill-*` often share a colour (`bg-surface-brand` and `bg-fill-brand-subtlest` are both `azure.50`), so never pick between them by colour. Pick by **what the colour belongs to**:
+
+- **Fill:** the colour is the body of the element itself, the shape that *is* the control or the mark. Take the colour away and the element loses its shape.
+- **Surface:** the colour is an area that holds other content. Take the colour away and the content is still there, just without a backdrop.
+
+<SurfaceOrFill />
+
+| Use `bg-fill-*` for | Use `bg-surface-*` for |
+|---|---|
+| Buttons, including the tinted secondary, tertiary and text states | Page sections, wells and grouped areas |
+| Checkbox and radio boxes, switch tracks and thumbs | Cards, sheets, dialogs and popovers |
+| Chips, segmented control tracks and thumbs | Menu panels and list groups |
+| Slider tracks and halos | Banners, snackbars and tooltips |
+| Input field bodies | Tappable rows and cards, at rest and on hover or press |
+| Badges, counters and status dots | Scrims and dark overlays (`bg-surface-inverse`) |
+| Icon wells, such as the leading circle of a list row | A disabled section or card (`bg-surface-disabled`) |
+| Skeleton blocks | |
+
+- **Tappable rows stay surfaces.** A menu item or list row is interactive, but it is a slice of its container and holds other content. Its hover and pressed steps come from the surface it sits in: `bg-surface-hover`, `bg-surface-secondary-hover`, or `bg-surface-warning-hover` for a destructive item. If an element holds other components or lines of content, it is a surface; if it is a single control or mark, it is a fill.
+- **A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever it sits on. The inline actions of Snackbar and Tooltip still use surface tokens and move in a follow-up.
+- **Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; an unavailable section or card uses `bg-surface-disabled`. The one exception is the disabled chip and the disabled list icon well, which use `bg-surface-disabled-subtle` (`neutral.50`): no disabled fill is that light, and `bg-fill-disabled-subtlest` (`neutral.100`) would vanish on the grey canvas.
+- **Pair the foreground with the same role.** On a fill, use `*-on-bg-fill-*` labels and icons; on a surface, use `*-on-bg-surface-*`. Keep the pairing even where the two resolve to the same colour, so they can diverge later, for example in another brand.
+
 ## Background
 
 <ColorRole role="bg" showPreview={false} />
 
 ## Surface
 
-Containers that sit on the page canvas.
+Containers that hold content: sections, cards, sheets, menus, list groups, banners, tooltips and snackbars, and the tappable rows inside them.
 
 <ColorRole role="surface" showPreview={false} />
 
 ## Fill
 
-Interactive and emphasis fills for buttons, badges and banners. Strong and subtle fills each have their own text partner.
+The body of an element itself: controls such as buttons, checkboxes, chips, switches and inputs, and marks such as badges, status dots and icon wells. Strong, subtle and subtlest fills each have their own text partner.
 
 <ColorRole role="fill" showPreview={false} />
 
