@@ -636,6 +636,12 @@ public struct CosmosBrand: Identifiable, Sendable {
     /// Circle behind the remove glyph of a removable chip — selected, while the remove button itself is pressed.
     public let chipRemoveBgSelectedPressed: Color
 
+    /// Fill of the action and close buttons on a tinted neutral snackbar, on hover: a light brand tint, the same as a Text Button, since a neutral message has no intent colour to follow.
+    public let snackbarBgControlTintedNeutralHover: Color
+
+    /// Fill of the action and close buttons on a tinted neutral snackbar, while pressed: one brand step deeper than hover, the same as a pressed Text Button.
+    public let snackbarBgControlTintedNeutralPressed: Color
+
     /// Action label on a tinted neutral snackbar, at rest and on keyboard focus. Brand coloured, since a neutral message has no intent colour to follow.
     public let snackbarLabelControlTintedNeutralDefault: Color
 
@@ -770,6 +776,12 @@ public struct CosmosBrand: Identifiable, Sendable {
 
     /// Label of the primary text action on a Light Rich tooltip while pressed. Darkens with the control-bg-light-pressed fill so it keeps AA contrast.
     public let tooltipPrimaryLabelLightPressed: Color
+
+    /// Fill of the primary and secondary text actions and the close button on a Light Rich tooltip under the pointer: a light brand tint, the same as a Text Button. Web only. At rest and on focus they have no fill. Use control-bg-light-pressed while pressed.
+    public let tooltipControlBgLightHover: Color
+
+    /// Fill of the primary and secondary text actions and the close button on a Light Rich tooltip while pressed, on touch and web: one brand step deeper than hover, the same as a pressed Text Button. Use control-bg-light-hover under the pointer.
+    public let tooltipControlBgLightPressed: Color
 
     /// Outline of the active field, the one that has focus and receives typing, in the Active and Typing states. Drawn at border-width-active. A field in the error state keeps border-error-active instead.
     public let inputBorderActive: Color
@@ -983,6 +995,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         chipIconSelectedPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
         chipRemoveBgSelectedHover: Color(red: 0.709804, green: 0.917647, blue: 1),
         chipRemoveBgSelectedPressed: Color(red: 0.709804, green: 0.917647, blue: 1),
+        snackbarBgControlTintedNeutralHover: Color(red: 0.929412, green: 0.980392, blue: 1),
+        snackbarBgControlTintedNeutralPressed: Color(red: 0.839216, green: 0.952941, blue: 1),
         snackbarLabelControlTintedNeutralDefault: Color(red: 0, green: 0.533333, blue: 1),
         snackbarLabelControlTintedNeutralHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         snackbarLabelControlTintedNeutralPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
@@ -1028,6 +1042,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         tooltipPrimaryLabelLight: Color(red: 0, green: 0.533333, blue: 1),
         tooltipPrimaryLabelLightHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         tooltipPrimaryLabelLightPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
+        tooltipControlBgLightHover: Color(red: 0.929412, green: 0.980392, blue: 1),
+        tooltipControlBgLightPressed: Color(red: 0.839216, green: 0.952941, blue: 1),
         inputBorderActive: Color(red: 0, green: 0.533333, blue: 1)
     )
 
@@ -1240,6 +1256,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         chipIconSelectedPressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
         chipRemoveBgSelectedHover: Color(red: 1, green: 0.737255, blue: 0.658824),
         chipRemoveBgSelectedPressed: Color(red: 1, green: 0.737255, blue: 0.658824),
+        snackbarBgControlTintedNeutralHover: Color(red: 1, green: 0.94902, blue: 0.929412),
+        snackbarBgControlTintedNeutralPressed: Color(red: 1, green: 0.878431, blue: 0.831373),
         snackbarLabelControlTintedNeutralDefault: Color(red: 1, green: 0.286275, blue: 0.160784),
         snackbarLabelControlTintedNeutralHover: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
         snackbarLabelControlTintedNeutralPressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
@@ -1285,6 +1303,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         tooltipPrimaryLabelLight: Color(red: 1, green: 0.286275, blue: 0.160784),
         tooltipPrimaryLabelLightHover: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
         tooltipPrimaryLabelLightPressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
+        tooltipControlBgLightHover: Color(red: 1, green: 0.94902, blue: 0.929412),
+        tooltipControlBgLightPressed: Color(red: 1, green: 0.878431, blue: 0.831373),
         inputBorderActive: Color(red: 1, green: 0.286275, blue: 0.160784)
     )
 
@@ -1497,6 +1517,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         chipIconSelectedPressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
         chipRemoveBgSelectedHover: Color(red: 1, green: 0.843137, blue: 0.647059),
         chipRemoveBgSelectedPressed: Color(red: 1, green: 0.843137, blue: 0.647059),
+        snackbarBgControlTintedNeutralHover: Color(red: 1, green: 0.968627, blue: 0.92549),
+        snackbarBgControlTintedNeutralPressed: Color(red: 1, green: 0.929412, blue: 0.827451),
         snackbarLabelControlTintedNeutralDefault: Color(red: 0.956863, green: 0.34902, blue: 0),
         snackbarLabelControlTintedNeutralHover: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
         snackbarLabelControlTintedNeutralPressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
@@ -1542,6 +1564,8 @@ public struct CosmosBrand: Identifiable, Sendable {
         tooltipPrimaryLabelLight: Color(red: 0.956863, green: 0.34902, blue: 0),
         tooltipPrimaryLabelLightHover: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
         tooltipPrimaryLabelLightPressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
+        tooltipControlBgLightHover: Color(red: 1, green: 0.968627, blue: 0.92549),
+        tooltipControlBgLightPressed: Color(red: 1, green: 0.929412, blue: 0.827451),
         inputBorderActive: Color(red: 0.956863, green: 0.34902, blue: 0)
     )
 

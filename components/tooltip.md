@@ -216,14 +216,14 @@ Token names follow `tooltip/{part}-{surface}[-{state}]`, with `dark`, `light` or
 | Rich message and step | `description-dark` → `text-inverse-secondary` #A1A1A1 | `description-light` → `text-secondary` #525252 | `description-info` → `text-secondary` #525252 |
 | Leading icon | `icon-dark` → `icon-inverse` #FFFFFF | `icon-light` → `icon` #0A0A0A | `icon-info` → `icon-info` #0088FF |
 | Media placeholder | `media-bg-dark` → `bg-fill-inverse-pressed` #262626 | `media-bg-light` → `bg-surface` #F5F5F5 | `media-bg-info` → `bg-surface-secondary` #FFFFFF |
-| Primary action label | `primary-label-dark` → `text-link-inverse` #83DFFF, every state | `primary-label-light` → `text-brand` #0088FF; Hover `-hover` → `text-brand-on-bg-surface-hover` #0868C5; Pressed `-pressed` → `text-brand-on-bg-surface-pressed` #0D589B | `primary-label-info` → `text-info` #0088FF; Hover `-hover` → `text-info-on-bg-surface-hover` #0868C5; Pressed `-pressed` → `text-info-on-bg-surface-pressed` #0D589B |
+| Primary action label | `primary-label-dark` → `text-link-inverse` #83DFFF, every state | `primary-label-light` → `text-brand` #0088FF; Hover `-hover` → `text-brand-on-bg-fill-subtlest-hover` #0868C5; Pressed `-pressed` → `text-brand-on-bg-fill-subtlest-pressed` #0D589B | `primary-label-info` → `text-info` #0088FF; Hover `-hover` → `text-info-on-bg-fill-subtlest-hover` #0868C5; Pressed `-pressed` → `text-info-on-bg-fill-subtlest-pressed` #0D589B |
 | Secondary action label | `secondary-label-dark` → `text-inverse-secondary` #A1A1A1 | `secondary-label-light` → `text-secondary` #525252 | `secondary-label-info` → `text-secondary` #525252 |
 | Close glyph | `close-icon-dark` → `icon-inverse-secondary` #A1A1A1 | `close-icon-light` → `icon-secondary` #525252 | `close-icon-info` → `icon-secondary` #525252 |
-| Text actions and close, Hover | `control-bg-dark-hover` → `bg-fill-inverse-hover` #171717 | `control-bg-light-hover` → `bg-surface-secondary-hover` #FAFAFA | `control-bg-info-hover` → `bg-surface-info-hover` #D6F3FF |
-| Text actions and close, Pressed | `control-bg-dark-pressed` → `bg-fill-inverse-pressed` #262626 | `control-bg-light-pressed` → `bg-surface-secondary-pressed` #F5F5F5 | `control-bg-info-pressed` → `bg-surface-info-pressed` #B5EAFF |
+| Text actions and close, Hover | `control-bg-dark-hover` → `bg-fill-inverse-hover` #171717 | `control-bg-light-hover` → `bg-fill-brand-subtlest` #EDFAFF | `control-bg-info-hover` → `bg-fill-info-subtlest-hover` #D6F3FF |
+| Text actions and close, Pressed | `control-bg-dark-pressed` → `bg-fill-inverse-pressed` #262626 | `control-bg-light-pressed` → `bg-fill-brand-subtlest-hover` #D6F3FF | `control-bg-info-pressed` → `bg-fill-info-subtlest-pressed` #B5EAFF |
 | Focus ring | `focus-ring` → `border-focus` #0088FF | same | same |
 
-At rest and on focus the text actions and close button have no fill; only hover and press add one. On Light and Info the primary label darkens with the fill, because the brand and info blues fall to 3.03 and 2.71:1 on the tinted Info hover and pressed fills; on Dark the light blue passes on every fill, so it stays the same. The message keeps the description colour with or without a title.
+At rest and on focus the text actions and close button have no fill; only hover and press add one. On Light that fill is a light brand tint, the same as a Text Button. On Light and Info the primary label darkens with the fill, because the brand and info blues fall to 3.03 and 2.71:1 on the tinted Info hover and pressed fills; on Dark the light blue passes on every fill, so it stays the same. The message keeps the description colour with or without a title.
 
 This component adds no semantic roles.
 
@@ -240,11 +240,11 @@ This component adds no semantic roles.
 | Dark: Skip on Hover #171717 / Pressed #262626 | 6.94 / 5.86:1 | 4.5:1 | Pass |
 | Dark: close glyph #A1A1A1 on #0A0A0A / #171717 / #262626 | 7.66 / 6.94 / 5.86:1 | 3:1 (1.4.11) | Pass |
 | Dark: primary action #83DFFF on #0A0A0A / Hover #171717 / Pressed #262626 | 13.16 / 11.92 / 10.06:1 | 4.5:1 | Pass |
-| Light: primary action #0088FF on #FFFFFF / Hover #0868C5 on #FAFAFA / Pressed #0D589B on #F5F5F5 | 3.52 / 5.29 / 6.67:1 | 3:1 (azure exception) | Pass |
+| Light: primary action #0088FF on #FFFFFF / Hover #0868C5 on #EDFAFF / Pressed #0D589B on #D6F3FF | 3.52 / 5.19 / 6.28:1 | 3:1 (azure exception) | Pass |
 | Dark bubble #0A0A0A on a white or grey page | 19.80 / 18.16:1 | 3:1 | Pass |
 | Light: label and title #0A0A0A on #FFFFFF | 19.80:1 | 4.5:1 | Pass |
 | Light: message, step and Skip #525252 on #FFFFFF | 7.81:1 | 4.5:1 | Pass |
-| Light: Skip and close on Hover #FAFAFA / Pressed #F5F5F5 | 7.49 / 7.17:1 | 4.5:1 | Pass |
+| Light: Skip and close on Hover #EDFAFF / Pressed #D6F3FF | 7.34 / 6.74:1 | 4.5:1 | Pass |
 | Light: border #E5E5E5 on white | 1.26:1 | – | Decorative. The overlay shadow carries the edge, as on Menu |
 | Info: label and title #0A0A0A on #EDFAFF | 18.59:1 | 4.5:1 | Pass |
 | Info: message, step and Skip #525252 on #EDFAFF | 7.33:1 | 4.5:1 | Pass |
