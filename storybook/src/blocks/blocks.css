@@ -195,3 +195,18 @@
 
 .doc-inverse { background: var(--color-bg-surface-inverse); color: var(--color-text-inverse); border-radius: var(--radius-xl); padding: var(--space-5xl); display: grid; gap: var(--space-lg); }
 .doc-inverse-row { display: flex; justify-content: space-between; gap: var(--space-md); align-items: baseline; }
+
+/* Motion */
+.doc-motion-play { margin-block: var(--space-md); }
+.doc-motion-preview { display: inline-flex; align-items: center; gap: var(--space-md); }
+.doc-motion-curve { inline-size: var(--space-5xl); block-size: var(--space-5xl); overflow: visible; fill: none; stroke: var(--color-icon-brand); stroke-width: 3; }
+.doc-motion-curve .doc-motion-curve-frame { stroke: var(--color-border-secondary); stroke-width: 2; }
+.doc-motion-track { display: inline-block; inline-size: var(--space-7xl); padding: var(--space-3xs); border-radius: var(--radius-full); background: var(--color-bg-fill-secondary); vertical-align: middle; }
+/* The rail is the track minus one dot, so translating it by its own width lands the dot at the end. */
+.doc-motion-rail { display: block; inline-size: calc(100% - var(--space-md)); }
+.doc-motion-dot { display: block; inline-size: var(--space-md); block-size: var(--space-md); border-radius: var(--radius-full); background: var(--color-bg-fill-brand); }
+.doc-motion[data-played] .doc-motion-rail { transform: translateX(100%); }
+/* Reduced motion: the dots still show where they end up, without travelling. */
+@media (prefers-reduced-motion: reduce) {
+  .doc-motion-rail { transition: none !important; }
+}

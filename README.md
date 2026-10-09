@@ -182,6 +182,10 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 | Transform | `mmt/dimension/compose` (Android) | Converts `px` → `sp` for text metrics, `dp` for layout |
 | Transform | `mmt/opacity/ios` (iOS) | Gives integral opacities one decimal place, so `0` and `1` land as `Double` rather than `Int` and typecheck at `.opacity(_:)` |
 | Transform | `mmt/opacity/compose` (Android) | Opacity → Compose `Float` literal (`0.32f`), which is what `Modifier.alpha()` and `Color.copy(alpha =)` take |
+| Transform | `mmt/duration/ios`, `mmt/duration/compose`, `mmt/duration/js` | Durations: `150ms` → `TimeInterval(0.15)` on iOS, `150` (whole ms) on Android and in `tokens.ts`. CSS keeps `150ms` |
+| Transform | `cubicBezier/css`, `mmt/cubicBezier/ios`, `mmt/cubicBezier/compose` | Curves: `[0.23, 1, 0.32, 1]` → `cubic-bezier(…)` on web, `CosmosEasing(x1:y1:x2:y2:)` on iOS, `CubicBezierEasing(…)` on Android |
+| Transform | `mmt/spring/css`, `mmt/spring/js`, `mmt/spring/ios`, `mmt/spring/compose` | Springs: `{ duration, bounce }` → a `<settle time> linear(…)` curve on web, a `{ type: "spring", stiffness, damping, mass }` object in `tokens.ts`, `Animation.spring(response:dampingFraction:)` on iOS and `CosmosSpring(dampingRatio, stiffness)` on Android (see [Motion tokens](#16-motion-tokens)) |
+| Transform | `mmt/number/ios`, `mmt/number/compose` | Plain numbers (the bounce scale) → `Double(…)` and `…f` |
 | Transform | `mmt/string/quote` (iOS/Android) | Wraps font family strings as native string literals |
 | Transform | `mmt/color/ios` (iOS) | Hex colors → `Color(red:green:blue:)` (or sRGB + opacity for `#RRGGBBAA`) |
 | Transform | `mmt/color/ios-gradient` (iOS) | CSS `linear-gradient(...)` → SwiftUI `LinearGradient(gradient:startPoint:endPoint:)` |
@@ -194,8 +198,8 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 |--------------|------------|--------|--------|
 | `web-css` | kebab-case names; hex / CSS gradients unchanged | `css/variables` | `dist/web/tokens.css` |
 | `web-js` | camelCase names; hex / CSS gradients unchanged | `javascript/esm` | `dist/web/tokens.ts` |
-| `ios` | unitless dimensions, `Double` opacities, quoted strings, native `Color` / `LinearGradient` | `ios-swift/enum.swift` | `dist/ios/CosmosTokens.swift` |
-| `android` | compose units, `Float` opacities, quoted strings, native `Color` / `Brush` | `compose/object` | `dist/android/CosmosTokens.kt` |
+| `ios` | unitless dimensions, `Double` opacities, `TimeInterval` durations, quoted strings, native `Color` / `LinearGradient` / `Animation` | `ios-swift/enum.swift` | `dist/ios/CosmosTokens.swift` (+ `Motion.swift`) |
+| `android` | compose units, `Float` opacities, `Int` ms durations, quoted strings, native `Color` / `Brush` / `CubicBezierEasing` | `compose/object` | `dist/android/CosmosTokens.kt` (+ `CosmosMotion.kt`) |
 
 #### Native color transforms (iOS & Android)
 
@@ -356,7 +360,7 @@ Paragraph comes in regular and bold only. Bold marks a lead-in or a key fact ins
 
 ### 6. T-shirt sizing for radius, icon, and space tokens
 
-Semantic radius, icon, and space tokens use abstract size names (`xs`, `sm`, `md`, …) that map to primitive pixel values. This decouples component code from raw numbers.
+Semantic radius, icon, and space tokens use abstract size names (`xs`, `sm`, `md`, …) that map to primitive pixel values. This decouples component code from raw numbers. Durations follow the same scale (`duration.xs` … `duration.2xl`), where a larger size means a longer animation — see [Motion tokens](#16-motion-tokens).
 
 Opacity is deliberately **not** t-shirt sized. There is no perceptual scale to size, so its semantic tier names the thing being dimmed (`opacity.scrim`, `opacity.state-layer-focus`) and mirrors the numeric ramp for everything else — see [Opacity tokens](#11-opacity-tokens).
 
@@ -414,6 +418,9 @@ Where a family spans both tiers, the primitive root carries the longer technical
 | `--opacity-scale-45` | `--opacity-45`, `--opacity-scrim` |
 | `--shadow-offset-4`, `--shadow-blur-12` | `--shadow-raised` |
 | `--border-width-1` | `--stroke-default` |
+| `--duration-scale-150` | `--duration-sm` |
+| `--easing-curve-out-strong` | `--easing-standard` |
+| `--duration-scale-300`, `--bounce-scale-10` | `--spring-snappy` |
 
 ### 11. Opacity tokens
 
@@ -555,6 +562,54 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - **The brand-role exception (myBiz and Goibibo).** On 2026-10-07 the myBiz primary moved to `pomegranate.400` (`#FF4929`) and the Goibibo primary to `thunderbird.600` (`#F45900`). White on them reads at **3.36:1** and **3.34:1**. The same 3:1 floor covers text pairings in these brands where either side resolves through a semantic `*-brand*` role: the brand Buttons, selected Tab and Chip labels, brand Badges and the tinted neutral Snackbar action. The lowest are 3.07:1 (`pomegranate.400` on its `pomegranate.50` tint) and 3.06:1 (`thunderbird.600` on `bg-secondary`). It is scoped by role, not by ramp, so any status role that used `pomegranate` or `thunderbird` would keep 4.5:1.
 - **How it is linted.** `tokens/contrast` applies the 3:1 floor to azure pairings and to brand-role pairings in the brands listed in `BRAND_ROLE_EXCEPTION_BRANDS` (myBiz and Goibibo), and lists the accepted Radio pairing in `ACCEPTED_BELOW_FLOOR`. A pairing that drops below these floors still fails.
 
+### 16. Motion tokens
+
+Motion is a foundation like colour and space: one set of durations, curves and springs that every component and every platform reuses. Before these tokens, eight Storybook components each hard-coded their own timing. The rationale is in `proposals/motion-tokens.md`, and the curves and durations follow Emil Kowalski's animation guidance (the `animate` skill).
+
+**Three kinds of token.**
+
+| Kind | Primitive | Semantic | Use it for |
+|------|-----------|----------|------------|
+| Duration | `durationScale.*` (ms) | `duration.none` … `duration.2xl`, `duration.loop` | How long a timed transition runs |
+| Easing | `easingCurve.*` (cubic-bezier) | `easing.standard`, `move`, `sheet`, `state`, `linear` | How a timed transition accelerates |
+| Spring | `durationScale.*` + `bounceScale.*` | `spring.snappy`, `smooth`, `bouncy` | Motion that follows a gesture or can be interrupted mid-flight |
+
+A transition takes one duration and one easing. A spring replaces both.
+
+**Durations grow with the size of what moves.** Press and colour feedback is `xs` (100ms), small controls and tooltips are `sm` (150ms), dropdowns and tab indicators `md` (200ms), snackbars `lg` (250ms) and sheets and dialogs `xl` (300ms). 300ms is the ceiling for routine UI. Above it, an interface starts to feel slow, so `2xl` (400ms) is only for full-screen web transitions. An exit uses one size down from its entrance, because people wait for an entrance but not for an exit. `duration.loop` (800ms) is one turn of a spinner, not a transition.
+
+**Curves start fast.** `easing.standard` (`cubic-bezier(0.23, 1, 0.32, 1)`) is the default for anything entering, leaving or responding. It is stronger than the CSS `ease-out` keyword, so a change is visible from the first frame. `easing.move` eases in and out for something already on screen travelling to a new place. `easing.sheet` is the iOS drawer curve. `easing.state` is the CSS `ease` keyword, for colour changes where nothing moves. There is deliberately **no ease-in token**: a curve that starts slowly delays the moment the user is watching.
+
+**Springs are a duration and a bounce, as in SwiftUI.** Each platform derives its own form from that pair, so the three match:
+
+| Token | Duration · bounce | Damping ratio | Stiffness (mass 1) | CSS settle time |
+|-------|-------------------|---------------|--------------------|-----------------|
+| `spring.snappy` | 300ms · 0.1 | 0.9 | 438.65 | 420ms |
+| `spring.smooth` | 400ms · 0 | 1 | 246.74 | 590ms |
+| `spring.bouncy` | 500ms · 0.25 | 0.75 | 157.91 | 780ms |
+
+Stiffness is (2π ÷ duration)² and the damping ratio is 1 − bounce. CSS has no spring, so the build samples each one into a `linear()` curve that runs until the spring is within 0.1% of rest. That settle time is longer than the spring duration, but the tail is too small to see. `linear()` needs Chrome 113, Safari 17.2 or Firefox 112. An older browser drops the transition and the change happens instantly.
+
+**What each platform gets.**
+
+| | Web CSS | Web JS (`tokens.ts`) | iOS | Android |
+|---|---|---|---|---|
+| Duration | `150ms` | `150` (ms) | `TimeInterval(0.15)` | `150` (ms, `Int`) |
+| Easing | `cubic-bezier(…)` | `[x1, y1, x2, y2]` | `CosmosEasing` (`.animation(duration:)`) | `CubicBezierEasing(…)` |
+| Spring | `420ms linear(…)` | `{ type: "spring", stiffness, damping, mass }` | `Animation.spring(response:dampingFraction:)` | `CosmosSpring` (`.spec()`) |
+
+`CosmosEasing` (`dist/ios/Motion.swift`) and `CosmosSpring` (`dist/android/CosmosMotion.kt`) are small generated helpers. SwiftUI takes a curve only together with a duration, and Compose springs are generic over the value they animate, so a token cannot hold the finished animation on either platform. Both helpers compile on iOS 13 and every Compose version.
+
+**Native navigation keeps the platform transition.** A pushed screen, a system sheet or a tab switch on iOS and Android animates the way the OS does. The tokens cover the motion Cosmos components own.
+
+**Reduced motion means gentler, not none.** When the user asks for reduced motion, drop movement (translate, scale, a spring) and keep the fade. Use `easing.linear` at the same duration, or `duration.none` when even a fade adds nothing. Every component ships its reduced-motion variant with its animation.
+
+**Not every interaction animates.** An action repeated many times a day, such as a keyboard shortcut or a list navigated with arrow keys, gets no animation. Motion is for feedback, for showing where something came from, and for bridging a change that would otherwise jump.
+
+**No animation library needed.** CSS transitions, `@starting-style` and the Web Animations API cover every current component, and the spring tokens work in plain CSS. A library such as Motion (motion.dev) is worth adding only for gesture-driven or layout animations CSS cannot do, such as drag-to-dismiss or shared-element transitions. `tokens.ts` already hands it each spring in the shape it takes.
+
+**In Figma** the tokens are number and string variables in the primitives and MakeMyTrip collections. No Figma property can bind a duration or a curve, so they have no scopes: they are a reference in the Variables panel and Dev Mode, not something to apply to a layer. Brands share the same motion.
+
 ---
 
 ## Best Practices
@@ -581,6 +636,8 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 
 11. **Apply opacity to a colour token, not to a control.** A state layer or scrim is a separate element filled with a `color.*` token and rendered at an `opacity.*` token. Setting `opacity` on the control itself fades its label and border along with the tint.
 
+12. **Animate with a duration and an easing token, or a spring token, never a raw number.** Pick the duration by the size of what moves, the easing by whether it enters, moves or only changes colour, and a spring when the motion follows a gesture. See [Motion tokens](#16-motion-tokens).
+
 ---
 
 ## Do's and Don'ts
@@ -599,6 +656,8 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - Do use `strong` / `subtle` pairs for status fills to maintain visual hierarchy.
 - Do pair an opacity token with a colour token — `color.bg-surface-inverse` at `opacity.scrim` for a backdrop, never a pre-blended hex.
 - Do reach for a role token (`opacity.scrim`, `opacity.state-layer-*`) before a numeric ramp step; the ramp is for one-off dimming the roles do not cover.
+- Do pair a `duration.*` token with an `easing.*` token for a timed transition, and use a `spring.*` token for motion that follows a gesture.
+- Do ship a reduced-motion variant with every animation: keep the fade, drop the movement.
 - Do test token changes across all three platforms after building.
 
 ### Don't
@@ -619,17 +678,19 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - Don't use `opacityScale.*` in product code; it is the authoring ramp, and `opacity.*` mirrors every step of it.
 - Don't author an opacity as a percentage — Figma holds `32`, `tokens.json` holds `0.32`, and the build throws on the difference.
 - Don't add an opacity step to one tier only; every `opacityScale` step needs its `opacity` mirror, and the build checks both directions.
+- Don't animate with an ease-in curve, `transition: all`, or a `scale(0)` entrance. Cosmos has no ease-in token on purpose.
+- Don't use a duration over `duration.xl` (300ms) for routine UI; `duration.2xl` is for full-screen web transitions only.
 - Don't remove or rename tokens without checking downstream consumers and Figma sync.
 
 ---
 
 ## Token Inventory
 
-**Totals:** 303 primitive tokens · 435 semantic tokens (318 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1956 values on web** · **2040 on iOS and Android** · **0 gradients**
+**Totals:** 320 primitive tokens · 451 semantic tokens (318 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1989 values on web** · **2073 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1830 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1863 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
-### Primitive tokens (303)
+### Primitive tokens (320)
 
 #### Color — 172 tokens (15 palettes, 166 steps, plus `alpha.transparent` and five shadow alphas)
 
@@ -849,9 +910,47 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 | `shadowBlur.24` | 24px |
 | `shadowBlur.48` | 48px |
 
+#### Duration scale — 9 tokens
+
+Animation lengths in whole milliseconds. Consumed through `duration.*` and `spring.*`.
+
+| Token | Value |
+|-------|-------|
+| `durationScale.0` | 0ms |
+| `durationScale.100` | 100ms |
+| `durationScale.150` | 150ms |
+| `durationScale.200` | 200ms |
+| `durationScale.250` | 250ms |
+| `durationScale.300` | 300ms |
+| `durationScale.400` | 400ms |
+| `durationScale.500` | 500ms |
+| `durationScale.800` | 800ms |
+
+#### Easing curve — 5 tokens
+
+Cubic-bezier control points `[x1, y1, x2, y2]`, named by shape. Consumed through `easing.*`. There is no ease-in curve.
+
+| Token | Value | Shape |
+|-------|-------|-------|
+| `easingCurve.linear` | 0, 0, 1, 1 | Constant speed |
+| `easingCurve.ease` | 0.25, 0.1, 0.25, 1 | The CSS `ease` keyword |
+| `easingCurve.out-strong` | 0.23, 1, 0.32, 1 | Fast start, long gentle settle |
+| `easingCurve.in-out-strong` | 0.77, 0, 0.175, 1 | Slow at both ends, fast through the middle |
+| `easingCurve.drawer` | 0.32, 0.72, 0, 1 | The iOS sheet curve |
+
+#### Bounce scale — 3 tokens
+
+How far a spring overshoots, from 0 (none) towards 1. Keyed in hundredths, like `opacityScale`. Consumed through `spring.*`.
+
+| Token | Value |
+|-------|-------|
+| `bounceScale.0` | 0 |
+| `bounceScale.10` | 0.1 |
+| `bounceScale.25` | 0.25 |
+
 ---
 
-### Semantic tokens (435)
+### Semantic tokens (451)
 
 #### Color — 318 tokens
 
@@ -1216,6 +1315,41 @@ Composite two-layer shadows: one per height, plus two softer alternatives to car
 | `shadow.sticky-bottom` | Bars pinned to the bottom of the screen: sticky footers, bottom navigation (casts upward) |
 | `shadow.overlay` | Menus, dropdowns, popovers, tooltips, toasts |
 | `shadow.modal` | Dialogs and bottom sheets, over the scrim |
+
+#### Duration — 8 tokens
+
+T-shirt sized by the size of what moves. An exit uses one size down from its entrance. See Major Design Decisions → Motion tokens.
+
+| Token | Use for |
+|-------|---------|
+| `duration.none` | No animation; the reduced-motion swap for movement |
+| `duration.xs` | Press feedback, colour and state-layer fades |
+| `duration.sm` | Switch and slider thumbs, tooltips, menus opening |
+| `duration.md` | Tab indicators, dropdowns and popovers, snackbars and menus leaving |
+| `duration.lg` | Snackbars, toasts and small dialogs entering, expanding sections |
+| `duration.xl` | Sheets, dialogs, a segmented control thumb; the ceiling for routine UI |
+| `duration.2xl` | Full-screen web transitions only |
+| `duration.loop` | One cycle of a spinner or other looping indicator |
+
+#### Easing — 5 tokens
+
+| Token | Use for |
+|-------|---------|
+| `easing.standard` | The default: anything entering, leaving or responding to a tap |
+| `easing.move` | Something already on screen moving or resizing: a tab indicator, a segmented thumb |
+| `easing.sheet` | Sheets, drawers and full-height panels sliding in from an edge |
+| `easing.state` | Colour, fill and opacity changes where nothing moves |
+| `easing.linear` | Spinners, progress, and the fade that replaces movement under reduced motion |
+
+#### Spring — 3 tokens
+
+Composite `{ duration, bounce }` springs, for motion that follows a gesture or can be interrupted.
+
+| Token | Use for |
+|-------|---------|
+| `spring.snappy` | Small controls following the finger: switch and slider thumbs |
+| `spring.smooth` | Sheets, panels and cards settling after a drag, with no overshoot |
+| `spring.bouncy` | Rare moments only: a drag-to-dismiss release, a success confirmation |
 
 ### Component tokens (1092)
 
@@ -1595,6 +1729,27 @@ Each layer aliases one primitive per property. `x` is `shadowOffset.0` in every 
 | `shadow.modal` | 1 | `shadowOffset.8` | `shadowBlur.16` | `color.alpha.neutral-950-12` |
 | `shadow.modal` | 2 | `shadowOffset.16` | `shadowBlur.48` | `color.alpha.neutral-950-16` |
 
+### Motion mappings
+
+| Semantic | Primitive | Value |
+|----------|-----------|-------|
+| `duration.none` | `durationScale.0` | 0ms |
+| `duration.xs` | `durationScale.100` | 100ms |
+| `duration.sm` | `durationScale.150` | 150ms |
+| `duration.md` | `durationScale.200` | 200ms |
+| `duration.lg` | `durationScale.250` | 250ms |
+| `duration.xl` | `durationScale.300` | 300ms |
+| `duration.2xl` | `durationScale.400` | 400ms |
+| `duration.loop` | `durationScale.800` | 800ms |
+| `easing.standard` | `easingCurve.out-strong` | 0.23, 1, 0.32, 1 |
+| `easing.move` | `easingCurve.in-out-strong` | 0.77, 0, 0.175, 1 |
+| `easing.sheet` | `easingCurve.drawer` | 0.32, 0.72, 0, 1 |
+| `easing.state` | `easingCurve.ease` | 0.25, 0.1, 0.25, 1 |
+| `easing.linear` | `easingCurve.linear` | 0, 0, 1, 1 |
+| `spring.snappy` | `durationScale.300` + `bounceScale.10` | 300ms, bounce 0.1 |
+| `spring.smooth` | `durationScale.400` + `bounceScale.0` | 400ms, bounce 0 |
+| `spring.bouncy` | `durationScale.500` + `bounceScale.25` | 500ms, bounce 0.25 |
+
 ### Typography mappings
 
 Each typography token is a composite reference. Pattern:
@@ -1877,6 +2032,44 @@ Box(
 )
 ```
 
+### Motion
+
+A timed transition names one duration and one easing. A spring replaces both. Ship the reduced-motion variant with the animation.
+
+```css
+.menu {
+  transition: opacity var(--duration-sm) var(--easing-standard),
+              transform var(--duration-sm) var(--easing-standard);
+}
+.tab-indicator { transition: transform var(--duration-md) var(--easing-move); }
+.switch-thumb { transition: transform var(--spring-snappy); } /* duration and curve in one */
+
+@media (prefers-reduced-motion: reduce) {
+  .menu { transition: opacity var(--duration-sm) var(--easing-linear); } /* keep the fade, drop the movement */
+  .switch-thumb { transition: none; }
+}
+```
+
+```swift
+// A curve needs a duration in SwiftUI; a spring is a complete Animation.
+@Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+Menu()
+  .animation(CosmosTokens.easingStandard.animation(duration: CosmosTokens.durationSm), value: isOpen)
+Thumb()
+  .offset(x: isOn ? travel : 0)
+  .animation(reduceMotion ? nil : CosmosTokens.springSnappy, value: isOn)
+```
+
+```kotlin
+// Durations are Int milliseconds; a CosmosSpring becomes a spec for the type it animates.
+val alpha by animateFloatAsState(
+  if (open) 1f else 0f,
+  tween(CosmosTokens.durationSm, easing = CosmosTokens.easingStandard),
+)
+val offset by animateDpAsState(if (on) travel else 0.dp, CosmosTokens.springSnappy.spec())
+```
+
 ### Brands
 
 The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 241 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
@@ -1933,6 +2126,8 @@ Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
 | `dist/web/tokens.ts` | Generated ESM token object |
 | `dist/ios/CosmosTokens.swift` | Generated SwiftUI enum |
 | `dist/ios/LineHeight.swift` | Generated SwiftUI `.lineHeight` modifier (total line-box height → line spacing) |
+| `dist/ios/Motion.swift` | Generated `CosmosEasing`, which turns an easing token and a duration into a SwiftUI `Animation` |
+| `dist/android/CosmosMotion.kt` | Generated `CosmosSpring`, which turns a spring token into a Compose `SpringSpec` |
 | `dist/android/CosmosTokens.kt` | Generated Compose object (`com.makemytrip.cosmos.tokens`) |
 | `dist/web/brands.ts` | Generated brandable token values per brand (`brands.mybiz.tokens.*`) |
 | `dist/ios/CosmosBrand.swift` | Generated `CosmosBrand` struct and the `\.cosmosBrand` environment value |

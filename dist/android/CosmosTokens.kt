@@ -6,6 +6,7 @@
 
 package com.makemytrip.cosmos.tokens
 
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -103,6 +104,9 @@ object CosmosTokens {
   val borderWidth0 = 0.dp
   val borderWidth1 = 1.dp
   val borderWidth2 = 2.dp
+  val bounceScale0 = 0f
+  val bounceScale10 = 0.1f
+  val bounceScale25 = 0.25f
   val buttonBgOpacitySecondaryInverseDestructiveHover = 0.15f
   val buttonBgOpacitySecondaryInverseDestructivePressed = 0.2f
   val buttonBgOpacitySecondaryInverseHover = 0.15f
@@ -1034,6 +1038,33 @@ object CosmosTokens {
   val colorYellow800 = Color(0xFF894B00)
   val colorYellow900 = Color(0xFF733E0A)
   val colorYellow950 = Color(0xFF432004)
+  val duration2xl = 400
+  val durationLg = 250
+  val durationLoop = 800
+  val durationMd = 200
+  val durationNone = 0
+  val durationScale0 = 0
+  val durationScale100 = 100
+  val durationScale150 = 150
+  val durationScale200 = 200
+  val durationScale250 = 250
+  val durationScale300 = 300
+  val durationScale400 = 400
+  val durationScale500 = 500
+  val durationScale800 = 800
+  val durationSm = 150
+  val durationXl = 300
+  val durationXs = 100
+  val easingCurveDrawer = CubicBezierEasing(0.32f, 0.72f, 0f, 1f)
+  val easingCurveEase = CubicBezierEasing(0.25f, 0.1f, 0.25f, 1f)
+  val easingCurveInOutStrong = CubicBezierEasing(0.77f, 0f, 0.175f, 1f)
+  val easingCurveLinear = CubicBezierEasing(0f, 0f, 1f, 1f)
+  val easingCurveOutStrong = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
+  val easingLinear = CubicBezierEasing(0f, 0f, 1f, 1f)
+  val easingMove = CubicBezierEasing(0.77f, 0f, 0.175f, 1f)
+  val easingSheet = CubicBezierEasing(0.32f, 0.72f, 0f, 1f)
+  val easingStandard = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
+  val easingState = CubicBezierEasing(0.25f, 0.1f, 0.25f, 1f)
   val fontFamilyLato = "Lato"
   val fontFamilyRubik = "Rubik"
   val fontSize10 = 10.sp
@@ -1832,6 +1863,9 @@ object CosmosTokens {
   val spacingMinus2 = -2.dp
   val spacingMinus4 = -4.dp
   val spacingMinus8 = -8.dp
+  val springBouncy = CosmosSpring(dampingRatio = 0.75f, stiffness = 157.9137f)
+  val springSmooth = CosmosSpring(dampingRatio = 1f, stiffness = 246.7401f)
+  val springSnappy = CosmosSpring(dampingRatio = 0.9f, stiffness = 438.6491f)
   val strokeDefault = 1.dp
   val strokeFocus = 2.dp
   val strokeStrong = 2.dp

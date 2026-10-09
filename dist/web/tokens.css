@@ -1157,6 +1157,23 @@
   --shadow-blur-16: 16px;
   --shadow-blur-24: 24px;
   --shadow-blur-48: 48px;
+  --duration-scale-0: 0ms;
+  --duration-scale-100: 100ms;
+  --duration-scale-150: 150ms;
+  --duration-scale-200: 200ms;
+  --duration-scale-250: 250ms;
+  --duration-scale-300: 300ms;
+  --duration-scale-400: 400ms;
+  --duration-scale-500: 500ms;
+  --duration-scale-800: 800ms;
+  --easing-curve-linear: cubic-bezier(0, 0, 1, 1);
+  --easing-curve-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --easing-curve-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --easing-curve-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --easing-curve-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --bounce-scale-0: 0;
+  --bounce-scale-10: 0.1;
+  --bounce-scale-25: 0.25;
   /** Typeface of every text style, and the one token a brand changes to swap its font. Apply a text style rather than this token, so size, line height and weight come with it. */
   --typeface-default: Lato;
   /** Weight of every regular text style, the default for running copy and most labels. For emphasis use the bold styles, which read weight.bold. */
@@ -1517,6 +1534,38 @@
   --shadow-overlay: 0px 4px 8px #0A0A0A14, 0px 8px 24px #0A0A0A1F;
   /** Highest elevation, for layers that block the page: dialogs and bottom sheets, always shown over the scrim. Nothing in the product sits above it. */
   --shadow-modal: 0px 8px 16px #0A0A0A1F, 0px 16px 48px #0A0A0A29;
+  /** No animation, the change lands on the next frame. Use it where motion would get in the way, such as actions repeated many times a day, and as the reduced-motion swap for anything that moves. */
+  --duration-none: 0ms;
+  /** Fastest perceptible change, for press feedback and colour or state-layer fades on hover, press and selection. Anything that travels across the screen uses sm or longer. */
+  --duration-xs: 100ms;
+  /** Small controls moving and small surfaces appearing, such as a switch or slider thumb, a tooltip or a menu opening. Larger surfaces use md or lg, and an exit from sm uses xs. */
+  --duration-sm: 150ms;
+  /** Medium movement and small panels, such as a tab indicator sliding, a dropdown or popover opening, and a snackbar or menu leaving. A surface that covers part of the screen uses lg or xl. */
+  --duration-md: 200ms;
+  /** Larger surfaces entering, such as snackbars, toasts, small dialogs and expanding sections. Their exit uses one size down, md. */
+  --duration-lg: 250ms;
+  /** The longest routine interface motion, for sheets, full dialogs and a segmented control thumb travelling across several segments. Slower than this starts to feel sluggish, so only full-screen transitions use 2xl. */
+  --duration-xl: 300ms;
+  /** Full-screen transitions on the web, such as a page or a full-height panel sliding in. On iOS and Android keep the platform navigation transition instead of this token. */
+  --duration-2xl: 400ms;
+  /** One cycle of a looping indicator, such as a spinner turning once, paired with easing.linear. Not for transitions, which use the none to 2xl steps. */
+  --duration-loop: 800ms;
+  /** Default curve for anything entering, leaving or responding to a tap. It starts fast and settles gently, so the change feels immediate. An element already on screen moving to a new place uses easing.move, and a sheet uses easing.sheet. */
+  --easing-standard: cubic-bezier(0.23, 1, 0.32, 1);
+  /** For an element already on screen moving or resizing to a new position, such as a tab indicator or a segmented control thumb, so the travel reads as one motion. Elements entering or leaving use easing.standard. */
+  --easing-move: cubic-bezier(0.77, 0, 0.175, 1);
+  /** For sheets, drawers and full-height panels sliding in from an edge, matching the feel of native iOS sheets. Smaller surfaces use easing.standard, and a sheet the user drags settles with spring.smooth. */
+  --easing-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  /** For colour, fill and opacity changes on hover, press and selection, where nothing moves. Anything that moves uses easing.standard or easing.move. */
+  --easing-state: cubic-bezier(0.25, 0.1, 0.25, 1);
+  /** Constant speed, for continuous motion such as a spinner or progress bar, and for the plain fade that replaces movement under reduced motion. Never for an element entering or moving, where it looks mechanical. */
+  --easing-linear: cubic-bezier(0, 0, 1, 1);
+  /** Quick, firm spring that settles almost without overshoot, for small controls that follow the finger or settle into place, such as a switch or slider thumb. Larger surfaces use spring.smooth, and timed transitions with no gesture use a duration with easing.standard. */
+  --spring-snappy: 420ms linear(0, 0.05, 0.163, 0.299, 0.435, 0.558, 0.664, 0.75, 0.819, 0.872, 0.911, 0.941, 0.961, 0.976, 0.986, 0.992, 0.997, 0.999, 1.001, 1.001, 1.001, 1.002, 1.001, 1.001, 1.001, 1);
+  /** Spring with no overshoot, for sheets, panels and cards settling after a drag or fling. Small controls use spring.snappy, and spring.bouncy is only for rare moments of delight. */
+  --spring-smooth: 590ms linear(0, 0.029, 0.099, 0.189, 0.286, 0.382, 0.471, 0.553, 0.625, 0.688, 0.742, 0.787, 0.826, 0.858, 0.884, 0.906, 0.924, 0.939, 0.951, 0.961, 0.968, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.997, 0.998, 0.998, 0.999, 1);
+  /** Playful spring with visible overshoot, for rare moments only, such as a drag-to-dismiss release or a success confirmation. Routine controls use spring.snappy or spring.smooth. */
+  --spring-bouncy: 780ms linear(0, 0.02, 0.07, 0.142, 0.227, 0.317, 0.409, 0.498, 0.581, 0.658, 0.727, 0.788, 0.84, 0.884, 0.921, 0.95, 0.974, 0.992, 1.006, 1.016, 1.022, 1.026, 1.028, 1.028, 1.028, 1.026, 1.024, 1.021, 1.019, 1.016, 1.014, 1.011, 1.009, 1.007, 1.006, 1.004, 1.003, 1.002, 1.001, 1.001, 1, 1, 1, 0.999, 0.999, 0.999, 0.999, 1);
   /** Background of the primary (solid fill) button — default intent, at rest. */
   --button-bg-primary-default: #0088FF;
   /** Background of the primary (solid fill) button — destructive intent, at rest. */

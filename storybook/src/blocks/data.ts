@@ -53,7 +53,10 @@ export function formatValue(token: FlatToken): string {
   const { value } = token;
   if (typeof value === "string") return value;
   if (Array.isArray(value)) {
-    return value.map((layer) => `${layer.x} ${layer.y} ${layer.blur} ${layer.color}`).join(", ");
+    // A curve is four control points; a shadow is a list of layers.
+    if (value.every((n) => typeof n === "number")) return `cubic-bezier(${value.join(", ")})`;
+    return (value as Record<string, unknown>[]).map((layer) => `${layer.x} ${layer.y} ${layer.blur} ${layer.color}`).join(", ");
   }
+  if (token.type === "spring") return `${value.duration}, bounce ${value.bounce}`;
   return Object.values(value).join(" / ");
 }

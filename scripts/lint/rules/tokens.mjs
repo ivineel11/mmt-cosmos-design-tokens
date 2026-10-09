@@ -41,6 +41,10 @@ export const TYPE_FAMILY = {
   opacity: "opacity",
   typography: "typography",
   boxShadow: "shadow",
+  duration: "duration",
+  cubicBezier: "cubicBezier",
+  number: "number",
+  spring: "spring",
 };
 
 /**
@@ -56,6 +60,12 @@ const SHADOW_MEMBERS = {
 };
 const MAX_SHADOW_LAYERS = 2;
 
+/** What each member of a spring must alias (README → Motion tokens). */
+const SPRING_MEMBERS = {
+  duration: "durationScale",
+  bounce: "bounceScale",
+};
+
 /**
  * Typography composites read family and weight through semantic typeface.* and weight.* tokens, the
  * one place a brand changes its font (Figma text styles bind to the same variables). Size
@@ -70,6 +80,7 @@ const TYPOGRAPHY_MEMBERS = {
 };
 
 const PX = /^(-?\d+(?:\.\d+)?)px$/;
+const MS = /^(\d+)ms$/;
 const GRADIENT = /^linear-gradient\(/;
 
 /** Style Dictionary's flat names, mirrored from docs-site/scripts/generate-tokens.mjs. */
@@ -413,6 +424,16 @@ const valueFormat = {
         if (!isPlainObject(v)) report("must be a composite object (fontFamily, fontWeight, fontSize, lineHeight).");
       } else if (family === "shadow") {
         if (!Array.isArray(v) || !v.length || !v.every(isPlainObject)) report("must be an array of shadow layers ({ x, y, blur, color }), even when there is only one.");
+      } else if (family === "duration") {
+        if (typeof v !== "string" || !MS.test(v)) report(`is ${JSON.stringify(v)}; durations are whole-millisecond strings like "150ms". The iOS and Android transforms only convert ms.`);
+      } else if (family === "cubicBezier") {
+        const ok = Array.isArray(v) && v.length === 4 && v.every((n) => typeof n === "number" && Number.isFinite(n));
+        if (!ok) report(`is ${JSON.stringify(v)}; a curve is an array of four numbers [x1, y1, x2, y2], as in cubic-bezier().`);
+        else if ([v[0], v[2]].some((x) => x < 0 || x > 1)) report(`is ${JSON.stringify(v)}; x1 and x2 are times and must lie between 0 and 1.`);
+      } else if (family === "number") {
+        if (typeof v !== "number" || !Number.isFinite(v)) report(`is ${JSON.stringify(v)}; a number token holds a plain JSON number.`);
+      } else if (family === "spring") {
+        if (!isPlainObject(v)) report("must be a composite object ({ duration, bounce }).");
       }
     }
   },
@@ -420,10 +441,20 @@ const valueFormat = {
 
 const primitiveScaleName = {
   id: "tokens/primitive-scale-name",
-  description: "A numeric primitive step is named after its value (spacing.16 = 16px), the rule that makes primitives self-describing. opacityScale is the documented exception and has its own rule.",
+  description: "A numeric primitive step is named after its value (spacing.16 = 16px, durationScale.150 = 150ms, bounceScale.25 = 0.25), the rule that makes primitives self-describing. opacityScale is the documented exception and has its own rule.",
   check(api) {
     const t = load(api);
     if (!t) return;
+    for (const leaf of t.model.inTier("primitives")) {
+      if (leaf.path.length !== 2 || !/^\d+$/.test(leaf.path[1])) continue;
+      const step = Number(leaf.path[1]);
+      if (TYPE_FAMILY[leaf.type] === "duration" && typeof leaf.value === "string" && leaf.value !== `${step}ms`) {
+        api.report({ ...at(leaf), message: `${label(leaf)} holds ${JSON.stringify(leaf.value)} but its name says ${step}ms. Rename the step or fix the value.` });
+      }
+      if (TYPE_FAMILY[leaf.type] === "number" && typeof leaf.value === "number" && Math.abs(leaf.value * 100 - step) > 1e-9) {
+        api.report({ ...at(leaf), message: `${label(leaf)} holds ${leaf.value} but its name says ${step / 100} (number steps are keyed in hundredths, like opacityScale).` });
+      }
+    }
     for (const leaf of t.model.inTier("primitives")) {
       if (TYPE_FAMILY[leaf.type] !== "dimension" || leaf.path.length !== 2) continue;
       const key = leaf.path[1];
@@ -664,6 +695,31 @@ const shadow = {
   },
 };
 
+const springRule = {
+  id: "tokens/spring",
+  description: "Springs are { duration, bounce } composites aliasing durationScale and bounceScale primitives, with a bounce from 0 (no overshoot) to below 1 (README → Motion tokens). SwiftUI, Compose and the CSS linear() curve are all derived from that pair.",
+  check(api) {
+    const t = load(api);
+    if (!t) return;
+    for (const leaf of t.model.leaves) {
+      if (leaf.type !== "spring" || !isPlainObject(leaf.value)) continue;
+      const report = (message) => api.report({ ...at(leaf), message: `${label(leaf)} ${message}` });
+      const keys = Object.keys(leaf.value);
+      const missing = Object.keys(SPRING_MEMBERS).filter((m) => !keys.includes(m));
+      if (missing.length) report(`is missing ${missing.join(", ")}. A spring states both its duration and its bounce.`);
+      for (const key of keys) {
+        if (!(key in SPRING_MEMBERS)) report(`has "${key}"; a spring holds only ${Object.keys(SPRING_MEMBERS).join(" and ")}. Stiffness and damping are derived from them on each platform.`);
+      }
+      for (const [member, root] of Object.entries(SPRING_MEMBERS)) {
+        const ref = aliasTarget(leaf.value[member]);
+        if (ref && !ref.startsWith(`${root}.`)) report(`.${member} aliases {${ref}}; it should alias a ${root}.* primitive.`);
+      }
+      const bounce = t.model.resolve(aliasTarget(leaf.value.bounce) ?? "").value;
+      if (typeof bounce === "number" && (bounce < 0 || bounce >= 1)) report(`has a bounce of ${bounce}. Keep it from 0 (no overshoot) to below 1; a bounce of 1 never settles.`);
+    }
+  },
+};
+
 // ---------------------------------------------------------------- scales ---
 
 /** T-shirt size order: none < 3xs < 2xs < xs < sm < md < lg < xl < 2xl < … < full. */
@@ -681,18 +737,19 @@ export function tshirtRank(key) {
 
 const scaleOrder = {
   id: "tokens/scale-order",
-  description: "T-shirt scales (radius, icon, space and any other xs/sm/md/lg group) grow strictly with size, so md is always larger than sm.",
+  description: "T-shirt scales (radius, icon, space, duration and any other xs/sm/md/lg group) grow strictly with size, so md is always larger (or longer) than sm.",
   check(api) {
     const t = load(api);
     if (!t) return;
     const groups = new Map();
     for (const leaf of t.model.leaves) {
-      if (TYPE_FAMILY[leaf.type] !== "dimension") continue;
+      const family = TYPE_FAMILY[leaf.type];
+      if (family !== "dimension" && family !== "duration") continue;
       const key = leaf.path.at(-1);
       const rank = tshirtRank(key);
       if (rank === null) continue;
       const group = `${leaf.tier}.${leaf.path.slice(0, -1).join(".")}`;
-      const px = PX.exec(t.model.resolve(leaf.id).value ?? "");
+      const px = (family === "duration" ? MS : PX).exec(t.model.resolve(leaf.id).value ?? "");
       if (!px) continue;
       if (!groups.has(group)) groups.set(group, []);
       groups.get(group).push({ leaf, rank, px: Number(px[1]) });
@@ -702,7 +759,8 @@ const scaleOrder = {
       for (let i = 1; i < entries.length; i += 1) {
         const [prev, cur] = [entries[i - 1], entries[i]];
         if (cur.px <= prev.px) {
-          api.report({ ...at(cur.leaf), message: `${label(cur.leaf)} resolves to ${cur.px}px, not larger than ${prev.leaf.id} (${prev.px}px). A t-shirt scale must grow with size.` });
+          const unit = TYPE_FAMILY[cur.leaf.type] === "duration" ? "ms" : "px";
+          api.report({ ...at(cur.leaf), message: `${label(cur.leaf)} resolves to ${cur.px}${unit}, not larger than ${prev.leaf.id} (${prev.px}${unit}). A t-shirt scale must grow with size.` });
         }
       }
     }
@@ -1060,6 +1118,7 @@ export default [
   canvasAsFill,
   typography,
   shadow,
+  springRule,
   scaleOrder,
   colorRamp,
   semanticColorRole,
