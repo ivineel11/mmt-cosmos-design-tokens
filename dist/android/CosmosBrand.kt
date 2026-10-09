@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 data class CosmosBrand(
   val id: String,
   val name: String,
-  /** Brand-tinted container — selected list rows, brand callouts, the leading well of a brand list row. This is a background behind content; for a tinted brand control such as the tertiary button use bg-fill-brand-subtlest, and for a solid brand element use bg-fill-brand. */
+  /** Brand-tinted container — selected list rows, brand callouts. This is a background behind content; for a tinted brand control such as the tertiary button use bg-fill-brand-subtlest, and for a solid brand element use bg-fill-brand. */
   val colorBgSurfaceBrand: Color,
   /** Hover state for a tappable brand-tinted container (bg-surface-brand), such as a selected list row. For brand controls such as secondary, tertiary and text buttons use bg-fill-brand-subtlest-hover. */
   val colorBgSurfaceBrandHover: Color,
@@ -34,7 +34,7 @@ data class CosmosBrand(
   val colorBgFillBrandHover: Color,
   /** Pressed/active state for bg-fill-brand — primary button pressed. */
   val colorBgFillBrandPressed: Color,
-  /** Lightest brand fill for a tinted brand control — the tertiary button at rest, the selected chip, the tinted segmented thumb and low-emphasis brand badges. It also colours the hover of brand controls that are transparent at rest, such as checkbox, radio and text button. Pair the label with text-brand. For a brand container behind content use bg-surface-brand, and for a solid brand element use bg-fill-brand. */
+  /** Lightest brand fill for a tinted brand control — the tertiary button at rest, the selected chip, the tinted segmented thumb, low-emphasis brand badges and the brand icon well of a list row. It also colours the hover of brand controls that are transparent at rest, such as checkbox, radio and text button. Pair the label with text-brand. For a brand container behind content use bg-surface-brand, and for a solid brand element use bg-fill-brand. */
   val colorBgFillBrandSubtlest: Color,
   /** Hover state for bg-fill-brand-subtlest — secondary, tertiary and selected chip hovers, and the press of brand controls that start transparent (checkbox, radio, text button, slider halo). Pair the label with text-brand-on-bg-fill-subtlest-hover. */
   val colorBgFillBrandSubtlestHover: Color,

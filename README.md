@@ -246,8 +246,8 @@ Semantic colors are grouped by **role**, not by hue:
 | Role prefix | Meaning |
 |-------------|---------|
 | `bg`, `bg-secondary` | Page-level background (the canvas) |
-| `bg-surface-*` | Elevated / grouped surface backgrounds |
-| `bg-fill-*` | Interactive or emphasis fills (buttons, badges, banners) |
+| `bg-surface-*` | Containers behind content — sections, cards, sheets, menus, list groups, banners, tooltips, snackbars — and the tappable rows inside them |
+| `bg-fill-*` | The body of an element itself — controls (buttons, checkboxes, chips, switches, inputs) and emphasis marks (badges, status dots, icon wells) |
 | `text-*` | Foreground text |
 | `border-*` | Strokes and dividers |
 | `icon-*` | Icon fill colors |
@@ -262,6 +262,32 @@ Within each role, **intent** is expressed with suffixes:
 | `on-bg-surface-hover` / `on-bg-surface-pressed` | Contrast-safe text on a tinted surface that deepens on interaction |
 | `on-bg-fill-subtlest-hover` / `on-bg-fill-subtlest-pressed` | Contrast-safe text and icons on a tinted control fill that deepens on interaction |
 | `hover` / `pressed` | Interaction steps of the token they extend |
+
+#### Surface or fill
+
+`bg-surface-*` and `bg-fill-*` often share a colour (`bg-surface-brand` and `bg-fill-brand-subtlest` are both `azure.50`), so never choose between them by colour. Choose by **what the colour belongs to**:
+
+- **Fill:** the colour is the body of the element itself, the shape that *is* the control or the mark. Take away the colour and the element loses its shape.
+- **Surface:** the colour is an area that holds other content. Take away the colour and the content is still there, just without a backdrop.
+
+| Use `bg-fill-*` for | Use `bg-surface-*` for |
+|---|---|
+| Buttons, including the tinted secondary, tertiary and text button states | Page sections, wells and grouped areas |
+| Checkbox and radio boxes, switch tracks and thumbs | Cards, sheets, dialogs and popovers |
+| Chips, segmented control tracks and thumbs | Menu panels and list groups |
+| Slider tracks and halos | Banners, snackbars and tooltips |
+| Input field bodies | Tappable rows and cards: menu items and list rows, at rest and on hover or press |
+| Badges, counters and status dots | Scrims and dark overlays (`bg-surface-inverse`) |
+| Icon wells, such as the leading circle of a list row | A disabled section or card (`bg-surface-disabled`) |
+| Skeleton blocks | |
+
+**Tappable rows stay surfaces.** A menu item or list row is interactive, but it is a slice of its container and holds other content (a title, a description, slots for other components). Its hover and pressed steps come from the surface it sits in: `bg-surface-hover` on a grey group, `bg-surface-secondary-hover` on a white panel, `bg-surface-warning-hover` for a destructive item. Rule of thumb: if the element holds other components or lines of content, it is a surface; if it is a single control or mark, it is a fill.
+
+**A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever surface it sits on. (The inline actions of Snackbar and Tooltip are still on surface tokens and move in a follow-up.)
+
+**Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; a whole unavailable section or card uses `bg-surface-disabled` or `bg-surface-disabled-subtle`. The one exception: the disabled chip and the disabled list icon well use `bg-surface-disabled-subtle` (`neutral.50`), because no disabled fill is that light, and `bg-fill-disabled-subtlest` (`neutral.100`) would vanish on the grey canvas.
+
+**Pair the foreground with the same role.** Labels and icons on a fill use `*-on-bg-fill-*` (`text-brand-on-bg-fill-subtlest-hover` on a hovered tertiary button); on a surface they use `*-on-bg-surface-*` (`text-warning-on-bg-surface-hover` on a hovered destructive menu item). Even when the two resolve to the same colour, the right pairing keeps the meaning clear in Figma and lets the two roles diverge later, for example in another brand.
 
 #### Canvas and container pairing
 
@@ -564,6 +590,7 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - Do reference primitives from semantic tokens using `{category.path}` syntax (e.g. `{color.azure.600}`).
 - Do reference semantic tokens from component tokens the same way (e.g. `{color.bg-fill-brand}`), so a palette change propagates through both tiers.
 - Do use the semantic color role system (`bg-surface`, `bg-fill`, `text`, `border`, `icon`) consistently.
+- Do choose between `bg-fill` and `bg-surface` by what the colour belongs to, not by colour: the body of a control or mark is a fill, an area holding content is a surface. See [Surface or fill](#surface-or-fill).
 - Do pair canvas and container by suffix: `bg` with `bg-surface`, `bg-secondary` with `bg-surface-secondary`. See [Canvas and container pairing](#canvas-and-container-pairing).
 - Do add new palette steps at the primitive layer before creating semantic aliases.
 - Do use t-shirt sizes (`radius.md`, `icon.lg`, `space.md`) in components instead of raw pixel values.
@@ -587,6 +614,7 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 - Don't use negative spacing keys in references — the build renames them (`spacing.-8` → `spacing.minus8` in output).
 - Don't hand-convert hex colors or CSS gradients in iOS/Android app code — use the generated `Tokens` values directly.
 - Don't alias a control's fill to `bg` or `bg-secondary`; those are canvases. Use `bg-fill`.
+- Don't colour a control with a `bg-surface-*` token because it has the right colour; use the `bg-fill-*` token of the same value, so the role still reads correctly if the two diverge.
 - Don't use opacity to express a disabled state — disabled is a solid neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`, `icon-disabled`).
 - Don't use `opacityScale.*` in product code; it is the authoring ramp, and `opacity.*` mirrors every step of it.
 - Don't author an opacity as a percentage — Figma holds `32`, `tokens.json` holds `0.32`, and the build throws on the difference.
@@ -879,7 +907,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-brand` | Brand button / emphasis fill |
 | `color.bg-fill-brand-hover` | Brand fill, hovered |
 | `color.bg-fill-brand-pressed` | Brand fill, pressed |
-| `color.bg-fill-brand-subtlest` | Lightest brand fill — tertiary Button, selected Chip, tinted segmented thumb, brand Badge |
+| `color.bg-fill-brand-subtlest` | Lightest brand fill — tertiary Button, selected Chip, tinted segmented thumb, brand Badge, brand List icon well |
 | `color.bg-fill-brand-subtlest-hover` | Lightest brand fill, hovered — and the press of brand controls that start transparent |
 | `color.bg-fill-brand-subtlest-pressed` | Lightest brand fill, pressed — secondary and tertiary Button, selected Chip |
 | `color.bg-fill-brand-inverse` | Brand tint on dark backgrounds, always at an opacity token — inverse Button |
