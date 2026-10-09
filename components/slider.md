@@ -113,13 +113,13 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Slider e
 - **Width.** The slider fills the width it is given. The thumb centre travels between the two ends of the track inset by half a thumb, so the thumb never hangs past the track. The first and last tick sit at those two positions.
 - **Disabled.** Nothing responds, and the track, thumb and text grey out. Explain why nearby when it is not obvious.
 
-### Motion (not tokenised yet)
+### Motion
 
-- **Tap the track:** the thumb moves to the tapped point with a spring of about 200 ms and no overshoot. Under a drag it follows the finger directly, with no easing.
-- **Halo and tooltip:** fade and scale in from 0.8 over 100 ms, and out over 100 ms on release.
-- **Grow press:** the thumb scales from 1 to 1.33 (24 to 32) about its centre with a spring of about 150 ms and no overshoot on press, and back to 1 on release. Animate a scale transform, not the layout size, so the track and neighbours never move. SwiftUI `.scaleEffect` with `.spring(response: 0.15, dampingFraction: 1)`; Compose `graphicsLayer { scaleX; scaleY }` with `spring(dampingRatio = 1f)`; CSS `scale: 1.333` with a 150 ms ease-out. The thumb centre must stay on the track and on the end of the active bar at every frame, so scale about the centre and apply any centring offset after the scale: on the web, centre the thumb with `translate: -50% -50%`, not `transform: translate(-50%, -50%)`, which makes the scale run about the unshifted box and the thumb drift 4 px up and left. In SwiftUI and Compose, the default scale anchor is already the centre.
+- **Tap the track:** the thumb moves to the tapped point with `spring.snappy` (no visible overshoot). Under a drag it follows the finger directly, with no easing.
+- **Halo and tooltip:** fade and scale in from 0.8 over `slider/halo-duration` (`duration.xs`) with `slider/halo-easing` (`easing.standard`), and out over the same on release.
+- **Grow press:** the thumb scales from 1 to 1.33 (24 to 32) about its centre over `slider/thumb-duration` (`duration.sm`) with `slider/thumb-easing` (`easing.standard`) on press, and back to 1 on release. Animate a scale transform, not the layout size, so the track and neighbours never move. SwiftUI `.scaleEffect` with `CosmosTokens.sliderThumbEasing.animation(duration: CosmosTokens.sliderThumbDuration)`; Compose `graphicsLayer { scaleX; scaleY }` with `tween(CosmosTokens.sliderThumbDuration, easing = CosmosTokens.sliderThumbEasing)`; CSS `scale: 1.333` with the same tokens. The thumb centre must stay on the track and on the end of the active bar at every frame, so scale about the centre and apply any centring offset after the scale: on the web, centre the thumb with `translate: -50% -50%`, not `transform: translate(-50%, -50%)`, which makes the scale run about the unshifted box and the thumb drift 4 px up and left. In SwiftUI and Compose, the default scale anchor is already the centre.
 - **Reduce Motion (grow press):** the thumb changes size without animating.
-- **Reduce Motion:** the thumb jumps and the halo and tooltip appear without scaling.
+- **Reduce Motion:** the thumb jumps, and the halo and tooltip fade in without scaling.
 
 ---
 
@@ -277,7 +277,7 @@ Dragging is never the only way to set the value. Keyboard, switch and screen rea
 - **Horizontal only.** There is no vertical slider.
 - **Thumb contrast.** The white thumb is 1.48:1 on the inactive track and 1:1 on the canvas, below 3:1. The shadow carries it, as on the system iOS slider. It passes against the active track (3.52:1), which the thumb always touches.
 - **Active track edge, accepted.** Since the azure change of 2026-10-07 the active track is 2.37:1 against the inactive track, below 3:1. No darker grey fixes it (neutral.400 to neutral.700 sit between 1.34 and 2.94:1), and neutral.100 passes at 3.22:1 but matches the grey canvas. The thumb sits on the boundary and marks the value, so the edge was accepted on 2026-10-07.
-- **No motion tokens.** The spring, fades and haptics are documented above, not tokenised.
+- **No haptics tokens.** The haptics are documented above; there is no token for them.
 - **`focus-ring-offset` and `tooltip-gap` are not bound in Figma.** They are geometry: the ring and tooltip are placed at those distances. The focus ring size (thumb plus 8) and the active track length are not bound either, because they follow the value.
 - **Thumb positions come in 5% steps and assume the default width.** Figma has no number property and does not allow resizing layers inside an instance, so positions are presets on the exposed .Slider / Position spacers. They are sized for the 320 Medium and 280 Small widths; on a resized slider, the grey ticks stretch but the thumbs keep their pixel positions. For another width or an exact value, detach the instance.
 - **Min thumb and Max thumb are not linked.** Figma cannot stop Min thumb going past Max thumb; keep Min at or below Max.

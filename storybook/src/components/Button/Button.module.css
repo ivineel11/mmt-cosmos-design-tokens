@@ -84,9 +84,10 @@
 .root:active:not(:disabled) .icon { color: var(--_icon-pressed); }
 .root:disabled .icon { color: var(--_icon-disabled); }
 
-.spinner { animation: spin 0.8s linear infinite; }
+.spinner { animation: spin var(--button-spinner-duration) var(--button-spinner-easing) infinite; }
 @keyframes spin { to { transform: rotate(1turn); } }
-@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
+/* Reduced motion slows the spinner to a third rather than stopping it, so the button still reads as busy. */
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: calc(var(--button-spinner-duration) * 3); } }
 
 .root[data-surface="default"][data-hierarchy="primary"][data-intent="default"] {
   --_bg-default: var(--button-bg-primary-default);

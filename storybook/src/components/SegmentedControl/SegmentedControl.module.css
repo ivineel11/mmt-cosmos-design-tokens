@@ -4,8 +4,9 @@
  * (rounded, pill) are under test; only one of each will ship.
  *
  * In code the thumb is one layer under all the segments, sized to one segment and moved
- * between them, which is what makes the slide and the drag possible. Motion is not
- * tokenised: a ~300ms slide with no overshoot, and a 0.95 press scale over 100ms.
+ * between them, which is what makes the slide and the drag possible. The slide is the
+ * segmented-control-thumb-spring; the 0.95 press scale and fill change take press-duration.
+ * Slide and press are the separate translate and scale properties, so each keeps its timing.
  */
 
 .root {
@@ -76,8 +77,12 @@
   border-radius: var(--_thumb-radius);
   background: var(--_thumb);
   box-shadow: var(--_thumb-shadow, 0 0 transparent), inset 0 0 0 var(--segmented-control-tinted-thumb-border-width) var(--_thumb-border, transparent);
-  transform: translateX(calc(var(--_index) * 100% + var(--_drag, 0px))) scale(var(--_scale, 1));
-  transition: transform 300ms cubic-bezier(0.2, 0, 0, 1), background-color 100ms linear;
+  translate: calc(var(--_index) * 100% + var(--_drag, 0px)) 0;
+  scale: var(--_scale, 1);
+  transition:
+    translate var(--segmented-control-thumb-spring),
+    scale var(--segmented-control-press-duration) var(--segmented-control-press-easing),
+    background-color var(--segmented-control-press-duration) var(--segmented-control-press-easing);
   pointer-events: none;
 }
 .root[data-thumb-pressed="true"] .thumb {
@@ -86,7 +91,11 @@
   --_thumb-border: var(--_thumb-border-pressed);
 }
 /* While dragging, the thumb follows the finger directly. */
-.root[data-dragging="true"] .thumb { transition: background-color 100ms linear; }
+.root[data-dragging="true"] .thumb {
+  transition:
+    scale var(--segmented-control-press-duration) var(--segmented-control-press-easing),
+    background-color var(--segmented-control-press-duration) var(--segmented-control-press-easing);
+}
 .thumb[data-disabled="true"] { background: var(--segmented-control-thumb-disabled); box-shadow: none; }
 
 .segment {
@@ -158,6 +167,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .thumb { transition: background-color 100ms linear; }
+  .thumb, .root[data-dragging="true"] .thumb { transition: background-color var(--segmented-control-press-duration) var(--segmented-control-press-easing); }
   .root[data-thumb-pressed="true"] .thumb { --_scale: 1; }
 }

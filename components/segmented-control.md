@@ -110,10 +110,10 @@ Each example is shown in all three thumb styles and both shapes, so they can be 
 - **Width.** The control fills the width it is given, usually the screen width minus 16 on each side. Segments share it equally. Keep labels short enough to fit; the truncation is a safety net, not a layout.
 - **Background.** The grey track is made for white surfaces (`bg`, `bg-surface-secondary`). On the grey page (`bg-secondary`) the track has the same grey and disappears, so place the control inside a white card there.
 
-### Motion (not tokenised yet)
+### Motion
 
-- **Slide:** the thumb moves to a tapped segment with a spring of about 300 ms and no overshoot (SwiftUI `.spring(response: 0.3, dampingFraction: 1)`, Compose `spring(dampingRatio = 1f, stiffness = Spring.StiffnessMediumLow)`). After a drag, the same spring settles it into the snapped segment.
-- **Press:** while held, the thumb scales to 0.95 about its centre in 100 ms, and it returns on release. The colour change to the pressed thumb happens at the same time.
+- **Slide:** the thumb moves to a tapped segment with `segmented-control/thumb-spring` (`spring.snappy`: 300 ms, bounce 0.1, so no visible overshoot). SwiftUI uses the token as an `Animation`, Compose as `CosmosTokens.segmentedControlThumbSpring.spec()`, and the web as a `translate` transition. After a drag, the same spring settles it into the snapped segment.
+- **Press:** while held, the thumb scales to 0.95 about its centre over `segmented-control/press-duration` (`duration.xs`) with `press-easing` (`easing.standard`), and it returns on release. The pressed thumb colour changes over the same pair. On the web the slide and the press are the separate `translate` and `scale` properties, so the press is not slowed by the spring.
 - **Reduce Motion:** the thumb jumps to its new segment without sliding or scaling. The colour changes stay.
 
 ---
@@ -266,7 +266,7 @@ The tokens also compile for web (`--segmented-control-*`), but this component is
 
 - **Neutral thumb contrast.** The white thumb is 1.09:1 against the track, below 3:1. The same is true of the system iOS control. The shadow and the brand label carry the selection. This is one of the things the style test should weigh.
 - **The track disappears on the grey page.** The track and `bg-secondary` are both #F5F5F5. Place the control on white, or inside a white card.
-- **No motion tokens.** The slide, press scale and haptics are documented above, not tokenised.
+- **No haptics tokens.** The haptics are documented above; there is no token for them.
 - **`focus-ring-offset` is not bound in Figma.** As on Tab and Chip, the ring position is geometry: the Focus ring rectangle sits 4 px outside the segment with stretch constraints. It binds its width, radius and colour.
 - **Figma cannot show the slide.** Each selected Segment paints its own thumb, so the drag interaction exists only in code and in prototypes.
 - **Three styles and two shapes live side by side** until one of each is chosen. Only one of the `neutral-*`, `brand-*` and `tinted-*` groups is meant to ship, and either `pill-radius` or the Rounded `track-radius-*` and `thumb-radius-*`.

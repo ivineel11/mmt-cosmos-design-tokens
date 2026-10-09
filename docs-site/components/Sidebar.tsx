@@ -110,8 +110,8 @@ export function Sidebar({
         style={{
           width: open ? "var(--sidebar-width)" : 0,
           transition: open
-            ? `width var(--motion-duration-panel) var(--motion-ease-standard)`
-            : `width var(--motion-duration-panel-exit) var(--motion-ease-exit)`,
+            ? `width var(--duration-xl) var(--easing-sheet)`
+            : `width var(--duration-lg) var(--easing-standard)`,
         }}
       >
         <aside
@@ -123,8 +123,8 @@ export function Sidebar({
             opacity: open ? 1 : 0,
             transform: open ? "translateX(0)" : "translateX(-100%)",
             transition: open
-              ? `opacity var(--motion-duration-fade) var(--motion-ease-standard) 40ms, transform var(--motion-duration-panel) var(--motion-ease-standard), border-color var(--motion-duration-fade) var(--motion-ease-standard)`
-              : `opacity var(--motion-duration-fade) var(--motion-ease-standard), transform var(--motion-duration-panel-exit) var(--motion-ease-exit), border-color var(--motion-duration-fade) var(--motion-ease-exit)`,
+              ? `opacity var(--duration-sm) var(--easing-standard) 40ms, transform var(--duration-xl) var(--easing-sheet), border-color var(--duration-sm) var(--easing-state)`
+              : `opacity var(--duration-sm) var(--easing-standard), transform var(--duration-lg) var(--easing-standard), border-color var(--duration-sm) var(--easing-state)`,
             pointerEvents: open ? "auto" : "none",
           }}
         >
@@ -225,8 +225,8 @@ export function Sidebar({
           transform: open ? "translateX(-8px) scale(0.96)" : "translateX(0) scale(1)",
           pointerEvents: open ? "none" : "auto",
           transition: open
-            ? `opacity 100ms var(--motion-ease-standard), transform 100ms var(--motion-ease-standard), background-color 100ms var(--motion-ease-standard)`
-            : `opacity var(--motion-duration-fade) var(--motion-ease-standard) 80ms, transform var(--motion-duration-panel-exit) var(--motion-ease-standard) 40ms, background-color 100ms var(--motion-ease-standard)`,
+            ? `opacity var(--duration-xs) var(--easing-standard), transform var(--duration-xs) var(--easing-standard), background-color var(--duration-xs) var(--easing-state)`
+            : `opacity var(--duration-sm) var(--easing-standard) 80ms, transform var(--duration-md) var(--easing-standard) 40ms, background-color var(--duration-xs) var(--easing-state)`,
         }}
       >
         <PanelIcon open={false} />

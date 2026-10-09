@@ -1,6 +1,6 @@
 /*
  * Tabs: components/tab.md (Tab / Primary and Tab / Secondary). Every value is a tab/*
- * token. Motion is documented but not tokenised: 200ms, cubic-bezier(0.2, 0, 0, 1).
+ * token. The indicator slides over tab-indicator-duration, and jumps under reduced motion.
  */
 
 /* The track line belongs to the list and spans the whole row, scrolled or not. */
@@ -97,7 +97,7 @@
   border-radius: var(--tab-indicator-radius);
   background: var(--tab-indicator-default);
   pointer-events: none;
-  transition: transform 200ms cubic-bezier(0.2, 0, 0, 1), width 200ms cubic-bezier(0.2, 0, 0, 1);
+  transition: transform var(--tab-indicator-duration) var(--tab-indicator-easing), width var(--tab-indicator-duration) var(--tab-indicator-easing);
 }
 .indicator[data-disabled="true"] { background: var(--tab-indicator-disabled); }
 @media (prefers-reduced-motion: reduce) { .indicator { transition: none; } }

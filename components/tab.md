@@ -99,9 +99,9 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Tab exam
 - **Badges** follow the Badge rules: a count above 99 shows "99+", and zero hides the badge. Remove a Dot once the user has opened the tab.
 - **Disabled tabs** keep their place so the row does not shift. Explain why nearby when the reason is not obvious, such as "Trains are not available for this route".
 
-### Motion (not tokenised yet)
+### Motion
 
-The indicator slides from the old tab to the new one and resizes to the new width in 200 ms with standard easing, `cubic-bezier(0.2, 0, 0, 1)`. With reduced motion, it moves without animation. Panels change without a transition.
+The indicator slides from the old tab to the new one and resizes to the new width over `tab/indicator-duration` (`duration.md`) with `tab/indicator-easing` (`easing.move`), which eases in and out because the indicator is already on screen. With reduced motion, it moves without animation. Panels change without a transition.
 
 ---
 
@@ -218,7 +218,6 @@ The selected tab differs from the others in three ways: the label colour, the ic
 
 ## Known gaps
 
-- **No motion tokens.** The indicator slide is documented above, not tokenised.
 - **No list-level tokens** for the scroll edge fade or the start inset of a scrollable row.
 - **Badge offsets are not bound in Figma.** Figma cannot bind a position to a variable, so the Primary badge sits at x 16, y −4 inside the icon slot by hand. Code should use `tab/primary-badge-offset-x` and `tab/primary-badge-offset-y`.
 - **Indicator inset is not bound in Figma.** It follows the padding through constraints, and code should use `tab/primary-padding-x` or `tab/secondary-padding-x`.

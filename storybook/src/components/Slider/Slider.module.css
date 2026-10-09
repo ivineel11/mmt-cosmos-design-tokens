@@ -1,7 +1,8 @@
 /*
  * Slider: components/slider.md. Every value is a slider/* or semantic token. Two press
  * styles are under test: halo (a tint behind the thumb) and grow (the thumb scales from
- * thumb-size to thumb-size-pressed). Motion is not tokenised: 150ms grow, 100ms fades.
+ * thumb-size to thumb-size-pressed). The grow takes slider-thumb-duration and the halo
+ * slider-halo-duration; under reduced motion the halo only fades and the thumb jumps.
  */
 
 .root {
@@ -122,7 +123,7 @@
   background: transparent;
   scale: 0.8;
   opacity: 0;
-  transition: opacity 100ms linear, scale 100ms linear;
+  transition: opacity var(--slider-halo-duration) var(--slider-halo-easing), scale var(--slider-halo-duration) var(--slider-halo-easing);
   pointer-events: none;
 }
 .halo[data-state="hover"] { background: var(--slider-halo-hover); opacity: 1; scale: 1; }
@@ -135,7 +136,7 @@
   height: var(--_thumb);
   background: var(--slider-thumb-default);
   box-shadow: var(--slider-thumb-shadow);
-  transition: scale 150ms ease-out;
+  transition: scale var(--slider-thumb-duration) var(--slider-thumb-easing);
   touch-action: none;
 }
 /* Hit area: at least the row height in both directions. */
@@ -187,5 +188,6 @@
 .limits { display: flex; justify-content: space-between; color: var(--_limit-color); font-weight: var(--label-small-regular-font-weight); font-size: var(--label-small-regular-font-size); line-height: var(--label-small-regular-line-height); }
 
 @media (prefers-reduced-motion: reduce) {
-  .thumb, .halo { transition: none; }
+  .thumb { transition: none; }
+  .halo { transition: opacity var(--slider-halo-duration) var(--slider-halo-easing); scale: 1; }
 }

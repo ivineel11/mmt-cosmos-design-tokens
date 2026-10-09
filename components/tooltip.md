@@ -133,10 +133,10 @@ In every scene the caret tip sits exactly `offset` (4) from its trigger, and the
 - **Right-to-left.** Start and End mirror, Left and Right swap, and the close button and footer mirror.
 - **Trigger.** On touch the trigger is usually an info icon or a text link with a dotted underline. Give it `min-touch-target` of hit area, even when the icon is 16.
 
-### Motion (not tokenised yet)
+### Motion
 
-- **Enter:** fade from 0 to 1 and slide 4 px from the trigger towards the final position, over 150 ms ease-out.
-- **Exit:** fade out over 100 ms ease-in, without moving.
+- **Enter:** fade from 0 to 1 and slide from the trigger towards the final position by `tooltip/offset`, over `tooltip/enter-duration` (`duration.sm`) with `tooltip/easing` (`easing.standard`).
+- **Exit:** fade out over `tooltip/exit-duration` (`duration.xs`), without moving. On the web a Plain bubble stays mounted, so it fades out; a Rich bubble closes at once (see Known gaps).
 - **Reduce Motion:** fade only.
 
 ---
@@ -310,7 +310,7 @@ A Plain tooltip never holds a link or a button, because a pointer or screen read
 - **Rich width in Figma.** Rich is drawn at a fixed 320; in code it hugs its content up to 320.
 - **Media is a placeholder.** The Media frame carries `media-bg-*`; replace its fill with an image in a mock.
 - **Caret border on Light and Info.** Figma draws the caret over the bubble border, and a mitred Edge stroke rejoins the two so the outline is continuous. Its corner points sit at fractional positions worked out for a 1 px border and a 12 x 6 caret; if `border-width` or `caret-width` changes, redraw the Edge. In code, draw the bubble and caret as one path.
-- **No motion tokens.** Durations and easing are documented above, not tokenised.
+- **Rich exit is not animated on the web.** A Rich bubble unmounts when it closes, so it leaves without the `tooltip/exit-duration` fade that Plain has.
 - **No dark theme.** All variable collections are single-mode. In a future dark theme the Light and Info surfaces are the ones to adapt.
 - **Info under test.** Info is a trial surface beside Dark and Light. If it is dropped, delete the `*-info` tokens (14 with the primary action labels), the Info variants of both sets and the Info example.
 - **Not uSpec-generated.** This file is hand-authored next to the Figma build.
