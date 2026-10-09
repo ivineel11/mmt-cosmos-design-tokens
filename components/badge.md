@@ -159,7 +159,7 @@ Token names follow `badge/{property}-{emphasis}-{intent}`. Dots use `badge/dot-{
 |---|---|---|---|
 | Neutral | `bg-fill-inverse` #0A0A0A / `text-inverse` #FFFFFF | `bg-fill-secondary` #F5F5F5 / `text-secondary` #525252 | #0A0A0A |
 | Brand | `bg-fill-brand` #0088FF / `text-brand-on-bg-fill` #FFFFFF | `bg-fill-brand-subtlest` #EDFAFF / `text-brand` #0088FF | #0088FF |
-| Info | `bg-fill-info-strong` #0088FF / `text-info-on-bg-fill-strong` #FFFFFF | `bg-fill-info-subtle` #EDFAFF / `text-info-on-bg-fill-subtle` #0088FF | #0088FF |
+| Info | `bg-fill-info-strong` #0088FF / `text-info-on-bg-fill-strong` #FFFFFF | `bg-fill-info-subtle` #D6F3FF / `text-info-on-bg-fill-subtle` #0868C5 | #0088FF |
 | Success | `bg-fill-success-strong` #008236 / `text-success-on-bg-fill-strong` #FFFFFF | `bg-fill-success-subtle` #DCFCE7 / `text-success-on-bg-fill-subtle` #008236 | #008236 |
 | Caution | `bg-fill-caution-strong` #A65F00 / `text-caution-on-bg-fill-strong` #FFFFFF | `bg-fill-caution-subtle` #FEF9C2 / `text-caution-on-bg-fill-subtle` #894B00 | #A65F00 |
 | Warning | `bg-fill-warning-strong` #C10007 / `text-warning-on-bg-fill-strong` #FFFFFF | `bg-fill-warning-subtle` #FFE2E2 / `text-warning-on-bg-fill-subtle` #C10007 | #C10007 |
@@ -178,7 +178,8 @@ This component adds no semantic roles.
 |---|---|---|---|
 | Strong label on strong fill, brand and info (#FFFFFF on #0088FF) | 3.52:1 | 3:1 (azure exception) | Pass |
 | Strong label on strong fill, lowest outside azure (caution: #FFFFFF on #A65F00) | 4.93:1 | 4.5:1 (1.4.3) | Pass |
-| Subtle label on subtle fill, brand and info (#0088FF on #EDFAFF) | 3.30:1 | 3:1 (azure exception) | Pass |
+| Subtle label on subtle fill, brand (#0088FF on #EDFAFF) | 3.30:1 | 3:1 (azure exception) | Pass |
+| Subtle label on subtle fill, info (#0868C5 on #D6F3FF) | 4.77:1 | 4.5:1 | Pass |
 | Subtle label on subtle fill, lowest outside azure (success: #008236 on #DCFCE7) | 4.50:1 | 4.5:1 | Pass |
 | Subtle neutral label #525252 on #F5F5F5 | 7.17:1 | 4.5:1 | Pass |
 | Dot on white, lowest (brand and info #0088FF) | 3.52:1 | 3:1 (1.4.11) | Pass |

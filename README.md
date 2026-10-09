@@ -1316,7 +1316,7 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-info-strong` | `color.azure.700` |
 | `bg-fill-info-strong-hover` | `color.azure.800` |
 | `bg-fill-info-strong-pressed` | `color.azure.900` |
-| `bg-fill-info-subtle` | `color.azure.50` |
+| `bg-fill-info-subtle` | `color.azure.100` |
 | `bg-fill-info-subtlest` | `color.azure.50` |
 | `bg-fill-info-subtlest-hover` | `color.azure.100` |
 | `bg-fill-info-subtlest-pressed` | `color.azure.200` |
@@ -1374,7 +1374,7 @@ Add a component group only when a component has enough variant × state combinat
 | `text-brand-inverse-pressed` | `color.azure.100` |
 | `text-info` | `color.azure.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
-| `text-info-on-bg-fill-subtle` | `color.azure.700` |
+| `text-info-on-bg-fill-subtle` | `color.azure.800` |
 | `text-info-on-bg-surface-hover` | `color.azure.800` |
 | `text-info-on-bg-surface-pressed` | `color.azure.900` |
 | `text-info-on-bg-fill-subtlest-hover` | `color.azure.800` |
@@ -1473,7 +1473,7 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-on-bg-fill-subtle` | `color.red.700` |
 | `icon-info` | `color.azure.700` |
 | `icon-info-on-bg-fill-strong` | `color.neutral.0` |
-| `icon-info-on-bg-fill-subtle` | `color.azure.700` |
+| `icon-info-on-bg-fill-subtle` | `color.azure.800` |
 | `transparent` | `color.alpha.transparent` |
 
 ### Radius mappings

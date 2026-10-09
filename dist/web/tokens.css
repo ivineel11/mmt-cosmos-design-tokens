@@ -443,8 +443,8 @@
   --color-bg-fill-info-strong-hover: #0868C5;
   /** Pressed state for bg-fill-info-strong on an interactive info element. The label stays text-info-on-bg-fill-strong. */
   --color-bg-fill-info-strong-pressed: #0D589B;
-  /** Tinted informational fill — low-emphasis info badges and tags. Pair the label with text-info-on-bg-fill-subtle. */
-  --color-bg-fill-info-subtle: #EDFAFF;
+  /** Tinted informational fill — low-emphasis info badges and tags. Pair the label with text-info-on-bg-fill-subtle. One step deeper than bg-surface-info, matching the success, caution and warning subtle fills, so a subtle info badge still reads on an info container. For a solid info element use bg-fill-info-strong. */
+  --color-bg-fill-info-subtle: #D6F3FF;
   /** Lightest info fill for a tinted info control — the action and close buttons on an info snackbar or Info Rich tooltip at rest, the same tint as the container so the action reads as text. For its interactive steps use bg-fill-info-subtlest-hover and bg-fill-info-subtlest-pressed. For the container itself use bg-surface-info. */
   --color-bg-fill-info-subtlest: #EDFAFF;
   /** Hover state for bg-fill-info-subtlest — the action and close buttons on an info snackbar or Info Rich tooltip. Pair the label with text-info-on-bg-fill-subtlest-hover. For a tappable info banner use bg-surface-info-hover. */
@@ -559,8 +559,8 @@
   --color-text-info: #0088FF;
   /** Label colour on bg-fill-info-strong and its hover and pressed steps. For an icon on the same fill use icon-info-on-bg-fill-strong. */
   --color-text-info-on-bg-fill-strong: #FFFFFF;
-  /** Label colour on bg-fill-info-subtle. */
-  --color-text-info-on-bg-fill-subtle: #0088FF;
+  /** Label colour on bg-fill-info-subtle — subtle info badges and tags. Darker than text-info so the label passes AA on the tint without relying on the azure exception, like the other subtle badge labels. */
+  --color-text-info-on-bg-fill-subtle: #0868C5;
   /** Info label colour on bg-surface-info-hover. Darker than text-info so the label keeps AA as the surface deepens beneath it. For the action label on an info snackbar or Info Rich tooltip use text-info-on-bg-fill-subtlest-hover. */
   --color-text-info-on-bg-surface-hover: #0868C5;
   /** Info label colour on bg-surface-info-pressed. Darker than text-info so the label keeps AA as the surface deepens beneath it. For the action label on an info snackbar or Info Rich tooltip use text-info-on-bg-fill-subtlest-pressed. */
@@ -757,8 +757,8 @@
   --color-icon-info: #0088FF;
   /** Icon on bg-fill-info-strong — info badges and counters. For an info icon on a neutral or tinted background use icon-info. */
   --color-icon-info-on-bg-fill-strong: #FFFFFF;
-  /** Icon on bg-fill-info-subtle — subtle info badges and tags. */
-  --color-icon-info-on-bg-fill-subtle: #0088FF;
+  /** Icon on bg-fill-info-subtle — subtle info badges and tags. Darker than icon-info, matching text-info-on-bg-fill-subtle. */
+  --color-icon-info-on-bg-fill-subtle: #0868C5;
   /** Explicit no-fill. Use where a colour token is required but the element must be see-through — the resting background of secondary and text buttons — so the value stays swappable instead of hard-coded to `transparent`. */
   --color-transparent: #FFFFFF00;
   /** Experimental pass-through to the raw amber 50 primitive, for prototypes and one-off marketing surfaces. It carries no semantic meaning and no guaranteed contrast pairing — use a role token (bg-*, text-*, border-*, icon-*) in product UI. */
@@ -2768,7 +2768,7 @@
   /** Tinted fill of a subtle brand badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
   --badge-bg-subtle-brand: #EDFAFF;
   /** Tinted fill of a subtle info badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
-  --badge-bg-subtle-info: #EDFAFF;
+  --badge-bg-subtle-info: #D6F3FF;
   /** Tinted fill of a subtle success badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
   --badge-bg-subtle-success: #DCFCE7;
   /** Tinted fill of a subtle caution badge, the calm option for status tags beside content. Not used for dots, which are strong only. */
@@ -2780,7 +2780,7 @@
   /** Count or text colour on a subtle brand badge. Paired with bg-subtle-brand and holds AA contrast on it. */
   --badge-label-subtle-brand: #0088FF;
   /** Count or text colour on a subtle info badge. Paired with bg-subtle-info and holds AA contrast on it. */
-  --badge-label-subtle-info: #0088FF;
+  --badge-label-subtle-info: #0868C5;
   /** Count or text colour on a subtle success badge. Paired with bg-subtle-success and holds AA contrast on it. */
   --badge-label-subtle-success: #008236;
   /** Count or text colour on a subtle caution badge. Paired with bg-subtle-caution and holds AA contrast on it. */
