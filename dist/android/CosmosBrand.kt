@@ -20,32 +20,42 @@ import androidx.compose.ui.graphics.Color
 data class CosmosBrand(
   val id: String,
   val name: String,
-  /** Brand-tinted container — tertiary button default, selected list rows, brand callouts. This is a background behind content; for a solid brand element such as a primary button use bg-fill-brand. */
+  /** Brand-tinted container — selected list rows, brand callouts, the leading well of a brand list row. This is a background behind content; for a tinted brand control such as the tertiary button use bg-fill-brand-subtlest, and for a solid brand element use bg-fill-brand. */
   val colorBgSurfaceBrand: Color,
-  /** Hover state for bg-surface-brand, and the hover background for brand controls that are transparent at rest (secondary and text buttons). */
+  /** Hover state for a tappable brand-tinted container (bg-surface-brand), such as a selected list row. For brand controls such as secondary, tertiary and text buttons use bg-fill-brand-subtlest-hover. */
   val colorBgSurfaceBrandHover: Color,
   /** Light pressed step for a brand-tinted surface, the same tint as bg-surface-brand-hover, for presses that should barely deepen. Pair the label with text-brand-on-bg-surface-hover. For the standard pressed state use bg-surface-brand-pressed-strong. */
   val colorBgSurfaceBrandPressedSubtle: Color,
-  /** Pressed state for bg-surface-brand and for brand controls that are transparent at rest — secondary and tertiary button presses, the selected chip. Pair the label with text-brand-on-bg-surface-pressed. For a lighter press use bg-surface-brand-pressed-subtle. */
+  /** Pressed state for a tappable brand-tinted container (bg-surface-brand). Pair the label with text-brand-on-bg-surface-pressed. For brand controls such as button presses and the selected chip use bg-fill-brand-subtlest-pressed; for a lighter press use bg-surface-brand-pressed-subtle. */
   val colorBgSurfaceBrandPressedStrong: Color,
-  /** Brand tint for a control on an inverted or dark background, always laid at an opacity token (the inverse tertiary fill and the inverse hover and pressed layers of Button). Never used solid; on light backgrounds use bg-surface-brand. */
-  val colorBgSurfaceBrandInverse: Color,
-  /** Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand background use bg-surface-brand. */
+  /** Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand control use bg-fill-brand-subtlest, and for a tinted brand container use bg-surface-brand. */
   val colorBgFillBrand: Color,
   /** Hover state for bg-fill-brand — primary button hover. */
   val colorBgFillBrandHover: Color,
   /** Pressed/active state for bg-fill-brand — primary button pressed. */
   val colorBgFillBrandPressed: Color,
+  /** Lightest brand fill for a tinted brand control — the tertiary button at rest, the selected chip, the tinted segmented thumb and low-emphasis brand badges. It also colours the hover of brand controls that are transparent at rest, such as checkbox, radio and text button. Pair the label with text-brand. For a brand container behind content use bg-surface-brand, and for a solid brand element use bg-fill-brand. */
+  val colorBgFillBrandSubtlest: Color,
+  /** Hover state for bg-fill-brand-subtlest — secondary, tertiary and selected chip hovers, and the press of brand controls that start transparent (checkbox, radio, text button, slider halo). Pair the label with text-brand-on-bg-fill-subtlest-hover. */
+  val colorBgFillBrandSubtlestHover: Color,
+  /** Pressed state for bg-fill-brand-subtlest — secondary and tertiary button presses, the pressed selected chip and its remove button, the pressed tinted segmented thumb. Pair the label with text-brand-on-bg-fill-subtlest-pressed. */
+  val colorBgFillBrandSubtlestPressed: Color,
+  /** Brand tint for a control on an inverted or dark background, always laid at an opacity token (the inverse tertiary fill and the inverse hover and pressed layers of Button). Never used solid; on light backgrounds use bg-fill-brand-subtlest. */
+  val colorBgFillBrandInverse: Color,
   /** Brand-coloured label on a neutral or brand-tinted background — secondary, tertiary and text button labels, selected tab labels. On a solid brand fill use text-brand-on-bg-fill. */
   val colorTextBrand: Color,
   /** Hover state for text-brand. */
   val colorTextBrandHover: Color,
   /** Pressed/active state for text-brand. */
   val colorTextBrandPressed: Color,
-  /** Brand label colour on a tinted brand surface while hovered — the secondary, tertiary and text button labels. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For a label on a solid brand fill use text-brand-on-bg-fill; for brand foreground marks such as the Radio dot use text-brand-hover, which tracks border-brand-hover instead. */
+  /** Brand label colour on a tinted brand container while hovered — the action of a neutral snackbar or light tooltip. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For labels on tinted brand controls such as secondary, tertiary and text buttons use text-brand-on-bg-fill-subtlest-hover, and on a solid brand fill use text-brand-on-bg-fill. */
   val colorTextBrandOnBgSurfaceHover: Color,
   /** Brand label colour on a tinted brand surface while pressed. One step darker than text-brand-on-bg-surface-hover, matching the deeper surface underneath. */
   val colorTextBrandOnBgSurfacePressed: Color,
+  /** Brand label colour on a tinted brand control while hovered (bg-fill-brand-subtlest-hover) — secondary, tertiary and text button labels and the selected chip. Darker than text-brand so the label keeps AA as the fill deepens. For a brand container such as a snackbar use text-brand-on-bg-surface-hover; for brand marks such as the Radio dot use text-brand-hover. */
+  val colorTextBrandOnBgFillSubtlestHover: Color,
+  /** Brand label colour on a tinted brand control while pressed (bg-fill-brand-subtlest-pressed). One step darker than text-brand-on-bg-fill-subtlest-hover, matching the deeper fill underneath. */
+  val colorTextBrandOnBgFillSubtlestPressed: Color,
   /** Brand text on an inverted or dark background, such as the label of a secondary, tertiary or text button on a dark banner. Lighter than text-brand so it holds AA on near black and navy; on light backgrounds use text-brand. For inline links use text-link-inverse. */
   val colorTextBrandInverse: Color,
   /** Brand text on an inverted or dark background while its control is hovered. One step lighter than text-brand-inverse, the mirror of light, where hover darkens. */
@@ -70,10 +80,14 @@ data class CosmosBrand(
   val colorIconBrandHover: Color,
   /** Pressed brand icon on a neutral background, tracking text-brand-pressed and border-brand-pressed. */
   val colorIconBrandPressed: Color,
-  /** Brand icon on a tinted brand surface while hovered — the icons in secondary, tertiary and text buttons. Tracks text-brand-on-bg-surface-hover so icon and label stay one colour as the surface deepens. For a hovered brand icon on a neutral background use icon-brand-hover. */
+  /** Brand icon on a tinted brand container while hovered. Tracks text-brand-on-bg-surface-hover so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-hover, and for a hovered brand icon on a neutral background use icon-brand-hover. */
   val colorIconBrandOnBgSurfaceHover: Color,
-  /** Brand icon on a tinted brand surface while pressed — the icons in secondary, tertiary and text buttons. Tracks text-brand-on-bg-surface-pressed so icon and label stay one colour as the surface deepens. For a pressed brand icon on a neutral background use icon-brand-pressed. */
+  /** Brand icon on a tinted brand container while pressed. Tracks text-brand-on-bg-surface-pressed so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-pressed, and for a pressed brand icon on a neutral background use icon-brand-pressed. */
   val colorIconBrandOnBgSurfacePressed: Color,
+  /** Brand icon in a tinted brand control while hovered — icons in secondary, tertiary and text buttons, the selected chip, and the hovered on-switch check. Tracks text-brand-on-bg-fill-subtlest-hover so icon and label stay one colour. For a hovered brand icon on a neutral background use icon-brand-hover. */
+  val colorIconBrandOnBgFillSubtlestHover: Color,
+  /** Brand icon in a tinted brand control while pressed. Tracks text-brand-on-bg-fill-subtlest-pressed so icon and label stay one colour. For a pressed brand icon on a neutral background use icon-brand-pressed. */
+  val colorIconBrandOnBgFillSubtlestPressed: Color,
   /** Brand icon on an inverted or dark background, such as the glyph of an inverse secondary, tertiary or text button. One step deeper than text-brand-inverse, like the other inverse icons; for an info status icon use icon-info-inverse. */
   val colorIconBrandInverse: Color,
   /** Brand icon on an inverted or dark background while its control is hovered. One step lighter than icon-brand-inverse. */
@@ -519,15 +533,20 @@ data class CosmosBrand(
       colorBgSurfaceBrandHover = Color(0xFFD6F3FF),
       colorBgSurfaceBrandPressedSubtle = Color(0xFFD6F3FF),
       colorBgSurfaceBrandPressedStrong = Color(0xFFB5EAFF),
-      colorBgSurfaceBrandInverse = Color(0xFF48BBFF),
       colorBgFillBrand = Color(0xFF0088FF),
       colorBgFillBrandHover = Color(0xFF0868C5),
       colorBgFillBrandPressed = Color(0xFF0D589B),
+      colorBgFillBrandSubtlest = Color(0xFFEDFAFF),
+      colorBgFillBrandSubtlestHover = Color(0xFFD6F3FF),
+      colorBgFillBrandSubtlestPressed = Color(0xFFB5EAFF),
+      colorBgFillBrandInverse = Color(0xFF48BBFF),
       colorTextBrand = Color(0xFF0088FF),
       colorTextBrandHover = Color(0xFF0698FF),
       colorTextBrandPressed = Color(0xFF0868C5),
       colorTextBrandOnBgSurfaceHover = Color(0xFF0868C5),
       colorTextBrandOnBgSurfacePressed = Color(0xFF0D589B),
+      colorTextBrandOnBgFillSubtlestHover = Color(0xFF0868C5),
+      colorTextBrandOnBgFillSubtlestPressed = Color(0xFF0D589B),
       colorTextBrandInverse = Color(0xFF83DFFF),
       colorTextBrandInverseHover = Color(0xFFB5EAFF),
       colorTextBrandInversePressed = Color(0xFFD6F3FF),
@@ -542,6 +561,8 @@ data class CosmosBrand(
       colorIconBrandPressed = Color(0xFF0868C5),
       colorIconBrandOnBgSurfaceHover = Color(0xFF0868C5),
       colorIconBrandOnBgSurfacePressed = Color(0xFF0D589B),
+      colorIconBrandOnBgFillSubtlestHover = Color(0xFF0868C5),
+      colorIconBrandOnBgFillSubtlestPressed = Color(0xFF0D589B),
       colorIconBrandInverse = Color(0xFF48BBFF),
       colorIconBrandInverseHover = Color(0xFF83DFFF),
       colorIconBrandInversePressed = Color(0xFFB5EAFF),
@@ -769,15 +790,20 @@ data class CosmosBrand(
       colorBgSurfaceBrandHover = Color(0xFFFFE0D4),
       colorBgSurfaceBrandPressedSubtle = Color(0xFFFFE0D4),
       colorBgSurfaceBrandPressedStrong = Color(0xFFFFBCA8),
-      colorBgSurfaceBrandInverse = Color(0xFFFF8F71),
       colorBgFillBrand = Color(0xFFFF4929),
       colorBgFillBrandHover = Color(0xFFFE2B11),
       colorBgFillBrandPressed = Color(0xFFEF1107),
+      colorBgFillBrandSubtlest = Color(0xFFFFF2ED),
+      colorBgFillBrandSubtlestHover = Color(0xFFFFE0D4),
+      colorBgFillBrandSubtlestPressed = Color(0xFFFFBCA8),
+      colorBgFillBrandInverse = Color(0xFFFF8F71),
       colorTextBrand = Color(0xFFFF4929),
       colorTextBrandHover = Color(0xFFFE2B11),
       colorTextBrandPressed = Color(0xFFEF1107),
       colorTextBrandOnBgSurfaceHover = Color(0xFFEF1107),
       colorTextBrandOnBgSurfacePressed = Color(0xFFC6080A),
+      colorTextBrandOnBgFillSubtlestHover = Color(0xFFEF1107),
+      colorTextBrandOnBgFillSubtlestPressed = Color(0xFFC6080A),
       colorTextBrandInverse = Color(0xFFFFBCA8),
       colorTextBrandInverseHover = Color(0xFFFFE0D4),
       colorTextBrandInversePressed = Color(0xFFFFF2ED),
@@ -792,6 +818,8 @@ data class CosmosBrand(
       colorIconBrandPressed = Color(0xFFEF1107),
       colorIconBrandOnBgSurfaceHover = Color(0xFFEF1107),
       colorIconBrandOnBgSurfacePressed = Color(0xFFC6080A),
+      colorIconBrandOnBgFillSubtlestHover = Color(0xFFEF1107),
+      colorIconBrandOnBgFillSubtlestPressed = Color(0xFFC6080A),
       colorIconBrandInverse = Color(0xFFFF8F71),
       colorIconBrandInverseHover = Color(0xFFFFBCA8),
       colorIconBrandInversePressed = Color(0xFFFFE0D4),
@@ -1019,15 +1047,20 @@ data class CosmosBrand(
       colorBgSurfaceBrandHover = Color(0xFFFFEDD3),
       colorBgSurfaceBrandPressedSubtle = Color(0xFFFFEDD3),
       colorBgSurfaceBrandPressedStrong = Color(0xFFFFD7A5),
-      colorBgSurfaceBrandInverse = Color(0xFFFF9332),
       colorBgFillBrand = Color(0xFFF45900),
       colorBgFillBrandHover = Color(0xFFCC4102),
       colorBgFillBrandPressed = Color(0xFFA1340B),
+      colorBgFillBrandSubtlest = Color(0xFFFFF7EC),
+      colorBgFillBrandSubtlestHover = Color(0xFFFFEDD3),
+      colorBgFillBrandSubtlestPressed = Color(0xFFFFD7A5),
+      colorBgFillBrandInverse = Color(0xFFFF9332),
       colorTextBrand = Color(0xFFF45900),
       colorTextBrandHover = Color(0xFFCC4102),
       colorTextBrandPressed = Color(0xFFA1340B),
       colorTextBrandOnBgSurfaceHover = Color(0xFFA1340B),
       colorTextBrandOnBgSurfacePressed = Color(0xFF822D0C),
+      colorTextBrandOnBgFillSubtlestHover = Color(0xFFA1340B),
+      colorTextBrandOnBgFillSubtlestPressed = Color(0xFF822D0C),
       colorTextBrandInverse = Color(0xFFFFBB6D),
       colorTextBrandInverseHover = Color(0xFFFFD7A5),
       colorTextBrandInversePressed = Color(0xFFFFEDD3),
@@ -1042,6 +1075,8 @@ data class CosmosBrand(
       colorIconBrandPressed = Color(0xFFA1340B),
       colorIconBrandOnBgSurfaceHover = Color(0xFFA1340B),
       colorIconBrandOnBgSurfacePressed = Color(0xFF822D0C),
+      colorIconBrandOnBgFillSubtlestHover = Color(0xFFA1340B),
+      colorIconBrandOnBgFillSubtlestPressed = Color(0xFF822D0C),
       colorIconBrandInverse = Color(0xFFFF9332),
       colorIconBrandInverseHover = Color(0xFFFFBB6D),
       colorIconBrandInversePressed = Color(0xFFFFD7A5),

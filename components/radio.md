@@ -124,8 +124,8 @@ Token names follow `radio/{property}-{selection}-{intent}-{state}`, where `inten
 
 | Intent | Default | Hover | Pressed | Disabled |
 |---|---|---|---|---|
-| Default | `color.bg-fill` | `color.bg-surface-brand` | `color.bg-surface-brand-hover` | `color.bg-surface-disabled` |
-| Error | `color.bg-fill` | `color.bg-surface-warning` | `color.bg-surface-warning-hover` | `color.bg-surface-disabled` |
+| Default | `color.bg-fill` | `color.bg-fill-brand-subtlest` | `color.bg-fill-brand-subtlest-hover` | `color.bg-fill-disabled-subtle` |
+| Error | `color.bg-fill` | `color.bg-fill-warning-subtlest` | `color.bg-fill-warning-subtlest-hover` | `color.bg-fill-disabled-subtle` |
 
 ### Ring — `radio/border-*`
 

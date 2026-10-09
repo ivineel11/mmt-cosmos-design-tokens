@@ -207,7 +207,7 @@ Token names follow `slider/{part}-{active|inactive}-{state}`. Focus uses the Def
 | Active track | `track-active` → `bg-fill-brand` #0088FF | `track-active-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
 | Tick on the active track | `tick-active` → `bg-fill` #FFFFFF | `tick-active-disabled` → `bg-fill` #FFFFFF |
 | Tick on the inactive track | `tick-inactive` → `bg-fill-neutral-strong-pressed` #737373 | `tick-inactive-disabled` → `bg-fill-disabled-strong` #A1A1A1 |
-| Halo | Hover: `halo-hover` → `bg-surface-brand` #EDFAFF · Pressed: `halo-pressed` → `bg-surface-brand-hover` #D6F3FF | – |
+| Halo | Hover: `halo-hover` → `bg-fill-brand-subtlest` #EDFAFF · Pressed: `halo-pressed` → `bg-fill-brand-subtlest-hover` #D6F3FF | – |
 | Focus ring | Focus: `focus-ring` → `border-focus` #0088FF | – |
 | Label and value | `label-text`, `value-text` → `text-primary` #0A0A0A | `text-disabled` → `text-disabled` #A1A1A1 |
 | Min and max | `limit-text` → `text-secondary` #525252 | `text-disabled` #A1A1A1 |
