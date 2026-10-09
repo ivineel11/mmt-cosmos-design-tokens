@@ -36,7 +36,7 @@ A screen sits on one of two canvases, white or grey, and the container on top mu
 | Skeleton blocks | |
 
 - **Tappable rows stay surfaces.** A menu item or list row is interactive, but it is a slice of its container and holds other content. Its hover and pressed steps come from the surface it sits in: `bg-surface-hover`, `bg-surface-secondary-hover`, or `bg-surface-warning-hover` for a destructive item. If an element holds other components or lines of content, it is a surface; if it is a single control or mark, it is a fill.
-- **A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever it sits on. The inline actions of Snackbar and Tooltip still use surface tokens and move in a follow-up.
+- **A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever it sits on.
 - **Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; an unavailable section or card uses `bg-surface-disabled`. The one exception is the disabled chip and the disabled list icon well, which use `bg-surface-disabled-subtle` (`neutral.50`): no disabled fill is that light, and `bg-fill-disabled-subtlest` (`neutral.100`) would vanish on the grey canvas.
 - **Pair the foreground with the same role.** On a fill, use `*-on-bg-fill-*` labels and icons; on a surface, use `*-on-bg-surface-*`. Keep the pairing even where the two resolve to the same colour, so they can diverge later, for example in another brand.
 

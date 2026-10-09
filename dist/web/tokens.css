@@ -377,21 +377,21 @@
   --color-bg-surface-brand-pressed-strong: #B5EAFF;
   /** Informational container — info banners, inline info messages. Pair with text-info, border-info and icon-info. For a solid info element such as a badge use bg-fill-info-strong. */
   --color-bg-surface-info: #EDFAFF;
-  /** Hover state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-hover. */
+  /** Hover state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-hover. For an action or close button inside an info snackbar or tooltip use bg-fill-info-subtlest-hover. */
   --color-bg-surface-info-hover: #D6F3FF;
-  /** Pressed state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-pressed. */
+  /** Pressed state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-pressed. For an action or close button inside an info snackbar or tooltip use bg-fill-info-subtlest-pressed. */
   --color-bg-surface-info-pressed: #B5EAFF;
   /** Success container — confirmation banners, completed-state panels. Pair with text-success, border-success and icon-success. */
   --color-bg-surface-success: #F0FDF4;
-  /** Hover state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-hover. */
+  /** Hover state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-hover. For an action or close button inside a success snackbar or tooltip use bg-fill-success-subtlest-hover. */
   --color-bg-surface-success-hover: #DCFCE7;
-  /** Pressed state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-pressed. */
+  /** Pressed state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-pressed. For an action or close button inside a success snackbar or tooltip use bg-fill-success-subtlest-pressed. */
   --color-bg-surface-success-pressed: #B9F8CF;
   /** Caution container — amber advisory banners and inline notices. In Cosmos, caution is the amber advisory role; for errors and destructive flows use the warning tokens. */
   --color-bg-surface-caution: #FEFCE8;
-  /** Hover state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-hover. */
+  /** Hover state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-hover. For an action or close button inside a caution snackbar or tooltip use bg-fill-caution-subtlest-hover. */
   --color-bg-surface-caution-hover: #FEF9C2;
-  /** Pressed state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-pressed. */
+  /** Pressed state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-pressed. For an action or close button inside a caution snackbar or tooltip use bg-fill-caution-subtlest-pressed. */
   --color-bg-surface-caution-pressed: #FFF085;
   /** Error/destructive container — error banners, inline validation messages. In Cosmos, warning is the red error role; for amber advisories use bg-surface-caution. For a tinted destructive control such as the destructive tertiary button use bg-fill-warning-subtlest. */
   --color-bg-surface-warning: #FEF2F2;
@@ -445,6 +445,12 @@
   --color-bg-fill-info-strong-pressed: #0D589B;
   /** Tinted informational fill — low-emphasis info badges and tags. Pair the label with text-info-on-bg-fill-subtle. */
   --color-bg-fill-info-subtle: #EDFAFF;
+  /** Lightest info fill for a tinted info control — the action and close buttons on an info snackbar or Info Rich tooltip at rest, the same tint as the container so the action reads as text. For its interactive steps use bg-fill-info-subtlest-hover and bg-fill-info-subtlest-pressed. For the container itself use bg-surface-info. */
+  --color-bg-fill-info-subtlest: #EDFAFF;
+  /** Hover state for bg-fill-info-subtlest — the action and close buttons on an info snackbar or Info Rich tooltip. Pair the label with text-info-on-bg-fill-subtlest-hover. For a tappable info banner use bg-surface-info-hover. */
+  --color-bg-fill-info-subtlest-hover: #D6F3FF;
+  /** Pressed state for bg-fill-info-subtlest — the action and close buttons on an info snackbar or Info Rich tooltip. Pair the label with text-info-on-bg-fill-subtlest-pressed. For a tappable info banner use bg-surface-info-pressed. */
+  --color-bg-fill-info-subtlest-pressed: #B5EAFF;
   /** Solid success fill — success badges and status dots. Pair the label with text-success-on-bg-fill-strong. */
   --color-bg-fill-success-strong: #008236;
   /** Hover state for bg-fill-success-strong on an interactive success element. Darker than the rest step, because a lighter green would drop the white label below AA. */
@@ -453,6 +459,12 @@
   --color-bg-fill-success-strong-pressed: #0D542B;
   /** Tinted success fill — low-emphasis success badges and tags. Pair the label with text-success-on-bg-fill-subtle. */
   --color-bg-fill-success-subtle: #DCFCE7;
+  /** Lightest success fill for a tinted success control — the action and close buttons on a success snackbar at rest, the same tint as the container so the action reads as text. For its interactive steps use bg-fill-success-subtlest-hover and bg-fill-success-subtlest-pressed. For the container itself use bg-surface-success. */
+  --color-bg-fill-success-subtlest: #F0FDF4;
+  /** Hover state for bg-fill-success-subtlest — the action and close buttons on a success snackbar. Pair the label with text-success-on-bg-fill-subtlest-hover. For a tappable confirmation banner use bg-surface-success-hover. */
+  --color-bg-fill-success-subtlest-hover: #DCFCE7;
+  /** Pressed state for bg-fill-success-subtlest — the action and close buttons on a success snackbar. Pair the label with text-success-on-bg-fill-subtlest-pressed. For a tappable confirmation banner use bg-surface-success-pressed. */
+  --color-bg-fill-success-subtlest-pressed: #B9F8CF;
   /** Solid caution fill — amber advisory badges and status dots. Pair the label with text-caution-on-bg-fill-strong. */
   --color-bg-fill-caution-strong: #A65F00;
   /** Hover state for bg-fill-caution-strong on an interactive caution element. Darker than the rest step, because a lighter amber would drop the white label below AA. */
@@ -461,6 +473,12 @@
   --color-bg-fill-caution-strong-pressed: #733E0A;
   /** Tinted caution fill — low-emphasis advisory badges and tags. Pair the label with text-caution-on-bg-fill-subtle. */
   --color-bg-fill-caution-subtle: #FEF9C2;
+  /** Lightest caution fill for a tinted caution control — the action and close buttons on a caution snackbar at rest, the same tint as the container so the action reads as text. For its interactive steps use bg-fill-caution-subtlest-hover and bg-fill-caution-subtlest-pressed. For the container itself use bg-surface-caution. */
+  --color-bg-fill-caution-subtlest: #FEFCE8;
+  /** Hover state for bg-fill-caution-subtlest — the action and close buttons on a caution snackbar. Pair the label with text-caution-on-bg-fill-subtlest-hover. For a tappable advisory banner use bg-surface-caution-hover. */
+  --color-bg-fill-caution-subtlest-hover: #FEF9C2;
+  /** Pressed state for bg-fill-caution-subtlest — the action and close buttons on a caution snackbar. Pair the label with text-caution-on-bg-fill-subtlest-pressed. For a tappable advisory banner use bg-surface-caution-pressed. */
+  --color-bg-fill-caution-subtlest-pressed: #FFF085;
   /** Solid error/destructive fill — destructive primary button default, error badges. Pair the label with text-warning-on-bg-fill-strong. */
   --color-bg-fill-warning-strong: #C10007;
   /** Hover state for bg-fill-warning-strong — destructive primary button hover. */
@@ -543,30 +561,42 @@
   --color-text-info-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-info-subtle. */
   --color-text-info-on-bg-fill-subtle: #0088FF;
-  /** Info label colour on bg-surface-info-hover. Darker than text-info so the label keeps AA as the surface deepens beneath it. */
+  /** Info label colour on bg-surface-info-hover. Darker than text-info so the label keeps AA as the surface deepens beneath it. For the action label on an info snackbar or Info Rich tooltip use text-info-on-bg-fill-subtlest-hover. */
   --color-text-info-on-bg-surface-hover: #0868C5;
-  /** Info label colour on bg-surface-info-pressed. Darker than text-info so the label keeps AA as the surface deepens beneath it. */
+  /** Info label colour on bg-surface-info-pressed. Darker than text-info so the label keeps AA as the surface deepens beneath it. For the action label on an info snackbar or Info Rich tooltip use text-info-on-bg-fill-subtlest-pressed. */
   --color-text-info-on-bg-surface-pressed: #0D589B;
+  /** Info label colour on a hovered info control (bg-fill-info-subtlest-hover), such as the action on an info snackbar or Info Rich tooltip. Darker than text-info so the label keeps AA as the fill deepens. For a tappable info banner use text-info-on-bg-surface-hover. */
+  --color-text-info-on-bg-fill-subtlest-hover: #0868C5;
+  /** Info label colour on a pressed info control (bg-fill-info-subtlest-pressed). One step darker than text-info-on-bg-fill-subtlest-hover, matching the deeper fill underneath. For a tappable info banner use text-info-on-bg-surface-pressed. */
+  --color-text-info-on-bg-fill-subtlest-pressed: #0D589B;
   /** Success text on a neutral or success-tinted surface (bg-surface-success). On a solid success fill use the text-success-on-bg-fill-* variants. */
   --color-text-success: #008236;
   /** Label colour on bg-fill-success-strong and its hover and pressed steps. For an icon on the same fill use icon-success-on-bg-fill-strong. */
   --color-text-success-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-success-subtle. */
   --color-text-success-on-bg-fill-subtle: #008236;
-  /** Success label colour on bg-surface-success-hover. Darker than text-success so the label keeps AA as the surface deepens beneath it. */
+  /** Success label colour on bg-surface-success-hover. Darker than text-success so the label keeps AA as the surface deepens beneath it. For the action label on a success snackbar use text-success-on-bg-fill-subtlest-hover. */
   --color-text-success-on-bg-surface-hover: #016630;
-  /** Success label colour on bg-surface-success-pressed. Darker than text-success so the label keeps AA as the surface deepens beneath it. */
+  /** Success label colour on bg-surface-success-pressed. Darker than text-success so the label keeps AA as the surface deepens beneath it. For the action label on a success snackbar use text-success-on-bg-fill-subtlest-pressed. */
   --color-text-success-on-bg-surface-pressed: #0D542B;
+  /** Success label colour on a hovered success control (bg-fill-success-subtlest-hover), such as the action on a success snackbar. Darker than text-success so the label keeps AA as the fill deepens. For a tappable confirmation banner use text-success-on-bg-surface-hover. */
+  --color-text-success-on-bg-fill-subtlest-hover: #016630;
+  /** Success label colour on a pressed success control (bg-fill-success-subtlest-pressed). One step darker than text-success-on-bg-fill-subtlest-hover, matching the deeper fill underneath. For a tappable confirmation banner use text-success-on-bg-surface-pressed. */
+  --color-text-success-on-bg-fill-subtlest-pressed: #0D542B;
   /** Amber advisory text on a neutral or caution-tinted surface. In Cosmos, caution is the amber advisory role; for errors and destructive copy use text-warning. */
   --color-text-caution: #A65F00;
   /** Label colour on bg-fill-caution-strong and its hover and pressed steps. For an icon on the same fill use icon-caution-on-bg-fill-strong. */
   --color-text-caution-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-caution-subtle. */
   --color-text-caution-on-bg-fill-subtle: #894B00;
-  /** Caution label colour on bg-surface-caution-hover. Darker than text-caution so the label keeps AA as the surface deepens beneath it. */
+  /** Caution label colour on bg-surface-caution-hover. Darker than text-caution so the label keeps AA as the surface deepens beneath it. For the action label on a caution snackbar use text-caution-on-bg-fill-subtlest-hover. */
   --color-text-caution-on-bg-surface-hover: #894B00;
-  /** Caution label colour on bg-surface-caution-pressed. Darker than text-caution so the label keeps AA as the surface deepens beneath it. */
+  /** Caution label colour on bg-surface-caution-pressed. Darker than text-caution so the label keeps AA as the surface deepens beneath it. For the action label on a caution snackbar use text-caution-on-bg-fill-subtlest-pressed. */
   --color-text-caution-on-bg-surface-pressed: #733E0A;
+  /** Caution label colour on a hovered caution control (bg-fill-caution-subtlest-hover), such as the action on a caution snackbar. Darker than text-caution so the label keeps AA as the fill deepens. For a tappable advisory banner use text-caution-on-bg-surface-hover. */
+  --color-text-caution-on-bg-fill-subtlest-hover: #894B00;
+  /** Caution label colour on a pressed caution control (bg-fill-caution-subtlest-pressed). One step darker than text-caution-on-bg-fill-subtlest-hover, matching the deeper fill underneath. For a tappable advisory banner use text-caution-on-bg-surface-pressed. */
+  --color-text-caution-on-bg-fill-subtlest-pressed: #733E0A;
   /** Error and destructive text — validation messages, destructive button labels. In Cosmos, warning is the red error role; for amber advisories use text-caution. */
   --color-text-warning: #C10007;
   /** Hover state for text-warning — destructive secondary and text buttons. */
@@ -2559,10 +2589,10 @@
   --snackbar-bg-control-inverse-pressed: #262626;
   /** Fill of the action and close buttons on a tinted neutral snackbar, at rest and on keyboard focus. The same as the snackbar fill, so the action reads as text until it is hovered or pressed. */
   --snackbar-bg-control-tinted-neutral-default: #FFFFFF;
-  /** Fill of the action and close buttons on a tinted neutral snackbar, on hover: one step darker than the tint. */
-  --snackbar-bg-control-tinted-neutral-hover: #FAFAFA;
-  /** Fill of the action and close buttons on a tinted neutral snackbar, while pressed: one step darker than the tint. */
-  --snackbar-bg-control-tinted-neutral-pressed: #F5F5F5;
+  /** Fill of the action and close buttons on a tinted neutral snackbar, on hover: a light brand tint, the same as a Text Button, since a neutral message has no intent colour to follow. */
+  --snackbar-bg-control-tinted-neutral-hover: #EDFAFF;
+  /** Fill of the action and close buttons on a tinted neutral snackbar, while pressed: one brand step deeper than hover, the same as a pressed Text Button. */
+  --snackbar-bg-control-tinted-neutral-pressed: #D6F3FF;
   /** Fill of the action and close buttons on a tinted info snackbar, at rest and on keyboard focus. The same as the snackbar fill, so the action reads as text until it is hovered or pressed. */
   --snackbar-bg-control-tinted-info-default: #EDFAFF;
   /** Fill of the action and close buttons on a tinted info snackbar, on hover: one step darker than the tint. */
@@ -3479,10 +3509,10 @@
   --tooltip-control-bg-dark-hover: #171717;
   /** Fill of the primary and secondary text actions and the close button on a Dark Rich tooltip while pressed, on touch and web. Use control-bg-dark-hover under the pointer. */
   --tooltip-control-bg-dark-pressed: #262626;
-  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-light-pressed while pressed. */
-  --tooltip-control-bg-light-hover: #FAFAFA;
-  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip while pressed, on touch and web. Use control-bg-light-hover under the pointer. */
-  --tooltip-control-bg-light-pressed: #F5F5F5;
+  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip under the pointer: a light brand tint, the same as a Text Button. Web only. At rest and on focus they have no fill. Use control-bg-light-pressed while pressed. */
+  --tooltip-control-bg-light-hover: #EDFAFF;
+  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip while pressed, on touch and web: one brand step deeper than hover, the same as a pressed Text Button. Use control-bg-light-hover under the pointer. */
+  --tooltip-control-bg-light-pressed: #D6F3FF;
   /** Fill of the primary and secondary text actions and the close button on an Info Rich tooltip under the pointer. Web only. At rest and on focus they have no fill. Use control-bg-info-pressed while pressed. */
   --tooltip-control-bg-info-hover: #D6F3FF;
   /** Fill of the primary and secondary text actions and the close button on an Info Rich tooltip while pressed, on touch and web. Use control-bg-info-hover under the pointer. */
@@ -3672,7 +3702,7 @@
 }
 
 /**
- * MakeMyTrip: the 252 tokens that change with the brand. Set data-brand="mmt"
+ * MakeMyTrip: the 256 tokens that change with the brand. Set data-brand="mmt"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mmt"] {
@@ -3882,6 +3912,8 @@
   --chip-icon-selected-pressed: #0D589B;
   --chip-remove-bg-selected-hover: #B5EAFF;
   --chip-remove-bg-selected-pressed: #B5EAFF;
+  --snackbar-bg-control-tinted-neutral-hover: #EDFAFF;
+  --snackbar-bg-control-tinted-neutral-pressed: #D6F3FF;
   --snackbar-label-control-tinted-neutral-default: #0088FF;
   --snackbar-label-control-tinted-neutral-hover: #0868C5;
   --snackbar-label-control-tinted-neutral-pressed: #0D589B;
@@ -3927,11 +3959,13 @@
   --tooltip-primary-label-light: #0088FF;
   --tooltip-primary-label-light-hover: #0868C5;
   --tooltip-primary-label-light-pressed: #0D589B;
+  --tooltip-control-bg-light-hover: #EDFAFF;
+  --tooltip-control-bg-light-pressed: #D6F3FF;
   --input-border-active: #0088FF;
 }
 
 /**
- * myBiz: the 252 tokens that change with the brand. Set data-brand="mybiz"
+ * myBiz: the 256 tokens that change with the brand. Set data-brand="mybiz"
  * on any element to switch it and everything inside it.
  */
 [data-brand="mybiz"] {
@@ -4141,6 +4175,8 @@
   --chip-icon-selected-pressed: #C6080A;
   --chip-remove-bg-selected-hover: #FFBCA8;
   --chip-remove-bg-selected-pressed: #FFBCA8;
+  --snackbar-bg-control-tinted-neutral-hover: #FFF2ED;
+  --snackbar-bg-control-tinted-neutral-pressed: #FFE0D4;
   --snackbar-label-control-tinted-neutral-default: #FF4929;
   --snackbar-label-control-tinted-neutral-hover: #EF1107;
   --snackbar-label-control-tinted-neutral-pressed: #C6080A;
@@ -4186,11 +4222,13 @@
   --tooltip-primary-label-light: #FF4929;
   --tooltip-primary-label-light-hover: #EF1107;
   --tooltip-primary-label-light-pressed: #C6080A;
+  --tooltip-control-bg-light-hover: #FFF2ED;
+  --tooltip-control-bg-light-pressed: #FFE0D4;
   --input-border-active: #FF4929;
 }
 
 /**
- * Goibibo: the 252 tokens that change with the brand. Set data-brand="goibibo"
+ * Goibibo: the 256 tokens that change with the brand. Set data-brand="goibibo"
  * on any element to switch it and everything inside it.
  */
 [data-brand="goibibo"] {
@@ -4400,6 +4438,8 @@
   --chip-icon-selected-pressed: #822D0C;
   --chip-remove-bg-selected-hover: #FFD7A5;
   --chip-remove-bg-selected-pressed: #FFD7A5;
+  --snackbar-bg-control-tinted-neutral-hover: #FFF7EC;
+  --snackbar-bg-control-tinted-neutral-pressed: #FFEDD3;
   --snackbar-label-control-tinted-neutral-default: #F45900;
   --snackbar-label-control-tinted-neutral-hover: #A1340B;
   --snackbar-label-control-tinted-neutral-pressed: #822D0C;
@@ -4445,5 +4485,7 @@
   --tooltip-primary-label-light: #F45900;
   --tooltip-primary-label-light-hover: #A1340B;
   --tooltip-primary-label-light-pressed: #822D0C;
+  --tooltip-control-bg-light-hover: #FFF7EC;
+  --tooltip-control-bg-light-pressed: #FFEDD3;
   --input-border-active: #F45900;
 }

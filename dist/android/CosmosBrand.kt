@@ -432,6 +432,10 @@ data class CosmosBrand(
   val chipRemoveBgSelectedHover: Color,
   /** Circle behind the remove glyph of a removable chip — selected, while the remove button itself is pressed. */
   val chipRemoveBgSelectedPressed: Color,
+  /** Fill of the action and close buttons on a tinted neutral snackbar, on hover: a light brand tint, the same as a Text Button, since a neutral message has no intent colour to follow. */
+  val snackbarBgControlTintedNeutralHover: Color,
+  /** Fill of the action and close buttons on a tinted neutral snackbar, while pressed: one brand step deeper than hover, the same as a pressed Text Button. */
+  val snackbarBgControlTintedNeutralPressed: Color,
   /** Action label on a tinted neutral snackbar, at rest and on keyboard focus. Brand coloured, since a neutral message has no intent colour to follow. */
   val snackbarLabelControlTintedNeutralDefault: Color,
   /** Action label on a tinted neutral snackbar, on hover. Brand coloured, since a neutral message has no intent colour to follow; darkens with the fill so it keeps AA contrast. */
@@ -522,6 +526,10 @@ data class CosmosBrand(
   val tooltipPrimaryLabelLightHover: Color,
   /** Label of the primary text action on a Light Rich tooltip while pressed. Darkens with the control-bg-light-pressed fill so it keeps AA contrast. */
   val tooltipPrimaryLabelLightPressed: Color,
+  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip under the pointer: a light brand tint, the same as a Text Button. Web only. At rest and on focus they have no fill. Use control-bg-light-pressed while pressed. */
+  val tooltipControlBgLightHover: Color,
+  /** Fill of the primary and secondary text actions and the close button on a Light Rich tooltip while pressed, on touch and web: one brand step deeper than hover, the same as a pressed Text Button. Use control-bg-light-hover under the pointer. */
+  val tooltipControlBgLightPressed: Color,
   /** Outline of the active field, the one that has focus and receives typing, in the Active and Typing states. Drawn at border-width-active. A field in the error state keeps border-error-active instead. */
   val inputBorderActive: Color,
 ) {
@@ -735,6 +743,8 @@ data class CosmosBrand(
       chipIconSelectedPressed = Color(0xFF0D589B),
       chipRemoveBgSelectedHover = Color(0xFFB5EAFF),
       chipRemoveBgSelectedPressed = Color(0xFFB5EAFF),
+      snackbarBgControlTintedNeutralHover = Color(0xFFEDFAFF),
+      snackbarBgControlTintedNeutralPressed = Color(0xFFD6F3FF),
       snackbarLabelControlTintedNeutralDefault = Color(0xFF0088FF),
       snackbarLabelControlTintedNeutralHover = Color(0xFF0868C5),
       snackbarLabelControlTintedNeutralPressed = Color(0xFF0D589B),
@@ -780,6 +790,8 @@ data class CosmosBrand(
       tooltipPrimaryLabelLight = Color(0xFF0088FF),
       tooltipPrimaryLabelLightHover = Color(0xFF0868C5),
       tooltipPrimaryLabelLightPressed = Color(0xFF0D589B),
+      tooltipControlBgLightHover = Color(0xFFEDFAFF),
+      tooltipControlBgLightPressed = Color(0xFFD6F3FF),
       inputBorderActive = Color(0xFF0088FF),
     )
 
@@ -992,6 +1004,8 @@ data class CosmosBrand(
       chipIconSelectedPressed = Color(0xFFC6080A),
       chipRemoveBgSelectedHover = Color(0xFFFFBCA8),
       chipRemoveBgSelectedPressed = Color(0xFFFFBCA8),
+      snackbarBgControlTintedNeutralHover = Color(0xFFFFF2ED),
+      snackbarBgControlTintedNeutralPressed = Color(0xFFFFE0D4),
       snackbarLabelControlTintedNeutralDefault = Color(0xFFFF4929),
       snackbarLabelControlTintedNeutralHover = Color(0xFFEF1107),
       snackbarLabelControlTintedNeutralPressed = Color(0xFFC6080A),
@@ -1037,6 +1051,8 @@ data class CosmosBrand(
       tooltipPrimaryLabelLight = Color(0xFFFF4929),
       tooltipPrimaryLabelLightHover = Color(0xFFEF1107),
       tooltipPrimaryLabelLightPressed = Color(0xFFC6080A),
+      tooltipControlBgLightHover = Color(0xFFFFF2ED),
+      tooltipControlBgLightPressed = Color(0xFFFFE0D4),
       inputBorderActive = Color(0xFFFF4929),
     )
 
@@ -1249,6 +1265,8 @@ data class CosmosBrand(
       chipIconSelectedPressed = Color(0xFF822D0C),
       chipRemoveBgSelectedHover = Color(0xFFFFD7A5),
       chipRemoveBgSelectedPressed = Color(0xFFFFD7A5),
+      snackbarBgControlTintedNeutralHover = Color(0xFFFFF7EC),
+      snackbarBgControlTintedNeutralPressed = Color(0xFFFFEDD3),
       snackbarLabelControlTintedNeutralDefault = Color(0xFFF45900),
       snackbarLabelControlTintedNeutralHover = Color(0xFFA1340B),
       snackbarLabelControlTintedNeutralPressed = Color(0xFF822D0C),
@@ -1294,6 +1312,8 @@ data class CosmosBrand(
       tooltipPrimaryLabelLight = Color(0xFFF45900),
       tooltipPrimaryLabelLightHover = Color(0xFFA1340B),
       tooltipPrimaryLabelLightPressed = Color(0xFF822D0C),
+      tooltipControlBgLightHover = Color(0xFFFFF7EC),
+      tooltipControlBgLightPressed = Color(0xFFFFEDD3),
       inputBorderActive = Color(0xFFF45900),
     )
 

@@ -41,8 +41,7 @@ const RULES: { title: string; body: ReactNode }[] = [
     body: (
       <>
         A button in a snackbar or a chip on a card takes <Code>bg-fill-*</Code>, whatever it sits
-        on. The inline actions of Snackbar and Tooltip still use surface tokens and move in a
-        follow-up.
+        on.
       </>
     ),
   },

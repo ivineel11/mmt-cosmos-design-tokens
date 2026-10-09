@@ -215,7 +215,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1208 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 302 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1223 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 317 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -283,7 +283,7 @@ Within each role, **intent** is expressed with suffixes:
 
 **Tappable rows stay surfaces.** A menu item or list row is interactive, but it is a slice of its container and holds other content (a title, a description, slots for other components). Its hover and pressed steps come from the surface it sits in: `bg-surface-hover` on a grey group, `bg-surface-secondary-hover` on a white panel, `bg-surface-warning-hover` for a destructive item. Rule of thumb: if the element holds other components or lines of content, it is a surface; if it is a single control or mark, it is a fill.
 
-**A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever surface it sits on. (The inline actions of Snackbar and Tooltip are still on surface tokens and move in a follow-up.)
+**A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever surface it sits on.
 
 **Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; a whole unavailable section or card uses `bg-surface-disabled` or `bg-surface-disabled-subtle`. The one exception: the disabled chip and the disabled list icon well use `bg-surface-disabled-subtle` (`neutral.50`), because no disabled fill is that light, and `bg-fill-disabled-subtlest` (`neutral.100`) would vanish on the grey canvas.
 
@@ -625,9 +625,9 @@ The azure ramp was lightened on 2026-10-07 so that `color.azure.700` (`#0088FF`)
 
 ## Token Inventory
 
-**Totals:** 303 primitive tokens · 419 semantic tokens (302 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1940 values on web** · **2024 on iOS and Android** · **0 gradients**
+**Totals:** 303 primitive tokens · 434 semantic tokens (317 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1955 values on web** · **2039 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1814 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1829 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (303)
 
@@ -851,9 +851,9 @@ The blur of a shadow layer, in the CSS and Figma sense. Consumed only through `s
 
 ---
 
-### Semantic tokens (419)
+### Semantic tokens (434)
 
-#### Color — 302 tokens
+#### Color — 317 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -889,7 +889,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-warning-pressed` | Warning surface, pressed |
 | `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
 
-##### Background — fill (45)
+##### Background — fill (54)
 
 | Token | Role |
 |-------|------|
@@ -915,14 +915,23 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-info-strong-hover` | Strong info fill, hovered |
 | `color.bg-fill-info-strong-pressed` | Strong info fill, pressed |
 | `color.bg-fill-info-subtle` | Subtle info fill |
+| `color.bg-fill-info-subtlest` | Lightest info fill — the Info snackbar and Info tooltip actions at rest |
+| `color.bg-fill-info-subtlest-hover` | Lightest info fill, hovered — Info snackbar and Info tooltip actions |
+| `color.bg-fill-info-subtlest-pressed` | Lightest info fill, pressed — Info snackbar and Info tooltip actions |
 | `color.bg-fill-success-strong` | Strong success fill |
 | `color.bg-fill-success-strong-hover` | Strong success fill, hovered |
 | `color.bg-fill-success-strong-pressed` | Strong success fill, pressed |
 | `color.bg-fill-success-subtle` | Subtle success fill |
+| `color.bg-fill-success-subtlest` | Lightest success fill — the success snackbar actions at rest |
+| `color.bg-fill-success-subtlest-hover` | Lightest success fill, hovered — success snackbar actions |
+| `color.bg-fill-success-subtlest-pressed` | Lightest success fill, pressed — success snackbar actions |
 | `color.bg-fill-caution-strong` | Strong caution fill |
 | `color.bg-fill-caution-strong-hover` | Strong caution fill, hovered |
 | `color.bg-fill-caution-strong-pressed` | Strong caution fill, pressed |
 | `color.bg-fill-caution-subtle` | Subtle caution fill |
+| `color.bg-fill-caution-subtlest` | Lightest caution fill — the caution snackbar actions at rest |
+| `color.bg-fill-caution-subtlest-hover` | Lightest caution fill, hovered — caution snackbar actions |
+| `color.bg-fill-caution-subtlest-pressed` | Lightest caution fill, pressed — caution snackbar actions |
 | `color.bg-fill-warning-strong` | Strong warning fill |
 | `color.bg-fill-warning-strong-hover` | Strong warning fill, hovered |
 | `color.bg-fill-warning-strong-pressed` | Strong warning fill, pressed |
@@ -939,7 +948,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-neutral-strong-hover` | Solid grey fill, hovered |
 | `color.bg-fill-neutral-strong-pressed` | Solid grey fill, pressed |
 
-##### Text (50)
+##### Text (56)
 
 | Token | Role |
 |-------|------|
@@ -971,16 +980,22 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-info-on-bg-fill-subtle` | Text on subtle info fill |
 | `color.text-info-on-bg-surface-hover` | Text on a hovered info surface |
 | `color.text-info-on-bg-surface-pressed` | Text on a pressed info surface |
+| `color.text-info-on-bg-fill-subtlest-hover` | Text on a hovered tinted info control |
+| `color.text-info-on-bg-fill-subtlest-pressed` | Text on a pressed tinted info control |
 | `color.text-success` | Success status text |
 | `color.text-success-on-bg-fill-strong` | Text on strong success fill |
 | `color.text-success-on-bg-fill-subtle` | Text on subtle success fill |
 | `color.text-success-on-bg-surface-hover` | Text on a hovered success surface |
 | `color.text-success-on-bg-surface-pressed` | Text on a pressed success surface |
+| `color.text-success-on-bg-fill-subtlest-hover` | Text on a hovered tinted success control |
+| `color.text-success-on-bg-fill-subtlest-pressed` | Text on a pressed tinted success control |
 | `color.text-caution` | Caution status text |
 | `color.text-caution-on-bg-fill-strong` | Text on strong caution fill |
 | `color.text-caution-on-bg-fill-subtle` | Text on subtle caution fill |
 | `color.text-caution-on-bg-surface-hover` | Text on a hovered caution surface |
 | `color.text-caution-on-bg-surface-pressed` | Text on a pressed caution surface |
+| `color.text-caution-on-bg-fill-subtlest-hover` | Text on a hovered tinted caution control |
+| `color.text-caution-on-bg-fill-subtlest-pressed` | Text on a pressed tinted caution control |
 | `color.text-warning` | Warning status text |
 | `color.text-warning-hover` | Warning text, hovered |
 | `color.text-warning-pressed` | Warning text, pressed |
@@ -1302,14 +1317,23 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-info-strong-hover` | `color.azure.800` |
 | `bg-fill-info-strong-pressed` | `color.azure.900` |
 | `bg-fill-info-subtle` | `color.azure.50` |
+| `bg-fill-info-subtlest` | `color.azure.50` |
+| `bg-fill-info-subtlest-hover` | `color.azure.100` |
+| `bg-fill-info-subtlest-pressed` | `color.azure.200` |
 | `bg-fill-success-strong` | `color.green.700` |
 | `bg-fill-success-strong-hover` | `color.green.800` |
 | `bg-fill-success-strong-pressed` | `color.green.900` |
 | `bg-fill-success-subtle` | `color.green.100` |
+| `bg-fill-success-subtlest` | `color.green.50` |
+| `bg-fill-success-subtlest-hover` | `color.green.100` |
+| `bg-fill-success-subtlest-pressed` | `color.green.200` |
 | `bg-fill-caution-strong` | `color.yellow.700` |
 | `bg-fill-caution-strong-hover` | `color.yellow.800` |
 | `bg-fill-caution-strong-pressed` | `color.yellow.900` |
 | `bg-fill-caution-subtle` | `color.yellow.100` |
+| `bg-fill-caution-subtlest` | `color.yellow.50` |
+| `bg-fill-caution-subtlest-hover` | `color.yellow.100` |
+| `bg-fill-caution-subtlest-pressed` | `color.yellow.200` |
 | `bg-fill-warning-strong` | `color.red.700` |
 | `bg-fill-warning-strong-hover` | `color.red.600` |
 | `bg-fill-warning-strong-pressed` | `color.red.800` |
@@ -1353,16 +1377,22 @@ Add a component group only when a component has enough variant × state combinat
 | `text-info-on-bg-fill-subtle` | `color.azure.700` |
 | `text-info-on-bg-surface-hover` | `color.azure.800` |
 | `text-info-on-bg-surface-pressed` | `color.azure.900` |
+| `text-info-on-bg-fill-subtlest-hover` | `color.azure.800` |
+| `text-info-on-bg-fill-subtlest-pressed` | `color.azure.900` |
 | `text-success` | `color.green.700` |
 | `text-success-on-bg-fill-strong` | `color.neutral.0` |
 | `text-success-on-bg-fill-subtle` | `color.green.700` |
 | `text-success-on-bg-surface-hover` | `color.green.800` |
 | `text-success-on-bg-surface-pressed` | `color.green.900` |
+| `text-success-on-bg-fill-subtlest-hover` | `color.green.800` |
+| `text-success-on-bg-fill-subtlest-pressed` | `color.green.900` |
 | `text-caution` | `color.yellow.700` |
 | `text-caution-on-bg-fill-strong` | `color.neutral.0` |
 | `text-caution-on-bg-fill-subtle` | `color.yellow.800` |
 | `text-caution-on-bg-surface-hover` | `color.yellow.800` |
 | `text-caution-on-bg-surface-pressed` | `color.yellow.900` |
+| `text-caution-on-bg-fill-subtlest-hover` | `color.yellow.800` |
+| `text-caution-on-bg-fill-subtlest-pressed` | `color.yellow.900` |
 | `text-warning` | `color.red.700` |
 | `text-warning-hover` | `color.red.600` |
 | `text-warning-pressed` | `color.red.800` |

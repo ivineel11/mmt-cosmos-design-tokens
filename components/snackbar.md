@@ -220,11 +220,11 @@ Title and message use `text-inverse` (#FFFFFF) on Inverse and `text-primary` (#0
 | Tone | Fill: default / hover / pressed | Action label: default / hover / pressed | Close glyph |
 |---|---|---|---|
 | Inverse | `bg-fill-inverse` / `bg-fill-inverse-hover` / `bg-fill-inverse-pressed` | `text-link-inverse` #83DFFF in all states | `icon-inverse-secondary` #A1A1A1 |
-| Tinted Neutral | `bg-surface-secondary` / `-hover` / `-pressed` | `text-brand` / `text-brand-on-bg-surface-hover` / `-pressed` | `icon-secondary` #525252 |
-| Tinted Info | `bg-surface-info` / `-hover` / `-pressed` | `text-info` / `text-info-on-bg-surface-hover` / `-pressed` | `icon-secondary` |
-| Tinted Success | `bg-surface-success` / `-hover` / `-pressed` | `text-success` / `text-success-on-bg-surface-hover` / `-pressed` | `icon-secondary` |
-| Tinted Caution | `bg-surface-caution` / `-hover` / `-pressed` | `text-caution` / `text-caution-on-bg-surface-hover` / `-pressed` | `icon-secondary` |
-| Tinted Warning | `bg-surface-warning` / `-hover` / `-pressed` | `text-warning` / `text-warning-on-bg-surface-hover` / `-pressed` | `icon-secondary` |
+| Tinted Neutral | `bg-fill` / `bg-fill-brand-subtlest` / `bg-fill-brand-subtlest-hover` (the Text Button pattern) | `text-brand` / `text-brand-on-bg-fill-subtlest-hover` / `-pressed` | `icon-secondary` #525252 |
+| Tinted Info | `bg-fill-info-subtlest` / `-hover` / `-pressed` | `text-info` / `text-info-on-bg-fill-subtlest-hover` / `-pressed` | `icon-secondary` |
+| Tinted Success | `bg-fill-success-subtlest` / `-hover` / `-pressed` | `text-success` / `text-success-on-bg-fill-subtlest-hover` / `-pressed` | `icon-secondary` |
+| Tinted Caution | `bg-fill-caution-subtlest` / `-hover` / `-pressed` | `text-caution` / `text-caution-on-bg-fill-subtlest-hover` / `-pressed` | `icon-secondary` |
+| Tinted Warning | `bg-fill-warning-subtlest` / `-hover` / `-pressed` | `text-warning` / `text-warning-on-bg-fill-subtlest-hover` / `-pressed` | `icon-secondary` |
 
 At rest, the control fill equals the snackbar fill, so the action reads as text. It is a real colour rather than transparent, so the lint can check the label against it. On Tinted, the action follows the intent colour and darkens one step on hover and press, as the Chip selected label does.
 
