@@ -1273,7 +1273,7 @@ object CosmosTokens {
   val listFocusRingWidth = 2.dp
   val listGapComfortable = 16.dp
   val listGapCompact = 12.dp
-  val listGapText = 0.dp
+  val listGapText = 2.dp
   val listGapTextTrailingComfortable = 20.dp
   val listGapTextTrailingCompact = 16.dp
   val listGapTrailingComfortable = 8.dp
@@ -1772,7 +1772,7 @@ object CosmosTokens {
   val snackbarFocusRingWidth = 2.dp
   val snackbarGap = 12.dp
   val snackbarGapControls = 8.dp
-  val snackbarGapText = 0.dp
+  val snackbarGapText = 2.dp
   val snackbarIconControlInverseDefault = Color(0xFFA1A1A1)
   val snackbarIconControlInverseHover = Color(0xFFA1A1A1)
   val snackbarIconControlInversePressed = Color(0xFFA1A1A1)
