@@ -235,7 +235,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (297 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (299 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -600,6 +600,22 @@ Stiffness is (2π ÷ duration)² and the damping ratio is 1 − bounce. CSS has 
 
 `CosmosEasing` (`dist/ios/Motion.swift`) and `CosmosSpring` (`dist/android/CosmosMotion.kt`) are small generated helpers. SwiftUI takes a curve only together with a duration, and Compose springs are generic over the value they animate, so a token cannot hold the finished animation on either platform. Both helpers compile on iOS 13 and every Compose version.
 
+**Components read motion through their own tokens**, like every other property: `{part}-duration` and `{part}-easing`, or `{part}-spring`, aliasing the semantic tokens above.
+
+| Component | Motion | Tokens → semantic |
+|---|---|---|
+| Switch | Thumb slides; track and glyph cross-fade with it | `switch/thumb-duration` → `duration.sm`, `thumb-easing` → `easing.standard`; `color-duration` → `duration.sm`, `color-easing` → `easing.state` |
+| Tabs | Indicator slides and resizes to the selected tab | `tab/indicator-duration` → `duration.md`, `indicator-easing` → `easing.move` |
+| Segmented control | Thumb slides to a segment; scales to 0.95 while pressed | `segmented-control/thumb-spring` → `spring.snappy`; `press-duration` → `duration.xs`, `press-easing` → `easing.standard` |
+| Menu | Panel fades and scales in from 0.96 | `menu/enter-duration` → `duration.sm`, `menu/easing` → `easing.standard` |
+| Tooltip | Bubble fades and slides in; Plain fades out | `tooltip/enter-duration` → `duration.sm`, `exit-duration` → `duration.xs`, `tooltip/easing` → `easing.standard` |
+| Snackbar | Slides up and fades in | `snackbar/enter-duration` → `duration.lg`, `snackbar/easing` → `easing.standard` |
+| Slider | Grow press scales the thumb; the halo fades and scales | `slider/thumb-duration` → `duration.sm`, `halo-duration` → `duration.xs`, both easings → `easing.standard` |
+| List | Row fill changes on hover and press (web) | `list/color-duration` → `duration.xs`, `color-easing` → `easing.state` |
+| Button | Loading spinner turns | `button/spinner-duration` → `duration.loop`, `spinner-easing` → `easing.linear` |
+
+Entrances on the web are CSS transitions started with `@starting-style`, not keyframes, so a menu reopened halfway through its entrance picks up from where it is instead of restarting. Menu and Snackbar still leave at once: an exit needs the component to stay mounted until the fade ends, which is tracked in their specs.
+
 **Native navigation keeps the platform transition.** A pushed screen, a system sheet or a tab switch on iOS and Android animates the way the OS does. The tokens cover the motion Cosmos components own.
 
 **Reduced motion means gentler, not none.** When the user asks for reduced motion, drop movement (translate, scale, a spring) and keep the fade. Use `easing.linear` at the same duration, or `duration.none` when even a fade adds nothing. Every component ships its reduced-motion variant with its animation.
@@ -686,9 +702,9 @@ Stiffness is (2π ÷ duration)² and the damping ratio is 1 − bounce. CSS has 
 
 ## Token Inventory
 
-**Totals:** 320 primitive tokens · 451 semantic tokens (318 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1092 component tokens (297 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 114 `snackbar/*` + 42 `badge/*` + 43 `tab/*` + 60 `list/*` + 51 `switch/*` + 47 `segmented-control/*` + 43 `slider/*` + 65 `menu/*` + 69 `tooltip/*` + 60 `input/*`) · **1989 values on web** · **2073 on iOS and Android** · **0 gradients**
+**Totals:** 320 primitive tokens · 451 semantic tokens (318 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1116 component tokens (299 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 116 `snackbar/*` + 42 `badge/*` + 45 `tab/*` + 62 `list/*` + 55 `switch/*` + 50 `segmented-control/*` + 47 `slider/*` + 67 `menu/*` + 72 `tooltip/*` + 60 `input/*`) · **2013 values on web** · **2097 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1863 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1887 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (320)
 
@@ -1351,25 +1367,25 @@ Composite `{ duration, bounce }` springs, for motion that follows a gesture or c
 | `spring.smooth` | Sheets, panels and cards settling after a drag, with no overshoot |
 | `spring.bouncy` | Rare moments only: a drag-to-dismiss release, a success confirmation |
 
-### Component tokens (1092)
+### Component tokens (1116)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
 | Group | Tokens | Figma component set | Spec |
 |-------|--------|---------------------|------|
-| `button/*` | 297 | Button (`58:202`, 240 variants: Hierarchy x State x Size x Intent x Surface, with the Inverse surface for dark sections) | [`components/button.md`](components/button.md) |
+| `button/*` | 299 | Button (`58:202`, 240 variants: Hierarchy x State x Size x Intent x Surface, with the Inverse surface for dark sections) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
 | `chip/*` | 79 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
-| `snackbar/*` | 114 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
+| `snackbar/*` | 116 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
 | `badge/*` | 42 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
-| `tab/*` | 43 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
-| `list/*` | 60 | List (`797:4533`, 2 variants, with a More rows slot), List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 24 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
-| `switch/*` | 51 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
-| `segmented-control/*` | 47 | Segmented control (`765:186`, 48 variants) and Segmented control / Segment (`764:131`, 96 variants). Three thumb styles (`neutral-*`, `brand-*`, `tinted-*`) and two shapes (Rounded, `pill-radius`) are under test; the losing options will be deleted | [`components/segmented-control.md`](components/segmented-control.md) |
-| `slider/*` | 43 | Slider (`811:1622`, 48 variants), Slider / Thumb (`809:83`, 12 variants) and Slider / Tooltip (`870:538`, 2 variants), with the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. A Pressed grow state (the thumb enlarges instead of showing a halo) is under test beside Pressed | [`components/slider.md`](components/slider.md) |
-| `menu/*` | 65 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
-| `tooltip/*` | 69 | Tooltip (`881:362`, 96 variants: Type x Surface x Side x Caret, with Dark, Light and the Info surface under test) and Tooltip / Control (`876:95`, 36 variants) for the primary and secondary text actions and the close button | [`components/tooltip.md`](components/tooltip.md) |
+| `tab/*` | 45 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |
+| `list/*` | 62 | List (`797:4533`, 2 variants, with a More rows slot), List / Item (`710:474`, 30 variants), List / Leading (`709:119`, 28 variants), List / Trailing (`709:2983`, 24 variants) and List / Section header (`710:479`, 2 variants) | [`components/list.md`](components/list.md) |
+| `switch/*` | 55 | Switch (`731:172`, 40 variants); .Switch / Outlined (`732:191`, 40 variants) is a hidden, unpublished backup and its `outlined-*` tokens are not for product use | [`components/switch.md`](components/switch.md) |
+| `segmented-control/*` | 50 | Segmented control (`765:186`, 48 variants) and Segmented control / Segment (`764:131`, 96 variants). Three thumb styles (`neutral-*`, `brand-*`, `tinted-*`) and two shapes (Rounded, `pill-radius`) are under test; the losing options will be deleted | [`components/segmented-control.md`](components/segmented-control.md) |
+| `slider/*` | 47 | Slider (`811:1622`, 48 variants), Slider / Thumb (`809:83`, 12 variants) and Slider / Tooltip (`870:538`, 2 variants), with the internal .Slider / Position spacer (`821:664`, 42 variants) exposed as the thumb position pickers. A Pressed grow state (the thumb enlarges instead of showing a halo) is under test beside Pressed | [`components/slider.md`](components/slider.md) |
+| `menu/*` | 67 | Menu / Item (`781:231`, 22 variants), Menu / Section header (`781:3971`, 2 variants), Menu / Divider (`781:3972`, 2 variants), and the panels Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`), with exposed rows and a More items slot | [`components/menu.md`](components/menu.md) |
+| `tooltip/*` | 72 | Tooltip (`881:362`, 96 variants: Type x Surface x Side x Caret, with Dark, Light and the Info surface under test) and Tooltip / Control (`876:95`, 36 variants) for the primary and secondary text actions and the close button | [`components/tooltip.md`](components/tooltip.md) |
 | `input/*` | 60 | Input (`1011:900`, 26 variants: Value x State x Intent, with Pressed, Typing and Read-only states), with a label inside the field, optional prefix, leading and trailing icons, a Clear button while typing, and an Error intent; Show Country nests Input / Country (`1026:410`, 2 variants) for a phone number field | [`components/input.md`](components/input.md) |
 
 Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` omitted for the default ramp. Button adds a surface after the variant for its Inverse surface (`{property}-{hierarchy}-inverse-{intent}-{state}`):

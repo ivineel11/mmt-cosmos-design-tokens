@@ -140,9 +140,9 @@ Every variant ships placeholder copy only. Realistic copy lives in the `List exa
 - **Disabled rows** keep their place and dim their title, text, icons and controls. Leading images stay unchanged, as on Chip. A trailing Badge is hidden, and a trailing Button or Switch switches to its disabled state. A disabled Switch keeps its value.
 - **Long lists** virtualise in code (`LazyColumn`, `List`, windowed rendering on web). The tokens do not change.
 
-### Motion (not tokenised yet)
+### Motion
 
-Hover and pressed fills change without a transition on touch, and in 100 ms linear on web. Rows that are added or removed fade and collapse in 200 ms with standard easing, `cubic-bezier(0.2, 0, 0, 1)`. With reduced motion, they change without animation.
+Hover and pressed fills change without a transition on touch, and over `list/color-duration` (`duration.xs`) with `list/color-easing` (`easing.state`) on web. Rows that are added or removed fade and collapse over `duration.md` with `easing.standard`. With reduced motion, they change without animation.
 
 ---
 
@@ -313,7 +313,6 @@ This component adds no semantic roles.
 
 ## Known gaps
 
-- **No motion tokens.** The transitions above are documented, not tokenised.
 - **`list/focus-ring-inset` is not bound in Figma.** As on Chip, Snackbar and Tab, the ring position is geometry. The ring binds its width, radius and colour.
 - **Nested Checkbox and Radio sizes are experimental** (issue #39). List rows reuse them as they are.
 - **Nested control overrides reset on Density and Disabled.** Figma keeps an override on a nested instance only while the instance that holds it stays on the same variant. The Checkbox and Radio sit inside List / Leading, and the Badge, Button and Switch inside List / Trailing. A row Density or Disabled change swaps Leading and Trailing to another variant, so changes to the control inside are lost. The Type set on Leading or Trailing survives, because it sits directly on the row. Moving the controls directly into List / Item would fix this. That was considered on 2026-09-30 and not adopted.

@@ -78,9 +78,9 @@ The Switch page has no examples frame, by design choice. The examples below desc
 - **Disabled** switches keep their value and take the lightest track. Say why nearby, in the supporting text of the row.
 - **Size.** Do not mix Medium and Small on one screen. Small is 20 tall and is not for touch.
 
-### Motion (not tokenised yet)
+### Motion
 
-The thumb slides between ends and the track and glyph colours cross-fade, in 150 ms with standard easing, `cubic-bezier(0.2, 0, 0, 1)`. Hover and pressed colours change in 100 ms linear on web. With reduced motion, the switch changes without animation. The native iOS and Android switches animate on their own, so use their defaults there.
+The thumb slides between ends over `switch/thumb-duration` (`duration.sm`) with `switch/thumb-easing` (`easing.standard`). The track and glyph colours cross-fade over `switch/color-duration` with `switch/color-easing` (`easing.state`), the same length as the slide so the colour lands with the thumb; hover and pressed colours use the same pair. With reduced motion, the thumb jumps and the colours still cross-fade. The native iOS and Android switches animate on their own, so use their defaults there.
 
 ---
 
@@ -198,7 +198,6 @@ The value never depends on colour alone: the thumb position changes with it, and
 ## Known gaps
 
 - **The off state sits below 3:1 at rest.** `bg-fill-neutral-strong` is #D4D4D4 by design choice (1.48:1 on white, 1.36:1 on the grey canvas). A passing grey needs a new primitive between `neutral.400` and `neutral.500`, for example #8A8A8A at 3.45:1.
-- **No motion tokens.** The transitions above are documented, not tokenised.
 - **The focus ring position is geometry.** `switch/focus-ring-offset` is not bound in Figma; the ring binds its width, radius and colour, as on Checkbox and Tab.
 - **The hit area is not drawn in Figma.** `switch/min-touch-target-md` and `-sm` exist for code only.
 - **No loading state.** Saving is handled optimistically, as described under Behaviour.

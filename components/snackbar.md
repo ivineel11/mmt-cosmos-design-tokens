@@ -109,15 +109,15 @@ The Figma page has these as a live `Snackbar examples` frame (`637:3330`).
 - **Placement.** Stay above bottom navigation, a floating action button and the home indicator. Respect the safe area, with an inset of `snackbar/margin-mobile` (16) or `snackbar/margin-desktop` (24). On mobile the snackbar spans the width minus margins. On web it hugs content between 288 and 560 px wide.
 - **Copy.** Keep the message to two lines. Write it in sentence case with no full stop on a single sentence. Keep the action to one or two words where possible, in title case per MakeMyTrip button copy.
 
-### Motion (not tokenised yet)
+### Motion
 
 | Phase | Movement | Duration | Easing |
 |---|---|---|---|
-| Enter | Slide up 16 px and fade 0 → 1 | 250 ms | Decelerate, `cubic-bezier(0, 0, 0.2, 1)` |
-| Exit | Fade 1 → 0 (with swipe: follow the finger, then fade) | 200 ms | Accelerate, `cubic-bezier(0.4, 0, 1, 1)` |
-| Replace | Exit the old one, then enter the new one | 200 + 250 ms | as above |
+| Enter | Slide up 16 px and fade 0 → 1 | `snackbar/enter-duration` (`duration.lg`) | `snackbar/easing` (`easing.standard`) |
+| Exit | Fade 1 → 0 (with swipe: follow the finger, then fade) | `duration.md`, one size down from the entrance | `easing.standard` |
+| Replace | Exit the old one, then enter the new one | Exit, then enter | as above |
 
-With `prefers-reduced-motion`, or Reduce Motion on iOS and Android, use the fade alone with no slide. Duration and easing tokens are a separate piece of work (see Known gaps).
+With `prefers-reduced-motion`, or Reduce Motion on iOS and Android, use the fade alone with no slide. On the web the entrance is a transition started with `@starting-style`; the exit is not built yet (see Known gaps).
 
 ---
 
@@ -289,7 +289,7 @@ On the Inverse bar the icon is the only intent signal, and on Tinted the tint ad
 ## Known gaps
 
 - **Appearance is a trial.** Inverse and Tinted both ship. Once one is chosen, delete the other appearance tokens (about 50 of the 114), its Figma variants and its Control tones.
-- **No motion tokens.** Durations and easing are documented above, not tokenised. They belong in a separate motion token branch that covers every component.
+- **Exit is not animated on the web.** The snackbar unmounts as soon as it is dismissed, so the `duration.md` fade-out needs the component to stay mounted until the fade ends.
 - **Web width is not tokenised.** 288 min and 560 max are beyond the space scale, which stops at 64. They are documented here only.
 - **No leading icon swap property.** A set-level instance-swap default resets every intent to one glyph (tested and reverted), so the glyph is swapped on the layer.
 - **`snackbar/focus-ring-offset` is not bound in Figma.** As on Chip, the 4 px outset is ring geometry. The ring binds width, radius and colour.

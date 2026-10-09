@@ -1421,6 +1421,8 @@ export default {
     "radius-lg": "12px",
     "radius-md": "8px",
     "radius-xl": "16px",
+    "spinner-duration": 800,
+    "spinner-easing": [0, 0, 1, 1],
   },
   checkbox: {
     "bg-unselected-default": "#FFFFFF",
@@ -1744,6 +1746,8 @@ export default {
     "focus-ring-radius": "12px",
     "margin-mobile": "16px",
     "margin-desktop": "24px",
+    "enter-duration": 250,
+    easing: [0.23, 1, 0.32, 1],
   },
   badge: {
     "bg-strong-neutral": "#0A0A0A",
@@ -1833,6 +1837,8 @@ export default {
     "focus-ring-width": "2px",
     "focus-ring-inset": "2px",
     "focus-ring-radius": "8px",
+    "indicator-duration": 200,
+    "indicator-easing": [0.77, 0, 0.175, 1],
   },
   list: {
     "bg-grouped": "#FFFFFF",
@@ -1895,6 +1901,8 @@ export default {
     "focus-ring-width": "2px",
     "focus-ring-inset": "2px",
     "focus-ring-radius": "8px",
+    "color-duration": 100,
+    "color-easing": [0.25, 0.1, 0.25, 1],
   },
   switch: {
     "track-on-default": "#0088FF",
@@ -1948,6 +1956,10 @@ export default {
     "focus-ring-offset": "2px",
     "min-touch-target-sm": "24px",
     "min-touch-target-md": "48px",
+    "thumb-duration": 150,
+    "thumb-easing": [0.23, 1, 0.32, 1],
+    "color-duration": 150,
+    "color-easing": [0.25, 0.1, 0.25, 1],
   },
   "segmented-control": {
     track: "#F5F5F5",
@@ -1997,6 +2009,14 @@ export default {
     "focus-ring-width": "2px",
     "focus-ring-offset": "2px",
     "tinted-thumb-border-width": "1px",
+    "thumb-spring": {
+      type: "spring",
+      stiffness: 438.6491,
+      damping: 37.6991,
+      mass: 1,
+    },
+    "press-duration": 100,
+    "press-easing": [0.23, 1, 0.32, 1],
   },
   slider: {
     "track-inactive": "#D4D4D4",
@@ -2042,6 +2062,10 @@ export default {
     "tooltip-radius": "8px",
     "tooltip-gap": "8px",
     "tooltip-caret-width": "8px",
+    "thumb-duration": 150,
+    "thumb-easing": [0.23, 1, 0.32, 1],
+    "halo-duration": 100,
+    "halo-easing": [0.23, 1, 0.32, 1],
   },
   menu: {
     bg: "#FFFFFF",
@@ -2109,6 +2133,8 @@ export default {
     "section-header-padding-bottom-compact": "2px",
     "divider-spacing-comfortable": "8px",
     "divider-spacing-compact": "4px",
+    "enter-duration": 150,
+    easing: [0.23, 1, 0.32, 1],
   },
   tooltip: {
     "bg-dark": "#0A0A0A",
@@ -2180,6 +2206,9 @@ export default {
     offset: "4px",
     "screen-margin": "16px",
     "viewport-margin": "8px",
+    "enter-duration": 150,
+    "exit-duration": 100,
+    easing: [0.23, 1, 0.32, 1],
   },
   input: {
     "bg-default": "#FFFFFF",

@@ -6,12 +6,7 @@
   --page-max: 1080px;
   --sidebar-width: 268px;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  /* Corporate motion: decisive, no overshoot (Material 3 / Snappy UI). */
-  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-  --motion-ease-exit: cubic-bezier(0.3, 0, 1, 1);
-  --motion-duration-panel: 260ms;
-  --motion-duration-panel-exit: 200ms;
-  --motion-duration-fade: 160ms;
+  /* Motion comes from the Cosmos duration and easing tokens in tokens.css. */
 }
 
 html {

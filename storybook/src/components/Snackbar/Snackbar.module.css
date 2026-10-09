@@ -1,7 +1,8 @@
 /*
  * Snackbar: components/snackbar.md. Every value is a snackbar/* or semantic token; the
  * shadow is shadow.card, as the spec binds it. Appearance (inverse, tinted) is on trial.
- * Motion is not tokenised: enter slides up 16 and fades over 250ms, exit fades in 200ms.
+ * Motion: enter slides up 16 and fades over snackbar-enter-duration; reduced motion fades
+ * only. The snackbar still leaves at once (spec, Known gaps).
  */
 
 .root {
@@ -30,11 +31,10 @@
   box-shadow: inset 0 0 0 var(--snackbar-border-width) var(--_border), var(--shadow-card);
   color: var(--_label);
   font-family: var(--typeface-default), system-ui, sans-serif;
-  animation: enter 250ms cubic-bezier(0, 0, 0.2, 1);
+  transition: opacity var(--snackbar-enter-duration) var(--snackbar-easing), transform var(--snackbar-enter-duration) var(--snackbar-easing);
 }
-@keyframes enter { from { opacity: 0; transform: translateY(var(--space-md)); } }
-@media (prefers-reduced-motion: reduce) { .root { animation: fade 250ms linear; } }
-@keyframes fade { from { opacity: 0; } }
+@starting-style { .root { opacity: 0; transform: translateY(var(--space-md)); } }
+@media (prefers-reduced-motion: reduce) { .root { transition: opacity var(--snackbar-enter-duration) var(--snackbar-easing); } }
 
 .content { display: flex; flex: 1 1 auto; align-items: center; gap: var(--snackbar-gap); min-width: 0; padding-right: var(--snackbar-content-padding-end); }
 .icon { flex: none; color: var(--_icon); }

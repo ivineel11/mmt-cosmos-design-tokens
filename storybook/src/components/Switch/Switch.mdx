@@ -27,6 +27,6 @@ A switch has no label of its own. The row title names it (`aria-labelledby`), th
 - `button role="switch"` with `aria-checked`. Space and Enter toggle it.
 - The off track (#D4D4D4) is below 3:1 against the page by design choice; the thumb position carries the value.
 - The hit area is at least 48 (Medium) or 24 (Small) without changing the drawn size.
-- The thumb slides in 150 ms; with reduced motion it changes without animation.
+- The thumb slides over `switch/thumb-duration` (150 ms) and the colours cross-fade with it; with reduced motion the thumb jumps and only the colours fade.
 
 <ArgTypes of={Stories} />

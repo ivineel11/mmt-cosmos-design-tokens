@@ -1,6 +1,6 @@
 # Motion tokens
 
-Status: foundation landed in `feat/motion-tokens`. Component adoption follows in a second PR.
+Status: foundation landed in #121 (`feat/motion-tokens`). Components moved onto it in `feat/component-motion-tokens`.
 
 ## Problem
 
@@ -40,8 +40,14 @@ None for the tokens. CSS transitions, `@starting-style` and the Web Animations A
 
 Figma variables cannot bind to prototype transitions or Figma Motion keyframes. The tokens are FLOAT (durations in ms, bounce) and STRING (`cubic-bezier(…)`) variables with no scopes, kept as a reference in the Variables panel and Dev Mode. Primitives sit in the hidden primitives collection, and semantic tokens in the published MakeMyTrip collection, aliasing them. A spring is two variables, `spring/{name}/duration` and `spring/{name}/bounce`.
 
-## Next (PR 2)
+## Component adoption (PR 2)
 
-- Component motion tokens (a thumb duration for Switch, an open easing for Menu, and so on) and moving the nine Storybook animations onto them.
-- Snackbar, Tooltip and Menu switch from keyframes to transitions, so a second trigger retargets instead of restarting.
-- Move the docs site off its own `--motion-*` variables and drop its ease-in exit curve.
+- 24 component motion tokens (25 Figma variables, since a spring is two) across Switch, Tabs, Segmented control, Menu, Tooltip, Snackbar, Slider, List and Button, each aliasing a semantic duration, easing or spring. README → Motion tokens lists them.
+- The nine Storybook animations read those tokens; no raw timing is left in component CSS.
+- Menu, Tooltip and Snackbar entrances are transitions started with `@starting-style`, so a second trigger retargets instead of restarting. The Plain tooltip also fades out over `tooltip/exit-duration`.
+- Segmented control slides on `spring.snappy`, the spring its spec already asked for. The slide and the 0.95 press are now the separate `translate` and `scale` properties, so the press keeps its 100 ms.
+- The docs site sidebar uses the semantic tokens; its own `--motion-*` variables and ease-in exit curve are gone.
+
+## Still open
+
+- Menu, Snackbar and Rich tooltip exits: each unmounts at once, so a fade-out needs the component to stay mounted until the fade ends.

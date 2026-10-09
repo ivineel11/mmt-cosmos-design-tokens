@@ -152,12 +152,12 @@ Every variant ships placeholder copy only. Realistic copy lives in the `Menu exa
 - **Disabled rows** keep their place, so the user learns the action exists. They are dimmed and do nothing. On web they stay reachable by arrow keys, so a screen reader can announce them.
 - **Content.** Keep each group to about 7 rows and the menu to about 12. Labels are sentence case, start with a verb for actions, and never end with a full stop.
 
-### Motion (not tokenised yet)
+### Motion
 
-- **Open:** the panel fades in and scales from 0.96 to 1 over 150 ms with standard easing, `cubic-bezier(0.2, 0, 0, 1)`. The scale origin is the corner nearest the trigger.
-- **Close:** the panel fades out in 100 ms.
+- **Open:** the panel fades in and scales from 0.96 to 1 over `menu/enter-duration` (`duration.sm`) with `menu/easing` (`easing.standard`). The scale origin is the corner nearest the trigger. On the web this is a transition started with `@starting-style`, so reopening mid-way picks up from where the panel is.
+- **Close:** the panel should fade out over `duration.xs`. The web component still closes at once (see Known gaps).
 - **Highlight:** the highlight changes with no transition.
-- **Reduced motion:** the panel appears and disappears with no scale.
+- **Reduced motion:** the panel only fades, with no scale.
 
 ---
 
@@ -337,7 +337,7 @@ Destructive meaning is carried by the label text ("Cancel booking"), not by the 
 ## Known gaps
 
 - **No component shadow token.** A component shadow needs the linter change in PR #63 (Segmented control), which had not merged when this was built. The panel uses the semantic `shadow.overlay` directly: in code, and as the `shadow/overlay` effect style in Figma. Add a menu shadow token that aliases `shadow.overlay` once #63 is on main.
-- **No motion tokens.** The transitions above are documented, not tokenised.
+- **Close is not animated on the web.** The panel unmounts as soon as it closes, so the `duration.xs` fade-out needs the component to stay mounted until the fade ends.
 - **The panel does not hug text in Figma.** Rows fill the panel, so a new Menu starts 258 wide (250 in Compact), not at the width of its longest label. Resize it between 200 and 320.
 - **The More items slot does not enforce density.** Figma lists preferred instances by component set, and a set allows every variant, so a Comfortable row in a Compact menu is not flagged. Check the density of inserted rows.
 - **Slot rows have no Menu-level controls.** Figma does not allow exposed instances or property toggles inside a slot. Rows added through More items are edited by selecting them.

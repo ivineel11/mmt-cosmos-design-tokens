@@ -1544,7 +1544,7 @@
   --duration-md: 200ms;
   /** Larger surfaces entering, such as snackbars, toasts, small dialogs and expanding sections. Their exit uses one size down, md. */
   --duration-lg: 250ms;
-  /** The longest routine interface motion, for sheets, full dialogs and a segmented control thumb travelling across several segments. Slower than this starts to feel sluggish, so only full-screen transitions use 2xl. */
+  /** The longest routine interface motion, for sheets, full dialogs and sections that expand to fill the screen. Slower than this starts to feel sluggish, so only full-screen transitions use 2xl. */
   --duration-xl: 300ms;
   /** Full-screen transitions on the web, such as a page or a full-height panel sliding in. On iOS and Android keep the platform navigation transition instead of this token. */
   --duration-2xl: 400ms;
@@ -2160,6 +2160,10 @@
   --button-radius-md: 8px;
   /** Not a button-box radius: the focused ring radius at the large size, which the spec defines as the button radius plus 4. Use radius-lg for the focused ring at medium and small. */
   --button-radius-xl: 16px;
+  /** One full turn of the loading spinner. Under reduced motion it turns three times slower rather than stopping, so the button still reads as busy. */
+  --button-spinner-duration: 800ms;
+  /** Constant speed for the loading spinner, which turns without stopping. */
+  --button-spinner-easing: cubic-bezier(0, 0, 1, 1);
   /** Fill of the checkbox box — unchecked, at rest. */
   --checkbox-bg-unselected-default: #FFFFFF;
   /** Fill of the checkbox box — unchecked, on hover. */
@@ -2790,6 +2794,10 @@
   --snackbar-margin-mobile: 16px;
   /** Distance from the snackbar to the viewport edge on web and tablet layouts. */
   --snackbar-margin-desktop: 24px;
+  /** How long the snackbar takes to slide up and fade in. Under reduced motion it only fades, over the same time. */
+  --snackbar-enter-duration: 250ms;
+  /** Curve of the snackbar entrance, fast at the start and settling gently into place. */
+  --snackbar-easing: cubic-bezier(0.23, 1, 0.32, 1);
   /** Solid fill of a strong neutral badge, used for counts and tags that carry no status, such as a result count or Sold out. Count badges default to strong; for a calmer tag use bg-subtle-neutral. */
   --badge-bg-strong-neutral: #0A0A0A;
   /** Solid fill of a strong brand badge, used for promotional tags such as New, Deal or MMT Exclusive. Count badges default to strong; for a calmer tag use bg-subtle-brand. */
@@ -2960,6 +2968,10 @@
   --tab-focus-ring-inset: 2px;
   /** Corner radius of the focus ring on both tab types, the same 8 px as the tab fill radius. Inset 2 px at the top and sides, the top corners read slightly rounder than a concentric 6 px curve, which the radius scale does not have. */
   --tab-focus-ring-radius: 8px;
+  /** How long the indicator takes to slide and resize from the old tab to the newly selected one. Tab fills change at once. */
+  --tab-indicator-duration: 200ms;
+  /** Curve of the indicator slide, easing in and out because the indicator is already on screen when it moves. */
+  --tab-indicator-easing: cubic-bezier(0.77, 0, 0.175, 1);
   /** Background of the white card that holds a grouped list on the grey bg-secondary page. A plain list has no background of its own and shows the white bg page through its rows. */
   --list-bg-grouped: #FFFFFF;
   /** Fill of a list row at rest. Transparent, so the row shows the list background behind it. */
@@ -3080,6 +3092,10 @@
   --list-focus-ring-inset: 2px;
   /** Corner radius of the keyboard focus ring of a list row. */
   --list-focus-ring-radius: 8px;
+  /** How long a row fill takes to change on hover and press on the web. Touch platforms change it at once. */
+  --list-color-duration: 100ms;
+  /** Curve of the row fill change on hover and press, where nothing moves. */
+  --list-color-easing: cubic-bezier(0.25, 0.1, 0.25, 1);
   /** Track of a switch that is on, at rest. Also used by the Outlined backup style. Use track-on-disabled when the switch is disabled. */
   --switch-track-on-default: #0088FF;
   /** Track of a switch that is on, under the pointer. Web only. */
@@ -3182,6 +3198,14 @@
   --switch-min-touch-target-sm: 24px;
   /** Minimum hit area of the Medium switch. Pad the track to this size on touch platforms, or make the whole row tappable. */
   --switch-min-touch-target-md: 48px;
+  /** How long the thumb takes to slide to the other end when the switch is turned on or off. The track and glyph colours change over color-duration at the same time. */
+  --switch-thumb-duration: 150ms;
+  /** Curve of the thumb slide, fast at the start so the switch answers the tap at once. Colour changes use color-easing instead. */
+  --switch-thumb-easing: cubic-bezier(0.23, 1, 0.32, 1);
+  /** How long the track and glyph colours take to cross-fade, on toggle and between hover and pressed. It matches thumb-duration so the colour lands with the thumb. */
+  --switch-color-duration: 150ms;
+  /** Curve of the track and glyph colour cross-fade, where nothing moves. The thumb slide uses thumb-easing. */
+  --switch-color-easing: cubic-bezier(0.25, 0.1, 0.25, 1);
   /** Grey track behind every segment, in both thumb styles. The thumb slides over it. For the fill of an unselected segment use bg-unselected-default, which lets this track show through. */
   --segmented-control-track: #F5F5F5;
   /** Fill of an unselected segment at rest and on keyboard focus. Transparent, so the track shows through. The selected segment is painted by the thumb instead. */
@@ -3276,6 +3300,12 @@
   --segmented-control-focus-ring-offset: 2px;
   /** Tinted thumb style, under test against the Neutral and Brand thumbs. Width of the outline of the tinted thumb, drawn inside it. */
   --segmented-control-tinted-thumb-border-width: 1px;
+  /** Spring that moves the thumb to a tapped segment and settles it after a drag. Under a drag the thumb follows the finger with no animation, and the press scale uses press-duration. */
+  --segmented-control-thumb-spring: 420ms linear(0, 0.05, 0.163, 0.299, 0.435, 0.558, 0.664, 0.75, 0.819, 0.872, 0.911, 0.941, 0.961, 0.976, 0.986, 0.992, 0.997, 0.999, 1.001, 1.001, 1.001, 1.002, 1.001, 1.001, 1.001, 1);
+  /** How long the thumb takes to scale to 0.95 and change fill when pressed, and to return on release. The slide between segments uses thumb-spring. */
+  --segmented-control-press-duration: 100ms;
+  /** Curve of the press scale and fill change on the thumb. The slide between segments uses thumb-spring. */
+  --segmented-control-press-easing: cubic-bezier(0.23, 1, 0.32, 1);
   /** Part of the track outside the selected value or range, in every enabled state. Below 3:1 against the canvas and against track-active by choice; the thumb marks the value. Use track-inactive-disabled when the slider is disabled. */
   --slider-track-inactive: #D4D4D4;
   /** Part of the track outside the selected value or range when the slider is disabled. Lighter than track-active-disabled so the value still reads. */
@@ -3362,6 +3392,14 @@
   --slider-tooltip-gap: 8px;
   /** Base width of the downward caret under the tooltip bubble, when the caret is shown. Its height is half this. */
   --slider-tooltip-caret-width: 8px;
+  /** How long the grow press takes to scale the thumb up on press and back on release. Under reduced motion the thumb changes size at once. */
+  --slider-thumb-duration: 150ms;
+  /** Curve of the grow press scale on the thumb. */
+  --slider-thumb-easing: cubic-bezier(0.23, 1, 0.32, 1);
+  /** How long the halo takes to fade and scale in on hover and press, and out on release. */
+  --slider-halo-duration: 100ms;
+  /** Curve of the halo fading and scaling in and out. */
+  --slider-halo-easing: cubic-bezier(0.23, 1, 0.32, 1);
   /** Fill of the menu panel, white on either canvas. The panel always carries a border and the overlay shadow, so it still separates from a white page. Rows inside take item-bg-* fills, never this one. */
   --menu-bg: #FFFFFF;
   /** Hairline around the menu panel, so it reads as a separate layer on a white page where the shadow alone is faint. Use divider for the lines between groups inside the menu. */
@@ -3492,6 +3530,10 @@
   --menu-divider-spacing-comfortable: 8px;
   /** Space above and below a divider in a Compact menu. */
   --menu-divider-spacing-compact: 4px;
+  /** How long the panel takes to fade in and scale up from the corner nearest its trigger. Under reduced motion it only fades, over the same time. */
+  --menu-enter-duration: 150ms;
+  /** Curve of the panel entrance, fast at the start so the menu appears to answer the tap at once. */
+  --menu-easing: cubic-bezier(0.23, 1, 0.32, 1);
   /** Fill of a Dark tooltip bubble and its caret, Plain and Rich. The default surface. No border and no shadow, because near black already stands apart from the page. Use bg-light over photos, maps and dark sections, and bg-info for friendly tips and feature hints. */
   --tooltip-bg-dark: #0A0A0A;
   /** Fill of a Light tooltip bubble and its caret, Plain and Rich. Always paired with border-light and shadow-light so the white bubble separates from a white page. Use bg-dark by default and bg-info for friendly tips and feature hints. */
@@ -3630,6 +3672,12 @@
   --tooltip-screen-margin: 16px;
   /** Smallest gap between a tooltip and the viewport edge on web. Near an edge the bubble flips or shifts inward and the caret stays over the trigger. Use screen-margin on iOS and Android. */
   --tooltip-viewport-margin: 8px;
+  /** How long the bubble takes to fade in and slide from the trigger towards its place. Under reduced motion it only fades. */
+  --tooltip-enter-duration: 150ms;
+  /** How long the bubble takes to fade out without moving, one step quicker than enter-duration because nobody waits for it to leave. */
+  --tooltip-exit-duration: 100ms;
+  /** Curve of the bubble entrance and exit. */
+  --tooltip-easing: cubic-bezier(0.23, 1, 0.32, 1);
   /** Fill of the field at rest, on hover, while active or typing, and when read-only. Uses bg-fill, not the page bg, so the field stays white on either canvas. Pressed uses bg-pressed, the error intent bg-error and a disabled field bg-disabled. */
   --input-bg-default: #FFFFFF;
   /** Fill of the field while a finger or pointer is down on it, before it becomes active. A light grey that acknowledges the tap on touch screens. The error intent uses bg-error-pressed. */

@@ -404,6 +404,8 @@ object CosmosTokens {
   val buttonRadiusLg = 12.dp
   val buttonRadiusMd = 8.dp
   val buttonRadiusXl = 16.dp
+  val buttonSpinnerDuration = 800
+  val buttonSpinnerEasing = CubicBezierEasing(0f, 0f, 1f, 1f)
   val checkboxBgSelectedDefault = Color(0xFF0088FF)
   val checkboxBgSelectedDisabled = Color(0xFFA1A1A1)
   val checkboxBgSelectedErrorDefault = Color(0xFFC10007)
@@ -1261,6 +1263,8 @@ object CosmosTokens {
   val listChevronDisabled = Color(0xFFA1A1A1)
   val listChevronSizeComfortable = 20.dp
   val listChevronSizeCompact = 16.dp
+  val listColorDuration = 100
+  val listColorEasing = CubicBezierEasing(0.25f, 0.1f, 0.25f, 1f)
   val listDivider = Color(0xFFE5E5E5)
   val listDividerWidth = 1.dp
   val listFocusRing = Color(0xFF0088FF)
@@ -1328,6 +1332,8 @@ object CosmosTokens {
   val menuDividerSpacingComfortable = 8.dp
   val menuDividerSpacingCompact = 4.dp
   val menuDividerWidth = 1.dp
+  val menuEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
+  val menuEnterDuration = 150
   val menuFocusRing = Color(0xFF0088FF)
   val menuFocusRingWidth = 2.dp
   val menuGapComfortable = 12.dp
@@ -1561,11 +1567,14 @@ object CosmosTokens {
   val segmentedControlNeutralThumbShadow2OffsetX = 0.dp
   val segmentedControlNeutralThumbShadow2OffsetY = 2.dp
   val segmentedControlPillRadius = 999.dp
+  val segmentedControlPressDuration = 100
+  val segmentedControlPressEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
   val segmentedControlSegmentPaddingXMd = 16.dp
   val segmentedControlSegmentPaddingXSm = 12.dp
   val segmentedControlThumbDisabled = Color(0xFFE5E5E5)
   val segmentedControlThumbRadiusMd = 8.dp
   val segmentedControlThumbRadiusSm = 4.dp
+  val segmentedControlThumbSpring = CosmosSpring(dampingRatio = 0.9f, stiffness = 438.6491f)
   val segmentedControlTintedIconSelectedDefault = Color(0xFF0088FF)
   val segmentedControlTintedIconSelectedPressed = Color(0xFF0D589B)
   val segmentedControlTintedLabelSelectedDefault = Color(0xFF0088FF)
@@ -1654,6 +1663,8 @@ object CosmosTokens {
   val sliderFocusRing = Color(0xFF0088FF)
   val sliderFocusRingOffset = 2.dp
   val sliderFocusRingWidth = 2.dp
+  val sliderHaloDuration = 100
+  val sliderHaloEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
   val sliderHaloHover = Color(0xFFEDFAFF)
   val sliderHaloPressed = Color(0xFFD6F3FF)
   val sliderHaloSizeMd = 40.dp
@@ -1667,6 +1678,8 @@ object CosmosTokens {
   val sliderTextDisabled = Color(0xFFA1A1A1)
   val sliderThumbDefault = Color(0xFFFFFFFF)
   val sliderThumbDisabled = Color(0xFFA1A1A1)
+  val sliderThumbDuration = 150
+  val sliderThumbEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
   val sliderThumbHover = Color(0xFFF5F5F5)
   val sliderThumbShadow1Blur = 2.dp
   val sliderThumbShadow1Color = Color(0x140A0A0A)
@@ -1749,6 +1762,8 @@ object CosmosTokens {
   val snackbarControlHeight = 32.dp
   val snackbarControlPaddingX = 8.dp
   val snackbarControlRadius = 8.dp
+  val snackbarEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
+  val snackbarEnterDuration = 250
   val snackbarFocusRing = Color(0xFF0088FF)
   val snackbarFocusRingOffset = 2.dp
   val snackbarFocusRingRadius = 12.dp
@@ -1869,6 +1884,8 @@ object CosmosTokens {
   val strokeDefault = 1.dp
   val strokeFocus = 2.dp
   val strokeStrong = 2.dp
+  val switchColorDuration = 150
+  val switchColorEasing = CubicBezierEasing(0.25f, 0.1f, 0.25f, 1f)
   val switchFocusRing = Color(0xFF0088FF)
   val switchFocusRingOffset = 2.dp
   val switchFocusRingWidth = 2.dp
@@ -1905,6 +1922,8 @@ object CosmosTokens {
   val switchOutlinedTrackOffPressed = Color(0xFFE5E5E5)
   val switchRadius = 999.dp
   val switchThumbDefault = Color(0xFFFFFFFF)
+  val switchThumbDuration = 150
+  val switchThumbEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
   val switchThumbInset = 2.dp
   val switchThumbSizeMd = 24.dp
   val switchThumbSizeSm = 16.dp
@@ -1940,6 +1959,8 @@ object CosmosTokens {
   val tabIconUnselectedPressed = Color(0xFF0A0A0A)
   val tabIndicatorDefault = Color(0xFF0088FF)
   val tabIndicatorDisabled = Color(0xFFA1A1A1)
+  val tabIndicatorDuration = 200
+  val tabIndicatorEasing = CubicBezierEasing(0.77f, 0f, 0.175f, 1f)
   val tabIndicatorHeight = 2.dp
   val tabIndicatorRadius = 999.dp
   val tabLabelDisabled = Color(0xFFA1A1A1)
@@ -2024,6 +2045,9 @@ object CosmosTokens {
   val tooltipDescriptionDark = Color(0xFFA1A1A1)
   val tooltipDescriptionInfo = Color(0xFF525252)
   val tooltipDescriptionLight = Color(0xFF525252)
+  val tooltipEasing = CubicBezierEasing(0.23f, 1f, 0.32f, 1f)
+  val tooltipEnterDuration = 150
+  val tooltipExitDuration = 100
   val tooltipFocusRing = Color(0xFF0088FF)
   val tooltipFocusRingOffset = 2.dp
   val tooltipFocusRingRadius = 12.dp

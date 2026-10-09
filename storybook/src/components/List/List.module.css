@@ -1,6 +1,6 @@
 /*
  * List: components/list.md. Every value is a list/* or semantic token.
- * Motion is not tokenised: fills change in 100ms linear on web.
+ * Row fills change over list-color-duration on the web.
  */
 
 .list {
@@ -94,7 +94,7 @@
   font: inherit;
   text-align: start;
   text-decoration: none;
-  transition: background-color 100ms linear;
+  transition: background-color var(--list-color-duration) var(--list-color-easing);
   -webkit-tap-highlight-color: transparent;
 }
 .row[data-lines="3"] { align-items: flex-start; }

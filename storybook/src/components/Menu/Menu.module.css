@@ -1,7 +1,8 @@
 /*
  * Menu: components/menu.md. Every value is a menu/* or semantic token; the panel shadow
- * is shadow.overlay until a menu/shadow token exists (spec, Known gaps). Motion is not
- * tokenised: open fades and scales from 0.96 over 150ms, close fades in 100ms.
+ * is shadow.overlay until a menu/shadow token exists (spec, Known gaps). The panel fades
+ * and scales in from 0.96 over menu-enter-duration, a transition rather than keyframes so
+ * reopening mid-way picks up from where it is. It still closes at once (spec, Known gaps).
  */
 
 .panel {
@@ -44,7 +45,7 @@
   background: var(--menu-bg);
   box-shadow: var(--shadow-overlay);
   font-family: var(--typeface-default), system-ui, sans-serif;
-  animation: open 150ms cubic-bezier(0.2, 0, 0, 1);
+  transition: opacity var(--menu-enter-duration) var(--menu-easing), transform var(--menu-enter-duration) var(--menu-easing);
   transform-origin: var(--_origin);
 }
 .panel[data-density="compact"] {
@@ -70,9 +71,8 @@
   --_label-nudge: calc(var(--space-3xs) / -4);
   --_text-nudge: calc(var(--space-3xs) / 4);
 }
-@keyframes open { from { opacity: 0; transform: scale(0.96); } }
-@media (prefers-reduced-motion: reduce) { .panel { animation: fade 150ms linear; } }
-@keyframes fade { from { opacity: 0; } }
+@starting-style { .panel { opacity: 0; transform: scale(0.96); } }
+@media (prefers-reduced-motion: reduce) { .panel { transition: opacity var(--menu-enter-duration) var(--menu-easing); } }
 
 .group { display: flex; flex-direction: column; }
 

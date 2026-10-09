@@ -1,6 +1,7 @@
 /*
  * Tooltip: components/tooltip.md. Every value is a tooltip/* or semantic token.
- * Motion is not tokenised: enter fades and slides 4 from the trigger over 150ms.
+ * Motion: enter fades and slides from the trigger over tooltip-enter-duration; a Plain
+ * bubble fades out without moving over tooltip-exit-duration. Reduced motion fades only.
  */
 
 .bubble {
@@ -160,9 +161,14 @@
   --_enter-y: 0px;
   position: fixed;
   z-index: 1200;
-  animation: enter 150ms ease-out;
+  transition: opacity var(--tooltip-enter-duration) var(--tooltip-easing), translate var(--tooltip-enter-duration) var(--tooltip-easing);
 }
-.floating[hidden] { display: none; }
-@keyframes enter { from { opacity: 0; translate: var(--_enter-x) var(--_enter-y); } }
-@media (prefers-reduced-motion: reduce) { .floating { animation: fade 150ms linear; } }
-@keyframes fade { from { opacity: 0; } }
+/* Plain stays mounted, so hiding it can fade out: display waits for the fade to finish. */
+.floating[hidden] {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--tooltip-exit-duration) var(--tooltip-easing), display var(--tooltip-exit-duration) allow-discrete;
+}
+@starting-style { .floating:not([hidden]) { opacity: 0; translate: var(--_enter-x) var(--_enter-y); } }
+@media (prefers-reduced-motion: reduce) { .floating:not([hidden]) { transition: opacity var(--tooltip-enter-duration) var(--tooltip-easing); } }
