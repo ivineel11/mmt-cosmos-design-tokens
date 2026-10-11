@@ -18,7 +18,7 @@ The skill is plain Figma Plugin API JavaScript, so it runs anywhere that can exe
 | Claude Code, Cursor | Figma MCP `use_figma` with the file key from the URL. Load the `figma-use` skill first when it is available. |
 | Figma Agent | Its built-in code execution, inside the open file. |
 
-`use_figma` limits each call to 50 KB of code and 20 KB of returned data, and nothing carries over between calls. So every call is **the Library below, pasted unchanged, followed by one short job**. The Library is about 27 KB, which leaves room for the job. If your tool has no such limits, you can run every job in one script with a loop.
+`use_figma` limits each call to 50 KB of code and 20 KB of returned data, and nothing carries over between calls. So every call is **the Library below, pasted unchanged, followed by one short job**. The Library is about 29 KB, which leaves room for the job. If your tool has no such limits, you can run every job in one script with a loop.
 
 Only standard Plugin API calls are used: no `figma.createAutoLayout`, `node.query` or plugin data. A design file is required, because the page is created with `figma.createPage()`.
 
@@ -125,7 +125,37 @@ Docs / Section — {title}                 1568 wide, fill #0F0F0F, radius 16, p
               Docs / Variable Row — {leaf}   padding 12/16, gap 16, fill #181818, 1 px bottom line #2A2A2A
 ```
 
-One source block per collection (or per style list). One group per variable path prefix, so `color/neutral/50` sits in group `color / neutral`. Rows follow the order of the variables panel. Typography rows are named `Docs / Typography Row — {leaf}`, effect rows `Docs / Effect Row — {leaf}`. A checkerboard component, `Docs / Preview / Checkerboard` (96 × 48, 8 px squares #F2F2F2 and #D9D9D9), sits left of the first section and backs every transparent preview.
+One source block per collection (or per style list). One group per variable path prefix, so `color/neutral/50` sits in group `color / neutral`. Rows are ordered by role, as described in [Row order](#row-order). Typography rows are named `Docs / Typography Row — {leaf}`, effect rows `Docs / Effect Row — {leaf}`. A checkerboard component, `Docs / Preview / Checkerboard` (96 × 48, 8 px squares #F2F2F2 and #D9D9D9), sits left of the first section and backs every transparent preview.
+
+### Row order
+
+Rows inside a group are ordered by role, not by when a token was created. Names are split on `-` into a tree, and the tree is read depth first. Each token comes first, then its own states, then its variants, and each variant is followed by its own states. So every token in a family sits together:
+
+```
+bg-fill-brand
+bg-fill-brand-hover
+bg-fill-brand-pressed
+bg-fill-brand-subtlest
+bg-fill-brand-subtlest-hover
+bg-fill-brand-subtlest-pressed
+bg-fill-brand-inverse
+```
+
+At each level, siblings sort in this order:
+
+| Rank | Words | Order |
+|---|---|---|
+| 1 | States | default, rest, enabled, hover, focus, focused, pressed, active, dragged, open, visited, disabled |
+| 2 | Scales | Numbers ascending (`-12` to `320`), then sizes small to large: none, 5xs … xs, sm, md, lg, xl … 7xl, full. Then weights: thin … regular, medium, semibold, bold … black |
+| 3 | Emphasis | subtlest, subtle, strong |
+| 4 | Roles | primary, secondary, tertiary, unselected, selected, neutral, inverse, brand, info, success, caution, warning, destructive, error |
+| 5 | Anything else | The order it first appears in the variables panel |
+
+- **State words.** A word counts as a state only when nothing but emphasis words follows it. So `pressed-subtle` and `pressed-strong` are states of their parent. `focus-ring` is not a state: it is a family of its own, with `focus-ring-width` and `focus-ring-offset` under it.
+- **Negative numbers.** A leaf that is a plain number, like `-12`, is kept whole so negative steps sort before zero.
+- **Styles** follow the same rule. Weights run regular, bold, black, and `card` sits above `card-subtle` and `card-soft`.
+
+To change the order, edit the `STATES`, `SCALE`, `WEIGHTS`, `EMPHASIS` and `ROLES` lists at the top of the row-order part of the Library.
 
 ### Columns
 
@@ -187,6 +217,7 @@ Brand and mode columns set the explicit variable mode on their Preview frame, so
 The page is matched by layer names, the **naming contract**: `Docs / Section — …`, `Docs / Content`, `Docs / Source Block — …`, `Docs / Groups`, `Docs / Group — …`, `Docs / Table Shell`, `Docs / Table Header`, `Docs / Table Body` and the three row prefixes. On each run:
 
 - Sections, blocks and groups that exist are kept, with the same node IDs, and moved into plan order. Missing ones are created.
+- Rows that already exist are moved into role order without being rebuilt, so the first run after an ordering change only reorders the page.
 - A table whose header text differs, for example because a mode or brand was added, is rebuilt.
 - Each row is compared by its text, in layer order, plus the presence of a checkerboard.
   - An identical row is kept untouched.
@@ -200,7 +231,7 @@ The page is matched by layer names, the **naming contract**: `Docs / Section —
 Paste everything between the markers, unchanged, at the top of every job.
 
 ```js
-// ===== foundations-docs library v1 — paste unchanged above each job =====
+// ===== foundations-docs library v2 — paste unchanged above each job =====
 const SPEC = { width: 1568, gap: 160, inner: 1440,
   c: { section: '#0F0F0F', shell: '#181818', header: '#222222', rowLine: '#2A2A2A', swatchLine: '#3A3A3A', title: '#F5F5F5', text: '#F1F1F1', label: '#8C8C8C', head: '#8F8F8F', muted: '#8C8C8C', token: '#6EA8E5', checkA: '#F2F2F2', checkB: '#D9D9D9', stage: '#F2F2F2', card: '#FFFFFF' } };
 const FONT = { r: { family: 'Inter', style: 'Regular' }, m: { family: 'Inter', style: 'Medium' }, s: { family: 'Inter', style: 'Semi Bold' } };
@@ -271,6 +302,25 @@ function sectionOf(v, tier) {
 }
 const blockCat = sec => sec.startsWith('Typography · ') ? 'Typography Primitives' : /Colors/.test(sec) ? 'Colors' : sec;
 
+// Row order inside a group: a token, then its own states, then its variants, depth first.
+const STATES = ['default', 'rest', 'enabled', 'hover', 'focus', 'focused', 'pressed', 'active', 'dragged', 'open', 'visited', 'disabled'];
+const SCALE = ['none', '5xs', '4xs', '3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', 'full'];
+const WEIGHTS = ['thin', 'extralight', 'light', 'regular', 'medium', 'semibold', 'bold', 'extrabold', 'black'];
+const EMPHASIS = ['subtlest', 'subtle', 'strong'];
+const ROLES = ['primary', 'secondary', 'tertiary', 'unselected', 'selected', 'neutral', 'inverse', 'brand', 'info', 'success', 'caution', 'warning', 'destructive', 'error'];
+function roleOrder(items) {
+  const root = { kids: new Map(), items: [], first: 0 };
+  items.forEach((it, i) => { let n = root; const segs = /^-?\d+(\.\d+)?$/.test(it.leaf) ? [it.leaf] : it.leaf.split('-');
+    for (const s of segs) { if (!n.kids.has(s)) n.kids.set(s, { kids: new Map(), items: [], first: i }); n = n.kids.get(s); } n.items.push(it); });
+  const onlyEmphasis = n => [...n.kids].every(([s, c]) => EMPHASIS.includes(s) && onlyEmphasis(c));
+  const rank = (s, n) => STATES.includes(s) && onlyEmphasis(n) ? [0, STATES.indexOf(s)] : /^-?\d+(\.\d+)?$/.test(s) ? [1, parseFloat(s)]
+    : SCALE.includes(s) ? [1, SCALE.indexOf(s)] : WEIGHTS.includes(s) ? [1, WEIGHTS.indexOf(s)] : EMPHASIS.includes(s) ? [2, EMPHASIS.indexOf(s)]
+    : ROLES.includes(s) ? [3, ROLES.indexOf(s)] : [4, n.first];
+  const out = [];
+  const walk = n => { out.push(...n.items); [...n.kids].map(([s, c]) => [rank(s, c), c]).sort((a, b) => a[0][0] - b[0][0] || a[0][1] - b[0][1] || a[1].first - b[1].first).forEach(([, c]) => walk(c)); };
+  walk(root); return out;
+}
+
 function plan(M) {
   const S = new Map(); const sec = t => { if (!S.has(t)) S.set(t, { title: t, blocks: new Map() }); return S.get(t); };
   for (const c of M.base) for (const id of c.variableIds) {
@@ -284,6 +334,7 @@ function plan(M) {
     const b = { label, coll: null, groups: new Map() }; sec(title).blocks.set(label, b);
     for (const st of list) { const segs = st.name.split('/'); const g = segs.length > 1 ? segs.slice(0, -1).join(' / ') : title; if (!b.groups.has(g)) b.groups.set(g, []); b.groups.get(g).push({ type: title === 'Typography Styles' ? 'text' : 'effect', st, leaf: segs[segs.length - 1] }); }
   }
+  for (const s of S.values()) for (const b of s.blocks.values()) for (const [g, items] of b.groups) b.groups.set(g, roleOrder(items));
   const rank = t => { const i = ORDER.indexOf(t.startsWith('Component Colors') ? 'Component Colors' : t); return i < 0 ? 99 : i; };
   return [...S.values()].sort((a, b) => rank(a.title) - rank(b.title)); // stable: component sections keep collection order
 }
