@@ -24,7 +24,7 @@ Shopify's wording uses size ("smaller surface area"). Cosmos uses containment, w
 1. **Keep the rule as the README states it.** A surface is the area behind content. A fill is the body of a control or mark. Test: take the colour away, and if the content is still there without a backdrop, it was a surface.
 2. **Keep the five tint surfaces at rest:** `bg-surface-brand`, `-info`, `-success`, `-caution` and `-warning`. They are deliberate twins of the `bg-fill-*-subtlest` rest steps. The tinted Snackbar and the Info Tooltip use four of them, and a dark theme or a new brand can give a banner a different tint from a button without renaming anything. `bg-surface-brand` has no component user yet. It stays for brand callouts.
 3. **Retire the tint surface hover and pressed steps,** with their text and icon pairs (25 tokens). No tinted container in Cosmos is tappable, so these steps only duplicate the `-subtlest` fill states. If a tappable banner arrives, its states come back then.
-4. **Tappable rows are controls.** A List or Menu row rests on `transparent`, and its hover and pressed colour is interaction feedback on the row itself, like a text button. It takes `bg-fill-hover` and `bg-fill-pressed-strong`, as List and Menu already do. Destructive Menu rows move to `bg-fill-warning-subtlest-hover` and `-pressed`, which are the same colours. The README paragraph "Tappable rows stay surfaces" is rewritten to match.
+4. **Tappable rows are controls.** A List or Menu row rests on `transparent`, and its hover and pressed colour is interaction feedback on the row itself, like a text button. It takes `bg-fill-hover` and `bg-fill-pressed-strong`, as List and Menu already do. Treating rows as surfaces, as Polaris does, was ruled out (2026-10-11): it would lighten a hovered row on a white Menu panel from `neutral.100` (`bg-fill-hover`) to `neutral.50` (`bg-surface-secondary-hover`), and the row hover stays at `neutral.100`. Destructive Menu rows move to `bg-fill-warning-subtlest-hover` and `-pressed`, which are the same colours. The README paragraph "Tappable rows stay surfaces" is rewritten to match.
 5. **The rule a designer uses:** if the colour belongs to the container behind the content, use a surface. If it belongs to the control or mark itself, including a row's hover and press, use a fill.
 
 Nothing changes colour in any brand.
@@ -72,7 +72,6 @@ The Snackbar and Tooltip tokens stay on `bg-surface-{info, success, caution, war
 
 1. **Do product teams use semantic tokens directly?** The same question as A: if they read `--color-bg-surface-info-hover` in app code, keep the retired tokens for one release with a "Deprecated, use …" description.
 2. **Neutral surface hover and pressed.** With rows as controls, `bg-surface-hover`, `-pressed`, `-secondary-hover` and `-secondary-pressed` have no component users. Containment says a tappable card would use them, so this option keeps them. Retire them instead if no tappable card is planned.
-3. **Rows as surfaces instead.** The take-the-colour-away test could be read to make rows surfaces, which is how Polaris treats them. That isn't value-neutral: a hovered row on a white Menu panel would go from `neutral.100` (`bg-fill-hover`) to `neutral.50` (`bg-surface-secondary-hover`). This option keeps what ships.
 
 ## Work
 
