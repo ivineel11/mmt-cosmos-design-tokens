@@ -74,7 +74,7 @@ export function DocsApp({ data }: { data: TokenData }) {
               id="primitive-palettes"
               title="Primitive Palettes"
               contentGap="sm"
-              description="Raw color scales — 14 palettes with steps 0/50–950. Primitives are the source values; consume semantic tokens in product code."
+              description="Raw color scales — 15 palettes with steps 50–950 (neutral adds 0), plus the alpha palette for transparent and shadow colours. Primitives are the source values; consume semantic tokens in product code."
             >
               <Palettes palettes={primitives.palettes} platform={platform} />
             </Section>

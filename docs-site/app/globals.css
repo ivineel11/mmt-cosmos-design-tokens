@@ -37,10 +37,6 @@ body {
   font-variant-ligatures: none;
 }
 
-.hairline {
-  border-color: var(--color-border);
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -47,15 +47,3 @@ export function Card({ children }: { children: ReactNode }) {
     </div>
   );
 }
-
-export function TokenName({ children }: { children: ReactNode }) {
-  return <span className="mono text-xs">{children}</span>;
-}
-
-export function Muted({ children }: { children: ReactNode }) {
-  return (
-    <span className="mono text-[11px]" style={{ color: "var(--color-text-tertiary)" }}>
-      {children}
-    </span>
-  );
-}

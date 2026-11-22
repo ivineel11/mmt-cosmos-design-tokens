@@ -10,7 +10,7 @@ import SwiftUI
 /// and stays on `CosmosTokens`. Read these from the environment, so one line switches a
 /// whole screen:
 ///
-///     MyBizFlow().environment(\.cosmosBrand, .goibibo)
+///     GoibiboFlow().environment(\.cosmosBrand, .goibibo)
 ///
 ///     @Environment(\.cosmosBrand) private var brand
 ///     Rectangle().fill(brand.colorBgFillBrand)

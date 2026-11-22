@@ -13,10 +13,9 @@ export function Typography({ group, platform }: { group: TypeGroup; platform: Pl
   return (
     <Card>
       {group.sizes.map((size) =>
-        size.variants.map((variant, index) => {
+        size.variants.map((variant) => {
           const declared = Number.parseFloat(variant.value.fontSize);
           const scale = Math.min(1, SPECIMEN_MAX_PX / declared);
-          const isFirstOfSize = index === 0;
 
           return (
             <Copyable
@@ -24,10 +23,7 @@ export function Typography({ group, platform }: { group: TypeGroup; platform: Pl
               value={variant.copy[platform]}
               label={`${variant.path} as ${platform}`}
               className="flex w-full items-center gap-6 border-b px-5 py-5 last:border-b-0"
-              style={{
-                borderColor: "var(--color-border)",
-                background: isFirstOfSize ? "transparent" : "transparent",
-              }}
+              style={{ borderColor: "var(--color-border)" }}
             >
               <div className="min-w-0 flex-1 overflow-hidden">
                 <span

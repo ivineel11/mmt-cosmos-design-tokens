@@ -14,6 +14,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { brandsOf, tokensForBrand } from "../../scripts/lib/brands.mjs";
+import { contrast } from "../../scripts/lib/color.mjs";
 
 const CHECK = process.argv.includes("--check");
 const here = dirname(fileURLToPath(import.meta.url));
@@ -116,23 +117,9 @@ function copyValues(parts) {
 
 // -------------------------------------------------------------- contrast ----
 
-function channel(component) {
-  const c = component / 255;
-  return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-}
-
-function luminance(hex) {
-  const value = hex.replace("#", "");
-  const full = value.length === 3 ? [...value].map((c) => c + c).join("") : value;
-  const [r, g, b] = [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
-  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-}
-
-function contrastRatio(foreground, background) {
-  const [a, b] = [luminance(foreground), luminance(background)];
-  const [light, dark] = a > b ? [a, b] : [b, a];
-  return Math.round(((light + 0.05) / (dark + 0.05)) * 100) / 100;
-}
+// The linter's WCAG maths, floored to two decimals like its formatRatio, so the sites
+// quote the same ratio as the README and the lint report and never overstate it.
+const contrastRatio = (foreground, background) => Math.floor(contrast(foreground, background) * 100) / 100;
 
 // ----------------------------------------------------------------- build ----
 
@@ -425,12 +412,14 @@ for (const group of data.semantic.colorGroups) {
 }
 
 const countTokens = (nodes) => nodes.reduce((total, node) => total + node.steps.length, 0);
+// Sizes carry different weight sets (paragraph has no black), so count the variants.
+const typeStyleCount = typography.reduce((n, g) => n + g.sizes.reduce((m, s) => m + s.variants.length, 0), 0);
 data.meta.stats = [
   { label: "Palettes", value: palettes.length },
   { label: "Swatches", value: countTokens(palettes) },
   { label: "Semantics", value: semanticColorGroups.reduce((n, g) => n + g.tokens.length, 0) },
   { label: "Expressive", value: countTokens(expressive) },
-  { label: "Type styles", value: typography.reduce((n, g) => n + g.sizes.length * 3, 0) },
+  { label: "Type styles", value: typeStyleCount },
   { label: "Spacing steps", value: data.primitives.spacing.length },
 ];
 
@@ -482,7 +471,7 @@ const total =
   countTokens(palettes) +
   countTokens(expressive) +
   semanticColorGroups.reduce((n, g) => n + g.tokens.length, 0) +
-  typography.reduce((n, g) => n + g.sizes.length * 3, 0) +
+  typeStyleCount +
   [data.primitives.fontFamily, data.primitives.fontWeight, data.primitives.fontSize,
    data.primitives.lineHeight, data.primitives.spacing, data.primitives.borderRadius,
    data.primitives.iconSize, data.semantic.space, data.semantic.radius, data.semantic.icon]

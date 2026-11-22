@@ -29,13 +29,10 @@ const VARIANT = {
 export function Palettes({
   palettes,
   platform,
-  label,
   variant = "primitive",
 }: {
   palettes: Palette[];
   platform: Platform;
-  /** Overrides the per-palette heading with one fixed label. */
-  label?: string;
   variant?: PaletteVariant;
 }) {
   const styles = VARIANT[variant];
@@ -44,8 +41,8 @@ export function Palettes({
     <div className={styles.listClass}>
       {palettes.map((palette) => (
         <div key={palette.name} className={styles.groupClass}>
-          <div className={`mb-3 text-sm font-bold ${label ? "" : "capitalize"}`}>
-            {label ?? palette.name.replace("exp-", "")}
+          <div className="mb-3 text-sm font-bold capitalize">
+            {palette.name.replace("exp-", "")}
           </div>
           <div className={styles.gridClass} style={styles.gridStyle}>
             {palette.steps.map((step) => (

@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
  * stays on [CosmosTokens]. Read these from [LocalCosmosBrand], so one line switches a whole
  * screen:
  *
- *     CompositionLocalProvider(LocalCosmosBrand provides CosmosBrand.Goibibo) { MyBizFlow() }
+ *     CompositionLocalProvider(LocalCosmosBrand provides CosmosBrand.Goibibo) { GoibiboFlow() }
  *
  *     Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
  */

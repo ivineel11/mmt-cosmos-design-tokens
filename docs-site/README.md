@@ -14,9 +14,9 @@ npm run build    # static export in out/
 
 `scripts/generate-tokens.mjs` runs automatically before `dev` and `build`. It:
 
-1. Merges the `primitives` and `semantic` token sets and resolves every `{reference}` to a concrete value, keeping the reference itself so the docs can show `bg-fill-brand → azure.700`.
+1. Merges the `primitives`, `semantic` and `component` token sets and resolves every `{reference}` to a concrete value, keeping the reference itself so the docs can show `bg-fill-brand → azure.700`. It does the same for each brand, and records what that brand changes.
 2. Derives the CSS, JS, Swift, and Kotlin name for each token using the same rules as `build-tokens.mjs`, then validates them against `../dist/web/tokens.css`. Drift prints a warning rather than failing the build.
-3. Computes WCAG contrast for every `text-*` token against the surface it is designed for (`text-info-on-bg-fill-strong` is measured against `bg-fill-info-strong`, plain `text-*` against `bg`).
+3. Computes WCAG contrast for every `text-*` token against the surface it is designed for (`text-info-on-bg-fill-strong` is measured against `bg-fill-info-strong`, plain `text-*` against `bg`). It uses the linter's maths in `../scripts/lib/color.mjs` and floors to two decimals, so the site quotes the same ratios as the README.
 4. Writes `data/tokens.json` and copies `../dist/web/tokens.css` to `app/tokens.css`.
 
 Both generated files are gitignored — the tokens source is the only thing worth versioning.

@@ -988,6 +988,9 @@ const lowerCamel = (name) =>
   name.replace(/[^A-Za-z0-9]+(.)?/g, (_, c) => (c ? c.toUpperCase() : "")).replace(/^./, (c) => c.toLowerCase());
 const upperCamel = (name) => lowerCamel(name).replace(/^./, (c) => c.toUpperCase());
 const oneLine = (text) => (text ?? "").replace(/\s+/g, " ").trim();
+/** The brand the Swift and Kotlin doc comments switch to, and a screen named after it. */
+const SAMPLE_BRAND = BRANDS.at(-1);
+const sampleScreen = `${upperCamel(SAMPLE_BRAND.name)}Flow`;
 
 StyleDictionary.registerFormat({
   name: "mmt/css/variables-brands",
@@ -1063,7 +1066,7 @@ import SwiftUI
 /// and stays on \`CosmosTokens\`. Read these from the environment, so one line switches a
 /// whole screen:
 ///
-///     MyBizFlow().environment(\\.cosmosBrand, .${lowerCamel(BRANDS.at(-1).name)})
+///     ${sampleScreen}().environment(\\.cosmosBrand, .${lowerCamel(SAMPLE_BRAND.name)})
 ///
 ///     @Environment(\\.cosmosBrand) private var brand
 ///     Rectangle().fill(brand.colorBgFillBrand)
@@ -1121,7 +1124,7 @@ import androidx.compose.ui.graphics.Color
  * stays on [CosmosTokens]. Read these from [LocalCosmosBrand], so one line switches a whole
  * screen:
  *
- *     CompositionLocalProvider(LocalCosmosBrand provides CosmosBrand.${upperCamel(BRANDS.at(-1).name)}) { MyBizFlow() }
+ *     CompositionLocalProvider(LocalCosmosBrand provides CosmosBrand.${upperCamel(SAMPLE_BRAND.name)}) { ${sampleScreen}() }
  *
  *     Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
  */

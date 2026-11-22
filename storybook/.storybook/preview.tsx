@@ -54,7 +54,7 @@ const preview: Preview = {
         order: [
           "Introduction",
           "Foundations",
-          ["Colour", "Typography", "Spacing", "Radius", "Stroke", "Iconography", "Elevation", "Opacity", "Inverse surface"],
+          ["Colour", "Typography", "Spacing", "Radius", "Stroke", "Iconography", "Elevation", "Opacity", "Motion", "Inverse surface"],
           "Tokens",
           ["Primitives", "Semantic", "Component"],
           "Components",

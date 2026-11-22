@@ -17,4 +17,4 @@ npm run build   # static export to out/; also type-checks. Run it before committ
 - Style the site with the Cosmos tokens it documents (`var(--color-*)`, `var(--space-*)`, and so on). Don't hardcode hex or px values. Site-only values such as layout widths and motion live as variables in `app/globals.css`.
 - Naming in `generate-tokens.mjs` must mirror `../build-tokens.mjs`. If a token name there changes, update the generator too. Drift only prints a warning, so read the build output.
 - To add a section, follow the "Adding a section" steps in `README.md`. The `NAV` id must match the `<Section id>`.
-- Animations use the `--motion-*` variables and must respect `prefers-reduced-motion`. `plans/` records past animation decisions, so read it before changing the sidebar.
+- Animations use the Cosmos `--duration-*` and `--easing-*` tokens and must respect `prefers-reduced-motion`. `plans/` records past animation decisions, so read it before changing the sidebar. The `--motion-*` variables those plans mention were replaced by the motion tokens.

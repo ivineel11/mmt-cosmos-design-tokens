@@ -9,10 +9,13 @@ npm run build:tokens
 
 | Output | Path |
 |--------|------|
-| CSS custom properties | `dist/web/tokens.css` |
+| CSS custom properties, with a `[data-brand]` block per brand | `dist/web/tokens.css` |
 | JavaScript / TypeScript (ESM) | `dist/web/tokens.ts` |
+| Brandable values per brand (TypeScript) | `dist/web/brands.ts` |
 | SwiftUI enum | `dist/ios/CosmosTokens.swift` |
+| SwiftUI helpers: the `.lineHeight` modifier, `CosmosEasing` and `CosmosBrand` | `dist/ios/LineHeight.swift`, `dist/ios/Motion.swift`, `dist/ios/CosmosBrand.swift` |
 | Jetpack Compose object | `dist/android/CosmosTokens.kt` |
+| Compose helpers: `CosmosSpring` and `CosmosBrand` | `dist/android/CosmosMotion.kt`, `dist/android/CosmosBrand.kt` |
 
 The iOS and Android outputs are namespaced as `CosmosTokens` (Kotlin package `com.makemytrip.cosmos.tokens`) so an app can consume Cosmos tokens alongside another token set without symbol collisions.
 
@@ -20,7 +23,7 @@ The iOS and Android outputs are namespaced as `CosmosTokens` (Kotlin package `co
 
 ## End-to-end workflow
 
-Design tokens move from Figma authoring through a single JSON source file into platform-specific code. The pipeline is intentionally linear: one source of truth, one build command, four outputs.
+Design tokens move from Figma authoring through a single JSON source file into platform-specific code. The pipeline is intentionally linear: one source of truth, one build command, three platforms. The diagram shows the main token file of each; the table above lists every generated file.
 
 ```mermaid
 flowchart TD
@@ -45,7 +48,7 @@ Designers maintain the token system in Figma using the [Tokens Studio](https://t
 |-----------|----------|
 | **primitives** | Raw values — color palettes, font stacks, pixel scales |
 | **semantic** | Role-based aliases (color, typography, radius, icon, **space**) that reference primitives via `{category.path}` syntax |
-| **component** | Component-scoped aliases (`button/*`, `checkbox/*`, `radio/*`, `chip/*`) that reference semantic tokens — one key per property × variant × state |
+| **component** | Component-scoped aliases, one group per component (`button/*`, `checkbox/*`, `tooltip/*` and the rest), that reference semantic tokens — one key per property × variant × state |
 
 Each tier may only reference the tier below it. When adding a new semantic color, always reference a primitive (e.g. `{color.azure.600}`) rather than entering a raw hex value. When adding a component token, always reference a semantic token (e.g. `{color.bg-fill-brand}`) — never a primitive and never a raw hex, or a palette change will stop propagating.
 
@@ -196,10 +199,10 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 
 | Platform key | Transforms | Format | Output |
 |--------------|------------|--------|--------|
-| `web-css` | kebab-case names; hex / CSS gradients unchanged | `css/variables` | `dist/web/tokens.css` |
-| `web-js` | camelCase names; hex / CSS gradients unchanged | `javascript/esm` | `dist/web/tokens.ts` |
-| `ios` | unitless dimensions, `Double` opacities, `TimeInterval` durations, quoted strings, native `Color` / `LinearGradient` / `Animation` | `ios-swift/enum.swift` | `dist/ios/CosmosTokens.swift` (+ `Motion.swift`) |
-| `android` | compose units, `Float` opacities, `Int` ms durations, quoted strings, native `Color` / `Brush` / `CubicBezierEasing` | `compose/object` | `dist/android/CosmosTokens.kt` (+ `CosmosMotion.kt`) |
+| `web-css` | kebab-case names; hex / CSS gradients unchanged | `mmt/css/variables-brands` (`css/variables` plus a `[data-brand]` block per brand) | `dist/web/tokens.css` |
+| `web-js` | camelCase names; hex / CSS gradients unchanged | `javascript/esm`, `mmt/js/brands` | `dist/web/tokens.ts`, `dist/web/brands.ts` |
+| `ios` | unitless dimensions, `Double` opacities, `TimeInterval` durations, quoted strings, native `Color` / `LinearGradient` / `Animation` | `ios-swift/enum.swift`, `mmt/ios-line-height-modifier`, `mmt/ios-motion`, `mmt/ios/brands` | `dist/ios/CosmosTokens.swift` (+ `LineHeight.swift`, `Motion.swift`, `CosmosBrand.swift`) |
+| `android` | compose units, `Float` opacities, `Int` ms durations, quoted strings, native `Color` / `Brush` / `CubicBezierEasing` | `compose/object`, `mmt/android-motion`, `mmt/android/brands` | `dist/android/CosmosTokens.kt` (+ `CosmosMotion.kt`, `CosmosBrand.kt`) |
 
 #### Native color transforms (iOS & Android)
 
@@ -235,13 +238,14 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (299 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (299 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (79 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
 - Source file follows W3C Design Tokens Community Group conventions (`value` + `type` pairs).
 - `$metadata.tokenSetOrder` enforces build order.
-- `$themes` is currently empty — **one light theme only**; no dark mode or multi-brand variants yet. Controls on dark sections use an Inverse surface instead (see 13. Inverse surface).
+- `$themes` holds one entry per brand, MakeMyTrip first, and each other brand adds a `brands/{id}` set of overrides (see [Brands](#14-brands-makemytrip-mybiz-and-goibibo)).
+- There is **one light theme only**; no dark mode yet. Controls on dark sections use an Inverse surface instead (see 13. Inverse surface).
 
 ### 3. Semantic color taxonomy (Polaris-inspired)
 
@@ -437,6 +441,7 @@ Cosmos applies opacity **to a colour token**; it never bakes alpha into a hex. T
 **Disabled is not an opacity.** Every disabled state in Cosmos is a solid opaque neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`). A dimming path would give the system two conflicting ways to say "disabled" with different and unpredictable contrast outcomes over a tinted surface. The same holds for hover and pressed, which are solid palette steps (`bg-fill-brand-hover`). Focus is the only state expressed as a layer, and only on Radio, whose ring was removed by design decision.
 
 **Growth path.** `opacity.state-layer-hover` and `-pressed` exist but no component consumes them yet: switching Radio to layer-based hover and pressed would diverge it from Checkbox, so it is a system-wide decision that must land on both together — see `components/radio.md` → Known gaps. `state-layer-dragged` waits on a draggable component.
+
 ### 12. Shadow tokens
 
 Cosmos has one elevation scale, written as shadows. There is no separate `elevation` number: on web a shadow is what elevation looks like, and iOS and Android get the same layers so the three platforms match.
@@ -487,8 +492,8 @@ Cosmos serves more than one brand. MakeMyTrip is the default brand. myBiz, the c
 ```
 primitives (azure, pomegranate, thunderbird, …)  →  semantic  →  component
                                      ↑
-                    brands/mybiz overrides 30 semantic colours
-                    brands/goibibo overrides the same 30 colours, typeface.default, weight.bold and weight.black
+                    brands/mybiz overrides 37 semantic colours
+                    brands/goibibo overrides the same 37 colours, typeface.default, weight.bold and weight.black
 ```
 
 This is exactly what a **Figma extended collection** does. In Figma the semantic set is the collection named **MakeMyTrip**, the parent. Its **myBiz** and **Goibibo** extensions override the same values as their brand sets and inherit everything else, including new variables, descriptions and scopes. Switching a frame between brands is one click: **Appearance → variable mode → myBiz** or **Goibibo** (or back to MakeMyTrip). The Figma collection is named after the default brand, while the JSON set keeps the tier name `semantic`. The build never reads Figma names, so the two can differ. Do not push variables to Figma from Tokens Studio: it matches collections by name, so it would recreate a `semantic` collection, and it models brands as modes, not extensions.
@@ -539,7 +544,7 @@ Rubik is wider than Lato and has a taller x-height, so the same size reads large
 
 **Watch the warning red.** `pomegranate` is a red ramp, and myBiz keeps the shared `red` warning roles. So myBiz separates primary from destructive by lightness, not hue. The primary fill sits on `pomegranate.400` (`#FF4929`) and the destructive fill on `red.700` (`#C10007`). The interaction states come closer: the myBiz Primary pressed fill (`pomegranate.600`, `#EF1107`) looks almost the same as the destructive hover fill (`red.600`, `#E7000B`). Keep destructive actions in their own confirmation step. Goibibo (`#F45900`) is clearly orange.
 
-**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 241 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (42 families and 27 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
+**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 256 tokens that differ in any brand get a runtime switch: the 37 semantic and 147 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (42 families and 27 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
 
 **Adding a brand.**
 1. Add `brands/{id}` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
@@ -687,7 +692,7 @@ Entrances on the web are CSS transitions started with `@starting-style`, not key
 - Don't create one-off semantic tokens for a single screen — extend the shared taxonomy instead.
 - Don't add font sizes without corresponding line heights in the typography scale.
 - Don't use negative spacing keys in references — the build renames them (`spacing.-8` → `spacing.minus8` in output).
-- Don't hand-convert hex colors or CSS gradients in iOS/Android app code — use the generated `Tokens` values directly.
+- Don't hand-convert hex colors or CSS gradients in iOS/Android app code — use the generated `CosmosTokens` values directly.
 - Don't alias a control's fill to `bg` or `bg-secondary`; those are canvases. Use `bg-fill`.
 - Don't colour a control with a `bg-surface-*` token because it has the right colour; use the `bg-fill-*` token of the same value, so the role still reads correctly if the two diverge.
 - Don't use opacity to express a disabled state — disabled is a solid neutral (`text-disabled`, `bg-fill-disabled-strong`, `border-disabled-subtle`, `icon-disabled`).
@@ -1858,7 +1863,7 @@ Primitive `spacing.*` remains available for leftover steps (`44`, `52`, `56`, `6
 
 .card {
   background: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
+  border: var(--stroke-default) solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-md);
   color: var(--color-text-primary);
@@ -1967,7 +1972,7 @@ Opacity tokens are always applied **to a colour token** — apart from the five 
   border-radius: var(--radius-full);
   background: var(--radio-state-layer-unselected);
   opacity: var(--opacity-0);
-  transition: opacity 150ms;
+  transition: opacity var(--duration-xs) var(--easing-state);
 }
 .radio__control:focus-visible::before { opacity: var(--radio-state-layer-opacity-focus); }
 
@@ -2088,7 +2093,7 @@ val offset by animateDpAsState(if (on) travel else 0.dp, CosmosTokens.springSnap
 
 ### Brands
 
-The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 241 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
+The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 256 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
 
 ```html
 <!-- Web: everything inside switches, including nested components. -->
@@ -2135,7 +2140,7 @@ Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
 | `scripts/lib/` | Code shared by the build, `describe-primitives.mjs` and the linter (opacity rules, WCAG contrast) |
 | `lint.config.mjs` | Linter severity overrides and reasoned ignores |
 | `eslint.config.mjs` | ESLint config for the build scripts, the docs site and Storybook |
-| `proposals/` | Drafted token changes that need a design decision or Figma work before they can land |
+| `proposals/` | Design rationale for token changes, written before they land; each file states its status |
 | `build-tokens.mjs` | Style Dictionary config and custom transforms |
 | `package.json` | Package metadata and build script |
 | `dist/web/tokens.css` | Generated CSS custom properties |
@@ -2154,6 +2159,7 @@ Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
 | `components/*.md` | Component specifications, hand-authored; uSpec can regenerate them (see below) |
 | `uspecs.config.json` | uSpec CLI configuration (agent, Figma MCP provider, pinned CLI version) |
 | `.claude/skills/`, `.cursor/skills/`, `references/` | Vendored uSpec agent skills and reference instructions — do not hand-edit |
+| `.claude/skills/figma-foundations-docs/`, `.cursor/skills/figma-foundations-docs/` | The one skill written for Cosmos rather than vendored: it builds the Figma Foundations Documentation page. Edit both copies together |
 
 ---
 
@@ -2206,7 +2212,7 @@ The generated platform names are checked against `dist/web/tokens.css` on every 
 
 ## Storybook
 
-`storybook/` is a Storybook 10 (React and Vite) that documents the system as a whole: the foundations (colour, typography, spacing, radius, stroke, iconography, elevation, opacity and the Inverse surface), searchable tables for all three token tiers, and a live React component for each Figma component set.
+`storybook/` is a Storybook 10 (React and Vite) that documents the system as a whole: the foundations (colour, typography, spacing, radius, stroke, iconography, elevation, opacity, motion and the Inverse surface), searchable tables for all three token tiers, and a live React component for each Figma component set.
 
 ```bash
 npm run build:tokens   # in the repo root, first
@@ -2227,7 +2233,7 @@ Every component and icon is connected to Figma Dev Mode with Code Connect templa
 
 ## Figma component pages
 
-Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`), Tab (`694:2811`, with Tab / Secondary `697:59`), List (`797:4533`, with List / Item `710:474`, List / Leading `709:119`, List / Trailing `709:2983` and List / Section header `710:479`) Switch (`731:172`, with the hidden backup .Switch / Outlined `732:191`), Segmented control (`765:186`, with Segmented control / Segment `764:131`), Slider (`811:1622`, with Slider / Thumb `809:83` and Slider / Tooltip `870:538`) Menu (`781:231`, with Menu / Section header `781:3971`, Menu / Divider `781:3972` and the panels Menu / Comfortable `781:3973` and Menu / Compact `781:4046`) Tooltip (`881:362`, with Tooltip / Control `876:95`) and Input (`1011:900`, with Input / Country `1026:410`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
+Every component gets its own page in the Cosmos Figma file, laid out the way the **Button** page is. Every component page follows it: Button (`58:202`), Snackbar (`637:3233`), Chip (`559:2943`, with Chip / Vertical `592:327`), Checkbox (`427:62`), Radio (`442:415`), Badge (`683:2823`), Tab (`694:2811`, with Tab / Secondary `697:59`), List (`797:4533`, with List / Item `710:474`, List / Leading `709:119`, List / Trailing `709:2983` and List / Section header `710:479`), Switch (`731:172`, with the hidden backup .Switch / Outlined `732:191`), Segmented control (`765:186`, with Segmented control / Segment `764:131`), Slider (`811:1622`, with Slider / Thumb `809:83` and Slider / Tooltip `870:538`), Menu (`781:231`, with Menu / Section header `781:3971`, Menu / Divider `781:3972` and the panels Menu / Comfortable `781:3973` and Menu / Compact `781:4046`), Tooltip (`881:362`, with Tooltip / Control `876:95`) and Input (`1011:900`, with Input / Country `1026:410`). When a page holds two top-level components, such as Chip and Chip / Vertical, give each its own column: Docs card, showcases, then examples. Align the first showcases of both columns. Follow these steps whenever you create a component, and check the finished page against the Button page before calling it done.
 
 ### 1. Page
 
@@ -2282,7 +2288,7 @@ The token pipeline above documents *values*. [uSpec](https://github.com/redongre
 
 `components/button.md` was the first one, generated from the Button component set (`58:202`) when it had 120 variants. It went stale as the set grew to 240 variants and was rewritten by hand on 2026-10-16.
 
-`components/button.md` covers the Button component set (`58:202`, 240 variants), `components/checkbox.md` covers the Checkbox component set (`427:62`, 90 variants) , `components/radio.md` the Radio component set (`442:415`, 60 variants) `components/chip.md` the Chip component set (`559:2943`, 60 variants), `components/chip-vertical.md` the Chip / Vertical component set (`592:327`, 60 variants) `components/snackbar.md` the Snackbar component set (`637:3233`, 20 variants) with its Snackbar / Control sub-component (`636:3088`, 48 variants), `components/badge.md` the Badge component set (`683:2823`, 60 variants), `components/tab.md` the Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) component sets, `components/list.md` the List container (`797:4533`, 2 variants) and the List / Item (`710:474`, 30 variants) component set with its List / Leading (`709:119`), List / Trailing (`709:2983`) and List / Section header (`710:479`) sub-components, `components/menu.md` the Menu / Item (`781:231`, 22 variants) component set with its Menu / Section header (`781:3971`), Menu / Divider (`781:3972`) sets and the Menu / Comfortable (`781:3973`) and Menu / Compact (`781:4046`) panel components, and `components/tooltip.md` the Tooltip component set (`881:362`, 96 variants) with its Tooltip / Control sub-component (`876:95`, 36 variants), and `components/input.md` the Input component set (`1011:900`, 26 variants) with its Input / Country sub-component (`1026:410`, 2 variants). Every spec in `components/` is **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Re-run the flow below to replace them with extracted specs; each file says so in its own header.
+There is a spec for every component group, and the component table under [Token Inventory](#token-inventory) links each one with its Figma node and variant count. Every spec in `components/` is **hand-authored**, not uSpec-generated — Stage 1 needs the Extract plugin to run inside Figma Desktop, which cannot be automated. Each file says so in its own header. Re-run the flow below to replace one with an extracted spec.
 
 ### Pinned versions
 
