@@ -86,8 +86,8 @@ const EXPLICIT = {
   "fontFamily.rubik": "Goibibo family. The Goibibo brand points typeface.default at it, so every text style switches to Rubik there.",
   "fontWeight.regular": "Default weight, behind weight.regular in every brand.",
   "fontWeight.semibold": "Goibibo emphasis weight, behind weight.bold in that brand only. MakeMyTrip and myBiz have no semibold step.",
-  "fontWeight.bold": "Emphasis weight behind weight.bold in MakeMyTrip and myBiz, and the heaviest Goibibo weight, behind weight.black there.",
-  "fontWeight.black": "Heaviest weight, behind weight.black in MakeMyTrip and myBiz, for promotional and marketing emphasis rather than routine UI.",
+  "fontWeight.bold": "Emphasis weight behind weight.bold in MakeMyTrip and myBiz, and the heaviest Goibibo weight, behind weight.heavy there.",
+  "fontWeight.heavy": "Heaviest weight, behind weight.heavy in MakeMyTrip and myBiz, for promotional and marketing emphasis rather than routine UI.",
 };
 
 /**

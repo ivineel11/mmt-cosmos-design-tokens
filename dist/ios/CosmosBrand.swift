@@ -111,11 +111,11 @@ public struct CosmosBrand: Identifiable, Sendable {
     /// Typeface of every text style, and the one token a brand changes to swap its font. Apply a text style rather than this token, so size, line height and weight come with it.
     public let typefaceDefault: String
 
-    /// Weight of every bold text style, for emphasis in running text and every Button label. A brand sets its own emphasis weight here, so reach it through a bold text style. For promotional emphasis use the black styles, which read weight.black.
+    /// Weight of every bold text style, for emphasis in running text and every Button label. A brand sets its own emphasis weight here, so reach it through a bold text style. For promotional emphasis use the heavy styles, which read weight.heavy.
     public let weightBold: Int
 
-    /// Weight of every black text style, the heaviest a brand offers, for promotional and marketing emphasis rather than routine UI. For everyday emphasis use the bold styles, which read weight.bold.
-    public let weightBlack: Int
+    /// Weight of every heavy text style, the heaviest a brand offers, for promotional and marketing emphasis rather than routine UI. For everyday emphasis use the bold styles, which read weight.bold.
+    public let weightHeavy: Int
 
     /// Largest headline — page titles and hero headings; typically one per view. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
     public let headlineLargeRegularFontFamily: String
@@ -127,10 +127,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let headlineLargeBoldFontWeight: Int
 
     /// Largest headline — page titles and hero headings; typically one per view. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
-    public let headlineLargeBlackFontFamily: String
+    public let headlineLargeHeavyFontFamily: String
 
     /// Largest headline — page titles and hero headings; typically one per view. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
-    public let headlineLargeBlackFontWeight: Int
+    public let headlineLargeHeavyFontWeight: Int
 
     /// Headline for major section headings. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
     public let headlineMediumRegularFontFamily: String
@@ -142,10 +142,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let headlineMediumBoldFontWeight: Int
 
     /// Headline for major section headings. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
-    public let headlineMediumBlackFontFamily: String
+    public let headlineMediumHeavyFontFamily: String
 
     /// Headline for major section headings. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
-    public let headlineMediumBlackFontWeight: Int
+    public let headlineMediumHeavyFontWeight: Int
 
     /// Smallest headline — sub-section headings and modal titles. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
     public let headlineSmallRegularFontFamily: String
@@ -157,10 +157,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let headlineSmallBoldFontWeight: Int
 
     /// Smallest headline — sub-section headings and modal titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
-    public let headlineSmallBlackFontFamily: String
+    public let headlineSmallHeavyFontFamily: String
 
     /// Smallest headline — sub-section headings and modal titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles.
-    public let headlineSmallBlackFontWeight: Int
+    public let headlineSmallHeavyFontWeight: Int
 
     /// Largest title — card, sheet and dialog titles. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
     public let titleLargeRegularFontFamily: String
@@ -172,10 +172,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let titleLargeBoldFontWeight: Int
 
     /// Largest title — card, sheet and dialog titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
-    public let titleLargeBlackFontFamily: String
+    public let titleLargeHeavyFontFamily: String
 
     /// Largest title — card, sheet and dialog titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
-    public let titleLargeBlackFontWeight: Int
+    public let titleLargeHeavyFontWeight: Int
 
     /// Title for sub-sections and list-group headers. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
     public let titleMediumRegularFontFamily: String
@@ -187,10 +187,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let titleMediumBoldFontWeight: Int
 
     /// Title for sub-sections and list-group headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
-    public let titleMediumBlackFontFamily: String
+    public let titleMediumHeavyFontFamily: String
 
     /// Title for sub-sections and list-group headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
-    public let titleMediumBlackFontWeight: Int
+    public let titleMediumHeavyFontWeight: Int
 
     /// Smallest title — compact card headers and table column groups. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
     public let titleSmallRegularFontFamily: String
@@ -202,10 +202,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let titleSmallBoldFontWeight: Int
 
     /// Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
-    public let titleSmallBlackFontFamily: String
+    public let titleSmallHeavyFontFamily: String
 
     /// Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles.
-    public let titleSmallBlackFontWeight: Int
+    public let titleSmallHeavyFontWeight: Int
 
     /// Largest paragraph text — long reading on spacious screens, such as destination guides and articles. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component.
     public let paragraphLargeRegularFontFamily: String
@@ -244,10 +244,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let bodyLargeBoldFontWeight: Int
 
     /// Largest body text — prominent short copy such as list row titles and input values. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
-    public let bodyLargeBlackFontFamily: String
+    public let bodyLargeHeavyFontFamily: String
 
     /// Largest body text — prominent short copy such as list row titles and input values. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
-    public let bodyLargeBlackFontWeight: Int
+    public let bodyLargeHeavyFontWeight: Int
 
     /// Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
     public let bodyMediumRegularFontFamily: String
@@ -259,10 +259,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let bodyMediumBoldFontWeight: Int
 
     /// Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
-    public let bodyMediumBlackFontFamily: String
+    public let bodyMediumHeavyFontFamily: String
 
     /// Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
-    public let bodyMediumBlackFontWeight: Int
+    public let bodyMediumHeavyFontWeight: Int
 
     /// Smallest body text — captions, helper and error text, and metadata. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
     public let bodySmallRegularFontFamily: String
@@ -274,10 +274,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let bodySmallBoldFontWeight: Int
 
     /// Smallest body text — captions, helper and error text, and metadata. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
-    public let bodySmallBlackFontFamily: String
+    public let bodySmallHeavyFontFamily: String
 
     /// Smallest body text — captions, helper and error text, and metadata. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control.
-    public let bodySmallBlackFontWeight: Int
+    public let bodySmallHeavyFontWeight: Int
 
     /// Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
     public let labelLargeRegularFontFamily: String
@@ -289,10 +289,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let labelLargeBoldFontWeight: Int
 
     /// Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
-    public let labelLargeBlackFontFamily: String
+    public let labelLargeHeavyFontFamily: String
 
     /// Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
-    public let labelLargeBlackFontWeight: Int
+    public let labelLargeHeavyFontWeight: Int
 
     /// Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
     public let labelMediumRegularFontFamily: String
@@ -304,10 +304,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let labelMediumBoldFontWeight: Int
 
     /// Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
-    public let labelMediumBlackFontFamily: String
+    public let labelMediumHeavyFontFamily: String
 
     /// Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
-    public let labelMediumBlackFontWeight: Int
+    public let labelMediumHeavyFontWeight: Int
 
     /// Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
     public let labelSmallRegularFontFamily: String
@@ -319,10 +319,10 @@ public struct CosmosBrand: Identifiable, Sendable {
     public let labelSmallBoldFontWeight: Int
 
     /// Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
-    public let labelSmallBlackFontFamily: String
+    public let labelSmallHeavyFontFamily: String
 
     /// Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads.
-    public let labelSmallBlackFontWeight: Int
+    public let labelSmallHeavyFontWeight: Int
 
     /// Background of the primary (solid fill) button — default intent, at rest.
     public let buttonBgPrimaryDefault: Color
@@ -800,37 +800,37 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrandInversePressed: Color(red: 0.709804, green: 0.917647, blue: 1),
         typefaceDefault: "Lato",
         weightBold: 700,
-        weightBlack: 900,
+        weightHeavy: 800,
         headlineLargeRegularFontFamily: "Lato",
         headlineLargeBoldFontFamily: "Lato",
         headlineLargeBoldFontWeight: 700,
-        headlineLargeBlackFontFamily: "Lato",
-        headlineLargeBlackFontWeight: 900,
+        headlineLargeHeavyFontFamily: "Lato",
+        headlineLargeHeavyFontWeight: 800,
         headlineMediumRegularFontFamily: "Lato",
         headlineMediumBoldFontFamily: "Lato",
         headlineMediumBoldFontWeight: 700,
-        headlineMediumBlackFontFamily: "Lato",
-        headlineMediumBlackFontWeight: 900,
+        headlineMediumHeavyFontFamily: "Lato",
+        headlineMediumHeavyFontWeight: 800,
         headlineSmallRegularFontFamily: "Lato",
         headlineSmallBoldFontFamily: "Lato",
         headlineSmallBoldFontWeight: 700,
-        headlineSmallBlackFontFamily: "Lato",
-        headlineSmallBlackFontWeight: 900,
+        headlineSmallHeavyFontFamily: "Lato",
+        headlineSmallHeavyFontWeight: 800,
         titleLargeRegularFontFamily: "Lato",
         titleLargeBoldFontFamily: "Lato",
         titleLargeBoldFontWeight: 700,
-        titleLargeBlackFontFamily: "Lato",
-        titleLargeBlackFontWeight: 900,
+        titleLargeHeavyFontFamily: "Lato",
+        titleLargeHeavyFontWeight: 800,
         titleMediumRegularFontFamily: "Lato",
         titleMediumBoldFontFamily: "Lato",
         titleMediumBoldFontWeight: 700,
-        titleMediumBlackFontFamily: "Lato",
-        titleMediumBlackFontWeight: 900,
+        titleMediumHeavyFontFamily: "Lato",
+        titleMediumHeavyFontWeight: 800,
         titleSmallRegularFontFamily: "Lato",
         titleSmallBoldFontFamily: "Lato",
         titleSmallBoldFontWeight: 700,
-        titleSmallBlackFontFamily: "Lato",
-        titleSmallBlackFontWeight: 900,
+        titleSmallHeavyFontFamily: "Lato",
+        titleSmallHeavyFontWeight: 800,
         paragraphLargeRegularFontFamily: "Lato",
         paragraphLargeBoldFontFamily: "Lato",
         paragraphLargeBoldFontWeight: 700,
@@ -843,33 +843,33 @@ public struct CosmosBrand: Identifiable, Sendable {
         bodyLargeRegularFontFamily: "Lato",
         bodyLargeBoldFontFamily: "Lato",
         bodyLargeBoldFontWeight: 700,
-        bodyLargeBlackFontFamily: "Lato",
-        bodyLargeBlackFontWeight: 900,
+        bodyLargeHeavyFontFamily: "Lato",
+        bodyLargeHeavyFontWeight: 800,
         bodyMediumRegularFontFamily: "Lato",
         bodyMediumBoldFontFamily: "Lato",
         bodyMediumBoldFontWeight: 700,
-        bodyMediumBlackFontFamily: "Lato",
-        bodyMediumBlackFontWeight: 900,
+        bodyMediumHeavyFontFamily: "Lato",
+        bodyMediumHeavyFontWeight: 800,
         bodySmallRegularFontFamily: "Lato",
         bodySmallBoldFontFamily: "Lato",
         bodySmallBoldFontWeight: 700,
-        bodySmallBlackFontFamily: "Lato",
-        bodySmallBlackFontWeight: 900,
+        bodySmallHeavyFontFamily: "Lato",
+        bodySmallHeavyFontWeight: 800,
         labelLargeRegularFontFamily: "Lato",
         labelLargeBoldFontFamily: "Lato",
         labelLargeBoldFontWeight: 700,
-        labelLargeBlackFontFamily: "Lato",
-        labelLargeBlackFontWeight: 900,
+        labelLargeHeavyFontFamily: "Lato",
+        labelLargeHeavyFontWeight: 800,
         labelMediumRegularFontFamily: "Lato",
         labelMediumBoldFontFamily: "Lato",
         labelMediumBoldFontWeight: 700,
-        labelMediumBlackFontFamily: "Lato",
-        labelMediumBlackFontWeight: 900,
+        labelMediumHeavyFontFamily: "Lato",
+        labelMediumHeavyFontWeight: 800,
         labelSmallRegularFontFamily: "Lato",
         labelSmallBoldFontFamily: "Lato",
         labelSmallBoldFontWeight: 700,
-        labelSmallBlackFontFamily: "Lato",
-        labelSmallBlackFontWeight: 900,
+        labelSmallHeavyFontFamily: "Lato",
+        labelSmallHeavyFontWeight: 800,
         buttonBgPrimaryDefault: Color(red: 0, green: 0.533333, blue: 1),
         buttonBgPrimaryHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         buttonBgPrimaryPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
@@ -1054,37 +1054,37 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrandInversePressed: Color(red: 1, green: 0.878431, blue: 0.831373),
         typefaceDefault: "Lato",
         weightBold: 700,
-        weightBlack: 900,
+        weightHeavy: 800,
         headlineLargeRegularFontFamily: "Lato",
         headlineLargeBoldFontFamily: "Lato",
         headlineLargeBoldFontWeight: 700,
-        headlineLargeBlackFontFamily: "Lato",
-        headlineLargeBlackFontWeight: 900,
+        headlineLargeHeavyFontFamily: "Lato",
+        headlineLargeHeavyFontWeight: 800,
         headlineMediumRegularFontFamily: "Lato",
         headlineMediumBoldFontFamily: "Lato",
         headlineMediumBoldFontWeight: 700,
-        headlineMediumBlackFontFamily: "Lato",
-        headlineMediumBlackFontWeight: 900,
+        headlineMediumHeavyFontFamily: "Lato",
+        headlineMediumHeavyFontWeight: 800,
         headlineSmallRegularFontFamily: "Lato",
         headlineSmallBoldFontFamily: "Lato",
         headlineSmallBoldFontWeight: 700,
-        headlineSmallBlackFontFamily: "Lato",
-        headlineSmallBlackFontWeight: 900,
+        headlineSmallHeavyFontFamily: "Lato",
+        headlineSmallHeavyFontWeight: 800,
         titleLargeRegularFontFamily: "Lato",
         titleLargeBoldFontFamily: "Lato",
         titleLargeBoldFontWeight: 700,
-        titleLargeBlackFontFamily: "Lato",
-        titleLargeBlackFontWeight: 900,
+        titleLargeHeavyFontFamily: "Lato",
+        titleLargeHeavyFontWeight: 800,
         titleMediumRegularFontFamily: "Lato",
         titleMediumBoldFontFamily: "Lato",
         titleMediumBoldFontWeight: 700,
-        titleMediumBlackFontFamily: "Lato",
-        titleMediumBlackFontWeight: 900,
+        titleMediumHeavyFontFamily: "Lato",
+        titleMediumHeavyFontWeight: 800,
         titleSmallRegularFontFamily: "Lato",
         titleSmallBoldFontFamily: "Lato",
         titleSmallBoldFontWeight: 700,
-        titleSmallBlackFontFamily: "Lato",
-        titleSmallBlackFontWeight: 900,
+        titleSmallHeavyFontFamily: "Lato",
+        titleSmallHeavyFontWeight: 800,
         paragraphLargeRegularFontFamily: "Lato",
         paragraphLargeBoldFontFamily: "Lato",
         paragraphLargeBoldFontWeight: 700,
@@ -1097,33 +1097,33 @@ public struct CosmosBrand: Identifiable, Sendable {
         bodyLargeRegularFontFamily: "Lato",
         bodyLargeBoldFontFamily: "Lato",
         bodyLargeBoldFontWeight: 700,
-        bodyLargeBlackFontFamily: "Lato",
-        bodyLargeBlackFontWeight: 900,
+        bodyLargeHeavyFontFamily: "Lato",
+        bodyLargeHeavyFontWeight: 800,
         bodyMediumRegularFontFamily: "Lato",
         bodyMediumBoldFontFamily: "Lato",
         bodyMediumBoldFontWeight: 700,
-        bodyMediumBlackFontFamily: "Lato",
-        bodyMediumBlackFontWeight: 900,
+        bodyMediumHeavyFontFamily: "Lato",
+        bodyMediumHeavyFontWeight: 800,
         bodySmallRegularFontFamily: "Lato",
         bodySmallBoldFontFamily: "Lato",
         bodySmallBoldFontWeight: 700,
-        bodySmallBlackFontFamily: "Lato",
-        bodySmallBlackFontWeight: 900,
+        bodySmallHeavyFontFamily: "Lato",
+        bodySmallHeavyFontWeight: 800,
         labelLargeRegularFontFamily: "Lato",
         labelLargeBoldFontFamily: "Lato",
         labelLargeBoldFontWeight: 700,
-        labelLargeBlackFontFamily: "Lato",
-        labelLargeBlackFontWeight: 900,
+        labelLargeHeavyFontFamily: "Lato",
+        labelLargeHeavyFontWeight: 800,
         labelMediumRegularFontFamily: "Lato",
         labelMediumBoldFontFamily: "Lato",
         labelMediumBoldFontWeight: 700,
-        labelMediumBlackFontFamily: "Lato",
-        labelMediumBlackFontWeight: 900,
+        labelMediumHeavyFontFamily: "Lato",
+        labelMediumHeavyFontWeight: 800,
         labelSmallRegularFontFamily: "Lato",
         labelSmallBoldFontFamily: "Lato",
         labelSmallBoldFontWeight: 700,
-        labelSmallBlackFontFamily: "Lato",
-        labelSmallBlackFontWeight: 900,
+        labelSmallHeavyFontFamily: "Lato",
+        labelSmallHeavyFontWeight: 800,
         buttonBgPrimaryDefault: Color(red: 1, green: 0.286275, blue: 0.160784),
         buttonBgPrimaryHover: Color(red: 0.996078, green: 0.168627, blue: 0.066667),
         buttonBgPrimaryPressed: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
@@ -1308,37 +1308,37 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrandInversePressed: Color(red: 1, green: 0.843137, blue: 0.647059),
         typefaceDefault: "Rubik",
         weightBold: 600,
-        weightBlack: 700,
+        weightHeavy: 700,
         headlineLargeRegularFontFamily: "Rubik",
         headlineLargeBoldFontFamily: "Rubik",
         headlineLargeBoldFontWeight: 600,
-        headlineLargeBlackFontFamily: "Rubik",
-        headlineLargeBlackFontWeight: 700,
+        headlineLargeHeavyFontFamily: "Rubik",
+        headlineLargeHeavyFontWeight: 700,
         headlineMediumRegularFontFamily: "Rubik",
         headlineMediumBoldFontFamily: "Rubik",
         headlineMediumBoldFontWeight: 600,
-        headlineMediumBlackFontFamily: "Rubik",
-        headlineMediumBlackFontWeight: 700,
+        headlineMediumHeavyFontFamily: "Rubik",
+        headlineMediumHeavyFontWeight: 700,
         headlineSmallRegularFontFamily: "Rubik",
         headlineSmallBoldFontFamily: "Rubik",
         headlineSmallBoldFontWeight: 600,
-        headlineSmallBlackFontFamily: "Rubik",
-        headlineSmallBlackFontWeight: 700,
+        headlineSmallHeavyFontFamily: "Rubik",
+        headlineSmallHeavyFontWeight: 700,
         titleLargeRegularFontFamily: "Rubik",
         titleLargeBoldFontFamily: "Rubik",
         titleLargeBoldFontWeight: 600,
-        titleLargeBlackFontFamily: "Rubik",
-        titleLargeBlackFontWeight: 700,
+        titleLargeHeavyFontFamily: "Rubik",
+        titleLargeHeavyFontWeight: 700,
         titleMediumRegularFontFamily: "Rubik",
         titleMediumBoldFontFamily: "Rubik",
         titleMediumBoldFontWeight: 600,
-        titleMediumBlackFontFamily: "Rubik",
-        titleMediumBlackFontWeight: 700,
+        titleMediumHeavyFontFamily: "Rubik",
+        titleMediumHeavyFontWeight: 700,
         titleSmallRegularFontFamily: "Rubik",
         titleSmallBoldFontFamily: "Rubik",
         titleSmallBoldFontWeight: 600,
-        titleSmallBlackFontFamily: "Rubik",
-        titleSmallBlackFontWeight: 700,
+        titleSmallHeavyFontFamily: "Rubik",
+        titleSmallHeavyFontWeight: 700,
         paragraphLargeRegularFontFamily: "Rubik",
         paragraphLargeBoldFontFamily: "Rubik",
         paragraphLargeBoldFontWeight: 600,
@@ -1351,33 +1351,33 @@ public struct CosmosBrand: Identifiable, Sendable {
         bodyLargeRegularFontFamily: "Rubik",
         bodyLargeBoldFontFamily: "Rubik",
         bodyLargeBoldFontWeight: 600,
-        bodyLargeBlackFontFamily: "Rubik",
-        bodyLargeBlackFontWeight: 700,
+        bodyLargeHeavyFontFamily: "Rubik",
+        bodyLargeHeavyFontWeight: 700,
         bodyMediumRegularFontFamily: "Rubik",
         bodyMediumBoldFontFamily: "Rubik",
         bodyMediumBoldFontWeight: 600,
-        bodyMediumBlackFontFamily: "Rubik",
-        bodyMediumBlackFontWeight: 700,
+        bodyMediumHeavyFontFamily: "Rubik",
+        bodyMediumHeavyFontWeight: 700,
         bodySmallRegularFontFamily: "Rubik",
         bodySmallBoldFontFamily: "Rubik",
         bodySmallBoldFontWeight: 600,
-        bodySmallBlackFontFamily: "Rubik",
-        bodySmallBlackFontWeight: 700,
+        bodySmallHeavyFontFamily: "Rubik",
+        bodySmallHeavyFontWeight: 700,
         labelLargeRegularFontFamily: "Rubik",
         labelLargeBoldFontFamily: "Rubik",
         labelLargeBoldFontWeight: 600,
-        labelLargeBlackFontFamily: "Rubik",
-        labelLargeBlackFontWeight: 700,
+        labelLargeHeavyFontFamily: "Rubik",
+        labelLargeHeavyFontWeight: 700,
         labelMediumRegularFontFamily: "Rubik",
         labelMediumBoldFontFamily: "Rubik",
         labelMediumBoldFontWeight: 600,
-        labelMediumBlackFontFamily: "Rubik",
-        labelMediumBlackFontWeight: 700,
+        labelMediumHeavyFontFamily: "Rubik",
+        labelMediumHeavyFontWeight: 700,
         labelSmallRegularFontFamily: "Rubik",
         labelSmallBoldFontFamily: "Rubik",
         labelSmallBoldFontWeight: 600,
-        labelSmallBlackFontFamily: "Rubik",
-        labelSmallBlackFontWeight: 700,
+        labelSmallHeavyFontFamily: "Rubik",
+        labelSmallHeavyFontWeight: 700,
         buttonBgPrimaryDefault: Color(red: 0.956863, green: 0.34902, blue: 0),
         buttonBgPrimaryHover: Color(red: 0.8, green: 0.254902, blue: 0.007843),
         buttonBgPrimaryPressed: Color(red: 0.631373, green: 0.203922, blue: 0.043137),

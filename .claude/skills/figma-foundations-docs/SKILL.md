@@ -147,14 +147,14 @@ At each level, siblings sort in this order:
 | Rank | Words | Order |
 |---|---|---|
 | 1 | States | default, rest, enabled, hover, focus, focused, pressed, active, dragged, open, visited, disabled |
-| 2 | Scales | Numbers ascending (`-12` to `320`), then sizes small to large: none, 5xs … xs, sm, md, lg, xl … 7xl, full. Then weights: thin … regular, medium, semibold, bold … black |
+| 2 | Scales | Numbers ascending (`-12` to `320`), then sizes small to large: none, 5xs … xs, sm, md, lg, xl … 7xl, full. Then weights: thin … regular, medium, semibold, bold, extrabold, heavy, black |
 | 3 | Emphasis | subtlest, subtle, strong |
 | 4 | Roles | primary, secondary, tertiary, unselected, selected, neutral, inverse, brand, info, success, caution, warning, destructive, error |
 | 5 | Anything else | The order it first appears in the variables panel |
 
 - **State words.** A word counts as a state only when nothing but emphasis words follows it. So `pressed-subtle` and `pressed-strong` are states of their parent. `focus-ring` is not a state: it is a family of its own, with `focus-ring-width` and `focus-ring-offset` under it.
 - **Negative numbers.** A leaf that is a plain number, like `-12`, is kept whole so negative steps sort before zero.
-- **Styles** follow the same rule. Weights run regular, bold, black, and `card` sits above `card-subtle` and `card-soft`.
+- **Styles** follow the same rule. Weights run regular, bold, heavy, and `card` sits above `card-subtle` and `card-soft`.
 
 To change the order, edit the `STATES`, `SCALE`, `WEIGHTS`, `EMPHASIS` and `ROLES` lists at the top of the row-order part of the Library.
 
@@ -306,7 +306,7 @@ const blockCat = sec => sec.startsWith('Typography · ') ? 'Typography Primitive
 // Row order inside a group: a token, then its own states, then its variants, depth first.
 const STATES = ['default', 'rest', 'enabled', 'hover', 'focus', 'focused', 'pressed', 'active', 'dragged', 'open', 'visited', 'disabled'];
 const SCALE = ['none', '5xs', '4xs', '3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl', 'full'];
-const WEIGHTS = ['thin', 'extralight', 'light', 'regular', 'medium', 'semibold', 'bold', 'extrabold', 'black'];
+const WEIGHTS = ['thin', 'extralight', 'light', 'regular', 'medium', 'semibold', 'bold', 'extrabold', 'heavy', 'black'];
 const EMPHASIS = ['subtlest', 'subtle', 'strong'];
 const ROLES = ['primary', 'secondary', 'tertiary', 'unselected', 'selected', 'neutral', 'inverse', 'brand', 'info', 'success', 'caution', 'warning', 'destructive', 'error'];
 function roleOrder(items) {
@@ -397,7 +397,7 @@ function buildVarRow(item, cols, kind, cells, desc, web, ctx) {
   put(putCell(r, cell('Developer Token', cols[cols.length - 1].w)), text(web, FONT.r, 12, 17, SPEC.c.token));
   finishRow(r); return r;
 }
-const WEIGHT = { thin: 100, hairline: 100, extralight: 200, ultralight: 200, light: 300, regular: 400, normal: 400, book: 400, medium: 500, semibold: 600, demibold: 600, bold: 700, extrabold: 800, ultrabold: 800, black: 900, heavy: 900 };
+const WEIGHT = { thin: 100, hairline: 100, extralight: 200, ultralight: 200, light: 300, regular: 400, normal: 400, book: 400, medium: 500, semibold: 600, demibold: 600, bold: 700, extrabold: 800, ultrabold: 800, heavy: 800, black: 900 };
 function styleToken(tpl, name, report) { if (!tpl) { report.noCode.push(name); return '—'; } return tpl.replace('{path}', kebab(name)); }
 function textSpec(item, cols, M, CFG, report) {
   const s = item.st, fw = s.boundVariables && s.boundVariables.fontWeight ? M.resolve(M.byId[s.boundVariables.fontWeight.id], M.columns(M.colById[M.byId[s.boundVariables.fontWeight.id].variableCollectionId])[0]).value : WEIGHT[s.fontName.style.toLowerCase().replace(/[\s-]|italic/g, '')] || '';

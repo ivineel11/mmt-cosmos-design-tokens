@@ -232,7 +232,7 @@ export function DocsApp({ data }: { data: TokenData }) {
             <Section
               id="font-weight"
               title="Font weight"
-              description="Three weight roles carry every brand: regular for reading, bold for emphasis, black for display moments. Lato uses 400, 700 and 900; Goibibo sets Rubik at 400, 600 and 700."
+              description="Three weight roles carry every brand: regular for reading, bold for emphasis, heavy for display moments. Lato uses 400, 700 and 800; Goibibo sets Rubik at 400, 600 and 700."
             >
               <ScaleTable
                 tokens={primitives.fontWeight}
