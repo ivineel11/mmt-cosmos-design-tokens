@@ -935,10 +935,10 @@
   --font-weight-regular: 400;
   /** Goibibo emphasis weight, behind weight.bold in that brand only. MakeMyTrip and myBiz have no semibold step. */
   --font-weight-semibold: 600;
-  /** Emphasis weight behind weight.bold in MakeMyTrip and myBiz, and the heaviest Goibibo weight, behind weight.black there. */
+  /** Emphasis weight behind weight.bold in MakeMyTrip and myBiz, and the heaviest Goibibo weight, behind weight.heavy there. */
   --font-weight-bold: 700;
-  /** Heaviest weight, behind weight.black in MakeMyTrip and myBiz, for promotional and marketing emphasis rather than routine UI. */
-  --font-weight-black: 900;
+  /** Heaviest weight, behind weight.heavy in MakeMyTrip and myBiz, for promotional and marketing emphasis rather than routine UI. */
+  --font-weight-heavy: 800;
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
   --font-size-9: 9px;
   /** Not referenced by any semantic or component token — it is part of the raw scale, not of the supported system. */
@@ -1122,10 +1122,10 @@
   --typeface-default: Lato;
   /** Weight of every regular text style, the default for running copy and most labels. For emphasis use the bold styles, which read weight.bold. */
   --weight-regular: 400;
-  /** Weight of every bold text style, for emphasis in running text and every Button label. A brand sets its own emphasis weight here, so reach it through a bold text style. For promotional emphasis use the black styles, which read weight.black. */
+  /** Weight of every bold text style, for emphasis in running text and every Button label. A brand sets its own emphasis weight here, so reach it through a bold text style. For promotional emphasis use the heavy styles, which read weight.heavy. */
   --weight-bold: 700;
-  /** Weight of every black text style, the heaviest a brand offers, for promotional and marketing emphasis rather than routine UI. For everyday emphasis use the bold styles, which read weight.bold. */
-  --weight-black: 900;
+  /** Weight of every heavy text style, the heaviest a brand offers, for promotional and marketing emphasis rather than routine UI. For everyday emphasis use the bold styles, which read weight.bold. */
+  --weight-heavy: 800;
   --headline-large-regular-font-family: Lato;
   --headline-large-regular-font-weight: 400;
   /** Largest headline — page titles and hero headings; typically one per view. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
@@ -1136,11 +1136,11 @@
   /** Largest headline — page titles and hero headings; typically one per view. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-large-bold-font-size: 32px;
   --headline-large-bold-line-height: 40px;
-  --headline-large-black-font-family: Lato;
-  --headline-large-black-font-weight: 900;
+  --headline-large-heavy-font-family: Lato;
+  --headline-large-heavy-font-weight: 800;
   /** Largest headline — page titles and hero headings; typically one per view. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
-  --headline-large-black-font-size: 32px;
-  --headline-large-black-line-height: 40px;
+  --headline-large-heavy-font-size: 32px;
+  --headline-large-heavy-line-height: 40px;
   --headline-medium-regular-font-family: Lato;
   --headline-medium-regular-font-weight: 400;
   /** Headline for major section headings. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
@@ -1151,11 +1151,11 @@
   /** Headline for major section headings. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-medium-bold-font-size: 28px;
   --headline-medium-bold-line-height: 36px;
-  --headline-medium-black-font-family: Lato;
-  --headline-medium-black-font-weight: 900;
+  --headline-medium-heavy-font-family: Lato;
+  --headline-medium-heavy-font-weight: 800;
   /** Headline for major section headings. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
-  --headline-medium-black-font-size: 28px;
-  --headline-medium-black-line-height: 36px;
+  --headline-medium-heavy-font-size: 28px;
+  --headline-medium-heavy-line-height: 36px;
   --headline-small-regular-font-family: Lato;
   --headline-small-regular-font-weight: 400;
   /** Smallest headline — sub-section headings and modal titles. Regular weight, the default. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
@@ -1166,11 +1166,11 @@
   /** Smallest headline — sub-section headings and modal titles. Bold weight for emphasis within the role. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
   --headline-small-bold-font-size: 24px;
   --headline-small-bold-line-height: 32px;
-  --headline-small-black-font-family: Lato;
-  --headline-small-black-font-weight: 900;
+  --headline-small-heavy-font-family: Lato;
+  --headline-small-heavy-font-weight: 800;
   /** Smallest headline — sub-section headings and modal titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Reserve headline for page-level hierarchy; for the title of a contained element use the title styles. */
-  --headline-small-black-font-size: 24px;
-  --headline-small-black-line-height: 32px;
+  --headline-small-heavy-font-size: 24px;
+  --headline-small-heavy-line-height: 32px;
   --title-large-regular-font-family: Lato;
   --title-large-regular-font-weight: 400;
   /** Largest title — card, sheet and dialog titles. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
@@ -1181,11 +1181,11 @@
   /** Largest title — card, sheet and dialog titles. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-large-bold-font-size: 22px;
   --title-large-bold-line-height: 30px;
-  --title-large-black-font-family: Lato;
-  --title-large-black-font-weight: 900;
+  --title-large-heavy-font-family: Lato;
+  --title-large-heavy-font-weight: 800;
   /** Largest title — card, sheet and dialog titles. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
-  --title-large-black-font-size: 22px;
-  --title-large-black-line-height: 30px;
+  --title-large-heavy-font-size: 22px;
+  --title-large-heavy-line-height: 30px;
   --title-medium-regular-font-family: Lato;
   --title-medium-regular-font-weight: 400;
   /** Title for sub-sections and list-group headers. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
@@ -1196,11 +1196,11 @@
   /** Title for sub-sections and list-group headers. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-medium-bold-font-size: 18px;
   --title-medium-bold-line-height: 24px;
-  --title-medium-black-font-family: Lato;
-  --title-medium-black-font-weight: 900;
+  --title-medium-heavy-font-family: Lato;
+  --title-medium-heavy-font-weight: 800;
   /** Title for sub-sections and list-group headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
-  --title-medium-black-font-size: 18px;
-  --title-medium-black-line-height: 24px;
+  --title-medium-heavy-font-size: 18px;
+  --title-medium-heavy-line-height: 24px;
   --title-small-regular-font-family: Lato;
   --title-small-regular-font-weight: 400;
   /** Smallest title — compact card headers and table column groups. Regular weight, the default. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
@@ -1211,11 +1211,11 @@
   /** Smallest title — compact card headers and table column groups. Bold weight for emphasis within the role. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
   --title-small-bold-font-size: 14px;
   --title-small-bold-line-height: 20px;
-  --title-small-black-font-family: Lato;
-  --title-small-black-font-weight: 900;
+  --title-small-heavy-font-family: Lato;
+  --title-small-heavy-font-weight: 800;
   /** Smallest title — compact card headers and table column groups. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Titles name a contained piece of UI; for page-level hierarchy use the headline styles. */
-  --title-small-black-font-size: 14px;
-  --title-small-black-line-height: 20px;
+  --title-small-heavy-font-size: 14px;
+  --title-small-heavy-line-height: 20px;
   --paragraph-large-regular-font-family: Lato;
   --paragraph-large-regular-font-weight: 400;
   /** Largest paragraph text — long reading on spacious screens, such as destination guides and articles. Regular weight, the default. Paragraph has looser leading than body so blocks of three or more lines stay easy to follow; use paragraph for text the user reads in full and body for short copy inside a component. */
@@ -1256,11 +1256,11 @@
   /** Largest body text — prominent short copy such as list row titles and input values. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-large-bold-font-size: 16px;
   --body-large-bold-line-height: 24px;
-  --body-large-black-font-family: Lato;
-  --body-large-black-font-weight: 900;
+  --body-large-heavy-font-family: Lato;
+  --body-large-heavy-font-weight: 800;
   /** Largest body text — prominent short copy such as list row titles and input values. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
-  --body-large-black-font-size: 16px;
-  --body-large-black-line-height: 24px;
+  --body-large-heavy-font-size: 16px;
+  --body-large-heavy-line-height: 24px;
   --body-medium-regular-font-family: Lato;
   --body-medium-regular-font-weight: 400;
   /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
@@ -1271,11 +1271,11 @@
   /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-medium-bold-font-size: 14px;
   --body-medium-bold-line-height: 20px;
-  --body-medium-black-font-family: Lato;
-  --body-medium-black-font-weight: 900;
+  --body-medium-heavy-font-family: Lato;
+  --body-medium-heavy-font-weight: 800;
   /** Default body text — short copy inside components, such as list supporting text, snackbar messages and card details. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
-  --body-medium-black-font-size: 14px;
-  --body-medium-black-line-height: 20px;
+  --body-medium-heavy-font-size: 14px;
+  --body-medium-heavy-line-height: 20px;
   --body-small-regular-font-family: Lato;
   --body-small-regular-font-weight: 400;
   /** Smallest body text — captions, helper and error text, and metadata. Regular weight, the default. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
@@ -1286,11 +1286,11 @@
   /** Smallest body text — captions, helper and error text, and metadata. Bold weight for emphasis within the role. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
   --body-small-bold-font-size: 12px;
   --body-small-bold-line-height: 16px;
-  --body-small-black-font-family: Lato;
-  --body-small-black-font-weight: 900;
+  --body-small-heavy-font-family: Lato;
+  --body-small-heavy-font-weight: 800;
   /** Smallest body text — captions, helper and error text, and metadata. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Body and label share the same metrics; use body for short copy inside a component, paragraph for text the user reads in full, and label for text that names a control. */
-  --body-small-black-font-size: 12px;
-  --body-small-black-line-height: 16px;
+  --body-small-heavy-font-size: 12px;
+  --body-small-heavy-line-height: 16px;
   --label-large-regular-font-family: Lato;
   --label-large-regular-font-weight: 400;
   /** Label for large controls — large buttons and inputs. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
@@ -1301,11 +1301,11 @@
   /** Label for large controls — large buttons and inputs. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-large-bold-font-size: 16px;
   --label-large-bold-line-height: 24px;
-  --label-large-black-font-family: Lato;
-  --label-large-black-font-weight: 900;
+  --label-large-heavy-font-family: Lato;
+  --label-large-heavy-font-weight: 800;
   /** Label for large controls — large buttons and inputs. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
-  --label-large-black-font-size: 16px;
-  --label-large-black-line-height: 24px;
+  --label-large-heavy-font-size: 16px;
+  --label-large-heavy-line-height: 24px;
   --label-medium-regular-font-family: Lato;
   --label-medium-regular-font-weight: 400;
   /** Default control label — medium buttons, inputs, tabs and chips. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
@@ -1316,11 +1316,11 @@
   /** Default control label — medium buttons, inputs, tabs and chips. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-medium-bold-font-size: 14px;
   --label-medium-bold-line-height: 20px;
-  --label-medium-black-font-family: Lato;
-  --label-medium-black-font-weight: 900;
+  --label-medium-heavy-font-family: Lato;
+  --label-medium-heavy-font-weight: 800;
   /** Default control label — medium buttons, inputs, tabs and chips. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
-  --label-medium-black-font-size: 14px;
-  --label-medium-black-line-height: 20px;
+  --label-medium-heavy-font-size: 14px;
+  --label-medium-heavy-line-height: 20px;
   --label-small-regular-font-family: Lato;
   --label-small-regular-font-weight: 400;
   /** Label for dense controls — small buttons, badges and table headers. Regular weight, the default. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
@@ -1331,11 +1331,11 @@
   /** Label for dense controls — small buttons, badges and table headers. Bold weight for emphasis within the role. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
   --label-small-bold-font-size: 12px;
   --label-small-bold-line-height: 16px;
-  --label-small-black-font-family: Lato;
-  --label-small-black-font-weight: 900;
+  --label-small-heavy-font-family: Lato;
+  --label-small-heavy-font-weight: 800;
   /** Label for dense controls — small buttons, badges and table headers. Heaviest weight, for promotional and marketing emphasis rather than routine UI. Label and body share the same metrics; use label for text that names a control, and body or paragraph for text the user reads. */
-  --label-small-black-font-size: 12px;
-  --label-small-black-line-height: 16px;
+  --label-small-heavy-font-size: 12px;
+  --label-small-heavy-line-height: 16px;
   /** No rounding — flush edges, full-bleed media, table cells. */
   --radius-none: 0px;
   /** Smallest rounding — badges, tags and checkbox corners. */
@@ -3785,37 +3785,37 @@
   --color-icon-brand-inverse-pressed: #B5EAFF;
   --typeface-default: Lato;
   --weight-bold: 700;
-  --weight-black: 900;
+  --weight-heavy: 800;
   --headline-large-regular-font-family: Lato;
   --headline-large-bold-font-family: Lato;
   --headline-large-bold-font-weight: 700;
-  --headline-large-black-font-family: Lato;
-  --headline-large-black-font-weight: 900;
+  --headline-large-heavy-font-family: Lato;
+  --headline-large-heavy-font-weight: 800;
   --headline-medium-regular-font-family: Lato;
   --headline-medium-bold-font-family: Lato;
   --headline-medium-bold-font-weight: 700;
-  --headline-medium-black-font-family: Lato;
-  --headline-medium-black-font-weight: 900;
+  --headline-medium-heavy-font-family: Lato;
+  --headline-medium-heavy-font-weight: 800;
   --headline-small-regular-font-family: Lato;
   --headline-small-bold-font-family: Lato;
   --headline-small-bold-font-weight: 700;
-  --headline-small-black-font-family: Lato;
-  --headline-small-black-font-weight: 900;
+  --headline-small-heavy-font-family: Lato;
+  --headline-small-heavy-font-weight: 800;
   --title-large-regular-font-family: Lato;
   --title-large-bold-font-family: Lato;
   --title-large-bold-font-weight: 700;
-  --title-large-black-font-family: Lato;
-  --title-large-black-font-weight: 900;
+  --title-large-heavy-font-family: Lato;
+  --title-large-heavy-font-weight: 800;
   --title-medium-regular-font-family: Lato;
   --title-medium-bold-font-family: Lato;
   --title-medium-bold-font-weight: 700;
-  --title-medium-black-font-family: Lato;
-  --title-medium-black-font-weight: 900;
+  --title-medium-heavy-font-family: Lato;
+  --title-medium-heavy-font-weight: 800;
   --title-small-regular-font-family: Lato;
   --title-small-bold-font-family: Lato;
   --title-small-bold-font-weight: 700;
-  --title-small-black-font-family: Lato;
-  --title-small-black-font-weight: 900;
+  --title-small-heavy-font-family: Lato;
+  --title-small-heavy-font-weight: 800;
   --paragraph-large-regular-font-family: Lato;
   --paragraph-large-bold-font-family: Lato;
   --paragraph-large-bold-font-weight: 700;
@@ -3828,33 +3828,33 @@
   --body-large-regular-font-family: Lato;
   --body-large-bold-font-family: Lato;
   --body-large-bold-font-weight: 700;
-  --body-large-black-font-family: Lato;
-  --body-large-black-font-weight: 900;
+  --body-large-heavy-font-family: Lato;
+  --body-large-heavy-font-weight: 800;
   --body-medium-regular-font-family: Lato;
   --body-medium-bold-font-family: Lato;
   --body-medium-bold-font-weight: 700;
-  --body-medium-black-font-family: Lato;
-  --body-medium-black-font-weight: 900;
+  --body-medium-heavy-font-family: Lato;
+  --body-medium-heavy-font-weight: 800;
   --body-small-regular-font-family: Lato;
   --body-small-bold-font-family: Lato;
   --body-small-bold-font-weight: 700;
-  --body-small-black-font-family: Lato;
-  --body-small-black-font-weight: 900;
+  --body-small-heavy-font-family: Lato;
+  --body-small-heavy-font-weight: 800;
   --label-large-regular-font-family: Lato;
   --label-large-bold-font-family: Lato;
   --label-large-bold-font-weight: 700;
-  --label-large-black-font-family: Lato;
-  --label-large-black-font-weight: 900;
+  --label-large-heavy-font-family: Lato;
+  --label-large-heavy-font-weight: 800;
   --label-medium-regular-font-family: Lato;
   --label-medium-bold-font-family: Lato;
   --label-medium-bold-font-weight: 700;
-  --label-medium-black-font-family: Lato;
-  --label-medium-black-font-weight: 900;
+  --label-medium-heavy-font-family: Lato;
+  --label-medium-heavy-font-weight: 800;
   --label-small-regular-font-family: Lato;
   --label-small-bold-font-family: Lato;
   --label-small-bold-font-weight: 700;
-  --label-small-black-font-family: Lato;
-  --label-small-black-font-weight: 900;
+  --label-small-heavy-font-family: Lato;
+  --label-small-heavy-font-weight: 800;
   --button-bg-primary-default: #0088FF;
   --button-bg-primary-hover: #0868C5;
   --button-bg-primary-pressed: #0D589B;
@@ -4041,37 +4041,37 @@
   --color-icon-brand-inverse-pressed: #FFE0D4;
   --typeface-default: Lato;
   --weight-bold: 700;
-  --weight-black: 900;
+  --weight-heavy: 800;
   --headline-large-regular-font-family: Lato;
   --headline-large-bold-font-family: Lato;
   --headline-large-bold-font-weight: 700;
-  --headline-large-black-font-family: Lato;
-  --headline-large-black-font-weight: 900;
+  --headline-large-heavy-font-family: Lato;
+  --headline-large-heavy-font-weight: 800;
   --headline-medium-regular-font-family: Lato;
   --headline-medium-bold-font-family: Lato;
   --headline-medium-bold-font-weight: 700;
-  --headline-medium-black-font-family: Lato;
-  --headline-medium-black-font-weight: 900;
+  --headline-medium-heavy-font-family: Lato;
+  --headline-medium-heavy-font-weight: 800;
   --headline-small-regular-font-family: Lato;
   --headline-small-bold-font-family: Lato;
   --headline-small-bold-font-weight: 700;
-  --headline-small-black-font-family: Lato;
-  --headline-small-black-font-weight: 900;
+  --headline-small-heavy-font-family: Lato;
+  --headline-small-heavy-font-weight: 800;
   --title-large-regular-font-family: Lato;
   --title-large-bold-font-family: Lato;
   --title-large-bold-font-weight: 700;
-  --title-large-black-font-family: Lato;
-  --title-large-black-font-weight: 900;
+  --title-large-heavy-font-family: Lato;
+  --title-large-heavy-font-weight: 800;
   --title-medium-regular-font-family: Lato;
   --title-medium-bold-font-family: Lato;
   --title-medium-bold-font-weight: 700;
-  --title-medium-black-font-family: Lato;
-  --title-medium-black-font-weight: 900;
+  --title-medium-heavy-font-family: Lato;
+  --title-medium-heavy-font-weight: 800;
   --title-small-regular-font-family: Lato;
   --title-small-bold-font-family: Lato;
   --title-small-bold-font-weight: 700;
-  --title-small-black-font-family: Lato;
-  --title-small-black-font-weight: 900;
+  --title-small-heavy-font-family: Lato;
+  --title-small-heavy-font-weight: 800;
   --paragraph-large-regular-font-family: Lato;
   --paragraph-large-bold-font-family: Lato;
   --paragraph-large-bold-font-weight: 700;
@@ -4084,33 +4084,33 @@
   --body-large-regular-font-family: Lato;
   --body-large-bold-font-family: Lato;
   --body-large-bold-font-weight: 700;
-  --body-large-black-font-family: Lato;
-  --body-large-black-font-weight: 900;
+  --body-large-heavy-font-family: Lato;
+  --body-large-heavy-font-weight: 800;
   --body-medium-regular-font-family: Lato;
   --body-medium-bold-font-family: Lato;
   --body-medium-bold-font-weight: 700;
-  --body-medium-black-font-family: Lato;
-  --body-medium-black-font-weight: 900;
+  --body-medium-heavy-font-family: Lato;
+  --body-medium-heavy-font-weight: 800;
   --body-small-regular-font-family: Lato;
   --body-small-bold-font-family: Lato;
   --body-small-bold-font-weight: 700;
-  --body-small-black-font-family: Lato;
-  --body-small-black-font-weight: 900;
+  --body-small-heavy-font-family: Lato;
+  --body-small-heavy-font-weight: 800;
   --label-large-regular-font-family: Lato;
   --label-large-bold-font-family: Lato;
   --label-large-bold-font-weight: 700;
-  --label-large-black-font-family: Lato;
-  --label-large-black-font-weight: 900;
+  --label-large-heavy-font-family: Lato;
+  --label-large-heavy-font-weight: 800;
   --label-medium-regular-font-family: Lato;
   --label-medium-bold-font-family: Lato;
   --label-medium-bold-font-weight: 700;
-  --label-medium-black-font-family: Lato;
-  --label-medium-black-font-weight: 900;
+  --label-medium-heavy-font-family: Lato;
+  --label-medium-heavy-font-weight: 800;
   --label-small-regular-font-family: Lato;
   --label-small-bold-font-family: Lato;
   --label-small-bold-font-weight: 700;
-  --label-small-black-font-family: Lato;
-  --label-small-black-font-weight: 900;
+  --label-small-heavy-font-family: Lato;
+  --label-small-heavy-font-weight: 800;
   --button-bg-primary-default: #FF4929;
   --button-bg-primary-hover: #FE2B11;
   --button-bg-primary-pressed: #EF1107;
@@ -4297,37 +4297,37 @@
   --color-icon-brand-inverse-pressed: #FFD7A5;
   --typeface-default: Rubik;
   --weight-bold: 600;
-  --weight-black: 700;
+  --weight-heavy: 700;
   --headline-large-regular-font-family: Rubik;
   --headline-large-bold-font-family: Rubik;
   --headline-large-bold-font-weight: 600;
-  --headline-large-black-font-family: Rubik;
-  --headline-large-black-font-weight: 700;
+  --headline-large-heavy-font-family: Rubik;
+  --headline-large-heavy-font-weight: 700;
   --headline-medium-regular-font-family: Rubik;
   --headline-medium-bold-font-family: Rubik;
   --headline-medium-bold-font-weight: 600;
-  --headline-medium-black-font-family: Rubik;
-  --headline-medium-black-font-weight: 700;
+  --headline-medium-heavy-font-family: Rubik;
+  --headline-medium-heavy-font-weight: 700;
   --headline-small-regular-font-family: Rubik;
   --headline-small-bold-font-family: Rubik;
   --headline-small-bold-font-weight: 600;
-  --headline-small-black-font-family: Rubik;
-  --headline-small-black-font-weight: 700;
+  --headline-small-heavy-font-family: Rubik;
+  --headline-small-heavy-font-weight: 700;
   --title-large-regular-font-family: Rubik;
   --title-large-bold-font-family: Rubik;
   --title-large-bold-font-weight: 600;
-  --title-large-black-font-family: Rubik;
-  --title-large-black-font-weight: 700;
+  --title-large-heavy-font-family: Rubik;
+  --title-large-heavy-font-weight: 700;
   --title-medium-regular-font-family: Rubik;
   --title-medium-bold-font-family: Rubik;
   --title-medium-bold-font-weight: 600;
-  --title-medium-black-font-family: Rubik;
-  --title-medium-black-font-weight: 700;
+  --title-medium-heavy-font-family: Rubik;
+  --title-medium-heavy-font-weight: 700;
   --title-small-regular-font-family: Rubik;
   --title-small-bold-font-family: Rubik;
   --title-small-bold-font-weight: 600;
-  --title-small-black-font-family: Rubik;
-  --title-small-black-font-weight: 700;
+  --title-small-heavy-font-family: Rubik;
+  --title-small-heavy-font-weight: 700;
   --paragraph-large-regular-font-family: Rubik;
   --paragraph-large-bold-font-family: Rubik;
   --paragraph-large-bold-font-weight: 600;
@@ -4340,33 +4340,33 @@
   --body-large-regular-font-family: Rubik;
   --body-large-bold-font-family: Rubik;
   --body-large-bold-font-weight: 600;
-  --body-large-black-font-family: Rubik;
-  --body-large-black-font-weight: 700;
+  --body-large-heavy-font-family: Rubik;
+  --body-large-heavy-font-weight: 700;
   --body-medium-regular-font-family: Rubik;
   --body-medium-bold-font-family: Rubik;
   --body-medium-bold-font-weight: 600;
-  --body-medium-black-font-family: Rubik;
-  --body-medium-black-font-weight: 700;
+  --body-medium-heavy-font-family: Rubik;
+  --body-medium-heavy-font-weight: 700;
   --body-small-regular-font-family: Rubik;
   --body-small-bold-font-family: Rubik;
   --body-small-bold-font-weight: 600;
-  --body-small-black-font-family: Rubik;
-  --body-small-black-font-weight: 700;
+  --body-small-heavy-font-family: Rubik;
+  --body-small-heavy-font-weight: 700;
   --label-large-regular-font-family: Rubik;
   --label-large-bold-font-family: Rubik;
   --label-large-bold-font-weight: 600;
-  --label-large-black-font-family: Rubik;
-  --label-large-black-font-weight: 700;
+  --label-large-heavy-font-family: Rubik;
+  --label-large-heavy-font-weight: 700;
   --label-medium-regular-font-family: Rubik;
   --label-medium-bold-font-family: Rubik;
   --label-medium-bold-font-weight: 600;
-  --label-medium-black-font-family: Rubik;
-  --label-medium-black-font-weight: 700;
+  --label-medium-heavy-font-family: Rubik;
+  --label-medium-heavy-font-weight: 700;
   --label-small-regular-font-family: Rubik;
   --label-small-bold-font-family: Rubik;
   --label-small-bold-font-weight: 600;
-  --label-small-black-font-family: Rubik;
-  --label-small-black-font-weight: 700;
+  --label-small-heavy-font-family: Rubik;
+  --label-small-heavy-font-weight: 700;
   --button-bg-primary-default: #F45900;
   --button-bg-primary-hover: #CC4102;
   --button-bg-primary-pressed: #A1340B;

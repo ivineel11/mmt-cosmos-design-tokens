@@ -4,6 +4,16 @@
  * space tokens rather than Storybook's compact defaults.
  */
 
+/* Lato Heavy (800, weight.heavy) is not on Google Fonts, so it comes from the Lato 2.0
+   file the docs site already self-hosts. Without it, 800 would render as Black (900). */
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../../../docs-site/public/fonts/lato-800.woff2") format("woff2");
+}
+
 body {
   font-family: var(--typeface-default), system-ui, sans-serif;
   color: var(--color-text-primary);
@@ -24,9 +34,9 @@ body {
 
 /* Every heading sits 8px (space-xs) above the body text that follows it. */
 .sbdocs.sbdocs-content h1:not(.sb-unstyled *) {
-  font-size: var(--headline-large-black-font-size);
-  line-height: var(--headline-large-black-line-height);
-  font-weight: var(--weight-black);
+  font-size: var(--headline-large-heavy-font-size);
+  line-height: var(--headline-large-heavy-line-height);
+  font-weight: var(--weight-heavy);
   margin-block: 0 var(--space-xs);
 }
 .sbdocs.sbdocs-content h2:not(.sb-unstyled *) {

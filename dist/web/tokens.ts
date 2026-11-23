@@ -507,7 +507,7 @@ export default {
     regular: 400,
     semibold: 600,
     bold: 700,
-    black: 900,
+    heavy: 800,
   },
   fontSize: {
     9: "9px",
@@ -681,7 +681,7 @@ export default {
   weight: {
     regular: 400,
     bold: 700,
-    black: 900,
+    heavy: 800,
   },
   headline: {
     large: {
@@ -697,9 +697,9 @@ export default {
         fontSize: "32px",
         lineHeight: "40px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "32px",
         lineHeight: "40px",
       },
@@ -717,9 +717,9 @@ export default {
         fontSize: "28px",
         lineHeight: "36px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "28px",
         lineHeight: "36px",
       },
@@ -737,9 +737,9 @@ export default {
         fontSize: "24px",
         lineHeight: "32px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "24px",
         lineHeight: "32px",
       },
@@ -759,9 +759,9 @@ export default {
         fontSize: "22px",
         lineHeight: "30px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "22px",
         lineHeight: "30px",
       },
@@ -779,9 +779,9 @@ export default {
         fontSize: "18px",
         lineHeight: "24px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "18px",
         lineHeight: "24px",
       },
@@ -799,9 +799,9 @@ export default {
         fontSize: "14px",
         lineHeight: "20px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "14px",
         lineHeight: "20px",
       },
@@ -865,9 +865,9 @@ export default {
         fontSize: "16px",
         lineHeight: "24px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "16px",
         lineHeight: "24px",
       },
@@ -885,9 +885,9 @@ export default {
         fontSize: "14px",
         lineHeight: "20px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "14px",
         lineHeight: "20px",
       },
@@ -905,9 +905,9 @@ export default {
         fontSize: "12px",
         lineHeight: "16px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "12px",
         lineHeight: "16px",
       },
@@ -927,9 +927,9 @@ export default {
         fontSize: "16px",
         lineHeight: "24px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "16px",
         lineHeight: "24px",
       },
@@ -947,9 +947,9 @@ export default {
         fontSize: "14px",
         lineHeight: "20px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "14px",
         lineHeight: "20px",
       },
@@ -967,9 +967,9 @@ export default {
         fontSize: "12px",
         lineHeight: "16px",
       },
-      black: {
+      heavy: {
         fontFamily: "Lato",
-        fontWeight: 900,
+        fontWeight: 800,
         fontSize: "12px",
         lineHeight: "16px",
       },
