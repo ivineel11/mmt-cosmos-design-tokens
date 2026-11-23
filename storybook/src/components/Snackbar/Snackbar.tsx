@@ -143,19 +143,26 @@ type Queued = SnackbarProps & { key: number };
  */
 export function useSnackbarQueue() {
   const [queue, setQueue] = useState<Queued[]>([]);
+  // The queue as the callbacks last left it. The callbacks read it rather than calling
+  // onDismiss inside a state updater, which React may run twice and so dismiss twice.
+  const latest = useRef<Queued[]>([]);
   const counter = useRef(0);
-  const show = useCallback((props: SnackbarProps) => setQueue((q) => [...q, { ...props, key: ++counter.current }]), []);
+  const show = useCallback((props: SnackbarProps) => {
+    latest.current = [...latest.current, { ...props, key: ++counter.current }];
+    setQueue(latest.current);
+  }, []);
   const replace = useCallback((props: SnackbarProps) => {
-    setQueue((q) => {
-      q[0]?.onDismiss?.("replaced");
-      return [{ ...props, key: ++counter.current }, ...q.slice(1)];
-    });
+    const [head, ...rest] = latest.current;
+    head?.onDismiss?.("replaced");
+    latest.current = [{ ...props, key: ++counter.current }, ...rest];
+    setQueue(latest.current);
   }, []);
   const dismiss = useCallback((reason: DismissReason = "programmatic") => {
-    setQueue((q) => {
-      q[0]?.onDismiss?.(reason);
-      return q.slice(1);
-    });
+    const [head, ...rest] = latest.current;
+    if (!head) return;
+    head.onDismiss?.(reason);
+    latest.current = rest;
+    setQueue(latest.current);
   }, []);
   return { current: queue[0] ?? null, show, replace, dismiss };
 }

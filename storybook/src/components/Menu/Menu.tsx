@@ -143,6 +143,8 @@ function Panel({ id, labelledBy, getAnchor, placement, items, density, selection
   const [submenu, setSubmenu] = useState<{ id: string; focusOn: "first" | "none" } | null>(null);
   const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const hoverTimer = useRef<number | undefined>(undefined);
+  // A pending submenu open or close must not fire after the panel is gone.
+  useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
 
   // Place the panel: below the trigger (or right of the parent row), flipping when there is no room.
   useLayoutEffect(() => {

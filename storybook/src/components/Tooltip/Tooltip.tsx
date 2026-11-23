@@ -161,14 +161,20 @@ export function Tooltip({ children, open, onOpenChange, delay = 300, duration = 
     timer.current = window.setTimeout(() => setOpen(next), ms);
   };
 
-  // One at a time: close when another tooltip opens.
+  // One at a time: when another tooltip opens, cancel a pending open here and close this
+  // one if it is open. A closed tooltip stays quiet, so onOpenChange only reports changes.
   useEffect(() => {
     const onOther = (event: Event) => {
-      if ((event as CustomEvent).detail !== id) setOpen(false);
+      if ((event as CustomEvent).detail === id) return;
+      window.clearTimeout(timer.current);
+      if (isOpen) setOpen(false);
     };
     window.addEventListener(OPEN_EVENT, onOther);
     return () => window.removeEventListener(OPEN_EVENT, onOther);
-  }, [id, setOpen]);
+  }, [id, isOpen, setOpen]);
+
+  // A pending hover open or close must not fire after the tooltip is gone.
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   // Esc closes; Rich returns focus to the trigger. Rich also closes on an outside press.
   useEffect(() => {
