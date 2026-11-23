@@ -2176,7 +2176,7 @@ npm run test:lint                    # the linter's own tests
 | `dist/*` | `dist/` differs from a fresh build of the current tokens — stale, hand-edited, or carrying files the build does not produce |
 | `docs-site/*` | The site's derived CSS names drift from the build, it uses a `var(--…)` that no longer exists, or it fails to type-check |
 | `storybook/*` | Storybook uses a `var(--…)` that no longer exists, fails to type-check, a component stylesheet in `storybook/src/components` holds a raw hex or px, rem or em length instead of a token, or MDX prose holds a bare `{name}`, which MDX runs as code and which breaks the page when it opens |
-| `docs/*` | Markdown that has drifted from the tokens: broken links and anchors, references to tokens that do not exist, wrong values, aliases, hexes and counts in the README's tables, a semantic colour missing from the inventory, a component group without a spec |
+| `docs/*` | Markdown that has drifted from the tokens: broken links and anchors, references to tokens that do not exist, wrong values, aliases, hexes and counts in the README's tables, brand counts that no longer match what each brand overrides and what the build switches per brand, a semantic colour missing from the inventory, a component group without a spec |
 | `skills/*` | The `.claude` and `.cursor` uSpec installs disagree where they must be byte-identical, or `uspecs.config.json` and the docs pin different CLI versions |
 | `js/*` | ESLint over the build scripts, the docs site and Storybook (typescript-eslint, React hooks, jsx-a11y, Next.js), plus `cosmos/no-hardcoded-color`, which rejects colour literals in styles |
 

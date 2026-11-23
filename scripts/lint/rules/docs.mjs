@@ -5,6 +5,7 @@
  * these rules make the drift a lint error instead of a review comment.
  */
 import { dirname, join, normalize } from "node:path";
+import { brandSetsIn, overridesIn } from "../../lib/brands.mjs";
 import { HEX } from "../../lib/color.mjs";
 import { inlineCode, links, parseMarkdown } from "../lib/markdown.mjs";
 import { aliasTarget, isLeaf, isPlainObject } from "../lib/tokens.mjs";
@@ -314,9 +315,48 @@ function counts(t) {
   };
 }
 
+/**
+ * What the build makes switchable per brand, read from the first [data-brand] block of
+ * dist/web/tokens.css (every block lists the same names) and sorted by what each name is.
+ * dist/fresh keeps that file in step with tokens.json. Null when it has no brand block.
+ */
+function brandableCounts(api, model) {
+  const css = api.read("dist/web/tokens.css");
+  const block = css && /\[data-brand="[^"]+"\]\s*\{([^}]*)\}/.exec(css);
+  if (!block) return null;
+  const byName = new Map();
+  for (const leaf of model.leaves) {
+    for (const path of emittedPaths(leaf, "web", model)) {
+      byName.set(cssName(path), { leaf, member: path.length > leaf.path.length ? path.at(-1) : null });
+    }
+  }
+  const out = { total: 0, semanticColours: 0, componentColours: 0, families: 0, weights: 0, other: [] };
+  for (const [, name] of block[1].matchAll(/^\s*(--[\w-]+):/gm)) {
+    out.total += 1;
+    const hit = byName.get(name);
+    if (!hit) continue;
+    const { leaf, member } = hit;
+    if (member === "fontFamily") out.families += 1;
+    else if (member === "fontWeight") out.weights += 1;
+    else if (leaf.type === "color") out[leaf.tier === "component" ? "componentColours" : "semanticColours"] += 1;
+    else out.other.push(leaf.id);
+  }
+  return out;
+}
+
+/** Per brand set: how many semantic colours it overrides, and the ids of everything else it overrides. */
+function brandOverrides(value) {
+  return Object.fromEntries(
+    brandSetsIn(value).map((set) => {
+      const ids = overridesIn(value[set]).map(([path]) => path.join("."));
+      return [set, { colours: ids.filter((id) => id.startsWith("color.")).length, other: ids.filter((id) => !id.startsWith("color.")) }];
+    }),
+  );
+}
+
 const readmeCounts = {
   id: "docs/readme-counts",
-  description: "The inventory numbers the README states — per-tier and per-group token counts, section heading counts, the totals line, palettes and the values emitted on web and on iOS and Android — match tokens.json.",
+  description: "The inventory numbers the README states — per-tier and per-group token counts, section heading counts, the totals line, palettes, the values emitted on web and on iOS and Android, and what each brand overrides and switches — match tokens.json and the build.",
   check(api) {
     const t = api.tokens();
     if (t.error || !api.exists("README.md")) return;
@@ -362,10 +402,43 @@ const readmeCounts = {
       }
     }
 
+    const overrides = brandOverrides(t.value);
+    const brandable = brandableCounts(api, t.model);
+    const built = (line, what, documented, actual) => {
+      if (Number(documented) !== actual) report(line, `Says ${documented} ${what}; the build switches ${actual} (dist/web/tokens.css).`, what);
+    };
+    const sameIds = (line, what, listedText, actual) => {
+      const listed = [...(listedText ?? "").matchAll(/[a-z][\w-]*\.[\w-]+/g)].map((m) => m[0]).sort();
+      if (listed.join(",") !== [...actual].sort().join(",")) report(line, `Lists ${listed.join(", ") || "nothing"} as ${what}; the tokens are ${[...actual].sort().join(", ") || "none"}.`, what);
+    };
+
     let sawTotals = false;
     for (const line of d.lines) {
+      // "brands/goibibo overrides the same 37 colours, typeface.default, …", which sits in the
+      // Brands diagram, a code fence, so it is read before fences are skipped.
+      const override = /\b(brands\/[a-z0-9-]+) overrides (?:the same )?(\d+)(?: semantic)? colours(?:, (.+))?$/.exec(line.text);
+      if (override) {
+        const [, set, colours, rest] = override;
+        if (!overrides[set]) report(line.n, `Names ${set}, which tokens.json does not have.`, set);
+        else {
+          expect(line.n, `semantic colours overridden by ${set}`, colours, overrides[set].colours);
+          sameIds(line.n, `what ${set} overrides besides colours`, rest, overrides[set].other);
+        }
+      }
       if (line.inFence) continue;
       const text = line.text;
+
+      const runtime = /The (\d+) tokens that differ in any brand get a runtime switch: the (\d+) semantic and (\d+) component colours, (.+?), and the family and weight of the text styles that read them \((\d+) families and (\d+) weights\)/.exec(text);
+      if (runtime && brandable) {
+        built(line.n, "tokens that switch per brand", runtime[1], brandable.total);
+        built(line.n, "semantic colours that switch per brand", runtime[2], brandable.semanticColours);
+        built(line.n, "component colours that switch per brand", runtime[3], brandable.componentColours);
+        sameIds(line.n, "the semantic tokens besides colours that switch per brand", runtime[4], brandable.other);
+        built(line.n, "text style families that switch per brand", runtime[5], brandable.families);
+        built(line.n, "text style weights that switch per brand", runtime[6], brandable.weights);
+      }
+      const moving = /\b(\d+) brandable tokens\b/.exec(text);
+      if (moving && brandable) built(line.n, "brandable tokens", moving[1], brandable.total);
       const totals = /\*\*Totals:\*\*\s*(\d+) primitive tokens · (\d+) semantic tokens \(([^)]*)\) · (\d+) component tokens \(([^)]*)\) · \*\*(\d+) values on web\*\* · \*\*(\d+) on iOS and Android\*\* · \*\*(\d+) gradients\*\*/.exec(text);
       if (text.includes("**Totals:**")) sawTotals = true;
       if (totals) {

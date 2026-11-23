@@ -116,6 +116,40 @@ describe("docs rules", () => {
     ]);
   });
 
+  it("docs/readme-counts: what each brand overrides and what switches per brand", async () => {
+    // Correct numbers come from the real README (checked by "passes every rule"), so a token
+    // change does not break this test; the wrong ones are wrong for any plausible token set.
+    const real = readFileSync(join(REPO, "README.md"), "utf8");
+    const [mybiz] = /brands\/mybiz overrides \d+ semantic colours/.exec(real);
+    const [runtime] = /The \d+ tokens that differ in any brand get a runtime switch: [^\n]*? weights\)/.exec(real);
+    const [moving] = /\d+ brandable tokens/.exec(real);
+    const root = readme([
+      "```",
+      `  ${mybiz}`,
+      "  brands/goibibo overrides the same 0 colours, typeface.default and weight.bold",
+      "  brands/nope overrides 3 semantic colours",
+      "```",
+      `${runtime}.`,
+      `Only the ${moving} move.`,
+      "The 1 tokens that differ in any brand get a runtime switch: the 2 semantic and 3 component colours, `typeface.default`, and the family and weight of the text styles that read them (4 families and 5 weights).",
+      "Only the 9999 brandable tokens move.",
+    ].join("\n"));
+    // The fixture has no **Totals:** line; that finding has no subject and is not under test here.
+    const hits = ofRule(await lint(root, "docs/readme-counts"), "docs/readme-counts").filter((h) => h.subject);
+    assert.deepEqual(hits.map((h) => `${h.line} ${h.subject}`).sort(), [
+      "3 semantic colours overridden by brands/goibibo",
+      "3 what brands/goibibo overrides besides colours",
+      "4 brands/nope",
+      "8 component colours that switch per brand",
+      "8 semantic colours that switch per brand",
+      "8 the semantic tokens besides colours that switch per brand",
+      "8 text style families that switch per brand",
+      "8 text style weights that switch per brand",
+      "8 tokens that switch per brand",
+      "9 brandable tokens",
+    ].sort());
+  });
+
   it("docs/readme-coverage: a semantic colour with no inventory row", async () => {
     const readme = [
       "### Semantic tokens (1)",
