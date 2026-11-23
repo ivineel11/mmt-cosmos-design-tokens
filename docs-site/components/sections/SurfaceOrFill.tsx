@@ -10,6 +10,7 @@ const FILL_USES = [
   "Badges, counters and status dots",
   "Icon wells, such as the leading circle of a list row",
   "Skeleton blocks",
+  "Rows inside a container on hover or press: list rows and menu items",
 ];
 
 const SURFACE_USES = [
@@ -17,22 +18,21 @@ const SURFACE_USES = [
   "Cards, sheets, dialogs and popovers",
   "Menu panels and list groups",
   "Banners, snackbars and tooltips",
-  "Tappable rows and cards, at rest and on hover or press",
+  "A card or section that is tappable as a whole, on hover or press",
   "Scrims and dark overlays (bg-surface-inverse)",
   "A disabled section or card (bg-surface-disabled)",
 ];
 
 const RULES: { title: string; body: ReactNode }[] = [
   {
-    title: "Tappable rows stay surfaces.",
+    title: "Rows are fills.",
     body: (
       <>
-        A menu item or list row is interactive, but it is a slice of its container and holds other
-        content. Its hover and pressed steps come from the surface it sits in:{" "}
-        <Code>bg-surface-hover</Code>, <Code>bg-surface-secondary-hover</Code>, or{" "}
-        <Code>bg-surface-warning-hover</Code> for a destructive item. If an element holds other
-        components or lines of content, it is a surface; if it is a single control or mark, it is a
-        fill.
+        A menu item or list row is transparent at rest, so its container shows through. Hovered or
+        pressed, it behaves like a control and takes a fill: <Code>bg-fill-hover</Code> and{" "}
+        <Code>bg-fill-pressed-strong</Code>, or <Code>bg-fill-warning-subtlest-hover</Code> for a
+        destructive item. The surface hover and pressed steps are only for a card or section that is
+        tappable as a whole.
       </>
     ),
   },
@@ -41,7 +41,8 @@ const RULES: { title: string; body: ReactNode }[] = [
     body: (
       <>
         A button in a snackbar or a chip on a card takes <Code>bg-fill-*</Code>, whatever it sits
-        on.
+        on. Dark containers follow the same rule: an inverse snackbar and a dark tooltip are{" "}
+        <Code>bg-surface-inverse</Code>, a dark badge is <Code>bg-fill-inverse</Code>.
       </>
     ),
   },
@@ -50,9 +51,9 @@ const RULES: { title: string; body: ReactNode }[] = [
     body: (
       <>
         A disabled control uses <Code>bg-fill-disabled-*</Code>; an unavailable section or card uses{" "}
-        <Code>bg-surface-disabled</Code>. The one exception is the disabled chip and the disabled
-        list icon well, which use <Code>bg-surface-disabled-subtle</Code> (neutral.50): no disabled
-        fill is that light, and <Code>bg-fill-disabled-subtlest</Code> (neutral.100) would vanish on
+        <Code>bg-surface-disabled</Code>. The disabled chip and the disabled list icon well use the
+        lightest step, <Code>bg-fill-disabled-subtlest</Code> (neutral.50), because{" "}
+        <Code>bg-fill-disabled-subtler</Code> (neutral.100, the disabled input field) would vanish on
         the grey canvas.
       </>
     ),
@@ -105,7 +106,7 @@ function Example() {
         </div>
         <div
           className="flex items-center justify-between gap-3 rounded-lg p-3"
-          style={{ background: "var(--color-bg-surface-secondary-hover)" }}
+          style={{ background: "var(--color-bg-fill-hover)" }}
         >
           <div>
             <div className="text-sm leading-5 font-bold">Mumbai to Goa</div>
@@ -124,7 +125,7 @@ function Example() {
           </span>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Tag kind="surface">bg-surface-secondary-hover: a hovered row is still part of the card</Tag>
+          <Tag kind="fill">bg-fill-hover: a hovered row takes a control state</Tag>
           <Tag kind="fill">bg-fill-brand-subtlest: the badge is a mark</Tag>
         </div>
         <div className="flex flex-wrap items-center gap-3">

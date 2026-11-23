@@ -219,7 +219,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1224 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 318 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1225 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 319 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -280,18 +280,19 @@ Within each role, **intent** is expressed with suffixes:
 | Checkbox and radio boxes, switch tracks and thumbs | Cards, sheets, dialogs and popovers |
 | Chips, segmented control tracks and thumbs | Menu panels and list groups |
 | Slider tracks and halos | Banners, snackbars and tooltips |
-| Input field bodies | Tappable rows and cards: menu items and list rows, at rest and on hover or press |
+| Input field bodies | A card or section that is tappable as a whole, on hover or press |
 | Badges, counters and status dots | Scrims and dark overlays (`bg-surface-inverse`) |
 | Icon wells, such as the leading circle of a list row | A disabled section or card (`bg-surface-disabled`) |
 | Skeleton blocks | |
+| Rows inside a container on hover or press: list rows and menu items, destructive ones included | |
 
-**Tappable rows stay surfaces.** A menu item or list row is interactive, but it is a slice of its container and holds other content (a title, a description, slots for other components). Its hover and pressed steps come from the surface it sits in: `bg-surface-hover` on a grey group, `bg-surface-secondary-hover` on a white panel, `bg-surface-warning-hover` for a destructive item. Rule of thumb: if the element holds other components or lines of content, it is a surface; if it is a single control or mark, it is a fill.
+**Rows are fills.** A menu item or list row is transparent at rest, so its container shows through. When it is hovered or pressed it behaves like a control, and that state colour is a fill: `bg-fill-hover` and `bg-fill-pressed-strong` for neutral rows, `bg-fill-warning-subtlest-hover` and `-pressed` for a destructive item. The surface hover and pressed steps (`bg-surface-hover`, `bg-surface-secondary-hover`) are only for a card or section that is tappable as a whole. Rule of thumb: a surface keeps one colour behind its content; anything that is a control, a mark, or the state of a tappable row is a fill.
 
-**A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever surface it sits on.
+**A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever surface it sits on. The reverse holds for dark containers: an inverse snackbar and a dark tooltip are both `bg-surface-inverse`, while a dark badge or the slider value label is `bg-fill-inverse`.
 
-**Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; a whole unavailable section or card uses `bg-surface-disabled` or `bg-surface-disabled-subtle`. The one exception: the disabled chip and the disabled list icon well use `bg-surface-disabled-subtle` (`neutral.50`), because no disabled fill is that light, and `bg-fill-disabled-subtlest` (`neutral.100`) would vanish on the grey canvas.
+**Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; a whole unavailable section or card uses `bg-surface-disabled` or `bg-surface-disabled-subtle`. The disabled chip and the disabled list icon well use the lightest step, `bg-fill-disabled-subtlest` (`neutral.50`), because `bg-fill-disabled-subtler` (`neutral.100`, the disabled input field) would vanish on the grey canvas.
 
-**Pair the foreground with the same role.** Labels and icons on a fill use `*-on-bg-fill-*` (`text-brand-on-bg-fill-subtlest-hover` on a hovered tertiary button); on a surface they use `*-on-bg-surface-*` (`text-warning-on-bg-surface-hover` on a hovered destructive menu item). Even when the two resolve to the same colour, the right pairing keeps the meaning clear in Figma and lets the two roles diverge later, for example in another brand.
+**Pair the foreground with the same role.** Labels and icons on a fill use `*-on-bg-fill-*` (`text-brand-on-bg-fill-subtlest-hover` on a hovered tertiary button); on a surface they use `*-on-bg-surface-*` (`text-warning-on-bg-surface-hover` on an error card that is tappable as a whole). A destructive menu item is a row, so its label is `text-warning-on-bg-fill-subtlest-hover`. Even when the two resolve to the same colour, the right pairing keeps the meaning clear in Figma and lets the two roles diverge later, for example in another brand.
 
 #### Canvas and container pairing
 
@@ -702,9 +703,9 @@ Entrances on the web are CSS transitions started with `@starting-style`, not key
 
 ## Token Inventory
 
-**Totals:** 320 primitive tokens · 451 semantic tokens (318 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1118 component tokens (299 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 117 `snackbar/*` + 42 `badge/*` + 45 `tab/*` + 62 `list/*` + 55 `switch/*` + 50 `segmented-control/*` + 47 `slider/*` + 68 `menu/*` + 72 `tooltip/*` + 60 `input/*`) · **2015 values on web** · **2099 on iOS and Android** · **0 gradients**
+**Totals:** 320 primitive tokens · 452 semantic tokens (319 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1118 component tokens (299 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 117 `snackbar/*` + 42 `badge/*` + 45 `tab/*` + 62 `list/*` + 55 `switch/*` + 50 `segmented-control/*` + 47 `slider/*` + 68 `menu/*` + 72 `tooltip/*` + 60 `input/*`) · **2016 values on web** · **2100 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1889 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1890 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (320)
 
@@ -966,9 +967,9 @@ How far a spring overshoots, from 0 (none) towards 1. Keyed in hundredths, like 
 
 ---
 
-### Semantic tokens (451)
+### Semantic tokens (452)
 
-#### Color — 318 tokens
+#### Color — 319 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
@@ -979,12 +980,12 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg` | White page background (canvas) |
 | `color.bg-secondary` | Grey page background (canvas) |
 | `color.bg-surface` | Grey container on `bg` |
-| `color.bg-surface-hover` | Grey container on `bg`, hovered — tappable list rows |
+| `color.bg-surface-hover` | Grey container on `bg`, hovered — a container tappable as a whole; rows use `bg-fill-hover` |
 | `color.bg-surface-pressed` | Grey container on `bg`, pressed |
 | `color.bg-surface-disabled` | Disabled section or card — controls use `bg-fill-disabled-subtle` |
 | `color.bg-surface-disabled-subtle` | Lighter disabled surface — a whole unavailable section or card |
 | `color.bg-surface-secondary` | White container on `bg-secondary` |
-| `color.bg-surface-secondary-hover` | White container on `bg-secondary`, hovered — tappable cards and menu items |
+| `color.bg-surface-secondary-hover` | White container on `bg-secondary`, hovered — a card tappable as a whole; menu items use `bg-fill-hover` |
 | `color.bg-surface-secondary-pressed` | White container on `bg-secondary`, pressed |
 | `color.bg-surface-brand` | Brand-tinted container — selected rows, callouts |
 | `color.bg-surface-brand-hover` | Brand-tinted surface, hovered |
@@ -1000,22 +1001,23 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-surface-caution-hover` | Caution surface, hovered |
 | `color.bg-surface-caution-pressed` | Caution surface, pressed |
 | `color.bg-surface-warning` | Warning surface — error banners |
-| `color.bg-surface-warning-hover` | Warning surface, hovered — destructive menu items |
+| `color.bg-surface-warning-hover` | Warning surface, hovered — an error container tappable as a whole |
 | `color.bg-surface-warning-pressed` | Warning surface, pressed |
-| `color.bg-surface-inverse` | Inverted (dark) container — tooltips, overlays, scrims |
+| `color.bg-surface-inverse` | Inverted (dark) container — inverse snackbars, dark tooltips, overlays, scrims |
 
-##### Background — fill (54)
+##### Background — fill (55)
 
 | Token | Role |
 |-------|------|
 | `color.bg-fill` | Default fill |
-| `color.bg-fill-hover` | Default fill, hovered — neutral controls such as chips |
+| `color.bg-fill-hover` | Default fill, hovered — neutral controls such as chips, list rows and menu items |
 | `color.bg-fill-pressed-subtle` | Default fill, pressed, light — the unselected chip |
-| `color.bg-fill-pressed-strong` | Default fill, pressed, strong — the chip remove button, and presses that must read on either canvas |
+| `color.bg-fill-pressed-strong` | Default fill, pressed, strong — the chip remove button, list rows and menu items, and presses that must read on either canvas |
 | `color.bg-fill-disabled-strong` | Strong disabled fill |
 | `color.bg-fill-disabled` | Middle disabled fill — the disabled thumb of the Outlined Switch backup |
 | `color.bg-fill-disabled-subtle` | Subtle disabled fill — disabled Buttons, Checkbox, Radio and segmented thumb, Switch tracks, the inactive Slider track |
-| `color.bg-fill-disabled-subtlest` | Lightest disabled fill — the body of a disabled input field |
+| `color.bg-fill-disabled-subtler` | Very light disabled fill — the body of a disabled input field |
+| `color.bg-fill-disabled-subtlest` | Lightest disabled fill — the disabled Chip and the icon well of a disabled List row |
 | `color.bg-fill-secondary` | Secondary fill |
 | `color.bg-fill-secondary-hover` | Secondary fill, hovered |
 | `color.bg-fill-secondary-pressed` | Secondary fill, pressed |
@@ -1055,7 +1057,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-warning-subtlest-hover` | Lightest error fill, hovered — destructive Buttons, error Checkbox and Radio |
 | `color.bg-fill-warning-subtlest-pressed` | Lightest error fill, pressed — destructive secondary and tertiary Button |
 | `color.bg-fill-warning-inverse` | Destructive tint on dark backgrounds, always at an opacity token — inverse Button |
-| `color.bg-fill-inverse` | Inverted (dark) fill — badges, toasts |
+| `color.bg-fill-inverse` | Inverted (dark) fill — badges, the slider value label, dark controls |
 | `color.bg-fill-inverse-hover` | Inverted fill, hovered |
 | `color.bg-fill-inverse-pressed` | Inverted fill, pressed |
 | `color.bg-fill-inverse-disabled` | Disabled control fill on dark backgrounds — inverse Button |
@@ -1407,7 +1409,7 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 | `switch/track-off-default` | `{color.bg-fill-neutral-strong}` | `#D4D4D4` |
 | `segmented-control/brand-thumb-default` | `{color.bg-fill-brand}` | `#0088FF` |
 | `slider/tick-inactive` | `{color.bg-fill-neutral-strong-pressed}` | `#737373` |
-| `menu/item-bg-destructive-hover` | `{color.bg-surface-warning-hover}` | `#FFE2E2` |
+| `menu/item-bg-destructive-hover` | `{color.bg-fill-warning-subtlest-hover}` | `#FFE2E2` |
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
@@ -1453,7 +1455,8 @@ Add a component group only when a component has enough variant × state combinat
 | `bg-fill-disabled-strong` | `color.neutral.400` |
 | `bg-fill-disabled` | `color.neutral.300` |
 | `bg-fill-disabled-subtle` | `color.neutral.200` |
-| `bg-fill-disabled-subtlest` | `color.neutral.100` |
+| `bg-fill-disabled-subtler` | `color.neutral.100` |
+| `bg-fill-disabled-subtlest` | `color.neutral.50` |
 | `bg-fill-secondary` | `color.neutral.100` |
 | `bg-fill-secondary-hover` | `color.neutral.200` |
 | `bg-fill-secondary-pressed` | `color.neutral.300` |

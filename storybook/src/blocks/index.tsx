@@ -379,7 +379,7 @@ export function SurfaceOrFill() {
             <Badge type="text" label="Cheapest" intent="brand" emphasis="subtle" />
           </div>
           <div className="doc-sof-notes">
-            <RoleTag kind="surface">bg-surface-secondary-hover: a hovered row is still part of the card</RoleTag>
+            <RoleTag kind="fill">bg-fill-hover: a hovered row takes a control state</RoleTag>
             <RoleTag kind="fill">bg-fill-brand-subtlest: the badge is a mark</RoleTag>
           </div>
           <div className="doc-sof-controls">

@@ -140,10 +140,10 @@ Token names follow `chip/{property}-{selection}-{state}`. `State=Focus` reuses t
 
 | Selected | Default | Hover | Pressed | Disabled |
 |---|---|---|---|---|
-| False | `color.bg-fill` | `color.bg-fill-hover` | `color.bg-fill-pressed-subtle` | `color.bg-surface-disabled-subtle` |
-| True | `color.bg-fill-brand-subtlest` | `color.bg-fill-brand-subtlest-hover` | `color.bg-fill-brand-subtlest-pressed` | `color.bg-surface-disabled-subtle` |
+| False | `color.bg-fill` | `color.bg-fill-hover` | `color.bg-fill-pressed-subtle` | `color.bg-fill-disabled-subtlest` |
+| True | `color.bg-fill-brand-subtlest` | `color.bg-fill-brand-subtlest-hover` | `color.bg-fill-brand-subtlest-pressed` | `color.bg-fill-disabled-subtlest` |
 
-`bg-fill-hover` and `bg-fill-pressed-subtle` were added to the semantic tier for this component. Both are `neutral.100`, the same grey as `bg-secondary` (1.00:1): hover and pressed share one fill and differ only by the border (pressed darkens it to `border-strong`), and a borderless chip hovered or pressed on the grey canvas loses its fill and only its label remains. The disabled fill, `bg-surface-disabled-subtle` (`neutral.50`), is 1.04:1 against both canvases, so the grey disabled label carries the state.
+`bg-fill-hover` and `bg-fill-pressed-subtle` were added to the semantic tier for this component. Both are `neutral.100`, the same grey as `bg-secondary` (1.00:1): hover and pressed share one fill and differ only by the border (pressed darkens it to `border-strong`), and a borderless chip hovered or pressed on the grey canvas loses its fill and only its label remains. The disabled fill, `bg-fill-disabled-subtlest` (`neutral.50`), is 1.04:1 against both canvases, so the grey disabled label carries the state.
 
 ### Border — `chip/border-*` (painted only when `Show border` is on)
 

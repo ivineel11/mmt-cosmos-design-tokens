@@ -207,11 +207,11 @@ Every foreground has a same-suffix `bg-*` token, even where the value repeats (f
 
 | Intent | Inverse fill | Inverse icon | Tinted fill | Tinted border | Tinted icon |
 |---|---|---|---|---|---|
-| Neutral | `bg-fill-inverse` #0A0A0A | `icon-inverse` #FFFFFF | `bg-surface-secondary` #FFFFFF | `border` #D4D4D4 | `icon` #0A0A0A |
-| Info | `bg-fill-inverse` | `icon-info-inverse` #48BBFF | `bg-surface-info` #EDFAFF | `border-info` #83DFFF | `icon-info` #0088FF |
-| Success | `bg-fill-inverse` | `icon-success-inverse` #05DF72 | `bg-surface-success` #F0FDF4 | `border-success` #7BF1A8 | `icon-success` #008236 |
-| Caution | `bg-fill-inverse` | `icon-caution-inverse` #FDC700 | `bg-surface-caution` #FEFCE8 | `border-caution` #FFDF20 | `icon-caution` #A65F00 |
-| Warning | `bg-fill-inverse` | `icon-warning-inverse` #FF6467 | `bg-surface-warning` #FEF2F2 | `border-warning` #FFA2A2 | `icon-warning` #C10007 |
+| Neutral | `bg-surface-inverse` #0A0A0A | `icon-inverse` #FFFFFF | `bg-surface-secondary` #FFFFFF | `border` #D4D4D4 | `icon` #0A0A0A |
+| Info | `bg-surface-inverse` | `icon-info-inverse` #48BBFF | `bg-surface-info` #EDFAFF | `border-info` #83DFFF | `icon-info` #0088FF |
+| Success | `bg-surface-inverse` | `icon-success-inverse` #05DF72 | `bg-surface-success` #F0FDF4 | `border-success` #7BF1A8 | `icon-success` #008236 |
+| Caution | `bg-surface-inverse` | `icon-caution-inverse` #FDC700 | `bg-surface-caution` #FEFCE8 | `border-caution` #FFDF20 | `icon-caution` #A65F00 |
+| Warning | `bg-surface-inverse` | `icon-warning-inverse` #FF6467 | `bg-surface-warning` #FEF2F2 | `border-warning` #FFA2A2 | `icon-warning` #C10007 |
 
 Title and message use `text-inverse` (#FFFFFF) on Inverse and `text-primary` (#0A0A0A) on Tinted, for every intent. The Inverse appearance has no border.
 
