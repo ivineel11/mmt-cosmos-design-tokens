@@ -494,7 +494,10 @@ object CosmosTokens {
   val chipFocusRingRadiusMd = 12.dp
   val chipFocusRingRadiusSm = 12.dp
   val chipFocusRingWidth = 2.dp
-  val chipGap = 8.dp
+  val chipGapIconLg = 8.dp
+  val chipGapIconMd = 4.dp
+  val chipGapIconSm = 4.dp
+  val chipGapImage = 8.dp
   val chipGapText = 0.dp
   val chipIconDisabled = Color(0xFFA1A1A1)
   val chipIconSelectedDefault = Color(0xFF0088FF)

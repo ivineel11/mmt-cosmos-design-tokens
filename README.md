@@ -235,7 +235,7 @@ Gradient transforms run **before** solid-color transforms on each platform (`mmt
 
 **Why:** Primitives can be updated globally (e.g. re-tint the brand palette) without touching component code. Semantic tokens give engineers stable, meaningful API names that survive palette changes. Component tokens give each component a complete, enumerable surface that Figma variables bind to 1:1 — which is what lets a design and its implementation be checked against the same key names.
 
-A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (299 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (77 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
+A component tier is only worth the key count when a component has enough variant × state combinations to make the mapping non-obvious. Button (299 tokens), Checkbox (65 tokens), Radio (57 tokens) and Chip (82 tokens, shared by the horizontal and vertical sets) qualify; a one-off layout does not — use semantic tokens there.
 
 ### 2. Tokens Studio as the authoring format
 
@@ -704,9 +704,9 @@ Entrances on the web are CSS transitions started with `@starting-style`, not key
 
 ## Token Inventory
 
-**Totals:** 320 primitive tokens · 423 semantic tokens (290 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1118 component tokens (299 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 117 `snackbar/*` + 42 `badge/*` + 45 `tab/*` + 62 `list/*` + 55 `switch/*` + 50 `segmented-control/*` + 47 `slider/*` + 68 `menu/*` + 72 `tooltip/*` + 60 `input/*`) · **1987 values on web** · **2071 on iOS and Android** · **0 gradients**
+**Totals:** 320 primitive tokens · 423 semantic tokens (290 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1121 component tokens (299 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 82 `chip/*` + 117 `snackbar/*` + 42 `badge/*` + 45 `tab/*` + 62 `list/*` + 55 `switch/*` + 50 `segmented-control/*` + 47 `slider/*` + 68 `menu/*` + 72 `tooltip/*` + 60 `input/*`) · **1990 values on web** · **2074 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1861 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1864 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (320)
 
@@ -1341,7 +1341,7 @@ Composite `{ duration, bounce }` springs, for motion that follows a gesture or c
 | `spring.smooth` | Sheets, panels and cards settling after a drag, with no overshoot |
 | `spring.bouncy` | Rare moments only: a drag-to-dismiss release, a success confirmation |
 
-### Component tokens (1118)
+### Component tokens (1121)
 
 Component tokens are aliases onto the semantic tier, one key per property × variant × state. They exist so a Figma component can bind every visual property to a named variable and a code component can consume the identical key. Each group mirrors a Figma component set 1:1 and lives in the `component` variable collection.
 
@@ -1350,7 +1350,7 @@ Component tokens are aliases onto the semantic tier, one key per property × var
 | `button/*` | 299 | Button (`58:202`, 240 variants: Hierarchy x State x Size x Intent x Surface, with the Inverse surface for dark sections) | [`components/button.md`](components/button.md) |
 | `checkbox/*` | 65 | Checkbox (`427:62`, 90 variants) | [`components/checkbox.md`](components/checkbox.md) |
 | `radio/*` | 57 | Radio (`442:415`, 60 variants) | [`components/radio.md`](components/radio.md) |
-| `chip/*` | 79 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
+| `chip/*` | 82 | Chip (`559:2943`, 60 variants) and Chip / Vertical (`592:327`, 60 variants) | [`components/chip.md`](components/chip.md), [`components/chip-vertical.md`](components/chip-vertical.md) |
 | `snackbar/*` | 117 | Snackbar (`637:3233`, 20 variants) and Snackbar / Control (`636:3088`, 48 variants) | [`components/snackbar.md`](components/snackbar.md) |
 | `badge/*` | 42 | Badge (`683:2823`, 60 variants) | [`components/badge.md`](components/badge.md) |
 | `tab/*` | 45 | Tab / Primary (`694:2811`, 10 variants) and Tab / Secondary (`697:59`, 10 variants) | [`components/tab.md`](components/tab.md) |

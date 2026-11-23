@@ -8,7 +8,7 @@
 
 ## Overview
 
-Chip is a compact control for filtering, choosing and tagging: a rounded row that pairs a required label with an optional secondary line, an optional leading icon **or** leading image, and a trailing slot. Four variant axes drive it. `Selected` carries the real value (on or off). `State` covers the five interaction states. `Size` scales height, padding, glyphs and type together; the 8 px gap between each slot and the label is the same at every size. `Type` decides what the trailing slot is: a decorative icon (`Default`) or a separate remove button (`Removable`).
+Chip is a compact control for filtering, choosing and tagging: a rounded row that pairs a required label with an optional secondary line, an optional leading icon **or** leading image, and a trailing slot. Four variant axes drive it. `Selected` carries the real value (on or off). `State` covers the five interaction states. `Size` scales height, padding, glyphs and type together; the gap from the label to an icon or the remove button is 4 px at Small and Medium and 8 px at Large, and the gap to the leading image is 8 px at every size. The label is regular when unselected and bold when selected. `Type` decides what the trailing slot is: a decorative icon (`Default`) or a separate remove button (`Removable`).
 
 The single structural idea worth knowing: **the border is a layer, not a variant.** It is an absolutely positioned `Border` rectangle stretched over the chip, toggled by the `Show border` boolean, so switching it off hides only the stroke and keeps the fill. That lets one chip serve both canvases without doubling the variant count:
 
@@ -92,16 +92,17 @@ These exist on the component set so a designer can configure every slot from the
 Chip (component set · 559:2943)
 ├─ Focus Ring (rectangle) · decorative · a11y-hidden · absolute, 4 px outside the chip
 ├─ Border (rectangle) · decorative · absolute, stretched to the chip · toggled by Show border
-├─ Leading image (instance · Chip / Image · exposed, so its Shape is set from the chip panel) · hidden by default
 ├─ Leading icon (instance · Icon / plus) · a11y-hidden · hidden by default
-├─ Text (frame · vertical)
-│  ├─ Label (text)
-│  └─ Secondary text (text) · hidden by default
+├─ Content (frame · horizontal · gap chip/gap-image)
+│  ├─ Leading image (instance · Chip / Image · exposed, so its Shape is set from the chip panel) · hidden by default
+│  └─ Text (frame · vertical)
+│     ├─ Label (text)
+│     └─ Secondary text (text) · hidden by default
 └─ Trailing icon (instance · Icon / chevron-down) · a11y-hidden · Type=Default, hidden by default
    or Remove (instance · Chip / Remove) · Type=Removable · its own focus stop
 ```
 
-The root is a horizontal auto-layout row, `counterAxisAlignItems = CENTER`, hug width, `minHeight` bound, `clipsContent = false` so the focus ring can overhang. With the secondary line on, icons and the remove button stay centred on the two-line text block.
+The root is a horizontal auto-layout row, `counterAxisAlignItems = CENTER`, hug width, `minHeight` bound, `clipsContent = false` so the focus ring can overhang. Its gap is `chip/gap-icon-{sm,md,lg}`, which spaces the leading icon, the trailing icon and the remove button from the label. The leading image sits inside `Content` with the text, so it takes `chip/gap-image` instead; when the image is hidden, `Content` holds only the text and adds no gap. With the secondary line on, icons, the image and the remove button stay centred on the two-line text block.
 
 ### Dimensions
 
@@ -113,10 +114,12 @@ The root is a horizontal auto-layout row, `counterAxisAlignItems = CENTER`, hug 
 | Height with secondary line | 40 | 44 | 60 | hugs content |
 | Padding x | 8 | 12 | 16 | `chip/padding-x-*` |
 | Padding y | 4 | 4 | 8 | `chip/padding-y-*` |
-| Gap between each slot and the label | 8 | 8 | 8 | `chip/gap` |
+| Gap between the label and the leading icon, trailing icon or remove button | 4 | 4 | 8 | `chip/gap-icon-{sm,md,lg}` |
+| Gap between the leading image and the label | 8 | 8 | 8 | `chip/gap-image` |
 | Icon and remove glyph | 16 | 20 | 24 | `chip/icon-size-*` |
 | Leading image | 16 | 20 | 24 | `chip/image-size-*` |
-| Label type | 12 / 16 bold | 14 / 20 bold | 16 / 24 bold | `label/{small,medium,large}/bold` |
+| Label type, unselected | 12 / 16 regular | 14 / 20 regular | 16 / 24 regular | `label/{small,medium,large}/regular` |
+| Label type, selected | 12 / 16 bold | 14 / 20 bold | 16 / 24 bold | `label/{small,medium,large}/bold` |
 | Secondary type | 12 / 16 regular | 12 / 16 regular | 14 / 20 regular | `body/{small,small,medium}/regular` |
 | Label to secondary gap | 0 | 0 | 0 | `chip/gap-text` |
 | Corner radius | 8 | 8 | 12 | `chip/radius-{sm,md,lg}` |
@@ -128,7 +131,11 @@ The root is a horizontal auto-layout row, `counterAxisAlignItems = CENTER`, hug 
 
 Glyphs never set the height: Medium 20 px glyphs sit inside a 24 px content box (32 − 4 − 4) and Large 24 px glyphs fill theirs exactly (40 − 8 − 8), so both chips keep their min-height.
 
-The label is bold in every state, including selected, so selecting a chip never changes its width and a row of chips never jumps.
+The label weight follows `Selected`, not `State`: regular when unselected, bold when selected, including `Selected=True, State=Disabled`. A disabled chip loses its selected colours but keeps the bold label, so disabling a selected chip never changes its width.
+
+Bold text is wider than regular, so in code the label always takes the width of its bold self, and the regular label is centred in it (aligned to the start when a secondary line sits under it). Selecting a chip therefore never changes its width, and a row of chips never jumps. Figma cannot reserve that width, so an unselected chip in Figma hugs its regular label and is a few pixels narrower than the same chip in code.
+
+At Small and Medium the icon gap is tighter than the image gap, because a glyph is light and reads as part of the label, while a filled photo, logo or avatar reads heavier and needs more room before the text. At Large the 24 px glyph beside 16 px type needs the same 8 px as the image, so the two gaps match.
 
 ---
 
@@ -236,6 +243,7 @@ The secondary text joins the accessible name after the label ("Fri, 12 Dec, Rs 4
 - **Leading image is not dimmed when disabled.** Disabled is a solid colour change in Cosmos, never an opacity, and an image cannot be recoloured. Desaturate it in code if needed.
 - **Icon and image are both allowed on at once.** Figma booleans cannot enforce exclusivity; the component description and this spec say to use one.
 - **Hover and pressed backgrounds of the remove button are shared tokens today** (`remove-bg-*-hover` and `-pressed` resolve to the same colour). They are separate keys so they can diverge.
+- **Unselected chips are narrower in Figma than in code.** Code reserves the bold label width so selection never shifts a row; Figma hugs the regular label. The difference is a few pixels and only on unselected chips.
 - **Chip group layout is out of scope.** Wrapping vs horizontal scrolling, the gap between chips, and single-select keyboard behaviour belong to a future Chip group pattern.
 - **`chip/focus-ring-offset` is not bound in Figma.** As on Checkbox, the 4 px outset is ring geometry, not a bindable property. The ring radius binds `chip/focus-ring-radius-*`.
 - **No dark mode.** All variable collections are single-mode.
@@ -245,7 +253,7 @@ The secondary text joins the accessible name after the label ("Fri, 12 Dec, Rs 4
 
 ## Token reference
 
-63 tokens under `component.chip` in `tokens/tokens.json` are used by this set, mirrored 1:1 as `chip/*` in the Figma `component` collection. The remaining 16 `chip/vertical-*` tokens belong to [Chip / Vertical](chip-vertical.md).
+66 tokens under `component.chip` in `tokens/tokens.json` are used by this set, mirrored 1:1 as `chip/*` in the Figma `component` collection. The remaining 16 `chip/vertical-*` tokens belong to [Chip / Vertical](chip-vertical.md).
 
 | Group | Count |
 |---|---|
@@ -255,7 +263,7 @@ The secondary text joins the accessible name after the label ("Fri, 12 Dec, Rs 4
 | `icon-*` (colour) | 5 |
 | `remove-bg-*` | 4 |
 | `focus-ring` (colour) | 1 |
-| dimensions (`min-height`, `padding-x`, `padding-y`, `gap`, `icon-size`, `image-size`, `radius`, `image-radius`, `image-radius-square`, `gap-text`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `min-touch-target`, `remove-min-touch-target`) | 30 |
+| dimensions (`min-height`, `padding-x`, `padding-y`, `gap-icon`, `gap-image`, `icon-size`, `image-size`, `radius`, `image-radius`, `image-radius-square`, `gap-text`, `border-width`, `focus-ring-width`, `focus-ring-offset`, `focus-ring-radius`, `min-touch-target`, `remove-min-touch-target`) | 33 |
 
 Platform names follow the standard pipeline: `chip/bg-selected-hover` → `--chip-bg-selected-hover` (CSS) → `CosmosTokens.chipBgSelectedHover` (Swift / Kotlin) → `tokens.chipBgSelectedHover` (TS).
 

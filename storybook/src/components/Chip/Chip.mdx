@@ -12,7 +12,7 @@ A compact control for filtering, choosing and tagging: a label with an optional 
 
 ## Selection and border
 
-The border is a layer, not a variant: choose it by canvas. Turn it on for white pages and cards, and off on the grey `bg-secondary` canvas, where the white chip already stands off the page. The label stays bold when selected, so a row of chips never jumps.
+The border is a layer, not a variant: choose it by canvas. Turn it on for white pages and cards, and off on the grey `bg-secondary` canvas, where the white chip already stands off the page. The label is regular when unselected and bold when selected, and it always keeps the width of its bold self, so selecting a chip never makes a row jump. Icons and the remove button sit 4 px from the label on small and medium chips and 8 px on large ones; a leading image always sits 8 px away.
 
 <Canvas of={Stories.Selection} />
 
