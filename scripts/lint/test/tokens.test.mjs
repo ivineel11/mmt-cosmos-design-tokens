@@ -97,7 +97,13 @@ const cases = [
   ["tokens/contrast", (j) => { j.component.button["label-primary-hover"].value = "{color.text-brand}"; }, "button.label-primary-hover"],
   ["tokens/contrast", (j) => { j.component.checkbox["icon-selected-default"].value = "{color.bg-fill-brand}"; }, "WCAG 1.4.11"],
   ["tokens/contrast", (j) => { j.semantic.color["text-teal-on-bg-fill-strong"] = { ...j.semantic.color["text-info-on-bg-fill-strong"] }; }, "does not exist"],
-  ["tokens/contrast", (j) => { j.semantic.color["bg-surface-brand-pressed-subtle"].value = "{color.azure.800}"; }, "on color.bg-surface-brand-pressed-subtle"],
+  // A background split into -strong/-subtle keeps one on-* text role, which must pass on both.
+  ["tokens/contrast", (j) => {
+    const c = j.semantic.color;
+    c["bg-surface-brand-pressed-subtle"] = { value: "{color.azure.800}", type: "color", description: "Test split, light step." };
+    c["bg-surface-brand-pressed-strong"] = { value: "{color.azure.200}", type: "color", description: "Test split, strong step." };
+    c["text-brand-on-bg-surface-pressed"] = { value: "{color.azure.900}", type: "color", description: "Test label on the split." };
+  }, "on color.bg-surface-brand-pressed-subtle"],
   // An -inverse key over a transparent fill is checked on the dark canvas, not on white.
   ["tokens/contrast", (j) => { j.component.button["label-secondary-inverse-default"].value = "{color.text-primary}"; }, "on color.bg-surface-inverse"],
   // A tint with a bg-opacity-* companion is blended over the canvas, so a heavier tint can fail.

@@ -355,8 +355,8 @@ data.all = flattenAll(source);
 // Contrast pairings: each text token against the surface it is designed for.
 function backgroundFor(key) {
   // text-{intent}-on-{bg-fill|bg-surface}{-suffix} names its background, the same
-  // pairing the tokens/contrast lint rule checks: text-info-on-bg-surface-hover
-  // sits on bg-surface-info-hover, text-brand-on-bg-fill on bg-fill-brand.
+  // pairing the tokens/contrast lint rule checks: text-info-on-bg-fill-subtlest-hover
+  // sits on bg-fill-info-subtlest-hover, text-brand-on-bg-fill on bg-fill-brand.
   const on = key.match(/^text-([a-z]+)-on-(bg-fill|bg-surface)(-[a-z-]+)?$/);
   if (on) {
     // A background split into -strong/-subtle keeps one on-* text role; measure the

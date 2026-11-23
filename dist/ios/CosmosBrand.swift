@@ -21,15 +21,6 @@ public struct CosmosBrand: Identifiable, Sendable {
     /// Brand-tinted container — selected list rows, brand callouts. This is a background behind content; for a tinted brand control such as the tertiary button use bg-fill-brand-subtlest, and for a solid brand element use bg-fill-brand.
     public let colorBgSurfaceBrand: Color
 
-    /// Hover state for a tappable brand-tinted container (bg-surface-brand), such as a selected list row. For brand controls such as secondary, tertiary and text buttons use bg-fill-brand-subtlest-hover.
-    public let colorBgSurfaceBrandHover: Color
-
-    /// Light pressed step for a brand-tinted surface, the same tint as bg-surface-brand-hover, for presses that should barely deepen. Pair the label with text-brand-on-bg-surface-hover. For the standard pressed state use bg-surface-brand-pressed-strong.
-    public let colorBgSurfaceBrandPressedSubtle: Color
-
-    /// Pressed state for a tappable brand-tinted container (bg-surface-brand). Pair the label with text-brand-on-bg-surface-pressed. For brand controls such as button presses and the selected chip use bg-fill-brand-subtlest-pressed; for a lighter press use bg-surface-brand-pressed-subtle.
-    public let colorBgSurfaceBrandPressedStrong: Color
-
     /// Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand control use bg-fill-brand-subtlest, and for a tinted brand container use bg-surface-brand.
     public let colorBgFillBrand: Color
 
@@ -60,13 +51,7 @@ public struct CosmosBrand: Identifiable, Sendable {
     /// Pressed/active state for text-brand.
     public let colorTextBrandPressed: Color
 
-    /// Brand label colour on a tinted brand container while hovered — the action of a neutral snackbar or light tooltip. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For labels on tinted brand controls such as secondary, tertiary and text buttons use text-brand-on-bg-fill-subtlest-hover, and on a solid brand fill use text-brand-on-bg-fill.
-    public let colorTextBrandOnBgSurfaceHover: Color
-
-    /// Brand label colour on a tinted brand surface while pressed. One step darker than text-brand-on-bg-surface-hover, matching the deeper surface underneath.
-    public let colorTextBrandOnBgSurfacePressed: Color
-
-    /// Brand label colour on a tinted brand control while hovered (bg-fill-brand-subtlest-hover) — secondary, tertiary and text button labels and the selected chip. Darker than text-brand so the label keeps AA as the fill deepens. For a brand container such as a snackbar use text-brand-on-bg-surface-hover; for brand marks such as the Radio dot use text-brand-hover.
+    /// Brand label colour on a tinted brand control while hovered (bg-fill-brand-subtlest-hover) — secondary, tertiary and text button labels and the selected chip. Darker than text-brand so the label keeps AA as the fill deepens. For brand marks such as the Radio dot use text-brand-hover.
     public let colorTextBrandOnBgFillSubtlestHover: Color
 
     /// Brand label colour on a tinted brand control while pressed (bg-fill-brand-subtlest-pressed). One step darker than text-brand-on-bg-fill-subtlest-hover, matching the deeper fill underneath.
@@ -107,12 +92,6 @@ public struct CosmosBrand: Identifiable, Sendable {
 
     /// Pressed brand icon on a neutral background, tracking text-brand-pressed and border-brand-pressed.
     public let colorIconBrandPressed: Color
-
-    /// Brand icon on a tinted brand container while hovered. Tracks text-brand-on-bg-surface-hover so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-hover, and for a hovered brand icon on a neutral background use icon-brand-hover.
-    public let colorIconBrandOnBgSurfaceHover: Color
-
-    /// Brand icon on a tinted brand container while pressed. Tracks text-brand-on-bg-surface-pressed so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-pressed, and for a pressed brand icon on a neutral background use icon-brand-pressed.
-    public let colorIconBrandOnBgSurfacePressed: Color
 
     /// Brand icon in a tinted brand control while hovered — icons in secondary, tertiary and text buttons, the selected chip, and the hovered on-switch check. Tracks text-brand-on-bg-fill-subtlest-hover so icon and label stay one colour. For a hovered brand icon on a neutral background use icon-brand-hover.
     public let colorIconBrandOnBgFillSubtlestHover: Color
@@ -790,9 +769,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         id: "mmt",
         name: "MakeMyTrip",
         colorBgSurfaceBrand: Color(red: 0.929412, green: 0.980392, blue: 1),
-        colorBgSurfaceBrandHover: Color(red: 0.839216, green: 0.952941, blue: 1),
-        colorBgSurfaceBrandPressedSubtle: Color(red: 0.839216, green: 0.952941, blue: 1),
-        colorBgSurfaceBrandPressedStrong: Color(red: 0.709804, green: 0.917647, blue: 1),
         colorBgFillBrand: Color(red: 0, green: 0.533333, blue: 1),
         colorBgFillBrandHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         colorBgFillBrandPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
@@ -803,8 +779,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorTextBrand: Color(red: 0, green: 0.533333, blue: 1),
         colorTextBrandHover: Color(red: 0.023529, green: 0.596078, blue: 1),
         colorTextBrandPressed: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
-        colorTextBrandOnBgSurfaceHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
-        colorTextBrandOnBgSurfacePressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
         colorTextBrandOnBgFillSubtlestHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         colorTextBrandOnBgFillSubtlestPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
         colorTextBrandInverse: Color(red: 0.513725, green: 0.87451, blue: 1),
@@ -819,8 +793,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrand: Color(red: 0, green: 0.533333, blue: 1),
         colorIconBrandHover: Color(red: 0.023529, green: 0.596078, blue: 1),
         colorIconBrandPressed: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
-        colorIconBrandOnBgSurfaceHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
-        colorIconBrandOnBgSurfacePressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
         colorIconBrandOnBgFillSubtlestHover: Color(red: 0.031373, green: 0.407843, blue: 0.772549),
         colorIconBrandOnBgFillSubtlestPressed: Color(red: 0.05098, green: 0.345098, blue: 0.607843),
         colorIconBrandInverse: Color(red: 0.282353, green: 0.733333, blue: 1),
@@ -1051,9 +1023,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         id: "mybiz",
         name: "myBiz",
         colorBgSurfaceBrand: Color(red: 1, green: 0.94902, blue: 0.929412),
-        colorBgSurfaceBrandHover: Color(red: 1, green: 0.878431, blue: 0.831373),
-        colorBgSurfaceBrandPressedSubtle: Color(red: 1, green: 0.878431, blue: 0.831373),
-        colorBgSurfaceBrandPressedStrong: Color(red: 1, green: 0.737255, blue: 0.658824),
         colorBgFillBrand: Color(red: 1, green: 0.286275, blue: 0.160784),
         colorBgFillBrandHover: Color(red: 0.996078, green: 0.168627, blue: 0.066667),
         colorBgFillBrandPressed: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
@@ -1064,8 +1033,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorTextBrand: Color(red: 1, green: 0.286275, blue: 0.160784),
         colorTextBrandHover: Color(red: 0.996078, green: 0.168627, blue: 0.066667),
         colorTextBrandPressed: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
-        colorTextBrandOnBgSurfaceHover: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
-        colorTextBrandOnBgSurfacePressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
         colorTextBrandOnBgFillSubtlestHover: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
         colorTextBrandOnBgFillSubtlestPressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
         colorTextBrandInverse: Color(red: 1, green: 0.737255, blue: 0.658824),
@@ -1080,8 +1047,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrand: Color(red: 1, green: 0.286275, blue: 0.160784),
         colorIconBrandHover: Color(red: 0.996078, green: 0.168627, blue: 0.066667),
         colorIconBrandPressed: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
-        colorIconBrandOnBgSurfaceHover: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
-        colorIconBrandOnBgSurfacePressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
         colorIconBrandOnBgFillSubtlestHover: Color(red: 0.937255, green: 0.066667, blue: 0.027451),
         colorIconBrandOnBgFillSubtlestPressed: Color(red: 0.776471, green: 0.031373, blue: 0.039216),
         colorIconBrandInverse: Color(red: 1, green: 0.560784, blue: 0.443137),
@@ -1312,9 +1277,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         id: "goibibo",
         name: "Goibibo",
         colorBgSurfaceBrand: Color(red: 1, green: 0.968627, blue: 0.92549),
-        colorBgSurfaceBrandHover: Color(red: 1, green: 0.929412, blue: 0.827451),
-        colorBgSurfaceBrandPressedSubtle: Color(red: 1, green: 0.929412, blue: 0.827451),
-        colorBgSurfaceBrandPressedStrong: Color(red: 1, green: 0.843137, blue: 0.647059),
         colorBgFillBrand: Color(red: 0.956863, green: 0.34902, blue: 0),
         colorBgFillBrandHover: Color(red: 0.8, green: 0.254902, blue: 0.007843),
         colorBgFillBrandPressed: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
@@ -1325,8 +1287,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorTextBrand: Color(red: 0.956863, green: 0.34902, blue: 0),
         colorTextBrandHover: Color(red: 0.8, green: 0.254902, blue: 0.007843),
         colorTextBrandPressed: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
-        colorTextBrandOnBgSurfaceHover: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
-        colorTextBrandOnBgSurfacePressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
         colorTextBrandOnBgFillSubtlestHover: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
         colorTextBrandOnBgFillSubtlestPressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
         colorTextBrandInverse: Color(red: 1, green: 0.733333, blue: 0.427451),
@@ -1341,8 +1301,6 @@ public struct CosmosBrand: Identifiable, Sendable {
         colorIconBrand: Color(red: 0.956863, green: 0.34902, blue: 0),
         colorIconBrandHover: Color(red: 0.8, green: 0.254902, blue: 0.007843),
         colorIconBrandPressed: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
-        colorIconBrandOnBgSurfaceHover: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
-        colorIconBrandOnBgSurfacePressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
         colorIconBrandOnBgFillSubtlestHover: Color(red: 0.631373, green: 0.203922, blue: 0.043137),
         colorIconBrandOnBgFillSubtlestPressed: Color(red: 0.509804, green: 0.176471, blue: 0.047059),
         colorIconBrandInverse: Color(red: 1, green: 0.576471, blue: 0.196078),

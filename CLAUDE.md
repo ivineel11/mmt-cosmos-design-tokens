@@ -21,6 +21,7 @@ Before every commit, run `npm run build:tokens`, then `npm run lint` and `npm ru
 ## Layout
 
 - `tokens/tokens.json`: the only source of truth. Three sets: `primitives` → `semantic` → `component`, plus one `brands/{id}` set per extra brand (README → Brands).
+- `tokens/retired.json`: semantic tokens retired because no component used them, kept out of the build. Check it before adding a semantic token, and restore from it rather than redesign (README → Retired tokens).
 - `build-tokens.mjs`: Style Dictionary config and custom `mmt/*` transforms.
 - `dist/`: generated output, committed. Never edit it by hand.
 - `components/*.md`: component specs, written by hand alongside the Figma build. The `create-component-md` skill can regenerate one from a uSpec Extract export (README → Component specifications).
