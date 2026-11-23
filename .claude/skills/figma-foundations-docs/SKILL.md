@@ -77,6 +77,7 @@ Cosmos uses `textStyleToken: '--{path}-*'` and `effectStyleToken: '--{path}'`. I
 
 - **Never invent a developer token.** A variable's token is its WEB code syntax with `var( )` removed. With no code syntax the cell shows `—` and the variable goes in the report. Guessing a name from the variable path is how a page ends up full of names that do not exist in code.
 - **Descriptions are copied verbatim.** An empty description shows `—`.
+- **Retired variables are left out.** A variable hidden from publishing inside a published collection is retired, so it gets no row, and a run removes the row it had. Variables in a collection hidden as a whole, such as `primitives`, are still documented. In Cosmos, retired tokens are listed in README → Retired tokens.
 - **Document, do not edit.** This skill never changes variables, styles, code syntax or descriptions. If the report shows gaps, fix them in the variables panel and run the skill again.
 - **Touch only nodes in the naming contract** (below), on the documentation page. Any other frame on the page is left alone.
 - **Never rename layers by hand.** Layer names are the keys that update-in-place matches on. A renamed row is treated as removed, and a fresh one is built.
@@ -324,7 +325,7 @@ function roleOrder(items) {
 function plan(M) {
   const S = new Map(); const sec = t => { if (!S.has(t)) S.set(t, { title: t, blocks: new Map() }); return S.get(t); };
   for (const c of M.base) for (const id of c.variableIds) {
-    const v = M.byId[id]; if (!v) continue; const title = sectionOf(v, M.tier[c.id]); const segs = v.name.split('/');
+    const v = M.byId[id]; if (!v || (v.hiddenFromPublishing && !c.hiddenFromPublishing)) continue; const title = sectionOf(v, M.tier[c.id]); const segs = v.name.split('/');
     const label = 'Variables · ' + blockCat(title) + ' · ' + c.name; const s = sec(title);
     if (!s.blocks.has(label)) s.blocks.set(label, { label, coll: c, groups: new Map() });
     const g = segs.length > 1 ? segs.slice(0, -1).join(' / ') : c.name; const b = s.blocks.get(label);
