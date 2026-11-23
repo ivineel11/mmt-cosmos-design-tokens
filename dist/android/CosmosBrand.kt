@@ -22,12 +22,6 @@ data class CosmosBrand(
   val name: String,
   /** Brand-tinted container — selected list rows, brand callouts. This is a background behind content; for a tinted brand control such as the tertiary button use bg-fill-brand-subtlest, and for a solid brand element use bg-fill-brand. */
   val colorBgSurfaceBrand: Color,
-  /** Hover state for a tappable brand-tinted container (bg-surface-brand), such as a selected list row. For brand controls such as secondary, tertiary and text buttons use bg-fill-brand-subtlest-hover. */
-  val colorBgSurfaceBrandHover: Color,
-  /** Light pressed step for a brand-tinted surface, the same tint as bg-surface-brand-hover, for presses that should barely deepen. Pair the label with text-brand-on-bg-surface-hover. For the standard pressed state use bg-surface-brand-pressed-strong. */
-  val colorBgSurfaceBrandPressedSubtle: Color,
-  /** Pressed state for a tappable brand-tinted container (bg-surface-brand). Pair the label with text-brand-on-bg-surface-pressed. For brand controls such as button presses and the selected chip use bg-fill-brand-subtlest-pressed; for a lighter press use bg-surface-brand-pressed-subtle. */
-  val colorBgSurfaceBrandPressedStrong: Color,
   /** Solid brand fill for the highest-emphasis action — primary button default. Pair the label with text-brand-on-bg-fill. For a tinted brand control use bg-fill-brand-subtlest, and for a tinted brand container use bg-surface-brand. */
   val colorBgFillBrand: Color,
   /** Hover state for bg-fill-brand — primary button hover. */
@@ -48,11 +42,7 @@ data class CosmosBrand(
   val colorTextBrandHover: Color,
   /** Pressed/active state for text-brand. */
   val colorTextBrandPressed: Color,
-  /** Brand label colour on a tinted brand container while hovered — the action of a neutral snackbar or light tooltip. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For labels on tinted brand controls such as secondary, tertiary and text buttons use text-brand-on-bg-fill-subtlest-hover, and on a solid brand fill use text-brand-on-bg-fill. */
-  val colorTextBrandOnBgSurfaceHover: Color,
-  /** Brand label colour on a tinted brand surface while pressed. One step darker than text-brand-on-bg-surface-hover, matching the deeper surface underneath. */
-  val colorTextBrandOnBgSurfacePressed: Color,
-  /** Brand label colour on a tinted brand control while hovered (bg-fill-brand-subtlest-hover) — secondary, tertiary and text button labels and the selected chip. Darker than text-brand so the label keeps AA as the fill deepens. For a brand container such as a snackbar use text-brand-on-bg-surface-hover; for brand marks such as the Radio dot use text-brand-hover. */
+  /** Brand label colour on a tinted brand control while hovered (bg-fill-brand-subtlest-hover) — secondary, tertiary and text button labels and the selected chip. Darker than text-brand so the label keeps AA as the fill deepens. For brand marks such as the Radio dot use text-brand-hover. */
   val colorTextBrandOnBgFillSubtlestHover: Color,
   /** Brand label colour on a tinted brand control while pressed (bg-fill-brand-subtlest-pressed). One step darker than text-brand-on-bg-fill-subtlest-hover, matching the deeper fill underneath. */
   val colorTextBrandOnBgFillSubtlestPressed: Color,
@@ -80,10 +70,6 @@ data class CosmosBrand(
   val colorIconBrandHover: Color,
   /** Pressed brand icon on a neutral background, tracking text-brand-pressed and border-brand-pressed. */
   val colorIconBrandPressed: Color,
-  /** Brand icon on a tinted brand container while hovered. Tracks text-brand-on-bg-surface-hover so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-hover, and for a hovered brand icon on a neutral background use icon-brand-hover. */
-  val colorIconBrandOnBgSurfaceHover: Color,
-  /** Brand icon on a tinted brand container while pressed. Tracks text-brand-on-bg-surface-pressed so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-pressed, and for a pressed brand icon on a neutral background use icon-brand-pressed. */
-  val colorIconBrandOnBgSurfacePressed: Color,
   /** Brand icon in a tinted brand control while hovered — icons in secondary, tertiary and text buttons, the selected chip, and the hovered on-switch check. Tracks text-brand-on-bg-fill-subtlest-hover so icon and label stay one colour. For a hovered brand icon on a neutral background use icon-brand-hover. */
   val colorIconBrandOnBgFillSubtlestHover: Color,
   /** Brand icon in a tinted brand control while pressed. Tracks text-brand-on-bg-fill-subtlest-pressed so icon and label stay one colour. For a pressed brand icon on a neutral background use icon-brand-pressed. */
@@ -538,9 +524,6 @@ data class CosmosBrand(
       id = "mmt",
       name = "MakeMyTrip",
       colorBgSurfaceBrand = Color(0xFFEDFAFF),
-      colorBgSurfaceBrandHover = Color(0xFFD6F3FF),
-      colorBgSurfaceBrandPressedSubtle = Color(0xFFD6F3FF),
-      colorBgSurfaceBrandPressedStrong = Color(0xFFB5EAFF),
       colorBgFillBrand = Color(0xFF0088FF),
       colorBgFillBrandHover = Color(0xFF0868C5),
       colorBgFillBrandPressed = Color(0xFF0D589B),
@@ -551,8 +534,6 @@ data class CosmosBrand(
       colorTextBrand = Color(0xFF0088FF),
       colorTextBrandHover = Color(0xFF0698FF),
       colorTextBrandPressed = Color(0xFF0868C5),
-      colorTextBrandOnBgSurfaceHover = Color(0xFF0868C5),
-      colorTextBrandOnBgSurfacePressed = Color(0xFF0D589B),
       colorTextBrandOnBgFillSubtlestHover = Color(0xFF0868C5),
       colorTextBrandOnBgFillSubtlestPressed = Color(0xFF0D589B),
       colorTextBrandInverse = Color(0xFF83DFFF),
@@ -567,8 +548,6 @@ data class CosmosBrand(
       colorIconBrand = Color(0xFF0088FF),
       colorIconBrandHover = Color(0xFF0698FF),
       colorIconBrandPressed = Color(0xFF0868C5),
-      colorIconBrandOnBgSurfaceHover = Color(0xFF0868C5),
-      colorIconBrandOnBgSurfacePressed = Color(0xFF0D589B),
       colorIconBrandOnBgFillSubtlestHover = Color(0xFF0868C5),
       colorIconBrandOnBgFillSubtlestPressed = Color(0xFF0D589B),
       colorIconBrandInverse = Color(0xFF48BBFF),
@@ -799,9 +778,6 @@ data class CosmosBrand(
       id = "mybiz",
       name = "myBiz",
       colorBgSurfaceBrand = Color(0xFFFFF2ED),
-      colorBgSurfaceBrandHover = Color(0xFFFFE0D4),
-      colorBgSurfaceBrandPressedSubtle = Color(0xFFFFE0D4),
-      colorBgSurfaceBrandPressedStrong = Color(0xFFFFBCA8),
       colorBgFillBrand = Color(0xFFFF4929),
       colorBgFillBrandHover = Color(0xFFFE2B11),
       colorBgFillBrandPressed = Color(0xFFEF1107),
@@ -812,8 +788,6 @@ data class CosmosBrand(
       colorTextBrand = Color(0xFFFF4929),
       colorTextBrandHover = Color(0xFFFE2B11),
       colorTextBrandPressed = Color(0xFFEF1107),
-      colorTextBrandOnBgSurfaceHover = Color(0xFFEF1107),
-      colorTextBrandOnBgSurfacePressed = Color(0xFFC6080A),
       colorTextBrandOnBgFillSubtlestHover = Color(0xFFEF1107),
       colorTextBrandOnBgFillSubtlestPressed = Color(0xFFC6080A),
       colorTextBrandInverse = Color(0xFFFFBCA8),
@@ -828,8 +802,6 @@ data class CosmosBrand(
       colorIconBrand = Color(0xFFFF4929),
       colorIconBrandHover = Color(0xFFFE2B11),
       colorIconBrandPressed = Color(0xFFEF1107),
-      colorIconBrandOnBgSurfaceHover = Color(0xFFEF1107),
-      colorIconBrandOnBgSurfacePressed = Color(0xFFC6080A),
       colorIconBrandOnBgFillSubtlestHover = Color(0xFFEF1107),
       colorIconBrandOnBgFillSubtlestPressed = Color(0xFFC6080A),
       colorIconBrandInverse = Color(0xFFFF8F71),
@@ -1060,9 +1032,6 @@ data class CosmosBrand(
       id = "goibibo",
       name = "Goibibo",
       colorBgSurfaceBrand = Color(0xFFFFF7EC),
-      colorBgSurfaceBrandHover = Color(0xFFFFEDD3),
-      colorBgSurfaceBrandPressedSubtle = Color(0xFFFFEDD3),
-      colorBgSurfaceBrandPressedStrong = Color(0xFFFFD7A5),
       colorBgFillBrand = Color(0xFFF45900),
       colorBgFillBrandHover = Color(0xFFCC4102),
       colorBgFillBrandPressed = Color(0xFFA1340B),
@@ -1073,8 +1042,6 @@ data class CosmosBrand(
       colorTextBrand = Color(0xFFF45900),
       colorTextBrandHover = Color(0xFFCC4102),
       colorTextBrandPressed = Color(0xFFA1340B),
-      colorTextBrandOnBgSurfaceHover = Color(0xFFA1340B),
-      colorTextBrandOnBgSurfacePressed = Color(0xFF822D0C),
       colorTextBrandOnBgFillSubtlestHover = Color(0xFFA1340B),
       colorTextBrandOnBgFillSubtlestPressed = Color(0xFF822D0C),
       colorTextBrandInverse = Color(0xFFFFBB6D),
@@ -1089,8 +1056,6 @@ data class CosmosBrand(
       colorIconBrand = Color(0xFFF45900),
       colorIconBrandHover = Color(0xFFCC4102),
       colorIconBrandPressed = Color(0xFFA1340B),
-      colorIconBrandOnBgSurfaceHover = Color(0xFFA1340B),
-      colorIconBrandOnBgSurfacePressed = Color(0xFF822D0C),
       colorIconBrandOnBgFillSubtlestHover = Color(0xFFA1340B),
       colorIconBrandOnBgFillSubtlestPressed = Color(0xFF822D0C),
       colorIconBrandInverse = Color(0xFFFF9332),

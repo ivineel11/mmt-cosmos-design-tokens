@@ -976,8 +976,9 @@ function checkContrast(api, model, brand) {
     const m = /^text-([a-z]+)-on-(bg-fill|bg-surface)(-[a-z-]+)?$/.exec(key);
     if (!m) continue;
     const bgKey = `${m[2]}-${m[1]}${m[3] ?? ""}`;
-    // A background split into -strong/-subtle (bg-surface-brand-pressed-*) keeps one
-    // on-* text role, which must pass on every variant.
+    // A background split into -strong/-subtle keeps one on-* text role, which must
+    // pass on every variant. No current pair uses it; the retired
+    // bg-surface-brand-pressed-* pair (tokens/retired.json) did, and may again.
     const bgIds = model.byId.has(`color.${bgKey}`)
       ? [`color.${bgKey}`]
       : ["strong", "subtle"].map((s) => `color.${bgKey}-${s}`).filter((id) => model.byId.has(id));

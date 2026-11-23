@@ -18,7 +18,7 @@ const SURFACE_USES = [
   "Cards, sheets, dialogs and popovers",
   "Menu panels and list groups",
   "Banners, snackbars and tooltips",
-  "A card or section that is tappable as a whole, on hover or press",
+  "A card or section that is tappable as a whole, on hover or press (those steps are retired until a component needs them)",
   "Scrims and dark overlays (bg-surface-inverse)",
   "A disabled section or card (bg-surface-disabled)",
 ];
@@ -31,8 +31,9 @@ const RULES: { title: string; body: ReactNode }[] = [
         A menu item or list row is transparent at rest, so its container shows through. Hovered or
         pressed, it behaves like a control and takes a fill: <Code>bg-fill-hover</Code> and{" "}
         <Code>bg-fill-pressed-strong</Code>, or <Code>bg-fill-warning-subtlest-hover</Code> for a
-        destructive item. The surface hover and pressed steps are only for a card or section that is
-        tappable as a whole.
+        destructive item. Surface hover and pressed steps are only for a card or section that is
+        tappable as a whole. No component has one yet, so those steps and their text and icon pairs
+        are retired until one does.
       </>
     ),
   },
@@ -62,9 +63,10 @@ const RULES: { title: string; body: ReactNode }[] = [
     title: "Pair the foreground with the same role.",
     body: (
       <>
-        On a fill, use <Code>*-on-bg-fill-*</Code> labels and icons; on a surface, use{" "}
-        <Code>*-on-bg-surface-*</Code>. Keep the pairing even where the two resolve to the same
-        colour, so they can diverge later, for example in another brand.
+        On a fill, use the <Code>*-on-bg-fill-*</Code> labels and icons, even where one resolves to
+        the same colour as the plain role, so the two can diverge later, for example in another
+        brand. On a surface at rest, use the plain role: <Code>text-warning</Code> on{" "}
+        <Code>bg-surface-warning</Code>, <Code>text-brand</Code> on <Code>bg-surface-brand</Code>.
       </>
     ),
   },

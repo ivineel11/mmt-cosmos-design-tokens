@@ -1,0 +1,216 @@
+{
+  "$description": "Semantic colour tokens retired on 2026-11-23, when rows moved to bg-fill-* and no component kept a surface hover or pressed state. The build, the linter and Figma never read this file. To bring one back, copy its entry into the same set in tokens/tokens.json (brand entries into brands/*), restore its README inventory and mapping rows, give the matching bg-fill-*-subtlest neighbour its pointer sentence back, then run npm run build:tokens. README → Retired tokens lists them.",
+  "semantic": {
+    "color": {
+      "bg-surface-hover": {
+        "value": "{color.neutral.200}",
+        "type": "color",
+        "description": "Hover state for a grey container on the white page (bg-surface) that is tappable as a whole, such as a grouped option card. Rows and items inside a container are fills, so they use bg-fill-hover. For a white card on the grey page use bg-surface-secondary-hover."
+      },
+      "bg-surface-pressed": {
+        "value": "{color.neutral.300}",
+        "type": "color",
+        "description": "Pressed state for a grey container on the white page (bg-surface) that is tappable as a whole. Rows and items inside a container are fills, so they use bg-fill-pressed-strong. For a white card on the grey page use bg-surface-secondary-pressed."
+      },
+      "bg-surface-secondary-hover": {
+        "value": "{color.neutral.50}",
+        "type": "color",
+        "description": "Hover state for a white card or sheet on the grey page (bg-surface-secondary) that is tappable as a whole. Rows and menu items inside it are fills, so they use bg-fill-hover. For a grey container on the white page use bg-surface-hover."
+      },
+      "bg-surface-secondary-pressed": {
+        "value": "{color.neutral.100}",
+        "type": "color",
+        "description": "Pressed state for a white card or sheet on the grey page (bg-surface-secondary) that is tappable as a whole. Rows and menu items inside it are fills, so they use bg-fill-pressed-strong. The same grey as bg-secondary, so on the grey canvas a pressed card keeps its edge only through its border or shadow."
+      },
+      "bg-surface-brand-hover": {
+        "value": "{color.azure.100}",
+        "type": "color",
+        "description": "Hover state for a tappable brand-tinted container (bg-surface-brand), such as a selected list row. For brand controls such as secondary, tertiary and text buttons use bg-fill-brand-subtlest-hover."
+      },
+      "bg-surface-brand-pressed-subtle": {
+        "value": "{color.azure.100}",
+        "type": "color",
+        "description": "Light pressed step for a brand-tinted surface, the same tint as bg-surface-brand-hover, for presses that should barely deepen. Pair the label with text-brand-on-bg-surface-hover. For the standard pressed state use bg-surface-brand-pressed-strong."
+      },
+      "bg-surface-brand-pressed-strong": {
+        "value": "{color.azure.200}",
+        "type": "color",
+        "description": "Pressed state for a tappable brand-tinted container (bg-surface-brand). Pair the label with text-brand-on-bg-surface-pressed. For brand controls such as button presses and the selected chip use bg-fill-brand-subtlest-pressed; for a lighter press use bg-surface-brand-pressed-subtle."
+      },
+      "bg-surface-info-hover": {
+        "value": "{color.azure.100}",
+        "type": "color",
+        "description": "Hover state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-hover. For an action or close button inside an info snackbar or tooltip use bg-fill-info-subtlest-hover."
+      },
+      "bg-surface-info-pressed": {
+        "value": "{color.azure.200}",
+        "type": "color",
+        "description": "Pressed state for an interactive info container, such as a tappable info banner. Pair the label with text-info-on-bg-surface-pressed. For an action or close button inside an info snackbar or tooltip use bg-fill-info-subtlest-pressed."
+      },
+      "bg-surface-success-hover": {
+        "value": "{color.green.100}",
+        "type": "color",
+        "description": "Hover state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-hover. For an action or close button inside a success snackbar or tooltip use bg-fill-success-subtlest-hover."
+      },
+      "bg-surface-success-pressed": {
+        "value": "{color.green.200}",
+        "type": "color",
+        "description": "Pressed state for an interactive success container, such as a tappable confirmation banner. Pair the label with text-success-on-bg-surface-pressed. For an action or close button inside a success snackbar or tooltip use bg-fill-success-subtlest-pressed."
+      },
+      "bg-surface-caution-hover": {
+        "value": "{color.yellow.100}",
+        "type": "color",
+        "description": "Hover state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-hover. For an action or close button inside a caution snackbar or tooltip use bg-fill-caution-subtlest-hover."
+      },
+      "bg-surface-caution-pressed": {
+        "value": "{color.yellow.200}",
+        "type": "color",
+        "description": "Pressed state for an interactive caution container, such as a tappable advisory banner. Pair the label with text-caution-on-bg-surface-pressed. For an action or close button inside a caution snackbar or tooltip use bg-fill-caution-subtlest-pressed."
+      },
+      "bg-surface-warning-hover": {
+        "value": "{color.red.100}",
+        "type": "color",
+        "description": "Hover state for an error container (bg-surface-warning) that is tappable as a whole. A destructive menu item is a row, so like destructive buttons it uses bg-fill-warning-subtlest-hover."
+      },
+      "bg-surface-warning-pressed": {
+        "value": "{color.red.200}",
+        "type": "color",
+        "description": "Pressed state for an error container (bg-surface-warning) that is tappable as a whole. A destructive menu item is a row, so like destructive buttons it uses bg-fill-warning-subtlest-pressed."
+      },
+      "text-brand-on-bg-surface-hover": {
+        "value": "{color.azure.800}",
+        "type": "color",
+        "description": "Brand label colour on a tinted brand container while hovered — the action of a neutral snackbar or light tooltip. Darker than text-brand so the label keeps AA as the surface deepens beneath it. For labels on tinted brand controls such as secondary, tertiary and text buttons use text-brand-on-bg-fill-subtlest-hover, and on a solid brand fill use text-brand-on-bg-fill."
+      },
+      "text-brand-on-bg-surface-pressed": {
+        "value": "{color.azure.900}",
+        "type": "color",
+        "description": "Brand label colour on a tinted brand surface while pressed. One step darker than text-brand-on-bg-surface-hover, matching the deeper surface underneath."
+      },
+      "text-info-on-bg-surface-hover": {
+        "value": "{color.azure.800}",
+        "type": "color",
+        "description": "Info label colour on bg-surface-info-hover. Darker than text-info so the label keeps AA as the surface deepens beneath it. For the action label on an info snackbar or Info Rich tooltip use text-info-on-bg-fill-subtlest-hover."
+      },
+      "text-info-on-bg-surface-pressed": {
+        "value": "{color.azure.900}",
+        "type": "color",
+        "description": "Info label colour on bg-surface-info-pressed. Darker than text-info so the label keeps AA as the surface deepens beneath it. For the action label on an info snackbar or Info Rich tooltip use text-info-on-bg-fill-subtlest-pressed."
+      },
+      "text-success-on-bg-surface-hover": {
+        "value": "{color.green.800}",
+        "type": "color",
+        "description": "Success label colour on bg-surface-success-hover. Darker than text-success so the label keeps AA as the surface deepens beneath it. For the action label on a success snackbar use text-success-on-bg-fill-subtlest-hover."
+      },
+      "text-success-on-bg-surface-pressed": {
+        "value": "{color.green.900}",
+        "type": "color",
+        "description": "Success label colour on bg-surface-success-pressed. Darker than text-success so the label keeps AA as the surface deepens beneath it. For the action label on a success snackbar use text-success-on-bg-fill-subtlest-pressed."
+      },
+      "text-caution-on-bg-surface-hover": {
+        "value": "{color.yellow.800}",
+        "type": "color",
+        "description": "Caution label colour on bg-surface-caution-hover. Darker than text-caution so the label keeps AA as the surface deepens beneath it. For the action label on a caution snackbar use text-caution-on-bg-fill-subtlest-hover."
+      },
+      "text-caution-on-bg-surface-pressed": {
+        "value": "{color.yellow.900}",
+        "type": "color",
+        "description": "Caution label colour on bg-surface-caution-pressed. Darker than text-caution so the label keeps AA as the surface deepens beneath it. For the action label on a caution snackbar use text-caution-on-bg-fill-subtlest-pressed."
+      },
+      "text-warning-on-bg-surface-hover": {
+        "value": "{color.red.800}",
+        "type": "color",
+        "description": "Destructive label colour on a tinted red container (bg-surface-warning-hover) that is tappable as a whole, while hovered. Darker than text-warning so the label keeps AA as the surface deepens beneath it. For destructive buttons and destructive menu items use text-warning-on-bg-fill-subtlest-hover."
+      },
+      "text-warning-on-bg-surface-pressed": {
+        "value": "{color.red.900}",
+        "type": "color",
+        "description": "Destructive label colour on a tinted red surface while pressed. One step darker than text-warning-on-bg-surface-hover, matching the deeper surface underneath."
+      },
+      "icon-brand-on-bg-surface-hover": {
+        "value": "{color.azure.800}",
+        "type": "color",
+        "description": "Brand icon on a tinted brand container while hovered. Tracks text-brand-on-bg-surface-hover so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-hover, and for a hovered brand icon on a neutral background use icon-brand-hover."
+      },
+      "icon-brand-on-bg-surface-pressed": {
+        "value": "{color.azure.900}",
+        "type": "color",
+        "description": "Brand icon on a tinted brand container while pressed. Tracks text-brand-on-bg-surface-pressed so icon and label stay one colour as the surface deepens. For icons in brand controls such as buttons and chips use icon-brand-on-bg-fill-subtlest-pressed, and for a pressed brand icon on a neutral background use icon-brand-pressed."
+      },
+      "icon-warning-on-bg-surface-hover": {
+        "value": "{color.red.800}",
+        "type": "color",
+        "description": "Destructive icon on a tinted red container that is tappable as a whole, while hovered. Tracks text-warning-on-bg-surface-hover so icon and label stay one colour. For icons in destructive buttons and destructive menu items use icon-warning-on-bg-fill-subtlest-hover, and for a hovered warning icon on a neutral background use icon-warning-hover."
+      },
+      "icon-warning-on-bg-surface-pressed": {
+        "value": "{color.red.900}",
+        "type": "color",
+        "description": "Destructive icon on a tinted red container that is tappable as a whole, while pressed. Tracks text-warning-on-bg-surface-pressed so icon and label stay one colour. For icons in destructive buttons and destructive menu items use icon-warning-on-bg-fill-subtlest-pressed, and for a pressed warning icon on a neutral background use icon-warning-pressed."
+      }
+    }
+  },
+  "brands/mybiz": {
+    "color": {
+      "bg-surface-brand-hover": {
+        "value": "{color.pomegranate.100}",
+        "type": "color"
+      },
+      "bg-surface-brand-pressed-subtle": {
+        "value": "{color.pomegranate.100}",
+        "type": "color"
+      },
+      "bg-surface-brand-pressed-strong": {
+        "value": "{color.pomegranate.200}",
+        "type": "color"
+      },
+      "text-brand-on-bg-surface-hover": {
+        "value": "{color.pomegranate.600}",
+        "type": "color"
+      },
+      "text-brand-on-bg-surface-pressed": {
+        "value": "{color.pomegranate.700}",
+        "type": "color"
+      },
+      "icon-brand-on-bg-surface-hover": {
+        "value": "{color.pomegranate.600}",
+        "type": "color"
+      },
+      "icon-brand-on-bg-surface-pressed": {
+        "value": "{color.pomegranate.700}",
+        "type": "color"
+      }
+    }
+  },
+  "brands/goibibo": {
+    "color": {
+      "bg-surface-brand-hover": {
+        "value": "{color.thunderbird.100}",
+        "type": "color"
+      },
+      "bg-surface-brand-pressed-subtle": {
+        "value": "{color.thunderbird.100}",
+        "type": "color"
+      },
+      "bg-surface-brand-pressed-strong": {
+        "value": "{color.thunderbird.200}",
+        "type": "color"
+      },
+      "text-brand-on-bg-surface-hover": {
+        "value": "{color.thunderbird.800}",
+        "type": "color"
+      },
+      "text-brand-on-bg-surface-pressed": {
+        "value": "{color.thunderbird.900}",
+        "type": "color"
+      },
+      "icon-brand-on-bg-surface-hover": {
+        "value": "{color.thunderbird.800}",
+        "type": "color"
+      },
+      "icon-brand-on-bg-surface-pressed": {
+        "value": "{color.thunderbird.900}",
+        "type": "color"
+      }
+    }
+  }
+}

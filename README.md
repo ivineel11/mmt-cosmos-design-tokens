@@ -219,7 +219,7 @@ How gradient conversion works (machinery retained; **currently unused** — Cosm
 
 Gradient transforms run **before** solid-color transforms on each platform (`mmt/color/ios-gradient` → `mmt/color/ios`, same on Android) so already-converted values are not double-processed.
 
-**Affected tokens:** all 1225 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 319 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
+**Affected tokens:** all 1196 color tokens (172 primitive — 166 palette steps plus `alpha.transparent` and the five shadow alphas — + 290 semantic roles + 734 component tokens). No colour is a gradient; gradient transforms stay wired for future use.
 
 ---
 
@@ -263,7 +263,6 @@ Within each role, **intent** is expressed with suffixes:
 | `brand`, `info`, `success`, `caution`, `warning` | Semantic intent |
 | `strong` / `subtle` | Fill intensity pairs |
 | `on-bg-fill` / `on-bg-fill-strong` / `on-bg-fill-subtle` | Contrast-safe text and icons on filled backgrounds |
-| `on-bg-surface-hover` / `on-bg-surface-pressed` | Contrast-safe text on a tinted surface that deepens on interaction |
 | `on-bg-fill-subtlest-hover` / `on-bg-fill-subtlest-pressed` | Contrast-safe text and icons on a tinted control fill that deepens on interaction |
 | `hover` / `pressed` | Interaction steps of the token they extend |
 
@@ -280,19 +279,19 @@ Within each role, **intent** is expressed with suffixes:
 | Checkbox and radio boxes, switch tracks and thumbs | Cards, sheets, dialogs and popovers |
 | Chips, segmented control tracks and thumbs | Menu panels and list groups |
 | Slider tracks and halos | Banners, snackbars and tooltips |
-| Input field bodies | A card or section that is tappable as a whole, on hover or press |
+| Input field bodies | A card or section that is tappable as a whole, on hover or press (those steps are [retired](#retired-tokens) until a component needs them) |
 | Badges, counters and status dots | Scrims and dark overlays (`bg-surface-inverse`) |
 | Icon wells, such as the leading circle of a list row | A disabled section or card (`bg-surface-disabled`) |
 | Skeleton blocks | |
 | Rows inside a container on hover or press: list rows and menu items, destructive ones included | |
 
-**Rows are fills.** A menu item or list row is transparent at rest, so its container shows through. When it is hovered or pressed it behaves like a control, and that state colour is a fill: `bg-fill-hover` and `bg-fill-pressed-strong` for neutral rows, `bg-fill-warning-subtlest-hover` and `-pressed` for a destructive item. The surface hover and pressed steps (`bg-surface-hover`, `bg-surface-secondary-hover`) are only for a card or section that is tappable as a whole. Rule of thumb: a surface keeps one colour behind its content; anything that is a control, a mark, or the state of a tappable row is a fill.
+**Rows are fills.** A menu item or list row is transparent at rest, so its container shows through. When it is hovered or pressed it behaves like a control, and that state colour is a fill: `bg-fill-hover` and `bg-fill-pressed-strong` for neutral rows, `bg-fill-warning-subtlest-hover` and `-pressed` for a destructive item. Surface hover and pressed steps are only for a card or section that is tappable as a whole. No component has one yet, so those steps and their text and icon pairs are [retired](#retired-tokens) until one does. Rule of thumb: a surface keeps one colour behind its content; anything that is a control, a mark, or the state of a tappable row is a fill.
 
 **A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever surface it sits on. The reverse holds for dark containers: an inverse snackbar and a dark tooltip are both `bg-surface-inverse`, while a dark badge or the slider value label is `bg-fill-inverse`.
 
 **Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; a whole unavailable section or card uses `bg-surface-disabled` or `bg-surface-disabled-subtle`. The disabled chip and the disabled list icon well use the lightest step, `bg-fill-disabled-subtlest` (`neutral.50`), because `bg-fill-disabled-subtler` (`neutral.100`, the disabled input field) would vanish on the grey canvas.
 
-**Pair the foreground with the same role.** Labels and icons on a fill use `*-on-bg-fill-*` (`text-brand-on-bg-fill-subtlest-hover` on a hovered tertiary button); on a surface they use `*-on-bg-surface-*` (`text-warning-on-bg-surface-hover` on an error card that is tappable as a whole). A destructive menu item is a row, so its label is `text-warning-on-bg-fill-subtlest-hover`. Even when the two resolve to the same colour, the right pairing keeps the meaning clear in Figma and lets the two roles diverge later, for example in another brand.
+**Pair the foreground with the same role.** Labels and icons on a fill use `*-on-bg-fill-*` (`text-brand-on-bg-fill-subtlest-hover` on a hovered tertiary button); on a surface at rest they use the plain role (`text-warning` on `bg-surface-warning`, `text-brand` on `bg-surface-brand`). A destructive menu item is a row, so its label is `text-warning-on-bg-fill-subtlest-hover`. Even when the two resolve to the same colour, the right pairing keeps the meaning clear in Figma and lets the two roles diverge later, for example in another brand.
 
 #### Canvas and container pairing
 
@@ -499,8 +498,8 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 | Semantic token | MakeMyTrip | myBiz | Goibibo |
 |---|---|---|---|
 | `bg-surface-brand`, `bg-fill-brand-subtlest` | `azure.50` | `pomegranate.50` | `thunderbird.50` |
-| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle`, `bg-fill-brand-subtlest-hover` | `azure.100` | `pomegranate.100` | `thunderbird.100` |
-| `bg-surface-brand-pressed-strong`, `bg-fill-brand-subtlest-pressed` | `azure.200` | `pomegranate.200` | `thunderbird.200` |
+| `bg-fill-brand-subtlest-hover` | `azure.100` | `pomegranate.100` | `thunderbird.100` |
+| `bg-fill-brand-subtlest-pressed` | `azure.200` | `pomegranate.200` | `thunderbird.200` |
 | `bg-fill-brand-inverse` | `azure.400` | `pomegranate.300` | `thunderbird.400` |
 | `bg-fill-brand` | `azure.700` | `pomegranate.400` | `thunderbird.600` |
 | `bg-fill-brand-hover` | `azure.800` | `pomegranate.500` | `thunderbird.700` |
@@ -508,20 +507,20 @@ This is exactly what a **Figma extended collection** does. In Figma the semantic
 | `text-brand`, `border-brand`, `icon-brand` | `azure.700` | `pomegranate.400` | `thunderbird.600` |
 | `text-brand-hover`, `border-brand-hover`, `icon-brand-hover` | `azure.600` | `pomegranate.500` | `thunderbird.700` |
 | `text-brand-pressed`, `border-brand-pressed`, `icon-brand-pressed` | `azure.800` | `pomegranate.600` | `thunderbird.800` |
-| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover`, `text-brand-on-bg-fill-subtlest-hover`, `icon-brand-on-bg-fill-subtlest-hover` | `azure.800` | `pomegranate.600` | `thunderbird.800` |
-| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed`, `text-brand-on-bg-fill-subtlest-pressed`, `icon-brand-on-bg-fill-subtlest-pressed` | `azure.900` | `pomegranate.700` | `thunderbird.900` |
+| `text-brand-on-bg-fill-subtlest-hover`, `icon-brand-on-bg-fill-subtlest-hover` | `azure.800` | `pomegranate.600` | `thunderbird.800` |
+| `text-brand-on-bg-fill-subtlest-pressed`, `icon-brand-on-bg-fill-subtlest-pressed` | `azure.900` | `pomegranate.700` | `thunderbird.900` |
 | `text-brand-inverse`, `border-brand-inverse-hover`, `icon-brand-inverse-hover` | `azure.300` | `pomegranate.200` | `thunderbird.300` |
 | `text-brand-inverse-hover`, `border-brand-inverse-pressed`, `icon-brand-inverse-pressed` | `azure.200` | `pomegranate.100` | `thunderbird.200` |
 | `text-brand-inverse-pressed` | `azure.100` | `pomegranate.50` | `thunderbird.100` |
 | `border-brand-inverse`, `icon-brand-inverse` | `azure.400` | `pomegranate.300` | `thunderbird.400` |
 
-**Contrast.** myBiz sits three steps lighter than MakeMyTrip on its own ramp: its primary is `pomegranate.400` (`#FF4929`), and hover and pressed get darker (500, 600) because the step lighter than 400 is too faint. Goibibo sits one step lighter: its primary is `thunderbird.600` (`#F45900`), and hover and pressed get darker (700, 800) because `thunderbird.500` reads at only 2.70:1 on white. Surface tints, the on-surface states and the inverse roles keep the MakeMyTrip steps in both brands, apart from the myBiz inverse roles. MakeMyTrip uses the azure exception, and myBiz and Goibibo the brand-role exception, all 3:1 (section 15):
+**Contrast.** myBiz sits three steps lighter than MakeMyTrip on its own ramp: its primary is `pomegranate.400` (`#FF4929`), and hover and pressed get darker (500, 600) because the step lighter than 400 is too faint. Goibibo sits one step lighter: its primary is `thunderbird.600` (`#F45900`), and hover and pressed get darker (700, 800) because `thunderbird.500` reads at only 2.70:1 on white. Surface tints and the inverse roles keep the MakeMyTrip steps in both brands, apart from the myBiz inverse roles. MakeMyTrip uses the azure exception, and myBiz and Goibibo the brand-role exception, all 3:1 (section 15):
 
 | Pairing | MakeMyTrip (azure) | myBiz (pomegranate) | Goibibo (thunderbird) |
 |---|---|---|---|
 | White label on `bg-fill-brand` | 3.52:1 (700, azure exception) | 3.36:1 (400, brand-role exception) | 3.34:1 (600, brand-role exception) |
 | `text-brand-hover` on white | 3.02:1 (600, non-text only) | 3.77:1 (500) | 4.85:1 (700) |
-| `text-brand-on-bg-surface-hover` on its tint | 4.77:1 (800 on 100) | 3.54:1 (600 on 100) | 6.07:1 (800 on 100) |
+| `text-brand-on-bg-fill-subtlest-hover` on its tint | 4.77:1 (800 on 100) | 3.54:1 (600 on 100) | 6.07:1 (800 on 100) |
 | `text-brand-inverse` on `#0A0A0A` | 13.16:1 (300) | 12.26:1 (200) | 11.86:1 (300) |
 | Inverse Primary pressed fill on `#0A0A0A` (known gap) | 2.72:1 (900) | 4.48:1 (600) | 2.83:1 (800) |
 
@@ -540,7 +539,7 @@ Rubik is wider than Lato and has a taller x-height, so the same size reads large
 
 **Watch the warning red.** `pomegranate` is a red ramp, and myBiz keeps the shared `red` warning roles. So myBiz separates primary from destructive by lightness, not hue. The primary fill sits on `pomegranate.400` (`#FF4929`) and the destructive fill on `red.700` (`#C10007`). The interaction states come closer: the myBiz Primary pressed fill (`pomegranate.600`, `#EF1107`) looks almost the same as the destructive hover fill (`red.600`, `#E7000B`). Keep destructive actions in their own confirmation step. Goibibo (`#F45900`) is clearly orange.
 
-**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 241 tokens that differ in any brand get a runtime switch: the 30 semantic and 139 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (42 families and 27 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
+**In code, every platform switches at runtime.** The build resolves every brand and compares it with the default. The 249 tokens that differ in any brand get a runtime switch: the 30 semantic and 147 component colours, `typeface.default`, `weight.bold`, `weight.black`, and the family and weight of the text styles that read them (42 families and 27 weights). Every other token stays a plain constant. See [Brands](#brands) under Usage Examples.
 
 **Adding a brand.**
 1. Add `brands/{id}` between `semantic` and `component` in the file and in `tokenSetOrder`. Each override is a `value` aliasing a primitive and a `type`, with no description.
@@ -703,9 +702,9 @@ Entrances on the web are CSS transitions started with `@starting-style`, not key
 
 ## Token Inventory
 
-**Totals:** 320 primitive tokens · 452 semantic tokens (319 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1118 component tokens (299 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 117 `snackbar/*` + 42 `badge/*` + 45 `tab/*` + 62 `list/*` + 55 `switch/*` + 50 `segmented-control/*` + 47 `slider/*` + 68 `menu/*` + 72 `tooltip/*` + 60 `input/*`) · **2016 values on web** · **2100 on iOS and Android** · **0 gradients**
+**Totals:** 320 primitive tokens · 423 semantic tokens (290 colors + 42 typography + 1 typeface + 3 weight + 10 radius + 3 stroke + 8 icon + 14 space + 29 opacity + 7 shadow + 8 duration + 5 easing + 3 spring) · 1118 component tokens (299 `button/*` + 65 `checkbox/*` + 57 `radio/*` + 79 `chip/*` + 117 `snackbar/*` + 42 `badge/*` + 45 `tab/*` + 62 `list/*` + 55 `switch/*` + 50 `segmented-control/*` + 47 `slider/*` + 68 `menu/*` + 72 `tooltip/*` + 60 `input/*`) · **1987 values on web** · **2071 on iOS and Android** · **0 gradients**
 
-The emitted count exceeds the 1890 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
+The emitted count exceeds the 1861 source tokens because the build expands each of the 42 composite typography tokens into four properties (`fontFamily`, `fontWeight`, `fontSize`, `lineHeight`). iOS and Android emit more than web because they also expand each of the 12 shadows (the 7 semantic ones plus `segmented-control/neutral-thumb-shadow` and `slider/thumb-shadow`, which alias `shadow.card`, `slider/thumb-shadow-raised`, which aliases `shadow.raised`, and `tooltip/shadow-light` and `tooltip/shadow-info`, which alias `shadow.overlay`) into eight values (two layers of `offsetX`, `offsetY`, `blur` and `color`); web keeps each shadow as one `box-shadow`.
 
 ### Primitive tokens (320)
 
@@ -967,42 +966,27 @@ How far a spring overshoots, from 0 (none) towards 1. Keyed in hundredths, like 
 
 ---
 
-### Semantic tokens (452)
+### Semantic tokens (423)
 
-#### Color — 319 tokens
+#### Color — 290 tokens
 
 Role colors below plus experience (`exp-*`) palette aliases.
 
-##### Background — canvas and surface (27)
+##### Background — canvas and surface (12)
 
 | Token | Role |
 |-------|------|
 | `color.bg` | White page background (canvas) |
 | `color.bg-secondary` | Grey page background (canvas) |
 | `color.bg-surface` | Grey container on `bg` |
-| `color.bg-surface-hover` | Grey container on `bg`, hovered — a container tappable as a whole; rows use `bg-fill-hover` |
-| `color.bg-surface-pressed` | Grey container on `bg`, pressed |
 | `color.bg-surface-disabled` | Disabled section or card — controls use `bg-fill-disabled-subtle` |
 | `color.bg-surface-disabled-subtle` | Lighter disabled surface — a whole unavailable section or card |
 | `color.bg-surface-secondary` | White container on `bg-secondary` |
-| `color.bg-surface-secondary-hover` | White container on `bg-secondary`, hovered — a card tappable as a whole; menu items use `bg-fill-hover` |
-| `color.bg-surface-secondary-pressed` | White container on `bg-secondary`, pressed |
 | `color.bg-surface-brand` | Brand-tinted container — selected rows, callouts |
-| `color.bg-surface-brand-hover` | Brand-tinted surface, hovered |
-| `color.bg-surface-brand-pressed-subtle` | Brand-tinted surface, pressed, light — same tint as hover |
-| `color.bg-surface-brand-pressed-strong` | Brand-tinted surface, pressed, strong |
 | `color.bg-surface-info` | Info surface |
-| `color.bg-surface-info-hover` | Info surface, hovered |
-| `color.bg-surface-info-pressed` | Info surface, pressed |
 | `color.bg-surface-success` | Success surface |
-| `color.bg-surface-success-hover` | Success surface, hovered |
-| `color.bg-surface-success-pressed` | Success surface, pressed |
 | `color.bg-surface-caution` | Caution surface |
-| `color.bg-surface-caution-hover` | Caution surface, hovered |
-| `color.bg-surface-caution-pressed` | Caution surface, pressed |
 | `color.bg-surface-warning` | Warning surface — error banners |
-| `color.bg-surface-warning-hover` | Warning surface, hovered — an error container tappable as a whole |
-| `color.bg-surface-warning-pressed` | Warning surface, pressed |
 | `color.bg-surface-inverse` | Inverted (dark) container — inverse snackbars, dark tooltips, overlays, scrims |
 
 ##### Background — fill (55)
@@ -1065,7 +1049,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.bg-fill-neutral-strong-hover` | Solid grey fill, hovered |
 | `color.bg-fill-neutral-strong-pressed` | Solid grey fill, pressed |
 
-##### Text (56)
+##### Text (46)
 
 | Token | Role |
 |-------|------|
@@ -1085,8 +1069,6 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-brand-hover` | Brand text, hovered |
 | `color.text-brand-pressed` | Brand text, pressed |
 | `color.text-brand-on-bg-fill` | Text on brand fill |
-| `color.text-brand-on-bg-surface-hover` | Text on a hovered brand surface |
-| `color.text-brand-on-bg-surface-pressed` | Text on a pressed brand surface |
 | `color.text-brand-on-bg-fill-subtlest-hover` | Text on a hovered tinted brand control |
 | `color.text-brand-on-bg-fill-subtlest-pressed` | Text on a pressed tinted brand control |
 | `color.text-brand-inverse` | Brand text on dark backgrounds — inverse Button labels |
@@ -1095,22 +1077,16 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-info` | Info status text |
 | `color.text-info-on-bg-fill-strong` | Text on strong info fill |
 | `color.text-info-on-bg-fill-subtle` | Text on subtle info fill |
-| `color.text-info-on-bg-surface-hover` | Text on a hovered info surface |
-| `color.text-info-on-bg-surface-pressed` | Text on a pressed info surface |
 | `color.text-info-on-bg-fill-subtlest-hover` | Text on a hovered tinted info control |
 | `color.text-info-on-bg-fill-subtlest-pressed` | Text on a pressed tinted info control |
 | `color.text-success` | Success status text |
 | `color.text-success-on-bg-fill-strong` | Text on strong success fill |
 | `color.text-success-on-bg-fill-subtle` | Text on subtle success fill |
-| `color.text-success-on-bg-surface-hover` | Text on a hovered success surface |
-| `color.text-success-on-bg-surface-pressed` | Text on a pressed success surface |
 | `color.text-success-on-bg-fill-subtlest-hover` | Text on a hovered tinted success control |
 | `color.text-success-on-bg-fill-subtlest-pressed` | Text on a pressed tinted success control |
 | `color.text-caution` | Caution status text |
 | `color.text-caution-on-bg-fill-strong` | Text on strong caution fill |
 | `color.text-caution-on-bg-fill-subtle` | Text on subtle caution fill |
-| `color.text-caution-on-bg-surface-hover` | Text on a hovered caution surface |
-| `color.text-caution-on-bg-surface-pressed` | Text on a pressed caution surface |
 | `color.text-caution-on-bg-fill-subtlest-hover` | Text on a hovered tinted caution control |
 | `color.text-caution-on-bg-fill-subtlest-pressed` | Text on a pressed tinted caution control |
 | `color.text-warning` | Warning status text |
@@ -1118,8 +1094,6 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.text-warning-pressed` | Warning text, pressed |
 | `color.text-warning-on-bg-fill-strong` | Text on strong warning fill |
 | `color.text-warning-on-bg-fill-subtle` | Text on subtle warning fill |
-| `color.text-warning-on-bg-surface-hover` | Text on a hovered warning surface |
-| `color.text-warning-on-bg-surface-pressed` | Text on a pressed warning surface |
 | `color.text-warning-on-bg-fill-subtlest-hover` | Text on a hovered tinted destructive control |
 | `color.text-warning-on-bg-fill-subtlest-pressed` | Text on a pressed tinted destructive control |
 | `color.text-warning-inverse` | Destructive text on dark backgrounds — inverse Button labels |
@@ -1158,7 +1132,7 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.border-inverse` | Divider or outline on dark backgrounds |
 | `color.border-inverse-disabled` | Disabled control outline on dark backgrounds |
 
-##### Icon (43)
+##### Icon (39)
 
 | Token | Role |
 |-------|------|
@@ -1180,8 +1154,6 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-brand-hover` | Brand icon, hovered |
 | `color.icon-brand-pressed` | Brand icon, pressed |
 | `color.icon-brand-on-bg-fill` | Icon on brand fill |
-| `color.icon-brand-on-bg-surface-hover` | Icon on a hovered brand surface |
-| `color.icon-brand-on-bg-surface-pressed` | Icon on a pressed brand surface |
 | `color.icon-brand-on-bg-fill-subtlest-hover` | Icon in a hovered tinted brand control |
 | `color.icon-brand-on-bg-fill-subtlest-pressed` | Icon in a pressed tinted brand control |
 | `color.icon-brand-inverse` | Brand icon on dark backgrounds — inverse Button glyphs |
@@ -1197,8 +1169,6 @@ Role colors below plus experience (`exp-*`) palette aliases.
 | `color.icon-warning-hover` | Warning icon, hovered |
 | `color.icon-warning-pressed` | Warning icon, pressed |
 | `color.icon-warning-on-bg-fill-strong` | Icon on strong warning fill |
-| `color.icon-warning-on-bg-surface-hover` | Icon on a hovered warning surface |
-| `color.icon-warning-on-bg-surface-pressed` | Icon on a pressed warning surface |
 | `color.icon-warning-on-bg-fill-subtlest-hover` | Icon in a hovered tinted destructive control |
 | `color.icon-warning-on-bg-fill-subtlest-pressed` | Icon in a pressed tinted destructive control |
 | `color.icon-warning-on-bg-fill-subtle` | Icon on subtle warning fill |
@@ -1413,6 +1383,31 @@ Naming follows `{group}/{property}-{variant}-{intent}-{state}`, with `intent` om
 
 Add a component group only when a component has enough variant × state combinations that the mapping is worth enumerating. For anything simpler, use semantic tokens directly.
 
+### Retired tokens
+
+A semantic token that no component uses is retired, not deleted. It moves to [`tokens/retired.json`](tokens/retired.json), which keeps it exactly as it was: value, description and brand overrides. The build, the linter and Figma never read that file, so a retired token is not in `dist/` and cannot be picked by mistake. **Before adding a semantic token, check this list.** Restoring a retired token is quicker than designing a new one.
+
+**Retired on 2026-11-23: surface hover and pressed states.** Rows inside a container hover and press on `bg-fill-*` (see [Surface or fill](#surface-or-fill)), so these states were left for a card or section that is tappable as a whole, and no component has one yet. The rest steps stay, including `bg-surface-disabled`, `bg-surface-disabled-subtle` and `bg-surface-brand`.
+
+| Retired tokens | MakeMyTrip | myBiz | Goibibo | Was for |
+|---|---|---|---|---|
+| `bg-surface-hover`, `bg-surface-pressed` | `neutral.200`, `neutral.300` | same | same | A grey card on the white page, tappable as a whole |
+| `bg-surface-secondary-hover`, `bg-surface-secondary-pressed` | `neutral.50`, `neutral.100` | same | same | A white card on the grey page, tappable as a whole |
+| `bg-surface-brand-hover`, `bg-surface-brand-pressed-subtle`, `bg-surface-brand-pressed-strong` | `azure.100`, `azure.100`, `azure.200` | `pomegranate` 100, 100, 200 | `thunderbird` 100, 100, 200 | A brand-tinted card, tappable as a whole |
+| `bg-surface-info-hover`, `bg-surface-success-hover`, `bg-surface-caution-hover`, `bg-surface-warning-hover` | 100 step of `azure`, `green`, `yellow`, `red` | same | same | A tappable status banner, hovered |
+| `bg-surface-info-pressed`, `bg-surface-success-pressed`, `bg-surface-caution-pressed`, `bg-surface-warning-pressed` | 200 step of `azure`, `green`, `yellow`, `red` | same | same | A tappable status banner, pressed |
+| `text-brand-on-bg-surface-hover`, `icon-brand-on-bg-surface-hover` | `azure.800` | `pomegranate.600` | `thunderbird.800` | Label and icon on the hovered brand card |
+| `text-brand-on-bg-surface-pressed`, `icon-brand-on-bg-surface-pressed` | `azure.900` | `pomegranate.700` | `thunderbird.900` | Label and icon on the pressed brand card |
+| `text-info-on-bg-surface-hover`, `text-success-on-bg-surface-hover`, `text-caution-on-bg-surface-hover`, `text-warning-on-bg-surface-hover`, `icon-warning-on-bg-surface-hover` | 800 step of `azure`, `green`, `yellow`, `red`, `red` | same | same | Label and icon on a hovered status banner |
+| `text-info-on-bg-surface-pressed`, `text-success-on-bg-surface-pressed`, `text-caution-on-bg-surface-pressed`, `text-warning-on-bg-surface-pressed`, `icon-warning-on-bg-surface-pressed` | 900 step of `azure`, `green`, `yellow`, `red`, `red` | same | same | Label and icon on a pressed status banner |
+
+**To bring a token back:**
+
+1. Move its entry from `tokens/retired.json` into the same set in `tokens/tokens.json`, and its brand entries into `brands/mybiz` and `brands/goibibo`. Restore a state together with its text and icon pairs, so the contrast lint can check them.
+2. Add its rows back to the Token Inventory and the colour mappings. If it is a status state, give the matching `bg-fill-*-subtlest` and `text-*-on-bg-fill-subtlest` descriptions their pointer back, for example "For a tappable info banner use bg-surface-info-hover."
+3. Run `npm run build:tokens`, `npm run lint` and `npm run test:lint`.
+4. In Figma, show the variable in publishing again and give it back its scopes.
+
 ---
 
 ## Primitive → Semantic Mappings
@@ -1424,29 +1419,14 @@ Add a component group only when a component has enough variant × state combinat
 | `bg` | `color.neutral.0` |
 | `bg-secondary` | `color.neutral.100` |
 | `bg-surface` | `color.neutral.100` |
-| `bg-surface-hover` | `color.neutral.200` |
-| `bg-surface-pressed` | `color.neutral.300` |
 | `bg-surface-disabled` | `color.neutral.200` |
 | `bg-surface-disabled-subtle` | `color.neutral.50` |
 | `bg-surface-secondary` | `color.neutral.0` |
-| `bg-surface-secondary-hover` | `color.neutral.50` |
-| `bg-surface-secondary-pressed` | `color.neutral.100` |
 | `bg-surface-brand` | `color.azure.50` |
-| `bg-surface-brand-hover` | `color.azure.100` |
-| `bg-surface-brand-pressed-subtle` | `color.azure.100` |
-| `bg-surface-brand-pressed-strong` | `color.azure.200` |
 | `bg-surface-info` | `color.azure.50` |
-| `bg-surface-info-hover` | `color.azure.100` |
-| `bg-surface-info-pressed` | `color.azure.200` |
 | `bg-surface-success` | `color.green.50` |
-| `bg-surface-success-hover` | `color.green.100` |
-| `bg-surface-success-pressed` | `color.green.200` |
 | `bg-surface-caution` | `color.yellow.50` |
-| `bg-surface-caution-hover` | `color.yellow.100` |
-| `bg-surface-caution-pressed` | `color.yellow.200` |
 | `bg-surface-warning` | `color.red.50` |
-| `bg-surface-warning-hover` | `color.red.100` |
-| `bg-surface-warning-pressed` | `color.red.200` |
 | `bg-surface-inverse` | `color.neutral.950` |
 | `bg-fill` | `color.neutral.0` |
 | `bg-fill-hover` | `color.neutral.100` |
@@ -1519,8 +1499,6 @@ Add a component group only when a component has enough variant × state combinat
 | `text-brand-hover` | `color.azure.600` |
 | `text-brand-pressed` | `color.azure.800` |
 | `text-brand-on-bg-fill` | `color.neutral.0` |
-| `text-brand-on-bg-surface-hover` | `color.azure.800` |
-| `text-brand-on-bg-surface-pressed` | `color.azure.900` |
 | `text-brand-on-bg-fill-subtlest-hover` | `color.azure.800` |
 | `text-brand-on-bg-fill-subtlest-pressed` | `color.azure.900` |
 | `text-brand-inverse` | `color.azure.300` |
@@ -1529,22 +1507,16 @@ Add a component group only when a component has enough variant × state combinat
 | `text-info` | `color.azure.700` |
 | `text-info-on-bg-fill-strong` | `color.neutral.0` |
 | `text-info-on-bg-fill-subtle` | `color.azure.800` |
-| `text-info-on-bg-surface-hover` | `color.azure.800` |
-| `text-info-on-bg-surface-pressed` | `color.azure.900` |
 | `text-info-on-bg-fill-subtlest-hover` | `color.azure.800` |
 | `text-info-on-bg-fill-subtlest-pressed` | `color.azure.900` |
 | `text-success` | `color.green.700` |
 | `text-success-on-bg-fill-strong` | `color.neutral.0` |
 | `text-success-on-bg-fill-subtle` | `color.green.700` |
-| `text-success-on-bg-surface-hover` | `color.green.800` |
-| `text-success-on-bg-surface-pressed` | `color.green.900` |
 | `text-success-on-bg-fill-subtlest-hover` | `color.green.800` |
 | `text-success-on-bg-fill-subtlest-pressed` | `color.green.900` |
 | `text-caution` | `color.yellow.700` |
 | `text-caution-on-bg-fill-strong` | `color.neutral.0` |
 | `text-caution-on-bg-fill-subtle` | `color.yellow.800` |
-| `text-caution-on-bg-surface-hover` | `color.yellow.800` |
-| `text-caution-on-bg-surface-pressed` | `color.yellow.900` |
 | `text-caution-on-bg-fill-subtlest-hover` | `color.yellow.800` |
 | `text-caution-on-bg-fill-subtlest-pressed` | `color.yellow.900` |
 | `text-warning` | `color.red.700` |
@@ -1552,8 +1524,6 @@ Add a component group only when a component has enough variant × state combinat
 | `text-warning-pressed` | `color.red.800` |
 | `text-warning-on-bg-fill-strong` | `color.neutral.0` |
 | `text-warning-on-bg-fill-subtle` | `color.red.700` |
-| `text-warning-on-bg-surface-hover` | `color.red.800` |
-| `text-warning-on-bg-surface-pressed` | `color.red.900` |
 | `text-warning-on-bg-fill-subtlest-hover` | `color.red.800` |
 | `text-warning-on-bg-fill-subtlest-pressed` | `color.red.900` |
 | `text-warning-inverse` | `color.red.300` |
@@ -1604,8 +1574,6 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-brand-hover` | `color.azure.600` |
 | `icon-brand-pressed` | `color.azure.800` |
 | `icon-brand-on-bg-fill` | `color.neutral.0` |
-| `icon-brand-on-bg-surface-hover` | `color.azure.800` |
-| `icon-brand-on-bg-surface-pressed` | `color.azure.900` |
 | `icon-brand-on-bg-fill-subtlest-hover` | `color.azure.800` |
 | `icon-brand-on-bg-fill-subtlest-pressed` | `color.azure.900` |
 | `icon-brand-inverse` | `color.azure.400` |
@@ -1621,8 +1589,6 @@ Add a component group only when a component has enough variant × state combinat
 | `icon-warning-hover` | `color.red.600` |
 | `icon-warning-pressed` | `color.red.800` |
 | `icon-warning-on-bg-fill-strong` | `color.neutral.0` |
-| `icon-warning-on-bg-surface-hover` | `color.red.800` |
-| `icon-warning-on-bg-surface-pressed` | `color.red.900` |
 | `icon-warning-on-bg-fill-subtlest-hover` | `color.red.800` |
 | `icon-warning-on-bg-fill-subtlest-pressed` | `color.red.900` |
 | `icon-warning-on-bg-fill-subtle` | `color.red.700` |
@@ -2091,7 +2057,7 @@ val offset by animateDpAsState(if (on) travel else 0.dp, CosmosTokens.springSnap
 
 ### Brands
 
-The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 241 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
+The default brand needs no setup. To switch a part of the product to myBiz, set the brand at its root. Only the 249 brandable tokens move. Goibibo is `data-brand="goibibo"`, `.goibibo` and `CosmosBrand.Goibibo`. Everything else stays where it is.
 
 ```html
 <!-- Web: everything inside switches, including nested components. -->
@@ -2133,6 +2099,7 @@ Box(Modifier.background(LocalCosmosBrand.current.colorBgFillBrand))
 | File | Description |
 |------|-------------|
 | `tokens/tokens.json` | Source of truth — edit here or sync from Figma |
+| `tokens/retired.json` | Retired semantic tokens, kept out of the build and ready to restore (README → Retired tokens) |
 | `scripts/describe-primitives.mjs` | Regenerates primitive descriptions, including the computed contrast ratios |
 | `scripts/lint/` | The repository linter (`npm run lint`); rules in `rules/`, tests in `test/` |
 | `scripts/lib/` | Code shared by the build, `describe-primitives.mjs` and the linter (opacity rules, WCAG contrast) |
