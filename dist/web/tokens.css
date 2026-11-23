@@ -2436,8 +2436,14 @@
   --chip-padding-y-md: 4px;
   /** Top and bottom padding inside the chip at large size. A floor for the two-line chip; the one-line height comes from min-height. */
   --chip-padding-y-lg: 8px;
-  /** Horizontal gap between each slot and the label at every size: leading image or icon before it, trailing icon or remove button after it. One value for all sizes so glyphs never crowd the text on small chips. */
-  --chip-gap: 8px;
+  /** Horizontal gap between the label and a glyph beside it at small size: the leading icon before it, and the trailing icon or remove button after it. A glyph is light enough to sit close to the text. For the leading image use gap-image. The vertical chip uses its own vertical-gap tokens. */
+  --chip-gap-icon-sm: 4px;
+  /** Horizontal gap between the label and a glyph beside it at medium size: the leading icon before it, and the trailing icon or remove button after it. Currently the same value as gap-icon-sm. For the leading image use gap-image. */
+  --chip-gap-icon-md: 4px;
+  /** Horizontal gap between the label and a glyph beside it at large size: the leading icon before it, and the trailing icon or remove button after it. One step wider than at small and medium, in proportion to the larger glyph and label. For the leading image use gap-image. */
+  --chip-gap-icon-lg: 8px;
+  /** Horizontal gap between the leading image and the label, at every size. At small and medium it is wider than gap-icon, because a filled photo, logo or avatar reads heavier than a glyph and needs more room before the text; at large the two match. For icons and the remove button use gap-icon-sm, -md or -lg. */
+  --chip-gap-image: 8px;
   /** Size of the leading icon, trailing icon and remove glyph at small size. */
   --chip-icon-size-sm: 16px;
   /** Size of the leading icon, trailing icon and remove glyph at medium size. */

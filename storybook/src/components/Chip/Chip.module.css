@@ -94,24 +94,27 @@
 
 /* ---------------------------------------------------------------- Chip */
 
+/* The row is spaced for glyphs, per size; `.content` puts the image gap between the image and the text. */
 .root {
   display: inline-flex;
   align-items: center;
-  gap: var(--chip-gap);
   vertical-align: middle;
   white-space: nowrap;
 }
+.content { display: inline-flex; align-items: center; gap: var(--chip-gap-image); min-width: 0; }
 
 .root[data-size="small"] {
   --_nudge: calc(var(--space-3xs) / 4);
   min-height: var(--chip-min-height-sm);
+  gap: var(--chip-gap-icon-sm);
   padding: var(--chip-padding-y-sm) var(--chip-padding-x-sm);
   border-radius: var(--chip-radius-sm);
   --_glyph: var(--chip-icon-size-sm);
   --_image: var(--chip-image-size-sm);
-  --_label-weight: var(--label-small-bold-font-weight);
-  --_label-size: var(--label-small-bold-font-size);
-  --_label-line: var(--label-small-bold-line-height);
+  --_label-weight: var(--label-small-regular-font-weight);
+  --_label-bold-weight: var(--label-small-bold-font-weight);
+  --_label-size: var(--label-small-regular-font-size);
+  --_label-line: var(--label-small-regular-line-height);
   --_secondary-weight: var(--body-small-regular-font-weight);
   --_secondary-size: var(--body-small-regular-font-size);
   --_secondary-line: var(--body-small-regular-line-height);
@@ -119,30 +122,37 @@
 .root[data-size="medium"] {
   --_nudge: calc(var(--space-3xs) / -4);
   min-height: var(--chip-min-height-md);
+  gap: var(--chip-gap-icon-md);
   padding: var(--chip-padding-y-md) var(--chip-padding-x-md);
   border-radius: var(--chip-radius-md);
   --_glyph: var(--chip-icon-size-md);
   --_image: var(--chip-image-size-md);
-  --_label-weight: var(--label-medium-bold-font-weight);
-  --_label-size: var(--label-medium-bold-font-size);
-  --_label-line: var(--label-medium-bold-line-height);
+  --_label-weight: var(--label-medium-regular-font-weight);
+  --_label-bold-weight: var(--label-medium-bold-font-weight);
+  --_label-size: var(--label-medium-regular-font-size);
+  --_label-line: var(--label-medium-regular-line-height);
   --_secondary-weight: var(--body-small-regular-font-weight);
   --_secondary-size: var(--body-small-regular-font-size);
   --_secondary-line: var(--body-small-regular-line-height);
 }
 .root[data-size="large"] {
   min-height: var(--chip-min-height-lg);
+  gap: var(--chip-gap-icon-lg);
   padding: var(--chip-padding-y-lg) var(--chip-padding-x-lg);
   border-radius: var(--chip-radius-lg);
   --_glyph: var(--chip-icon-size-lg);
   --_image: var(--chip-image-size-lg);
-  --_label-weight: var(--label-large-bold-font-weight);
-  --_label-size: var(--label-large-bold-font-size);
-  --_label-line: var(--label-large-bold-line-height);
+  --_label-weight: var(--label-large-regular-font-weight);
+  --_label-bold-weight: var(--label-large-bold-font-weight);
+  --_label-size: var(--label-large-regular-font-size);
+  --_label-line: var(--label-large-regular-line-height);
   --_secondary-weight: var(--body-medium-regular-font-weight);
   --_secondary-size: var(--body-medium-regular-font-size);
   --_secondary-line: var(--body-medium-regular-line-height);
 }
+
+/* Unselected labels are regular and selected ones bold. Bold follows the value, disabled or not. */
+.root[data-label-weight="bold"] { --_label-weight: var(--_label-bold-weight); }
 
 .text { display: grid; gap: var(--chip-gap-text); text-align: start; }
 /*
@@ -152,6 +162,17 @@
  * land on the Figma glyph bounds.
  */
 .label { position: relative; top: var(--_nudge, 0); font-weight: var(--_label-weight); font-size: var(--_label-size); line-height: var(--_label-line); }
+/*
+ * The label is as wide as its bold self in every state, so selecting a chip never
+ * changes its width or shifts the row. A regular label is centred in that width, so
+ * the spare room splits evenly between both sides. When a secondary line sits under
+ * it, the label aligns to the start with it. Figma cannot reserve the width, so an
+ * unselected Figma chip is a few pixels narrower than this one.
+ */
+.label { display: inline-grid; justify-self: start; justify-items: center; }
+.label > * { grid-area: 1 / 1; }
+.text:has(.secondary) .label { justify-items: start; }
+.labelReserve { visibility: hidden; font-weight: var(--_label-bold-weight); }
 .secondary { font-weight: var(--_secondary-weight); font-size: var(--_secondary-size); line-height: var(--_secondary-line); }
 
 .image { flex: none; width: var(--_image); height: var(--_image); object-fit: cover; border-radius: var(--chip-image-radius); }

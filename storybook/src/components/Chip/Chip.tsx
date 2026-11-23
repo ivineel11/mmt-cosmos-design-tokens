@@ -54,15 +54,17 @@ export function Chip({
   const selectionAttrs =
     selectionRole === "toggle" ? { "aria-pressed": isSelected } : selectionRole === "radio" ? { role: "radio", "aria-checked": isSelected } : {};
 
-  let leading: ReactNode = null;
-  if (leadingImage) leading = <img className={styles.image} data-shape={imageShape} src={leadingImage} alt="" />;
-  else if (leadingIcon) leading = <Icon name={leadingIcon} size="var(--_glyph)" className={styles.icon} />;
+  // The image sits with the text, gap-image apart; an icon sits outside it, gap-icon-* apart.
+  const image: ReactNode = leadingImage ? <img className={styles.image} data-shape={imageShape} src={leadingImage} alt="" /> : null;
+  const icon: ReactNode = !leadingImage && leadingIcon ? <Icon name={leadingIcon} size="var(--_glyph)" className={styles.icon} /> : null;
 
   return (
     <span
       className={[styles.surface, styles.root, className].filter(Boolean).join(" ")}
       data-size={size}
       data-selected={!disabled && isSelected}
+      // Bold follows the value even when disabled, so disabling a selected chip keeps its width.
+      data-label-weight={isSelected ? "bold" : "regular"}
       data-bordered={bordered}
       data-disabled={disabled}
     >
@@ -81,10 +83,17 @@ export function Chip({
           onSelectedChange?.(next);
         }}
       >
-        {leading}
-        <span className={styles.text}>
-          <span className={styles.label}>{label}</span>
-          {secondaryText && <span className={styles.secondary}>{secondaryText}</span>}
+        {icon}
+        <span className={styles.content}>
+          {image}
+          <span className={styles.text}>
+            <span className={styles.label}>
+              <span>{label}</span>
+              {/* An invisible bold copy holds the label at its selected width. */}
+              <span className={styles.labelReserve} aria-hidden="true">{label}</span>
+            </span>
+            {secondaryText && <span className={styles.secondary}>{secondaryText}</span>}
+          </span>
         </span>
         {!onRemove && trailingIcon && <Icon name={trailingIcon} size="var(--_glyph)" className={styles.icon} />}
       </button>
