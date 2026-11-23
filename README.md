@@ -178,10 +178,13 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 | Preprocessor | `mmt/validate-opacity` | Rejects an opacity value outside 0–1, a literal opacity outside the primitive tier, and any drift between the `opacityScale` ramp and its semantic mirrors. Runs **before** `tokens-studio`, the only point at which the three tiers are still distinguishable. The rules live in `scripts/lib/opacity.mjs`, shared with the linter's `tokens/opacity` rule |
 | Preprocessor | `tokens-studio` | Hoists the `primitives`, `semantic`, and `component` sets to the dictionary root so cross-set references like `{fontSize.16}` and `{color.bg-fill-brand}` resolve |
 | Preprocessor | `mmt/rename-negative` | Renames keys like `spacing.-12` → `spacing.minus12` (and `shadowOffset.-4`) to avoid collisions after camelCase/kebab-case conversion, and rewrites `{…-4}` references to match |
-| Preprocessor | `mmt/resolve-gradient-colors` | Inlines `{color.family.step}` references inside `linear-gradient(...)` strings before platform transforms run |
-| Expand | `typesMap: true` | Splits composite `typography` tokens into individual output properties |
+| Preprocessor | `mmt/resolve-gradient-colors` | Inlines `{color.family.step}` references inside `linear-gradient(...)` strings before platform transforms run. Kept for future gradient tokens; there are none yet |
+| Preprocessor | `mmt/comment-anchor` | Marks each composite token that has a description, so only the first of its expanded sub-tokens carries the comment |
+| Expand | `typesMap: true` | Splits composite `typography` tokens into `fontFamily`, `fontWeight`, `fontSize` and `lineHeight` on every platform, and each shadow layer into `offsetX`, `offsetY`, `blur` and `color` on iOS and Android only |
+| Transform | `mmt/description/comment` (web CSS) | Copies each token's `description` into a comment above its custom property |
+| Transform | `shadow/css/shorthand` (web) | Joins a shadow's layers into one CSS `box-shadow` value |
 | Transform | `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
-| Transform | `mmt/dimension/unitless` (iOS) | Strips `px` suffix for CGFloat-compatible numbers |
+| Transform | `mmt/dimension/unitless` (iOS) | Strips `px` and wraps the number as `CGFloat(...)`, so values drop straight into SwiftUI APIs |
 | Transform | `mmt/dimension/compose` (Android) | Converts `px` → `sp` for text metrics, `dp` for layout |
 | Transform | `mmt/opacity/ios` (iOS) | Gives integral opacities one decimal place, so `0` and `1` land as `Double` rather than `Int` and typecheck at `.opacity(_:)` |
 | Transform | `mmt/opacity/compose` (Android) | Opacity → Compose `Float` literal (`0.32f`), which is what `Modifier.alpha()` and `Color.copy(alpha =)` take |
@@ -194,6 +197,10 @@ The token set order is fixed in `$metadata.tokenSetOrder`: **primitives first, s
 | Transform | `mmt/color/ios-gradient` (iOS) | CSS `linear-gradient(...)` → SwiftUI `LinearGradient(gradient:startPoint:endPoint:)` |
 | Transform | `mmt/color/android` (Android) | Hex colors → Compose `Color(0xAARRGGBB)` |
 | Transform | `mmt/color/android-gradient` (Android) | CSS `linear-gradient(...)` → Compose `Brush.linearGradient(...)` |
+| Format | `mmt/css/variables-brands` (web CSS) | Style Dictionary's `css/variables`, plus one `[data-brand]` block per brand holding the tokens that change with it |
+| Format | `mmt/js/brands`, `mmt/ios/brands`, `mmt/android/brands` | `brands.ts`, `CosmosBrand.swift` and `CosmosBrand.kt`: the brandable tokens of every brand and the runtime switch (see [Brands](#14-brands-makemytrip-mybiz-and-goibibo)) |
+| Format | `mmt/ios-line-height-modifier` (iOS) | `LineHeight.swift`: a `.lineHeight` SwiftUI modifier that converts a total line-box height into line spacing |
+| Format | `mmt/ios-motion`, `mmt/android-motion` | `Motion.swift` (`CosmosEasing`) and `CosmosMotion.kt` (`CosmosSpring`), which turn easing and spring tokens into platform animations |
 
 **Platform outputs:**
 
@@ -388,20 +395,7 @@ Do not hand-write Swift or Kotlin gradient code in product apps.
 
 ### 9. Build pipeline customizations
 
-| Transform | Purpose |
-|-----------|---------|
-| `tokens-studio` preprocessor | Hoists `primitives` / `semantic` / `component` sets to root so cross-set `{references}` resolve |
-| `mmt/rename-negative` | Renames negative spacing and shadow-offset keys (`-12` → `minus12`) to avoid name collisions, and rewrites references to them |
-| `mmt/resolve-gradient-colors` | Resolves `{color.*}` references embedded in gradient strings |
-| `expand` (typography, shadow) | Splits composite typography tokens into individual properties on every platform, and shadow layers into `offsetX` / `offsetY` / `blur` / `color` on iOS and Android only |
-| `shadow/css/shorthand` (web) | Joins a shadow's layers into one CSS `box-shadow` value |
-| `mmt/fontWeight/number` | Normalizes font weight values to numbers for platform outputs |
-| `mmt/dimension/unitless` (iOS) | Strips `px` and wraps as `CGFloat(...)` so values drop into SwiftUI APIs |
-| `mmt/dimension/compose` (Android) | Converts `px` → `sp` (text) or `dp` (layout) |
-| `mmt/string/quote` (iOS/Android) | Wraps font family strings as native literals |
-| `mmt/color/ios` / `mmt/color/ios-gradient` | Hex → SwiftUI `Color`; CSS gradients → `LinearGradient` |
-| `mmt/color/android` / `mmt/color/android-gradient` | Hex → Compose `Color`; CSS gradients → `Brush.linearGradient` |
-| `mmt/ios-line-height-modifier` (iOS format) | Emits `LineHeight.swift` — a `.lineHeight` SwiftUI modifier that converts total line-box height → line spacing |
+Style Dictionary's stock transforms target the web. Cosmos adds its own, the `mmt/*` names, wherever a platform needs a value in a form the stock set cannot produce: `CGFloat`, `sp` and `dp`, `Float` and `Double` literals, native colours, the motion helpers and the brand switch. [Build pipeline internals](#build-pipeline-internals) lists every stage in build order.
 
 ### 10. Flat output namespace
 
