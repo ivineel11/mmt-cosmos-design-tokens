@@ -12,14 +12,14 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
-    "@next/eslint-plugin-next": "^16.3.6",
-    "@tokens-studio/sd-transforms": "^1.2.13",
+    "@next/eslint-plugin-next": "^16.4.6",
+    "@tokens-studio/sd-transforms": "^2.0.3",
     "eslint": "^9.39.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "globals": "^17.12.0",
-    "style-dictionary": "^4.3.3",
+    "globals": "^17.14.0",
+    "style-dictionary": "^5.8.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.70.1"
+    "typescript-eslint": "^8.73.0"
   }
 }

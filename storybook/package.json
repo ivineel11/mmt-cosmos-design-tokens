@@ -15,23 +15,23 @@
     "connect:publish": "figma connect publish"
   },
   "dependencies": {
-    "flag-icons": "^7.5.0",
-    "libphonenumber-js": "^1.13.14",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "flag-icons": "^7.6.0",
+    "libphonenumber-js": "^1.13.17",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "@figma/code-connect": "^2.0.1",
-    "@storybook/addon-a11y": "^10.6.1",
-    "@storybook/addon-docs": "^10.6.1",
-    "@storybook/react-vite": "^10.6.1",
-    "@types/node": "^26.6.4",
+    "@figma/code-connect": "^2.1.0",
+    "@storybook/addon-a11y": "^10.6.8",
+    "@storybook/addon-docs": "^10.6.8",
+    "@storybook/react-vite": "^10.6.8",
+    "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.1",
+    "@vitejs/plugin-react": "^6.3.0",
     "remark-gfm": "^4.0.1",
-    "storybook": "^10.6.1",
+    "storybook": "^10.6.8",
     "typescript": "^7.0.2",
-    "vite": "^8.3.2"
+    "vite": "^8.3.8"
   }
 }

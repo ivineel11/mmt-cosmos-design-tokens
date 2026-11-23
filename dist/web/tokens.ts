@@ -711,298 +711,6 @@ export default {
     bold: 700,
     black: 900,
   },
-  headline: {
-    large: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "32px",
-        lineHeight: "40px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "32px",
-        lineHeight: "40px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "32px",
-        lineHeight: "40px",
-      },
-    },
-    medium: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "28px",
-        lineHeight: "36px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "28px",
-        lineHeight: "36px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "28px",
-        lineHeight: "36px",
-      },
-    },
-    small: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "24px",
-        lineHeight: "32px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "24px",
-        lineHeight: "32px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "24px",
-        lineHeight: "32px",
-      },
-    },
-  },
-  title: {
-    large: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "22px",
-        lineHeight: "30px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "22px",
-        lineHeight: "30px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "22px",
-        lineHeight: "30px",
-      },
-    },
-    medium: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "18px",
-        lineHeight: "24px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "18px",
-        lineHeight: "24px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "18px",
-        lineHeight: "24px",
-      },
-    },
-    small: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-    },
-  },
-  paragraph: {
-    large: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "16px",
-        lineHeight: "26px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "16px",
-        lineHeight: "26px",
-      },
-    },
-    medium: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "14px",
-        lineHeight: "22px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "14px",
-        lineHeight: "22px",
-      },
-    },
-    small: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "12px",
-        lineHeight: "18px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "12px",
-        lineHeight: "18px",
-      },
-    },
-  },
-  body: {
-    large: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "16px",
-        lineHeight: "24px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "16px",
-        lineHeight: "24px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "16px",
-        lineHeight: "24px",
-      },
-    },
-    medium: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-    },
-    small: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "12px",
-        lineHeight: "16px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "12px",
-        lineHeight: "16px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "12px",
-        lineHeight: "16px",
-      },
-    },
-  },
-  label: {
-    large: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "16px",
-        lineHeight: "24px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "16px",
-        lineHeight: "24px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "16px",
-        lineHeight: "24px",
-      },
-    },
-    medium: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "14px",
-        lineHeight: "20px",
-      },
-    },
-    small: {
-      regular: {
-        fontFamily: "Lato",
-        fontWeight: 400,
-        fontSize: "12px",
-        lineHeight: "16px",
-      },
-      bold: {
-        fontFamily: "Lato",
-        fontWeight: 700,
-        fontSize: "12px",
-        lineHeight: "16px",
-      },
-      black: {
-        fontFamily: "Lato",
-        fontWeight: 900,
-        fontSize: "12px",
-        lineHeight: "16px",
-      },
-    },
-  },
   radius: {
     none: "0px",
     xs: "2px",
@@ -2274,5 +1982,296 @@ export default {
     "country-divider-width": "1px",
     "country-divider-height": "24px",
   },
-  tokenSetOrder: ["primitives", "semantic", "component"],
+  headline: {
+    large: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "32px",
+        lineHeight: "40px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "32px",
+        lineHeight: "40px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "32px",
+        lineHeight: "40px",
+      },
+    },
+    medium: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "28px",
+        lineHeight: "36px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "28px",
+        lineHeight: "36px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "28px",
+        lineHeight: "36px",
+      },
+    },
+    small: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "24px",
+        lineHeight: "32px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "24px",
+        lineHeight: "32px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "24px",
+        lineHeight: "32px",
+      },
+    },
+  },
+  title: {
+    large: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "22px",
+        lineHeight: "30px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "22px",
+        lineHeight: "30px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "22px",
+        lineHeight: "30px",
+      },
+    },
+    medium: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "18px",
+        lineHeight: "24px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "18px",
+        lineHeight: "24px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "18px",
+        lineHeight: "24px",
+      },
+    },
+    small: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+    },
+  },
+  paragraph: {
+    large: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "16px",
+        lineHeight: "26px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "16px",
+        lineHeight: "26px",
+      },
+    },
+    medium: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "14px",
+        lineHeight: "22px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "14px",
+        lineHeight: "22px",
+      },
+    },
+    small: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "12px",
+        lineHeight: "18px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "12px",
+        lineHeight: "18px",
+      },
+    },
+  },
+  body: {
+    large: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "16px",
+        lineHeight: "24px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "16px",
+        lineHeight: "24px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "16px",
+        lineHeight: "24px",
+      },
+    },
+    medium: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+    },
+    small: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "12px",
+        lineHeight: "16px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "12px",
+        lineHeight: "16px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "12px",
+        lineHeight: "16px",
+      },
+    },
+  },
+  label: {
+    large: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "16px",
+        lineHeight: "24px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "16px",
+        lineHeight: "24px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "16px",
+        lineHeight: "24px",
+      },
+    },
+    medium: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "14px",
+        lineHeight: "20px",
+      },
+    },
+    small: {
+      regular: {
+        fontFamily: "Lato",
+        fontWeight: 400,
+        fontSize: "12px",
+        lineHeight: "16px",
+      },
+      bold: {
+        fontFamily: "Lato",
+        fontWeight: 700,
+        fontSize: "12px",
+        lineHeight: "16px",
+      },
+      black: {
+        fontFamily: "Lato",
+        fontWeight: 900,
+        fontSize: "12px",
+        lineHeight: "16px",
+      },
+    },
+  },
 };
