@@ -146,7 +146,7 @@ The Input examples frame (`1013:8`) shows realistic copy:
 | Supporting text | `supporting-default` → `text-secondary` | same | same | same | `supporting-error` → `text-warning` | `supporting-disabled` → `text-disabled` |
 | Error glyph | – | – | – | – | `supporting-icon-error` → `icon-warning` #C10007 | hidden |
 
-- **Every fill is a `bg-fill` role.** The resting fill is `bg-fill`, not the page `bg`, so the field stays white on the grey `bg-secondary` canvas. The error and disabled fills use two semantic tokens added for Input: `bg-fill-warning-subtlest` (red.50) and `bg-fill-disabled-subtlest` (neutral.100).
+- **Every fill is a `bg-fill` role.** The resting fill is `bg-fill`, not the page `bg`, so the field stays white on the grey `bg-secondary` canvas. The error and disabled fills use two semantic tokens added for Input: `bg-fill-warning-subtlest` (red.50) and `bg-fill-disabled-subtler` (neutral.100).
 - **The label does not turn brand when the field is active.** The outline alone shows it.
 - **Pressed reuses the hover outline** and adds a fill one step darker, so a tap reads on touch screens, where there is no hover. On the grey `bg-secondary` canvas the pressed grey matches the page, and the `#737373` outline carries the press.
 - **Icons keep their colour in the Error intent.** The error glyph beside the message carries the error.
@@ -240,7 +240,7 @@ A mobile number field is the Input with **Show Country** on. A country segment s
 ## Known gaps
 
 - **The resting boundary fails WCAG 1.4.11 by design.** See Accessibility → Contrast for the one-token change that would restore it.
-- **A disabled field on the grey canvas disappears.** `bg-fill-disabled-subtlest` and `border-disabled-subtlest` are both the same `#F5F5F5` as `bg-secondary`, so on the grey page only the grey label, value and supporting text remain. Place forms on a white container (`bg-surface-secondary`) when a field can be disabled.
+- **A disabled field on the grey canvas disappears.** `bg-fill-disabled-subtler` and `border-disabled-subtlest` are both the same `#F5F5F5` as `bg-secondary`, so on the grey page only the grey label, value and supporting text remain. Place forms on a white container (`bg-surface-secondary`) when a field can be disabled.
 - **On white, disabled reads apart from resting.** The resting field has a `#D4D4D4` outline and the disabled field has none, so the missing outline and the grey text carry the disabled state together.
 - **No text area, no character counter and no dropdown variant yet.** A counter fits in the supporting text for now.
 - **No motion tokens.** The label move is instant in Figma; code may animate it until a motion scale exists.

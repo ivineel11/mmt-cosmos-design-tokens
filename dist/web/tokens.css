@@ -353,19 +353,19 @@
   --color-bg-secondary: #F5F5F5;
   /** Grey container placed on the white page (bg) — wells, grouped sections, list backgrounds. Match the suffix: bg pairs with bg-surface. On the grey page (bg-secondary) it has no contrast; use bg-surface-secondary there. Surface tokens colour the container behind content; bg-fill-* tokens colour the body of the element itself. */
   --color-bg-surface: #F5F5F5;
-  /** Hover state for a tappable grey container on the white page (bg-surface) — list rows, grouped options. For a white card on the grey page use bg-surface-secondary-hover; for the body of a control such as a chip use bg-fill-hover. */
+  /** Hover state for a grey container on the white page (bg-surface) that is tappable as a whole, such as a grouped option card. Rows and items inside a container are fills, so they use bg-fill-hover. For a white card on the grey page use bg-surface-secondary-hover. */
   --color-bg-surface-hover: #E5E5E5;
-  /** Pressed state for a tappable grey container on the white page (bg-surface) — list rows, grouped options. For a white card on the grey page use bg-surface-secondary-pressed. */
+  /** Pressed state for a grey container on the white page (bg-surface) that is tappable as a whole. Rows and items inside a container are fills, so they use bg-fill-pressed-strong. For a white card on the grey page use bg-surface-secondary-pressed. */
   --color-bg-surface-pressed: #D4D4D4;
   /** Container surface of a disabled section or card. Pair with text-disabled and border-disabled-subtle. For the body of a disabled control such as a button, checkbox or radio use bg-fill-disabled-subtle. */
   --color-bg-surface-disabled: #E5E5E5;
-  /** Lighter disabled surface — the disabled chip, and a whole section or card that is unavailable, where bg-surface-disabled would read too heavy. Pair with text-disabled. Nearly the same as white and the grey canvas, so the disabled label carries the state. */
+  /** Lighter disabled surface — a whole section or card that is unavailable, where bg-surface-disabled would read too heavy. Pair with text-disabled. Nearly the same as white and the grey canvas, so the disabled label carries the state. For a disabled chip or any other control use bg-fill-disabled-subtlest. */
   --color-bg-surface-disabled-subtle: #FAFAFA;
   /** White container placed on the grey page (bg-secondary) — cards, sheets, popovers, menus. Match the suffix: bg-secondary pairs with bg-surface-secondary. On the white page (bg) it has no contrast without a border; use bg-surface there, or add a border for a floating element. */
   --color-bg-surface-secondary: #FFFFFF;
-  /** Hover state for a tappable white card, sheet row or menu item on the grey page (bg-surface-secondary). For a grey container on the white page use bg-surface-hover. */
+  /** Hover state for a white card or sheet on the grey page (bg-surface-secondary) that is tappable as a whole. Rows and menu items inside it are fills, so they use bg-fill-hover. For a grey container on the white page use bg-surface-hover. */
   --color-bg-surface-secondary-hover: #FAFAFA;
-  /** Pressed state for a tappable white card, sheet row or menu item on the grey page (bg-surface-secondary). The same grey as bg-secondary, so on the grey canvas a pressed card keeps its edge only through its border or shadow. */
+  /** Pressed state for a white card or sheet on the grey page (bg-surface-secondary) that is tappable as a whole. Rows and menu items inside it are fills, so they use bg-fill-pressed-strong. The same grey as bg-secondary, so on the grey canvas a pressed card keeps its edge only through its border or shadow. */
   --color-bg-surface-secondary-pressed: #F5F5F5;
   /** Brand-tinted container — selected list rows, brand callouts. This is a background behind content; for a tinted brand control such as the tertiary button use bg-fill-brand-subtlest, and for a solid brand element use bg-fill-brand. */
   --color-bg-surface-brand: #EDFAFF;
@@ -395,28 +395,30 @@
   --color-bg-surface-caution-pressed: #FFF085;
   /** Error/destructive container — error banners, inline validation messages. In Cosmos, warning is the red error role; for amber advisories use bg-surface-caution. For a tinted destructive control such as the destructive tertiary button use bg-fill-warning-subtlest. */
   --color-bg-surface-warning: #FEF2F2;
-  /** Hover state for a tappable error container (bg-surface-warning), such as a destructive menu item. For destructive controls such as buttons use bg-fill-warning-subtlest-hover. */
+  /** Hover state for an error container (bg-surface-warning) that is tappable as a whole. A destructive menu item is a row, so like destructive buttons it uses bg-fill-warning-subtlest-hover. */
   --color-bg-surface-warning-hover: #FFE2E2;
-  /** Pressed state for a tappable error container (bg-surface-warning), such as a destructive menu item. For destructive controls such as buttons use bg-fill-warning-subtlest-pressed. */
+  /** Pressed state for an error container (bg-surface-warning) that is tappable as a whole. A destructive menu item is a row, so like destructive buttons it uses bg-fill-warning-subtlest-pressed. */
   --color-bg-surface-warning-pressed: #FFC9C9;
-  /** Inverted container for elements that must contrast with the page — tooltips, dark overlays, spotlight callouts. Pair with text-inverse and icon-inverse. */
+  /** Inverted container for elements that must contrast with the page — snackbars, tooltips, dark overlays, spotlight callouts. Pair with text-inverse and icon-inverse. Controls inside it, and dark badges, use bg-fill-inverse. */
   --color-bg-surface-inverse: #0A0A0A;
   /** Default fill for the body of an interactive element — input fields, switch tracks, unselected controls. Fill tokens colour the element itself, the shape that is the control or mark; bg-surface-* tokens colour the container behind content, including tappable rows. */
   --color-bg-fill: #FFFFFF;
-  /** Hover step of bg-fill for a neutral control that must stay neutral under the pointer — unselected chips, and later input fields. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill on hover and only its label remains. Use bg-surface-brand when hover should hint at a brand selection, and bg-surface-hover or bg-surface-secondary-hover for a tappable row or card. */
+  /** Hover step of bg-fill for a neutral control that must stay neutral under the pointer — unselected chips, list rows and menu items. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill on hover and only its label remains. Use bg-fill-brand-subtlest when hover should hint at a brand selection, and bg-surface-secondary-hover only for a card that is tappable as a whole. */
   --color-bg-fill-hover: #F5F5F5;
   /** Light pressed step of bg-fill — the unselected chip and an input field while pressed. The same grey as bg-secondary, so on the grey canvas a borderless control loses its fill while pressed and only its label remains. Use bg-fill-pressed-strong where the press must read on either canvas. */
   --color-bg-fill-pressed-subtle: #F5F5F5;
-  /** Strong pressed step of bg-fill — the chip remove button circle, and any neutral control whose press must read on either canvas. Darker than bg-secondary. Not a disabled colour; use bg-surface-disabled or bg-fill-disabled-subtle for that. */
+  /** Strong pressed step of bg-fill — the chip remove button circle, pressed list rows and menu items, and any neutral control whose press must read on either canvas. Darker than bg-secondary. Not a disabled colour; use bg-surface-disabled or bg-fill-disabled-subtle for that. */
   --color-bg-fill-pressed-strong: #E5E5E5;
-  /** Disabled fill for a control that stays visually solid when disabled — a selected checkbox, the tab indicator, sliders, filled indicators. Use bg-fill-disabled for the middle step, and bg-fill-disabled-subtle or bg-fill-disabled-subtlest for lighter ones. */
+  /** Disabled fill for a control that stays visually solid when disabled — a selected checkbox, the tab indicator, sliders, filled indicators. Use bg-fill-disabled for the middle step, and bg-fill-disabled-subtle, bg-fill-disabled-subtler or bg-fill-disabled-subtlest for lighter ones. */
   --color-bg-fill-disabled-strong: #A1A1A1;
   /** Middle disabled fill, between bg-fill-disabled-subtle and bg-fill-disabled-strong — the off thumb of a disabled Outlined switch, on its bg-surface-disabled track. For a disabled switch track use bg-fill-disabled-subtle. */
   --color-bg-fill-disabled: #D4D4D4;
-  /** Lighter disabled fill — disabled buttons, the unselected disabled checkbox and radio, the disabled segmented thumb, disabled switch tracks and the inactive track of a disabled slider. Use bg-fill-disabled-subtlest for the body of a disabled input field, and bg-fill-disabled or bg-fill-disabled-strong when the disabled element still needs to read as solid. For a disabled section or card use bg-surface-disabled. */
+  /** Lighter disabled fill — disabled buttons, the unselected disabled checkbox and radio, the disabled segmented thumb, disabled switch tracks and the inactive track of a disabled slider. Use bg-fill-disabled-subtler for the body of a disabled input field, bg-fill-disabled-subtlest for a disabled chip, and bg-fill-disabled or bg-fill-disabled-strong when the disabled element still needs to read as solid. For a disabled section or card use bg-surface-disabled. */
   --color-bg-fill-disabled-subtle: #E5E5E5;
-  /** Lightest disabled fill — the body of a disabled input field, so an inert field recedes instead of reading as a filled control. Pair with text-disabled and border-disabled-subtle; the disabled text and border carry the state. It is the same grey as the bg-secondary canvas, so on that page the border alone outlines the field. For a disabled switch or slider track use bg-fill-disabled-subtle. */
-  --color-bg-fill-disabled-subtlest: #F5F5F5;
+  /** Very light disabled fill — the body of a disabled input field, so an inert field recedes instead of reading as a filled control. Pair with text-disabled and border-disabled-subtle; the disabled text and border carry the state. It is the same grey as the bg-secondary canvas, so on that page the border alone outlines the field. For a disabled chip or list icon well use bg-fill-disabled-subtlest, and for a disabled switch or slider track use bg-fill-disabled-subtle. */
+  --color-bg-fill-disabled-subtler: #F5F5F5;
+  /** Lightest disabled fill — a disabled chip in either selection state, and the icon well of a disabled list row. Lighter than bg-fill-disabled-subtler, so the control still shows on the grey bg-secondary canvas where that one would match the page. Pair with text-disabled and icon-disabled; the disabled label carries the state. For a disabled input field use bg-fill-disabled-subtler, and for a whole disabled section or card use bg-surface-disabled-subtle. */
+  --color-bg-fill-disabled-subtlest: #FAFAFA;
   /** Low-emphasis neutral fill — segmented control tracks, skeleton blocks. For its interactive states use bg-fill-secondary-hover and bg-fill-secondary-pressed. */
   --color-bg-fill-secondary: #F5F5F5;
   /** Hover state for bg-fill-secondary — an interactive segmented track or low-emphasis neutral control. For the white control fill use bg-fill-hover. */
@@ -489,13 +491,13 @@
   --color-bg-fill-warning-subtle: #FFE2E2;
   /** Lightest error fill — the destructive tertiary button at rest and the body of an input field in the error state, a faint tint that sits behind the content without competing with it. For its interactive steps use bg-fill-warning-subtlest-hover and bg-fill-warning-subtlest-pressed. For a low-emphasis error badge or tag use bg-fill-warning-subtle, and for a tinted error container behind content use bg-surface-warning. */
   --color-bg-fill-warning-subtlest: #FEF2F2;
-  /** Hover state for bg-fill-warning-subtlest — destructive secondary, tertiary and text button hovers, and the press of error controls that start transparent (checkbox and radio in the error state). Pair the label with text-warning-on-bg-fill-subtlest-hover. For a tappable error container use bg-surface-warning-hover. */
+  /** Hover state for bg-fill-warning-subtlest — destructive secondary, tertiary and text button hovers, a hovered destructive menu item, and the press of error controls that start transparent (checkbox and radio in the error state). Pair the label with text-warning-on-bg-fill-subtlest-hover. For an error container that is tappable as a whole use bg-surface-warning-hover. */
   --color-bg-fill-warning-subtlest-hover: #FFE2E2;
-  /** Pressed state for bg-fill-warning-subtlest — destructive secondary and tertiary button presses. Pair the label with text-warning-on-bg-fill-subtlest-pressed. For a tappable error container use bg-surface-warning-pressed. */
+  /** Pressed state for bg-fill-warning-subtlest — destructive secondary and tertiary button presses and a pressed destructive menu item. Pair the label with text-warning-on-bg-fill-subtlest-pressed. For an error container that is tappable as a whole use bg-surface-warning-pressed. */
   --color-bg-fill-warning-subtlest-pressed: #FFC9C9;
   /** Destructive tint for a control on an inverted or dark background, always laid at an opacity token (the inverse destructive tertiary fill and hover and pressed layers of Button). Never used solid; on light backgrounds use bg-fill-warning-subtlest. */
   --color-bg-fill-warning-inverse: #FF6467;
-  /** Solid inverted fill — dark badges, toasts and controls on a light page. Pair with text-inverse and icon-inverse, and use bg-fill-inverse-hover and bg-fill-inverse-pressed when it is interactive. */
+  /** Solid inverted fill — dark badges, the slider value label and dark controls on a light page. Pair with text-inverse and icon-inverse, and use bg-fill-inverse-hover and bg-fill-inverse-pressed when it is interactive. For a dark container that holds content, such as a snackbar or tooltip, use bg-surface-inverse. */
   --color-bg-fill-inverse: #0A0A0A;
   /** Hover state for bg-fill-inverse — an action on a dark toast or a dark control. Lighter than the rest step, since the fill is already near black. */
   --color-bg-fill-inverse-hover: #171717;
@@ -607,11 +609,11 @@
   --color-text-warning-on-bg-fill-strong: #FFFFFF;
   /** Label colour on bg-fill-warning-subtle. */
   --color-text-warning-on-bg-fill-subtle: #C10007;
-  /** Destructive label colour on a tinted red container while hovered — the destructive menu item and the action of an error snackbar. Darker than text-warning so the label keeps AA as the surface deepens beneath it. For destructive button labels use text-warning-on-bg-fill-subtlest-hover. */
+  /** Destructive label colour on a tinted red container (bg-surface-warning-hover) that is tappable as a whole, while hovered. Darker than text-warning so the label keeps AA as the surface deepens beneath it. For destructive buttons and destructive menu items use text-warning-on-bg-fill-subtlest-hover. */
   --color-text-warning-on-bg-surface-hover: #9F0712;
   /** Destructive label colour on a tinted red surface while pressed. One step darker than text-warning-on-bg-surface-hover, matching the deeper surface underneath. */
   --color-text-warning-on-bg-surface-pressed: #82181A;
-  /** Destructive label colour on a tinted red control while hovered (bg-fill-warning-subtlest-hover) — destructive secondary, tertiary and text button labels. Darker than text-warning so the label keeps AA as the fill deepens. For a destructive menu item use text-warning-on-bg-surface-hover. */
+  /** Destructive label colour on a tinted red control while hovered (bg-fill-warning-subtlest-hover) — destructive secondary, tertiary and text button labels, and the destructive menu item. Darker than text-warning so the label keeps AA as the fill deepens. For a tinted red container that is tappable as a whole use text-warning-on-bg-surface-hover. */
   --color-text-warning-on-bg-fill-subtlest-hover: #9F0712;
   /** Destructive label colour on a tinted red control while pressed (bg-fill-warning-subtlest-pressed). One step darker than text-warning-on-bg-fill-subtlest-hover, matching the deeper fill underneath. */
   --color-text-warning-on-bg-fill-subtlest-pressed: #82181A;
@@ -633,7 +635,7 @@
   --color-border-disabled-strong: #A1A1A1;
   /** Border of a disabled low-emphasis control that keeps a faint outline — the disabled chip and the disabled outlined switch. For the disabled input field, whose outline merges into its body, use border-disabled-subtlest. */
   --color-border-disabled-subtle: #D4D4D4;
-  /** Lightest disabled border, the same grey as bg-fill-disabled-subtlest, so the outline of a disabled input field merges into its body and the inert field recedes. For a disabled control that keeps a faint outline use border-disabled-subtle, and one that keeps a visible outline use border-disabled-strong. */
+  /** Lightest disabled border, the same grey as bg-fill-disabled-subtler, so the outline of a disabled input field merges into its body and the inert field recedes. For a disabled control that keeps a faint outline use border-disabled-subtle, and one that keeps a visible outline use border-disabled-strong. */
   --color-border-disabled-subtlest: #F5F5F5;
   /** Keyboard focus ring. Apply on :focus-visible rather than :focus so the ring does not appear on pointer interaction. */
   --color-border-focus: #0088FF;
@@ -745,13 +747,13 @@
   --color-icon-warning-pressed: #9F0712;
   /** Icon on bg-fill-warning-strong and its hover and pressed steps — the destructive primary button icon and the selected error Checkbox tick. For a warning icon on a neutral or tinted background use icon-warning. */
   --color-icon-warning-on-bg-fill-strong: #FFFFFF;
-  /** Destructive icon on a tinted red container while hovered — the leading icon of a destructive menu item. Tracks text-warning-on-bg-surface-hover so icon and label stay one colour. For icons in destructive buttons use icon-warning-on-bg-fill-subtlest-hover, and for a hovered warning icon on a neutral background use icon-warning-hover. */
+  /** Destructive icon on a tinted red container that is tappable as a whole, while hovered. Tracks text-warning-on-bg-surface-hover so icon and label stay one colour. For icons in destructive buttons and destructive menu items use icon-warning-on-bg-fill-subtlest-hover, and for a hovered warning icon on a neutral background use icon-warning-hover. */
   --color-icon-warning-on-bg-surface-hover: #9F0712;
-  /** Destructive icon on a tinted red container while pressed — the leading icon of a destructive menu item. Tracks text-warning-on-bg-surface-pressed so icon and label stay one colour. For icons in destructive buttons use icon-warning-on-bg-fill-subtlest-pressed, and for a pressed warning icon on a neutral background use icon-warning-pressed. */
+  /** Destructive icon on a tinted red container that is tappable as a whole, while pressed. Tracks text-warning-on-bg-surface-pressed so icon and label stay one colour. For icons in destructive buttons and destructive menu items use icon-warning-on-bg-fill-subtlest-pressed, and for a pressed warning icon on a neutral background use icon-warning-pressed. */
   --color-icon-warning-on-bg-surface-pressed: #82181A;
-  /** Destructive icon in a tinted red control while hovered — icons in destructive secondary, tertiary and text buttons. Tracks text-warning-on-bg-fill-subtlest-hover so icon and label stay one colour. For a destructive menu item use icon-warning-on-bg-surface-hover. */
+  /** Destructive icon in a tinted red control while hovered — icons in destructive secondary, tertiary and text buttons, and the leading icon of a destructive menu item. Tracks text-warning-on-bg-fill-subtlest-hover so icon and label stay one colour. For a tinted red container that is tappable as a whole use icon-warning-on-bg-surface-hover. */
   --color-icon-warning-on-bg-fill-subtlest-hover: #9F0712;
-  /** Destructive icon in a tinted red control while pressed. Tracks text-warning-on-bg-fill-subtlest-pressed so icon and label stay one colour. For a destructive menu item use icon-warning-on-bg-surface-pressed. */
+  /** Destructive icon in a tinted red control while pressed, including the leading icon of a pressed destructive menu item. Tracks text-warning-on-bg-fill-subtlest-pressed so icon and label stay one colour. For a tinted red container that is tappable as a whole use icon-warning-on-bg-surface-pressed. */
   --color-icon-warning-on-bg-fill-subtlest-pressed: #82181A;
   /** Icon on bg-fill-warning-subtle — subtle error badges and tags. */
   --color-icon-warning-on-bg-fill-subtle: #C10007;
@@ -3690,7 +3692,7 @@
   --input-bg-error: #FEF2F2;
   /** Fill of a field in the error state while it is pressed. One step deeper than bg-error, so the press still reads on the red tint. */
   --input-bg-error-pressed: #FFE2E2;
-  /** Fill of a disabled field, in both intents. The lightest disabled fill, so an inert field recedes; the disabled text carries the state. On the grey bg-secondary canvas it matches the page and the outline alone marks the field. */
+  /** Fill of a disabled field, in both intents. A very light disabled fill, so an inert field recedes; the disabled text carries the state. On the grey bg-secondary canvas it matches the page and the outline alone marks the field. */
   --input-bg-disabled: #F5F5F5;
   /** Outline of the field at rest. Deliberately light so a resting form reads quiet; below the 3:1 of WCAG 1.4.11, an accepted deviation recorded in the Input spec. Steps up to border-hover on hover. */
   --input-border-default: #D4D4D4;

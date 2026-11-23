@@ -249,11 +249,11 @@ Token names follow `menu/{element}-{intent}-{state}`, with the intent left out f
 | State | Row fill | Label | Leading icon |
 |---|---|---|---|
 | Default | transparent | `text-warning` #C10007 | `icon-warning` #C10007 |
-| Hover, Focus | `bg-surface-warning-hover` #FFE2E2 (Focus adds the ring) | `text-warning-on-bg-surface-hover` #9F0712 | `icon-warning-on-bg-surface-hover` #9F0712 |
-| Pressed | `bg-surface-warning-pressed` #FFC9C9 | `text-warning-on-bg-surface-pressed` #82181A | `icon-warning-on-bg-surface-pressed` #82181A |
+| Hover, Focus | `bg-fill-warning-subtlest-hover` #FFE2E2 (Focus adds the ring) | `text-warning-on-bg-fill-subtlest-hover` #9F0712 | `icon-warning-on-bg-fill-subtlest-hover` #9F0712 |
+| Pressed | `bg-fill-warning-subtlest-pressed` #FFC9C9 | `text-warning-on-bg-fill-subtlest-pressed` #82181A | `icon-warning-on-bg-fill-subtlest-pressed` #82181A |
 | Disabled | transparent | `text-disabled` #A1A1A1 | `icon-disabled` #A1A1A1 |
 
-Supporting text and meta on a destructive row keep the neutral `text-secondary`.
+Supporting text and meta on a destructive row keep the neutral `text-secondary`. A row is a fill, not a surface, so destructive rows share the red tint steps of destructive buttons.
 
 **Panel and parts**
 

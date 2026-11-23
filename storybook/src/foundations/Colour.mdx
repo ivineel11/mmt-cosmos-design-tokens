@@ -30,14 +30,15 @@ A screen sits on one of two canvases, white or grey, and the container on top mu
 | Checkbox and radio boxes, switch tracks and thumbs | Cards, sheets, dialogs and popovers |
 | Chips, segmented control tracks and thumbs | Menu panels and list groups |
 | Slider tracks and halos | Banners, snackbars and tooltips |
-| Input field bodies | Tappable rows and cards, at rest and on hover or press |
+| Input field bodies | A card or section that is tappable as a whole, on hover or press |
 | Badges, counters and status dots | Scrims and dark overlays (`bg-surface-inverse`) |
 | Icon wells, such as the leading circle of a list row | A disabled section or card (`bg-surface-disabled`) |
 | Skeleton blocks | |
+| Rows inside a container on hover or press: list rows and menu items, destructive ones included | |
 
-- **Tappable rows stay surfaces.** A menu item or list row is interactive, but it is a slice of its container and holds other content. Its hover and pressed steps come from the surface it sits in: `bg-surface-hover`, `bg-surface-secondary-hover`, or `bg-surface-warning-hover` for a destructive item. If an element holds other components or lines of content, it is a surface; if it is a single control or mark, it is a fill.
-- **A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever it sits on.
-- **Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; an unavailable section or card uses `bg-surface-disabled`. The one exception is the disabled chip and the disabled list icon well, which use `bg-surface-disabled-subtle` (`neutral.50`): no disabled fill is that light, and `bg-fill-disabled-subtlest` (`neutral.100`) would vanish on the grey canvas.
+- **Rows are fills.** A menu item or list row is transparent at rest, so its container shows through. Hovered or pressed, it behaves like a control and takes a fill: `bg-fill-hover` and `bg-fill-pressed-strong`, or `bg-fill-warning-subtlest-hover` and `-pressed` for a destructive item. The surface hover and pressed steps are only for a card or section that is tappable as a whole. A surface keeps one colour behind its content; a control, a mark or the state of a row is a fill.
+- **A control inside a surface is still a fill.** A button in a snackbar or a chip on a card takes `bg-fill-*`, whatever it sits on. Dark containers follow the same rule: an inverse snackbar and a dark tooltip are `bg-surface-inverse`, a dark badge is `bg-fill-inverse`.
+- **Disabled follows the same split.** A disabled control uses `bg-fill-disabled-*`; an unavailable section or card uses `bg-surface-disabled`. The disabled chip and the disabled list icon well use the lightest step, `bg-fill-disabled-subtlest` (`neutral.50`), because `bg-fill-disabled-subtler` (`neutral.100`, the disabled input field) would vanish on the grey canvas.
 - **Pair the foreground with the same role.** On a fill, use `*-on-bg-fill-*` labels and icons; on a surface, use `*-on-bg-surface-*`. Keep the pairing even where the two resolve to the same colour, so they can diverge later, for example in another brand.
 
 ## Background
